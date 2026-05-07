@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products Catalogue - Ishank Textile | Premium Fabric Manufacturing</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-blue': '#1e3a8a',
+                        'brand-orange': '#ea580c',
+                        'brand-light': '#f8fafc',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .btn-primary {
+            background-color: #ea580c;
+            color: white;
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            transition: background-color 0.2s;
+        }
+        .btn-primary:hover {
+            background-color: #dc2626;
+        }
+        .btn-secondary {
+            background-color: #1e3a8a;
+            color: white;
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            transition: background-color 0.2s;
+        }
+        .btn-secondary:hover {
+            background-color: #1d4ed8;
+        }
+    </style>
+</head>
+<body class="bg-brand-light">
+    <!-- Navigation Header -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <!-- Logo -->
+                <div class="flex items-center space-x-2">
+                    <div class="w-10 h-10 bg-brand-blue rounded-full flex items-center justify-center">
+                        <span class="text-white font-bold text-xl">I</span>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold text-brand-blue">ISHANK</h1>
+                        <p class="text-xs text-brand-orange">TEXTILE</p>
+                    </div>
+                </div>
+                
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex space-x-8">
+                    <a href="index.html" class="text-brand-blue hover:text-brand-orange transition-colors">Home</a>
+                    <a href="#" class="text-brand-blue hover:text-brand-orange transition-colors">About</a>
+                    <a href="products.html" class="text-brand-orange font-semibold">Products</a>
+                    <a href="#" class="text-brand-blue hover:text-brand-orange transition-colors">Contact</a>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden text-brand-blue" onclick="toggleMobileMenu()">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Mobile Menu -->
+            <div id="mobileMenu" class="hidden md:hidden mt-4 pb-4">
+                <a href="index.html" class="block py-2 text-brand-blue hover:text-brand-orange">Home</a>
+                <a href="#" class="block py-2 text-brand-blue hover:text-brand-orange">About</a>
+                <a href="products.html" class="block py-2 text-brand-orange font-semibold">Products</a>
+                <a href="#" class="block py-2 text-brand-blue hover:text-brand-orange">Contact</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Page Header -->
+    <section class="bg-gradient-to-r from-brand-blue to-blue-900 text-white py-16">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">Products Catalogue</h1>
+            <p class="text-xl text-blue-100 max-w-3xl mx-auto">
+                Complete range of premium fabrics for defense, medical, corporate, and hospitality sectors
+            </p>
+        </div>
+    </section>
+
+    <!-- Filter Section -->
+    <section class="py-8 bg-white border-b">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-wrap gap-4 justify-center">
+                <button class="btn-primary" onclick="filterProducts('all')">All Products</button>
+                <button class="btn-secondary" onclick="filterProducts('vat-dyed')">Vat-Dyed Fabrics</button>
+                <button class="btn-secondary" onclick="filterProducts('uniform')">Uniform Textiles</button>
+                <button class="btn-secondary" onclick="filterProducts('woolen')">Wollen Fabric</button>
+                <button class="btn-secondary" onclick="filterProducts('hosiery')">Hosiery Fabric</button>
+                <button class="btn-secondary" onclick="filterProducts('cotton')">Cotton Fabric</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Grid -->
+    <section class="py-16">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="productsGrid">
+                
+                <!-- Vat-Dyed Fabric 1 -->
+                <div class="product-card bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow" data-category="vat-dyed">
+                    <div class="h-48 bg-gradient-to-br from-brand-orange to-orange-600 flex items-center justify-center">
+                        <div class="text-white text-center">
+                            <div class="text-6xl font-bold mb-2">VD</div>
+                            <p class="text-sm">Vat-Dyed Premium</p>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-brand-blue mb-2">Vat-Dyed Premium Fabric</h3>
+                        <div class="text-2xl font-bold text-brand-orange mb-4">₹380/metre</div>
+                        <p class="text-gray-600 mb-4">
+                            Molecular-level color integrity with 24-hour freshness shield. Perfect for high-end uniform applications.
+                        </p>
+                        <ul class="text-sm text-gray-600 mb-4 space-y-1">
+                            <li>• Zero Bacteria Technology</li>
+                            <li>• Sweat-Management System</li>
+                            <li>• Bio-Safety Compliant</li>
+                            <li>• Extreme Durability</li>
+                        </ul>
+                        <div class="flex gap-2 mb-4">
+                            <span class="bg-brand-blue text-white text-xs px-2 py-1 rounded">Defense</span>
+                            <span class="bg-brand-blue text-white text-xs px-2 py-1 rounded">Medical</span>
+                            <span class="bg-brand-blue text-white text-xs px-2 py-1 rounded">Corporate</span>
+                        </div>
+                        <button class="btn-primary w-full">Request Quote</button>
+                    </div>
+                </div>
+
+                <!-- Fiber-Dyed Fabric -->
+                <div class="product-card bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow" data-category="vat-dyed">
+                    <div class="h-48 bg-gradient-to-br from-brand-blue to-blue-700 flex items-center justify-center">
+                        <div class="text-white text-center">
+                            <div class="text-6xl font-bold mb-2">FD</div>
+                            <p class="text-sm">Fiber-Dyed Advanced</p>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-brand-blue mb-2">Fiber-Dyed Advanced Fabric</h3>
+                        <div class="text-2xl font-bold text-brand-orange mb-4">₹420/metre</div>
+                        <p class="text-gray-600 mb-4">
+                            Advanced fiber-dyeing technology with superior color fastness and clinical compliance.
+                        </p>
+                        <ul class="text-sm text-gray-600 mb-4 space-y-1">
+                            <li>• Superior Color Fastness</li>
+                            <li>• Clinical Grade Safety</li>
+                            <li>• Launder-and-Lead Quality</li>
+                            <li>• Tactical Comfort</li>
+                        </ul>
+                        <div class="flex gap-2 mb-4">
+                            <span class="bg-brand-blue text-white text-xs px-2 py-1 rounded">Army</span>
+                            <span class="bg-brand-blue text-white text-xs px-2 py-1 rounded">Police</span>
+                            <span class="bg-brand-blue text-white text-xs px-2 py-1 rounded">Security</span>
+                        </div>
+                        <button class="btn-primary w-full">Request Quote</button>
+                    </div>
+                </div>
+
+                <!-- Wollen Fabric -->
+                <div class="product-card bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow" data-category="woolen">
+                    <div class="h-48 bg-gradient-to-br from-gray-600 to-gray-800 flex items-center justify-center">
+                        <div class="text-white text-center">
+                            <div class="text-6xl font-bold mb-2">WF</div>
+                            <p class="text-sm">Premium Wollen</p>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-brand-blue mb-2">Premium Wollen Fabric</h3>
+                        <div class="text-2xl font-bold text-brand-orange mb-4">₹320/metre</div>
+                        <p class="text-gray-600 mb-4">
+                            High-quality woolen fabric with excellent thermal properties and superior comfort.
+                        </p>
+                        <ul class="text-sm text-gray-600 mb-4 space-y-1">
+                            <li>• Excellent Thermal Properties</li>
+                            <li>• Superior Comfort</li>
+                            <li>• Durable Construction</li>
+                            <li>• Premium Quality</li>
+                        </ul>
+                        <div class="flex gap-2 mb-4">
+                            <span class="bg-brand-blue text-white text-xs px-2 py-1 rounded">Winter Wear</span>
+                            <span class="bg-brand-blue text-white text-xs px-2 py-1 rounded">Formal</span>
+                        </div>
+                        <button class="btn-primary w-full">Request Quote</button>
+                    </div>
+                </div>
+
+                <!-- Hosiery Fabric -->
+                <div class="product-card bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow" data-category="hosiery">
+                    <div class="h-48 bg-gradient-to-br from-green-600 to-green-800 flex items-center justify-center">
+                        <div class="text-white text-center">
+                            <div class="text-6xl font-bold mb-2">HF</div>
+                            <p class="text-sm">Hosiery Special</p>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-brand-blue mb-2">Hosiery Special Fabric</h3>
+                        <div class="text-2xl font-bold text-brand-orange mb-4">₹180/metre</div>
+                        <p class="text-gray-600 mb-4">
+                            Lightweight and breathable hosiery fabric ideal for comfortable daily wear.
+                        </p>
+                        <ul class="text-sm text-gray-600 mb-4 space-y-1">
+                            <li>• Lightweight</li>
+                            <li>• Breathable</li>
+                            <li>• Soft Texture</li>
+                            <li>• Daily Wear Comfort</li>
+                        </ul>
+                        <div class="flex gap-2 mb-4">
+                            <span class="bg-brand-blue text-white text-xs px-2 py-1 rounded">Casual</span>
+                            <span class="bg-brand-blue text-white text-xs px-2 py-1 rounded">Sports</span>
+                        </div>
+                        <button class="btn-primary w-full">Request Quote</button>
+                    </div>
+                </div>
+
+                <!-- Cotton Fabric -->
+                <div class="product-card bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow" data-category="cotton">
+                    <div class="h-48 bg-gradient-to-br from-yellow-600 to-orange-700 flex items-center justify-center">
+                        <div class="text-white text-center">
+                            <div class="text-6xl font-bold mb-2">CF</div>
+                            <p class="text-sm">Pure Cotton</p>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-brand-blue mb-2">Pure Cotton Fabric</h3>
+                        <div class="text-2xl font-bold text-brand-orange mb-4">₹120/metre</div>
+                        <p class="text-gray-600 mb-4">
+                            100% pure cotton fabric with natural comfort and excellent moisture absorption.
+                        </p>
+                        <ul class="text-sm text-gray-600 mb-4 space-y-1">
+                            <li>• 100% Pure Cotton</li>
+                            <li>• Natural Comfort</li>
+                            <li>• Moisture Absorption</li>
+                            <li>• Skin Friendly</li>
+                        </ul>
+                        <div class="flex gap-2 mb-4">
+                            <span class="bg-brand-blue text-white text-xs px-2 py-1 rounded">Hospitality</span>
+                            <span class="bg-brand-blue text-white text-xs px-2 py-1 rounded">Healthcare</span>
+                        </div>
+                        <button class="btn-primary w-full">Request Quote</button>
+                    </div>
+                </div>
+
+                <!-- Economy Cotton Fabric -->
+                <div class="product-card bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow" data-category="cotton">
+                    <div class="h-48 bg-gradient-to-br from-blue-600 to-indigo-700 flex items-center justify-center">
+                        <div class="text-white text-center">
+                            <div class="text-6xl font-bold mb-2">EC</div>
+                            <p class="text-sm">Economy Cotton</p>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-brand-blue mb-2">Economy Cotton Fabric</h3>
+                        <div class="text-2xl font-bold text-brand-orange mb-4">₹80/metre</div>
+                        <p class="text-gray-600 mb-4">
+                            Affordable cotton fabric perfect for bulk orders and budget-conscious projects.
+                        </p>
+                        <ul class="text-sm text-gray-600 mb-4 space-y-1">
+                            <li>• Budget Friendly</li>
+                            <li>• Bulk Order Ready</li>
+                            <li>• Standard Quality</li>
+                            <li>• Quick Delivery</li>
+                        </ul>
+                        <div class="flex gap-2 mb-4">
+                            <span class="bg-brand-blue text-white text-xs px-2 py-1 rounded">Industrial</span>
+                            <span class="bg-brand-blue text-white text-xs px-2 py-1 rounded">Educational</span>
+                        </div>
+                        <button class="btn-primary w-full">Request Quote</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Applications Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-brand-blue mb-4">Industry Applications</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">
+                    Our fabrics serve diverse sectors with specialized requirements and standards
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-brand-orange rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-white font-bold text-2xl">🎖️</span>
+                    </div>
+                    <h3 class="font-bold text-brand-blue mb-2">Defense & Security</h3>
+                    <p class="text-sm text-gray-600">Army, Police, NCC, Security Guards</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-brand-orange rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-white font-bold text-2xl">⚕️</span>
+                    </div>
+                    <h3 class="font-bold text-brand-blue mb-2">Medical & Healthcare</h3>
+                    <p class="text-sm text-gray-600">Doctors, Nurses, Surgical Staff, Housekeeping</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-brand-orange rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-white font-bold text-2xl">🏢</span>
+                    </div>
+                    <h3 class="font-bold text-brand-blue mb-2">Corporate & Education</h3>
+                    <p class="text-sm text-gray-600">School, College, Corporate Uniforms</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-brand-orange rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-white font-bold text-2xl">🏨</span>
+                    </div>
+                    <h3 class="font-bold text-brand-blue mb-2">Hospitality & Industry</h3>
+                    <p class="text-sm text-gray-600">Hotel Staff, Industrial Uniforms</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-16 bg-brand-light">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl font-bold text-brand-blue mb-4">Need Custom Fabric Solutions?</h2>
+            <p class="text-gray-600 text-lg mb-8">
+                We specialize in custom fabric manufacturing to meet your specific requirements
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button class="btn-primary">Get Custom Quote</button>
+                <button class="btn-secondary">Download Catalogue</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-brand-blue text-white">
+        <div class="container mx-auto px-4 py-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Company Info -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4 text-brand-orange">Ishank Textile</h3>
+                    <p class="text-sm mb-2">Manufacturing Excellence Since 2003</p>
+                    <p class="text-sm">42, Ist Floor, Heera Panna Market</p>
+                    <p class="text-sm">Pur Road, Bhilwara (311001)</p>
+                    <p class="text-sm">Rajasthan, India</p>
+                </div>
+                
+                <!-- Contact Info -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4 text-brand-orange">Contact Us</h3>
+                    <p class="text-sm mb-2">
+                        <strong>Phone:</strong> <a href="tel:9414112197" class="hover:text-brand-orange">9414112197</a>
+                    </p>
+                    <p class="text-sm mb-2">
+                        <strong>Email:</strong> <a href="mailto:sunilpandiya909@gmail.com" class="hover:text-brand-orange">sunilpandiya909@gmail.com</a>
+                    </p>
+                    <p class="text-sm">
+                        <strong>Hours:</strong> 11:00 AM - 8:00 PM
+                    </p>
+                </div>
+                
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4 text-brand-orange">Quick Links</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="index.html" class="hover:text-brand-orange">Home</a></li>
+                        <li><a href="#" class="hover:text-brand-orange">About Us</a></li>
+                        <li><a href="products.html" class="hover:text-brand-orange">Products</a></li>
+                        <li><a href="#" class="hover:text-brand-orange">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-brand-blue/20 mt-8 pt-8 text-center">
+                <p class="text-sm">
+                    © 2024 Ishank Textile. All rights reserved. | Premium Fabric Manufacturing
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        function filterProducts(category) {
+            const products = document.querySelectorAll('.product-card');
+            const buttons = document.querySelectorAll('button');
+            
+            // Update button styles
+            buttons.forEach(btn => {
+                if (btn.textContent.includes('All') || btn.textContent.includes('Vat') || 
+                    btn.textContent.includes('Uniform') || btn.textContent.includes('Wollen') || 
+                    btn.textContent.includes('Hosiery') || btn.textContent.includes('Cotton')) {
+                    btn.className = 'btn-secondary';
+                }
+            });
+            
+            // Set active button
+            event.target.className = 'btn-primary';
+            
+            // Filter products
+            products.forEach(product => {
+                if (category === 'all' || product.dataset.category === category) {
+                    product.style.display = 'block';
+                } else {
+                    product.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

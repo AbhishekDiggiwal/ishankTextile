@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ishank Textile - Premium Fabric Manufacturing Since 2003</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-blue': '#1e3a8a',
+                        'brand-orange': '#ea580c',
+                        'brand-light': '#f8fafc',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .btn-primary {
+            background-color: #ea580c;
+            color: white;
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            transition: background-color 0.2s;
+        }
+        .btn-primary:hover {
+            background-color: #dc2626;
+        }
+        .btn-secondary {
+            background-color: #1e3a8a;
+            color: white;
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            transition: background-color 0.2s;
+        }
+        .btn-secondary:hover {
+            background-color: #1d4ed8;
+        }
+    </style>
+</head>
+<body class="bg-brand-light">
+    <!-- Navigation Header -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <!-- Logo -->
+                <div class="flex items-center space-x-2">
+                    <div class="w-10 h-10 bg-brand-blue rounded-full flex items-center justify-center">
+                        <span class="text-white font-bold text-xl">I</span>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold text-brand-blue">ISHANK</h1>
+                        <p class="text-xs text-brand-orange">TEXTILE</p>
+                    </div>
+                </div>
+                
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex space-x-8">
+                    <a href="#" class="text-brand-blue hover:text-brand-orange transition-colors">Home</a>
+                    <a href="#" class="text-brand-blue hover:text-brand-orange transition-colors">About</a>
+                    <a href="#" class="text-brand-blue hover:text-brand-orange transition-colors">Products</a>
+                    <a href="#" class="text-brand-blue hover:text-brand-orange transition-colors">Contact</a>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden text-brand-blue" onclick="toggleMobileMenu()">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Mobile Menu -->
+            <div id="mobileMenu" class="hidden md:hidden mt-4 pb-4">
+                <a href="#" class="block py-2 text-brand-blue hover:text-brand-orange">Home</a>
+                <a href="#" class="block py-2 text-brand-blue hover:text-brand-orange">About</a>
+                <a href="#" class="block py-2 text-brand-blue hover:text-brand-orange">Products</a>
+                <a href="#" class="block py-2 text-brand-blue hover:text-brand-orange">Contact</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative bg-gradient-to-r from-brand-blue to-blue-900 text-white">
+        <div class="container mx-auto px-4 py-20">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h1 class="text-4xl md:text-5xl font-bold mb-4">
+                        Premium Fabric Manufacturing Since 2003
+                    </h1>
+                    <p class="text-xl mb-6 text-blue-100">
+                        Leading manufacturer of Vat-Dyed & Fiber-Dyed fabrics with molecular-level color integrity.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <button class="btn-primary">Explore Products</button>
+                        <button class="btn-secondary bg-white text-brand-blue hover:bg-gray-100">Get Quote</button>
+                    </div>
+                </div>
+                <div class="hidden md:block">
+                    <div class="bg-white/10 backdrop-blur-sm rounded-lg p-8 text-center">
+                        <div class="text-6xl font-bold text-brand-orange mb-2">20+</div>
+                        <div class="text-lg">Years of Excellence</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-brand-blue mb-4">Our Premium Fabrics</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">
+                    Specialized textiles for defense, medical, corporate, and hospitality sectors with unmatched quality and durability.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Vat-Dyed Fabrics -->
+                <div class="bg-gray-50 rounded-lg p-6 hover:shadow-lg transition-shadow">
+                    <div class="w-16 h-16 bg-brand-orange rounded-full flex items-center justify-center mb-4">
+                        <span class="text-white font-bold text-2xl">V</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-brand-blue mb-3">Vat-Dyed Fabrics</h3>
+                    <p class="text-gray-600 mb-4">
+                        Molecular-level color integrity with 24-hour freshness shield and bio-safety compliance.
+                    </p>
+                    <ul class="text-sm text-gray-600 space-y-2">
+                        <li>• Zero Bacteria, Zero Odor</li>
+                        <li>• Sweat-Management Technology</li>
+                        <li>• Launder-and-Lead Durability</li>
+                    </ul>
+                </div>
+
+                <!-- Uniform Textiles -->
+                <div class="bg-gray-50 rounded-lg p-6 hover:shadow-lg transition-shadow">
+                    <div class="w-16 h-16 bg-brand-orange rounded-full flex items-center justify-center mb-4">
+                        <span class="text-white font-bold text-2xl">U</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-brand-blue mb-3">Uniform Textiles</h3>
+                    <p class="text-gray-600 mb-4">
+                        Tactical comfort for extreme duty across defense, medical, and corporate sectors.
+                    </p>
+                    <ul class="text-sm text-gray-600 space-y-2">
+                        <li>• Army & Police Forces</li>
+                        <li>• Medical & Healthcare</li>
+                        <li>• Corporate & Educational</li>
+                    </ul>
+                </div>
+
+                <!-- Specialty Fabrics -->
+                <div class="bg-gray-50 rounded-lg p-6 hover:shadow-lg transition-shadow">
+                    <div class="w-16 h-16 bg-brand-orange rounded-full flex items-center justify-center mb-4">
+                        <span class="text-white font-bold text-2xl">S</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-brand-blue mb-3">Specialty Fabrics</h3>
+                    <p class="text-gray-600 mb-4">
+                        Wollen, Hosiery, and Cotton fabrics with clinical compliance and industrial durability.
+                    </p>
+                    <ul class="text-sm text-gray-600 space-y-2">
+                        <li>• Wollen Fabric</li>
+                        <li>• Hosiery Fabric</li>
+                        <li>• Cotton Fabric</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Differentiators -->
+    <section class="py-16 bg-brand-light">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-brand-blue mb-4">Why Choose Ishank Textile?</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">
+                    Unmatched quality and innovation in textile manufacturing for over two decades.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-brand-blue rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-white font-bold text-2xl">✓</span>
+                    </div>
+                    <h3 class="font-bold text-brand-blue mb-2">Molecular-Level Color</h3>
+                    <p class="text-sm text-gray-600">Advanced color integrity technology</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-brand-blue rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-white font-bold text-2xl">🛡️</span>
+                    </div>
+                    <h3 class="font-bold text-brand-blue mb-2">24-Hour Freshness</h3>
+                    <p class="text-sm text-gray-600">Continuous protection shield</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-brand-blue rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-white font-bold text-2xl">⚕️</span>
+                    </div>
+                    <h3 class="font-bold text-brand-blue mb-2">Bio-Safety Compliance</h3>
+                    <p class="text-sm text-gray-600">Clinical-grade safety standards</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-brand-blue rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-white font-bold text-2xl">💪</span>
+                    </div>
+                    <h3 class="font-bold text-brand-blue mb-2">Extreme Durability</h3>
+                    <p class="text-sm text-gray-600">Built for tactical performance</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Price Range -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl font-bold text-brand-blue mb-4">Competitive Pricing</h2>
+            <div class="text-5xl font-bold text-brand-orange mb-4">₹80 - ₹480</div>
+            <p class="text-gray-600 text-lg">Per metre for premium quality fabrics</p>
+            <button class="btn-primary mt-6">View Complete Catalogue</button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-brand-blue text-white">
+        <div class="container mx-auto px-4 py-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Company Info -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4 text-brand-orange">Ishank Textile</h3>
+                    <p class="text-sm mb-2">Manufacturing Excellence Since 2003</p>
+                    <p class="text-sm">42, Ist Floor, Heera Panna Market</p>
+                    <p class="text-sm">Pur Road, Bhilwara (311001)</p>
+                    <p class="text-sm">Rajasthan, India</p>
+                </div>
+                
+                <!-- Contact Info -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4 text-brand-orange">Contact Us</h3>
+                    <p class="text-sm mb-2">
+                        <strong>Phone:</strong> <a href="tel:9414112197" class="hover:text-brand-orange">9414112197</a>
+                    </p>
+                    <p class="text-sm mb-2">
+                        <strong>Email:</strong> <a href="mailto:sunilpandiya909@gmail.com" class="hover:text-brand-orange">sunilpandiya909@gmail.com</a>
+                    </p>
+                    <p class="text-sm">
+                        <strong>Hours:</strong> 11:00 AM - 8:00 PM
+                    </p>
+                </div>
+                
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4 text-brand-orange">Quick Links</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="hover:text-brand-orange">About Us</a></li>
+                        <li><a href="#" class="hover:text-brand-orange">Products</a></li>
+                        <li><a href="#" class="hover:text-brand-orange">Contact</a></li>
+                        <li><a href="#" class="hover:text-brand-orange">Admin Login</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-brand-blue/20 mt-8 pt-8 text-center">
+                <p class="text-sm">
+                    © 2024 Ishank Textile. All rights reserved. | Premium Fabric Manufacturing
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+    </script>
+</body>
+</html>
