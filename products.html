@@ -121,6 +121,45 @@
             height: 20px;
             fill: currentColor;
         }
+        .product-card {
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent 30%, rgba(249, 115, 22, 0.1) 50%, transparent 70%);
+            transform: rotate(45deg) translate(-50%, -50%);
+            transition: all 0.6s ease;
+            opacity: 0;
+        }
+        .product-card:hover::before {
+            animation: shimmer 0.6s ease;
+        }
+        @keyframes shimmer {
+            0% { transform: rotate(45deg) translate(-200%, -200%); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: rotate(45deg) translate(200%, 200%); opacity: 0; }
+        }
+        .category-pill {
+            transition: all 0.3s ease;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+        .mega-menu {
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            background: rgba(255, 255, 255, 0.95);
+        }
+    </style>yframes floatAnimation {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
     </style>
 </head>
 <body class="bg-brand-light">
@@ -234,16 +273,193 @@
         </div>
     </section>
 
-    <!-- Modern Filter Section -->
-    <section class="py-8 bg-light-gray border-b border-gray-200">
+    <!-- Advanced Filter Section -->
+    <section class="py-8 bg-light-gray border-b border-gray-200 sticky top-16 z-40 backdrop-blur-sm bg-opacity-90">
         <div class="container mx-auto px-6">
-            <div class="flex flex-wrap gap-3 justify-center">
-                <button class="filter-btn btn-primary active" onclick="filterProducts('all')">All Products</button>
-                <button class="filter-btn btn-secondary" onclick="filterProducts('vat-dyed')">Vat-Dyed Fabrics</button>
-                <button class="filter-btn btn-secondary" onclick="filterProducts('uniform')">Uniform Textiles</button>
-                <button class="filter-btn btn-secondary" onclick="filterProducts('woolen')">Wollen Fabric</button>
-                <button class="filter-btn btn-secondary" onclick="filterProducts('hosiery')">Hosiery Fabric</button>
-                <button class="filter-btn btn-secondary" onclick="filterProducts('cotton')">Cotton Fabric</button>
+            <!-- Filter Navigation Tabs -->
+            <div class="flex flex-wrap justify-center gap-2 mb-6">
+                <button class="glass-btn category-pill px-4 py-2 rounded-full bg-brand-orange/10 border border-brand-orange/30 text-brand-orange font-medium hover:bg-brand-orange/20 transition-all" onclick="showFilterSection('all')">
+                    <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                    </svg>
+                    All Products
+                </button>
+                <button class="glass-btn category-pill px-4 py-2 rounded-full bg-white/70 border border-gray-200/50 text-dark-gray font-medium hover:bg-brand-orange/10 hover:border-brand-orange/30 transition-all" onclick="showFilterSection('color')">
+                    <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h14M8 5v14"></path>
+                    </svg>
+                    By Color
+                </button>
+                <button class="glass-btn category-pill px-4 py-2 rounded-full bg-white/70 border border-gray-200/50 text-dark-gray font-medium hover:bg-brand-orange/10 hover:border-brand-orange/30 transition-all" onclick="showFilterSection('design')">
+                    <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4v4m0 2a2 2 0 100-4m-6 8a2 2 0 100-4m0 4v2m0-2a2 2 0 100 4m0-4v4"></path>
+                    </svg>
+                    By Design
+                </button>
+                <button class="glass-btn category-pill px-4 py-2 rounded-full bg-white/70 border border-gray-200/50 text-dark-gray font-medium hover:bg-brand-orange/10 hover:border-brand-orange/30 transition-all" onclick="showFilterSection('material')">
+                    <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                    By Material
+                </button>
+                <button class="glass-btn category-pill px-4 py-2 rounded-full bg-white/70 border border-gray-200/50 text-dark-gray font-medium hover:bg-brand-orange/10 hover:border-brand-orange/30 transition-all" onclick="showFilterSection('application')">
+                    <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9 9m0 9a9 9 0 019-9m-9 9a9 9 0 01-9-9m16.07 8.93l-2.12-2.12m-1.41 1.41l2.12 2.12A8.964 8.964 0 0121.08 8.93z"></path>
+                    </svg>
+                    By Application
+                </button>
+            </div>
+            
+            <!-- Color Filters -->
+            <div id="colorFilters" class="hidden animate-slide-down">
+                <div class="flex flex-wrap justify-center gap-3">
+                    <button class="glass-btn filter-btn px-4 py-2 rounded-lg bg-white/70 border border-gray-200/50 hover:bg-red-500/10 hover:border-red-300/50 hover:text-red-600 transition-all" onclick="filterProducts('color', 'red')">
+                        <span class="w-6 h-6 bg-red-500 rounded-full inline-block mr-2"></span>
+                        Red
+                    </button>
+                    <button class="glass-btn filter-btn px-4 py-2 rounded-lg bg-white/70 border border-gray-200/50 hover:bg-blue-500/10 hover:border-blue-300/50 hover:text-blue-600 transition-all" onclick="filterProducts('color', 'blue')">
+                        <span class="w-6 h-6 bg-blue-500 rounded-full inline-block mr-2"></span>
+                        Blue
+                    </button>
+                    <button class="glass-btn filter-btn px-4 py-2 rounded-lg bg-white/70 border border-gray-200/50 hover:bg-green-500/10 hover:border-green-300/50 hover:text-green-600 transition-all" onclick="filterProducts('color', 'green')">
+                        <span class="w-6 h-6 bg-green-500 rounded-full inline-block mr-2"></span>
+                        Green
+                    </button>
+                    <button class="glass-btn filter-btn px-4 py-2 rounded-lg bg-white/70 border border-gray-200/50 hover:bg-yellow-500/10 hover:border-yellow-300/50 hover:text-yellow-600 transition-all" onclick="filterProducts('color', 'yellow')">
+                        <span class="w-6 h-6 bg-yellow-500 rounded-full inline-block mr-2"></span>
+                        Yellow
+                    </button>
+                    <button class="glass-btn filter-btn px-4 py-2 rounded-lg bg-white/70 border border-gray-200/50 hover:bg-purple-500/10 hover:border-purple-300/50 hover:text-purple-600 transition-all" onclick="filterProducts('color', 'purple')">
+                        <span class="w-6 h-6 bg-purple-500 rounded-full inline-block mr-2"></span>
+                        Purple
+                    </button>
+                    <button class="glass-btn filter-btn px-4 py-2 rounded-lg bg-white/70 border border-gray-200/50 hover:bg-gray-500/10 hover:border-gray-300/50 hover:text-gray-600 transition-all" onclick="filterProducts('color', 'black')">
+                        <span class="w-6 h-6 bg-gray-900 rounded-full inline-block mr-2"></span>
+                        Black
+                    </button>
+                    <button class="glass-btn filter-btn px-4 py-2 rounded-lg bg-white/70 border border-gray-200/50 hover:bg-orange-500/10 hover:border-orange-300/50 hover:text-orange-600 transition-all" onclick="filterProducts('color', 'orange')">
+                        <span class="w-6 h-6 bg-orange-500 rounded-full inline-block mr-2"></span>
+                        Orange
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Design Filters -->
+            <div id="designFilters" class="hidden animate-slide-down">
+                <div class="flex flex-wrap justify-center gap-3">
+                    <button class="glass-btn filter-btn px-4 py-2 rounded-lg bg-white/70 border border-gray-200/50 hover:bg-brand-orange/10 hover:border-brand-orange/30 hover:text-brand-orange transition-all" onclick="filterProducts('design', 'solid')">
+                        <svg class="w-4 h-4 inline mr-2" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2zm-5 14H7v-2h7v2zm3-7H7v-2h7v2z"/>
+                        </svg>
+                        Solid
+                    </button>
+                    <button class="glass-btn filter-btn px-4 py-2 rounded-lg bg-white/70 border border-gray-200/50 hover:bg-brand-orange/10 hover:border-brand-orange/30 hover:text-brand-orange transition-all" onclick="filterProducts('design', 'striped')">
+                        <svg class="w-4 h-4 inline mr-2" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M3 3h18v2H3V3zm0 16h18v2H3v-2zm0-8h18v2H3v-2zm0-4h18v2H3V7z"/>
+                        </svg>
+                        Striped
+                    </button>
+                    <button class="glass-btn filter-btn px-4 py-2 rounded-lg bg-white/70 border border-gray-200/50 hover:bg-brand-orange/10 hover:border-brand-orange/30 hover:text-brand-orange transition-all" onclick="filterProducts('design', 'checked')">
+                        <svg class="w-4 h-4 inline mr-2" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2zm-5 14H7v-2h7v2zm3-7H7v-2h7v2z"/>
+                        </svg>
+                        Checked
+                    </button>
+                    <button class="glass-btn filter-btn px-4 py-2 rounded-lg bg-white/70 border border-gray-200/50 hover:bg-brand-orange/10 hover:border-brand-orange/30 hover:text-brand-orange transition-all" onclick="filterProducts('design', 'printed')">
+                        <svg class="w-4 h-4 inline mr-2" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2l3.09 6.26L22 9l-1.91 1.91L12 17.27 3.91 11.09 2 9l6.91-1.91L8.91 8.27 12 2z"/>
+                        </svg>
+                        Printed
+                    </button>
+                    <button class="glass-btn filter-btn px-4 py-2 rounded-lg bg-white/70 border border-gray-200/50 hover:bg-brand-orange/10 hover:border-brand-orange/30 hover:text-brand-orange transition-all" onclick="filterProducts('design', 'embroidered')">
+                        <svg class="w-4 h-4 inline mr-2" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-1.64-1.64c-.31-.31-.85-.09-1.16.22l2.78 2.78c.31.31.09.85-.22 1.16L10 17l2-2 2 2.78c.31.31.85.09 1.16-.22L14 17l-2 2z"/>
+                        </svg>
+                        Embroidered
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Material Filters -->
+            <div id="materialFilters" class="hidden animate-slide-down">
+                <div class="flex flex-wrap justify-center gap-3">
+                    <button class="glass-btn filter-btn px-4 py-2 rounded-lg bg-white/70 border border-gray-200/50 hover:bg-brand-orange/10 hover:border-brand-orange/30 hover:text-brand-orange transition-all" onclick="filterProducts('material', 'cotton')">
+                        <svg class="w-4 h-4 inline mr-2" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-1.64-1.64c-.31-.31-.85-.09-1.16.22l2.78 2.78c.31.31.09.85-.22 1.16L10 17l2-2 2 2.78C.31.31.85.09 1.16-.22L14 17l-2 2z"/>
+                        </svg>
+                        Cotton
+                    </button>
+                    <button class="glass-btn filter-btn px-4 py-2 rounded-lg bg-white/70 border border-gray-200/50 hover:bg-brand-orange/10 hover:border-brand-orange/30 hover:text-brand-orange transition-all" onclick="filterProducts('material', 'woolen')">
+                        <svg class="w-4 h-4 inline mr-2" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-1.64-1.64c-.31-.31-.85-.09-1.16.22l2.78 2.78c.31.31.09.85-.22 1.16L10 17l2-2 2 2.78C.31.31.85.09 1.16-.22L14 17l-2 2z"/>
+                        </svg>
+                        Wollen
+                    </button>
+                    <button class="glass-btn filter-btn px-4 py-2 rounded-lg bg-white/70 border border-gray-200/50 hover:bg-brand-orange/10 hover:border-brand-orange/30 hover:text-brand-orange transition-all" onclick="filterProducts('material', 'polyester')">
+                        <svg class="w-4 h-4 inline mr-2" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-1.64-1.64c-.31-.31-.85-.09-1.16.22l2.78 2.78c.31.31.09.85-.22 1.16L10 17l2-2 2 2.78C.31.31.85.09 1.16-.22L14 17l-2 2z"/>
+                        </svg>
+                        Polyester
+                    </button>
+                    <button class="glass-btn filter-btn px-4 py-2 rounded-lg bg-white/70 border border-gray-200/50 hover:bg-brand-orange/10 hover:border-brand-orange/30 hover:text-brand-orange transition-all" onclick="filterProducts('material', 'blended')">
+                        <svg class="w-4 h-4 inline mr-2" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-1.64-1.64c-.31-.31-.85-.09-1.16.22l2.78 2.78c.31.31.09.85-.22 1.16L10 17l2-2 2 2.78C.31.31.85.09 1.16-.22L14 17l-2 2z"/>
+                        </svg>
+                        Blended
+                    </button>
+                    <button class="glass-btn filter-btn px-4 py-2 rounded-lg bg-white/70 border border-gray-200/50 hover:bg-brand-orange/10 hover:border-brand-orange/30 hover:text-brand-orange transition-all" onclick="filterProducts('material', 'hosiery')">
+                        <svg class="w-4 h-4 inline mr-2" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-1.64-1.64c-.31-.31-.85-.09-1.16.22l2.78 2.78C.31.31.09.85-.22 1.16L10 17l2-2 2 2.78C.31.31.85.09 1.16-.22L14 17l-2 2z"/>
+                        </svg>
+                        Hosiery
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Application Filters -->
+            <div id="applicationFilters" class="hidden animate-slide-down">
+                <div class="flex flex-wrap justify-center gap-3">
+                    <button class="glass-btn filter-btn px-4 py-2 rounded-lg bg-white/70 border border-gray-200/50 hover:bg-brand-orange/10 hover:border-brand-orange/30 hover:text-brand-orange transition-all" onclick="filterProducts('application', 'uniform')">
+                        <svg class="w-4 h-4 inline mr-2" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-1.64-1.64c-.31-.31-.85-.09-1.16.22l2.78 2.78C.31.31.09.85-.22 1.16L10 17l2-2 2 2.78C.31.31.85.09 1.16-.22L14 17l-2 2z"/>
+                        </svg>
+                        Uniform
+                    </button>
+                    <button class="glass-btn filter-btn px-4 py-2 rounded-lg bg-white/70 border border-gray-200/50 hover:bg-brand-orange/10 hover:border-brand-orange/30 hover:text-brand-orange transition-all" onclick="filterProducts('application', 'medical')">
+                        <svg class="w-4 h-4 inline mr-2" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-1.64-1.64c-.31-.31-.85-.09-1.16.22l2.78 2.78C.31.31.09.85-.22 1.16L10 17l2-2 2 2.78C.31.31.85.09 1.16-.22L14 17l-2 2z"/>
+                        </svg>
+                        Medical
+                    </button>
+                    <button class="glass-btn filter-btn px-4 py-2 rounded-lg bg-white/70 border border-gray-200/50 hover:bg-brand-orange/10 hover:border-brand-orange/30 hover:text-brand-orange transition-all" onclick="filterProducts('application', 'hospitality')">
+                        <svg class="w-4 h-4 inline mr-2" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-1.64-1.64c-.31-.31-.85-.09-1.16.22l2.78 2.78C.31.31.09.85-.22 1.16L10 17l2-2 2 2.78C.31.31.85.09 1.16-.22L14 17l-2 2z"/>
+                        </svg>
+                        Hospitality
+                    </button>
+                    <button class="glass-btn filter-btn px-4 py-2 rounded-lg bg-white/70 border border-gray-200/50 hover:bg-brand-orange/10 hover:border-brand-orange/30 hover:text-brand-orange transition-all" onclick="filterProducts('application', 'corporate')">
+                        <svg class="w-4 h-4 inline mr-2" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-1.64-1.64c-.31-.31-.85-.09-1.16.22l2.78 2.78C.31.31.09.85-.22 1.16L10 17l2-2 2 2.78C.31.31.85.09 1.16-.22L14 17l-2 2z"/>
+                        </svg>
+                        Corporate
+                    </button>
+                    <button class="glass-btn filter-btn px-4 py-2 rounded-lg bg-white/70 border border-gray-200/50 hover:bg-brand-orange/10 hover:border-brand-orange/30 hover:text-brand-orange transition-all" onclick="filterProducts('application', 'defense')">
+                        <svg class="w-4 h-4 inline mr-2" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-1.64-1.64c-.31-.31-.85-.09-1.16.22l2.78 2.78C.31.31.09.85-.22 1.16L10 17l2-2 2 2.78C.31.31.85.09 1.16-.22L14 17l-2 2z"/>
+                        </svg>
+                        Defense
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Active Filters Display -->
+            <div id="activeFilters" class="mt-6 text-center">
+                <div class="inline-flex items-center space-x-2 text-sm text-medium-gray">
+                    <span>Active Filters:</span>
+                    <div id="filterTags" class="flex space-x-2"></div>
+                    <button onclick="clearAllFilters()" class="text-brand-orange hover:text-brand-orange/80 underline text-sm">Clear All</button>
+                </div>
             </div>
         </div>
     </section>
@@ -254,7 +470,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="productsGrid">
                 
                 <!-- Vat-Dyed Fabric 1 -->
-                <div class="product-card card-hover bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100" data-category="vat-dyed">
+                <div class="product-card card-hover bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100" data-category="vat-dyed" data-color="orange" data-design="solid" data-material="blended" data-application="uniform,medical,corporate,defense">
                     <div class="h-48 bg-gradient-to-br from-brand-orange to-orange-600 flex items-center justify-center relative">
                         <div class="absolute inset-0 bg-black/10"></div>
                         <div class="text-white text-center relative z-10">
@@ -290,149 +506,215 @@
                             <span class="bg-dark-gray text-white text-xs px-3 py-1 rounded-full">Defense</span>
                             <span class="bg-dark-gray text-white text-xs px-3 py-1 rounded-full">Medical</span>
                             <span class="bg-dark-gray text-white text-xs px-3 py-1 rounded-full">Corporate</span>
+                            <span class="bg-dark-gray text-white text-xs px-3 py-1 rounded-full">Uniform</span>
                         </div>
-                        <button class="btn-primary w-full">Request Quote</button>
+                        <button class="glass-btn btn-primary w-full py-3 rounded-xl backdrop-blur-sm border border-brand-orange/30 hover:shadow-lg hover:shadow-brand-orange/20 transition-all duration-300">Request Quote</button>
                     </div>
                 </div>
 
                 <!-- Fiber-Dyed Fabric -->
-                <div class="product-card bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow" data-category="vat-dyed">
-                    <div class="h-48 bg-gradient-to-br from-brand-blue to-blue-700 flex items-center justify-center">
-                        <div class="text-white text-center">
+                <div class="product-card card-hover bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100" data-category="vat-dyed" data-color="blue" data-design="solid" data-material="polyester" data-application="army,police,security">
+                    <div class="h-48 bg-gradient-to-br from-brand-blue to-blue-700 flex items-center justify-center relative">
+                        <div class="absolute inset-0 bg-black/10"></div>
+                        <div class="text-white text-center relative z-10">
                             <div class="text-6xl font-bold mb-2">FD</div>
-                            <p class="text-sm">Fiber-Dyed Advanced</p>
+                            <p class="text-sm font-medium">Fiber-Dyed Advanced</p>
                         </div>
                     </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-brand-blue mb-2">Fiber-Dyed Advanced Fabric</h3>
-                        <div class="text-2xl font-bold text-brand-orange mb-4">₹420/metre</div>
-                        <p class="text-gray-600 mb-4">
+                    <div class="p-8">
+                        <h3 class="text-2xl font-bold text-dark-gray mb-3">Fiber-Dyed Advanced Fabric</h3>
+                        <div class="text-3xl font-bold text-brand-orange mb-4">₹420/metre</div>
+                        <p class="text-medium-gray mb-6 leading-relaxed">
                             Advanced fiber-dyeing technology with superior color fastness and clinical compliance.
                         </p>
-                        <ul class="text-sm text-gray-600 mb-4 space-y-1">
-                            <li>• Superior Color Fastness</li>
-                            <li>• Clinical Grade Safety</li>
-                            <li>• Launder-and-Lead Quality</li>
-                            <li>• Tactical Comfort</li>
+                        <ul class="text-sm text-medium-gray mb-6 space-y-3">
+                            <li class="flex items-center">
+                                <span class="w-2 h-2 bg-brand-orange rounded-full mr-3"></span>
+                                Superior Color Fastness
+                            </li>
+                            <li class="flex items-center">
+                                <span class="w-2 h-2 bg-brand-orange rounded-full mr-3"></span>
+                                Clinical Grade Safety
+                            </li>
+                            <li class="flex items-center">
+                                <span class="w-2 h-2 bg-brand-orange rounded-full mr-3"></span>
+                                Launder-and-Lead Quality
+                            </li>
+                            <li class="flex items-center">
+                                <span class="w-2 h-2 bg-brand-orange rounded-full mr-3"></span>
+                                Tactical Comfort
+                            </li>
                         </ul>
-                        <div class="flex gap-2 mb-4">
-                            <span class="bg-brand-blue text-white text-xs px-2 py-1 rounded">Army</span>
-                            <span class="bg-brand-blue text-white text-xs px-2 py-1 rounded">Police</span>
-                            <span class="bg-brand-blue text-white text-xs px-2 py-1 rounded">Security</span>
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span class="bg-brand-blue text-white text-xs px-3 py-1 rounded-full">Army</span>
+                            <span class="bg-brand-blue text-white text-xs px-3 py-1 rounded-full">Police</span>
+                            <span class="bg-brand-blue text-white text-xs px-3 py-1 rounded-full">Security</span>
                         </div>
-                        <button class="btn-primary w-full">Request Quote</button>
+                        <button class="glass-btn btn-primary w-full py-3 rounded-xl backdrop-blur-sm border border-brand-orange/30 hover:shadow-lg hover:shadow-brand-orange/20 transition-all duration-300">Request Quote</button>
                     </div>
                 </div>
 
                 <!-- Wollen Fabric -->
-                <div class="product-card bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow" data-category="woolen">
-                    <div class="h-48 bg-gradient-to-br from-gray-600 to-gray-800 flex items-center justify-center">
-                        <div class="text-white text-center">
+                <div class="product-card card-hover bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100" data-category="woolen" data-color="gray" data-design="solid" data-material="woolen" data-application="winter,formal">
+                    <div class="h-48 bg-gradient-to-br from-gray-600 to-gray-800 flex items-center justify-center relative">
+                        <div class="absolute inset-0 bg-black/10"></div>
+                        <div class="text-white text-center relative z-10">
                             <div class="text-6xl font-bold mb-2">WF</div>
-                            <p class="text-sm">Premium Wollen</p>
+                            <p class="text-sm font-medium">Premium Wollen</p>
                         </div>
                     </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-brand-blue mb-2">Premium Wollen Fabric</h3>
-                        <div class="text-2xl font-bold text-brand-orange mb-4">₹320/metre</div>
-                        <p class="text-gray-600 mb-4">
+                    <div class="p-8">
+                        <h3 class="text-2xl font-bold text-dark-gray mb-3">Premium Wollen Fabric</h3>
+                        <div class="text-3xl font-bold text-brand-orange mb-4">₹320/metre</div>
+                        <p class="text-medium-gray mb-6 leading-relaxed">
                             High-quality woolen fabric with excellent thermal properties and superior comfort.
                         </p>
-                        <ul class="text-sm text-gray-600 mb-4 space-y-1">
-                            <li>• Excellent Thermal Properties</li>
-                            <li>• Superior Comfort</li>
-                            <li>• Durable Construction</li>
-                            <li>• Premium Quality</li>
+                        <ul class="text-sm text-medium-gray mb-6 space-y-3">
+                            <li class="flex items-center">
+                                <span class="w-2 h-2 bg-brand-orange rounded-full mr-3"></span>
+                                Excellent Thermal Properties
+                            </li>
+                            <li class="flex items-center">
+                                <span class="w-2 h-2 bg-brand-orange rounded-full mr-3"></span>
+                                Superior Comfort
+                            </li>
+                            <li class="flex items-center">
+                                <span class="w-2 h-2 bg-brand-orange rounded-full mr-3"></span>
+                                Durable Construction
+                            </li>
+                            <li class="flex items-center">
+                                <span class="w-2 h-2 bg-brand-orange rounded-full mr-3"></span>
+                                Premium Quality
+                            </li>
                         </ul>
-                        <div class="flex gap-2 mb-4">
-                            <span class="bg-brand-blue text-white text-xs px-2 py-1 rounded">Winter Wear</span>
-                            <span class="bg-brand-blue text-white text-xs px-2 py-1 rounded">Formal</span>
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span class="bg-gray-600 text-white text-xs px-3 py-1 rounded-full">Winter Wear</span>
+                            <span class="bg-gray-600 text-white text-xs px-3 py-1 rounded-full">Formal</span>
                         </div>
-                        <button class="btn-primary w-full">Request Quote</button>
+                        <button class="glass-btn btn-primary w-full py-3 rounded-xl backdrop-blur-sm border border-brand-orange/30 hover:shadow-lg hover:shadow-brand-orange/20 transition-all duration-300">Request Quote</button>
                     </div>
                 </div>
 
                 <!-- Hosiery Fabric -->
-                <div class="product-card bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow" data-category="hosiery">
-                    <div class="h-48 bg-gradient-to-br from-green-600 to-green-800 flex items-center justify-center">
-                        <div class="text-white text-center">
+                <div class="product-card card-hover bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100" data-category="hosiery" data-color="green" data-design="solid" data-material="cotton" data-application="medical,hospitality">
+                    <div class="h-48 bg-gradient-to-br from-green-600 to-green-800 flex items-center justify-center relative">
+                        <div class="absolute inset-0 bg-black/10"></div>
+                        <div class="text-white text-center relative z-10">
                             <div class="text-6xl font-bold mb-2">HF</div>
-                            <p class="text-sm">Hosiery Special</p>
+                            <p class="text-sm font-medium">Hosiery Special</p>
                         </div>
                     </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-brand-blue mb-2">Hosiery Special Fabric</h3>
-                        <div class="text-2xl font-bold text-brand-orange mb-4">₹180/metre</div>
-                        <p class="text-gray-600 mb-4">
-                            Lightweight and breathable hosiery fabric ideal for comfortable daily wear.
+                    <div class="p-8">
+                        <h3 class="text-2xl font-bold text-dark-gray mb-3">Premium Hosiery Fabric</h3>
+                        <div class="text-3xl font-bold text-brand-orange mb-4">₹280/metre</div>
+                        <p class="text-medium-gray mb-6 leading-relaxed">
+                            Premium hosiery fabric with superior elasticity and moisture-wicking properties.
                         </p>
-                        <ul class="text-sm text-gray-600 mb-4 space-y-1">
-                            <li>• Lightweight</li>
-                            <li>• Breathable</li>
-                            <li>• Soft Texture</li>
-                            <li>• Daily Wear Comfort</li>
+                        <ul class="text-sm text-medium-gray mb-6 space-y-3">
+                            <li class="flex items-center">
+                                <span class="w-2 h-2 bg-brand-orange rounded-full mr-3"></span>
+                                Superior Elasticity
+                            </li>
+                            <li class="flex items-center">
+                                <span class="w-2 h-2 bg-brand-orange rounded-full mr-3"></span>
+                                Moisture Wicking
+                            </li>
+                            <li class="flex items-center">
+                                <span class="w-2 h-2 bg-brand-orange rounded-full mr-3"></span>
+                                Breathable Design
+                            </li>
+                            <li class="flex items-center">
+                                <span class="w-2 h-2 bg-brand-orange rounded-full mr-3"></span>
+                                Anti-Bacterial
+                            </li>
                         </ul>
-                        <div class="flex gap-2 mb-4">
-                            <span class="bg-brand-blue text-white text-xs px-2 py-1 rounded">Casual</span>
-                            <span class="bg-brand-blue text-white text-xs px-2 py-1 rounded">Sports</span>
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span class="bg-green-600 text-white text-xs px-3 py-1 rounded-full">Medical</span>
+                            <span class="bg-green-600 text-white text-xs px-3 py-1 rounded-full">Hospitality</span>
                         </div>
-                        <button class="btn-primary w-full">Request Quote</button>
+                        <button class="glass-btn btn-primary w-full py-3 rounded-xl backdrop-blur-sm border border-brand-orange/30 hover:shadow-lg hover:shadow-brand-orange/20 transition-all duration-300">Request Quote</button>
                     </div>
                 </div>
 
                 <!-- Cotton Fabric -->
-                <div class="product-card bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow" data-category="cotton">
-                    <div class="h-48 bg-gradient-to-br from-yellow-600 to-orange-700 flex items-center justify-center">
-                        <div class="text-white text-center">
+                <div class="product-card card-hover bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100" data-category="cotton" data-color="yellow" data-design="solid" data-material="cotton" data-application="medical,hospitality">
+                    <div class="h-48 bg-gradient-to-br from-yellow-600 to-orange-700 flex items-center justify-center relative">
+                        <div class="absolute inset-0 bg-black/10"></div>
+                        <div class="text-white text-center relative z-10">
                             <div class="text-6xl font-bold mb-2">CF</div>
-                            <p class="text-sm">Pure Cotton</p>
+                            <p class="text-sm font-medium">Pure Cotton</p>
                         </div>
                     </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-brand-blue mb-2">Pure Cotton Fabric</h3>
-                        <div class="text-2xl font-bold text-brand-orange mb-4">₹120/metre</div>
-                        <p class="text-gray-600 mb-4">
-                            100% pure cotton fabric with natural comfort and excellent moisture absorption.
+                    <div class="p-8">
+                        <h3 class="text-2xl font-bold text-dark-gray mb-3">Premium Cotton Fabric</h3>
+                        <div class="text-3xl font-bold text-brand-orange mb-4">₹180/metre</div>
+                        <p class="text-medium-gray mb-6 leading-relaxed">
+                            100% pure cotton fabric with superior breathability and natural comfort properties.
                         </p>
-                        <ul class="text-sm text-gray-600 mb-4 space-y-1">
-                            <li>• 100% Pure Cotton</li>
-                            <li>• Natural Comfort</li>
-                            <li>• Moisture Absorption</li>
-                            <li>• Skin Friendly</li>
+                        <ul class="text-sm text-medium-gray mb-6 space-y-3">
+                            <li class="flex items-center">
+                                <span class="w-2 h-2 bg-brand-orange rounded-full mr-3"></span>
+                                Natural Breathability
+                            </li>
+                            <li class="flex items-center">
+                                <span class="w-2 h-2 bg-brand-orange rounded-full mr-3"></span>
+                                Superior Comfort
+                            </li>
+                            <li class="flex items-center">
+                                <span class="w-2 h-2 bg-brand-orange rounded-full mr-3"></span>
+                                Hypoallergenic
+                            </li>
+                            <li class="flex items-center">
+                                <span class="w-2 h-2 bg-brand-orange rounded-full mr-3"></span>
+                                Moisture Absorbent
+                            </li>
                         </ul>
-                        <div class="flex gap-2 mb-4">
-                            <span class="bg-brand-blue text-white text-xs px-2 py-1 rounded">Hospitality</span>
-                            <span class="bg-brand-blue text-white text-xs px-2 py-1 rounded">Healthcare</span>
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span class="bg-yellow-600 text-white text-xs px-3 py-1 rounded-full">Medical</span>
+                            <span class="bg-yellow-600 text-white text-xs px-3 py-1 rounded-full">Hospitality</span>
                         </div>
-                        <button class="btn-primary w-full">Request Quote</button>
+                        <button class="glass-btn btn-primary w-full py-3 rounded-xl backdrop-blur-sm border border-brand-orange/30 hover:shadow-lg hover:shadow-brand-orange/20 transition-all duration-300">Request Quote</button>
                     </div>
                 </div>
 
                 <!-- Economy Cotton Fabric -->
-                <div class="product-card bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow" data-category="cotton">
-                    <div class="h-48 bg-gradient-to-br from-blue-600 to-indigo-700 flex items-center justify-center">
-                        <div class="text-white text-center">
+                <div class="product-card card-hover bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100" data-category="cotton" data-color="blue" data-design="solid" data-material="cotton" data-application="medical,hospitality">
+                    <div class="h-48 bg-gradient-to-br from-blue-600 to-indigo-700 flex items-center justify-center relative">
+                        <div class="absolute inset-0 bg-black/10"></div>
+                        <div class="text-white text-center relative z-10">
                             <div class="text-6xl font-bold mb-2">EC</div>
-                            <p class="text-sm">Economy Cotton</p>
+                            <p class="text-sm font-medium">Economy Cotton</p>
                         </div>
                     </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-brand-blue mb-2">Economy Cotton Fabric</h3>
-                        <div class="text-2xl font-bold text-brand-orange mb-4">₹80/metre</div>
-                        <p class="text-gray-600 mb-4">
-                            Affordable cotton fabric perfect for bulk orders and budget-conscious projects.
+                    <div class="p-8">
+                        <h3 class="text-2xl font-bold text-dark-gray mb-3">Economy Cotton Fabric</h3>
+                        <div class="text-3xl font-bold text-brand-orange mb-4">₹80/metre</div>
+                        <p class="text-medium-gray mb-6 leading-relaxed">
+                            Cost-effective cotton fabric solution for bulk orders and general applications.
                         </p>
-                        <ul class="text-sm text-gray-600 mb-4 space-y-1">
-                            <li>• Budget Friendly</li>
-                            <li>• Bulk Order Ready</li>
-                            <li>• Standard Quality</li>
-                            <li>• Quick Delivery</li>
+                        <ul class="text-sm text-medium-gray mb-6 space-y-3">
+                            <li class="flex items-center">
+                                <span class="w-2 h-2 bg-brand-orange rounded-full mr-3"></span>
+                                Budget-Friendly Pricing
+                            </li>
+                            <li class="flex items-center">
+                                <span class="w-2 h-2 bg-brand-orange rounded-full mr-3"></span>
+                                Standard Quality
+                            </li>
+                            <li class="flex items-center">
+                                <span class="w-2 h-2 bg-brand-orange rounded-full mr-3"></span>
+                                Versatile Applications
+                            </li>
+                            <li class="flex items-center">
+                                <span class="w-2 h-2 bg-brand-orange rounded-full mr-3"></span>
+                                Bulk Order Support
+                            </li>
                         </ul>
-                        <div class="flex gap-2 mb-4">
-                            <span class="bg-brand-blue text-white text-xs px-2 py-1 rounded">Industrial</span>
-                            <span class="bg-brand-blue text-white text-xs px-2 py-1 rounded">Educational</span>
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span class="bg-blue-600 text-white text-xs px-3 py-1 rounded-full">Medical</span>
+                            <span class="bg-blue-600 text-white text-xs px-3 py-1 rounded-full">Hospitality</span>
                         </div>
-                        <button class="btn-primary w-full">Request Quote</button>
+                        <button class="glass-btn btn-primary w-full py-3 rounded-xl backdrop-blur-sm border border-brand-orange/30 hover:shadow-lg hover:shadow-brand-orange/20 transition-all duration-300">Request Quote</button>
                     </div>
                 </div>
 
@@ -548,29 +830,165 @@
     </footer>
 
     <script>
+        // Global state for filters
+        let activeFilters = {
+            category: 'all',
+            color: null,
+            design: null,
+            material: null,
+            application: null
+        };
+
         function toggleMobileMenu() {
             const menu = document.getElementById('mobileMenu');
             menu.classList.toggle('hidden');
         }
 
-        function filterProducts(category) {
-            const products = document.querySelectorAll('.product-card');
-            const buttons = document.querySelectorAll('.filter-btn');
+        function showFilterSection(section) {
+            // Hide all filter sections
+            document.getElementById('colorFilters').classList.add('hidden');
+            document.getElementById('designFilters').classList.add('hidden');
+            document.getElementById('materialFilters').classList.add('hidden');
+            document.getElementById('applicationFilters').classList.add('hidden');
             
-            // Update button styles
-            buttons.forEach(btn => {
-                btn.classList.remove('active');
-                btn.classList.remove('btn-primary');
-                btn.classList.add('btn-secondary');
+            // Show selected section
+            if (section === 'all') {
+                clearAllFilters();
+            } else {
+                document.getElementById(section + 'Filters').classList.remove('hidden');
+            }
+        }
+
+        function clearAllFilters() {
+            activeFilters = {
+                category: 'all',
+                color: null,
+                design: null,
+                material: null,
+                application: null
+            };
+            
+            // Hide all filter sections
+            document.getElementById('colorFilters').classList.add('hidden');
+            document.getElementById('designFilters').classList.add('hidden');
+            document.getElementById('materialFilters').classList.add('hidden');
+            document.getElementById('applicationFilters').classList.add('hidden');
+            
+            // Clear filter tags display
+            document.getElementById('filterTags').innerHTML = '';
+            
+            // Show all products
+            const products = document.querySelectorAll('.product-card');
+            products.forEach(product => {
+                product.style.display = 'block';
+                product.style.opacity = '1';
+                product.style.transform = 'translateY(0)';
             });
             
-            // Set active button
-            event.target.classList.remove('btn-secondary');
-            event.target.classList.add('btn-primary', 'active');
+            // Update button states
+            const buttons = document.querySelectorAll('.filter-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('bg-brand-orange/10', 'border-brand-orange/30', 'text-brand-orange');
+                btn.classList.add('bg-white/70', 'border-gray-200/50', 'text-dark-gray');
+            });
+        }
+
+        function filterProducts(filterType, filterValue) {
+            // Update active filters
+            if (filterType === 'color') {
+                activeFilters.color = filterValue;
+            } else if (filterType === 'design') {
+                activeFilters.design = filterValue;
+            } else if (filterType === 'material') {
+                activeFilters.material = filterValue;
+            } else if (filterType === 'application') {
+                activeFilters.application = filterValue;
+            } else if (filterType === 'category') {
+                activeFilters.category = filterValue;
+            }
             
-            // Filter products
+            // Update filter tags display
+            updateFilterTags();
+            
+            // Apply filters to products
+            applyFilters();
+        }
+
+        function updateFilterTags() {
+            const filterTagsContainer = document.getElementById('filterTags');
+            filterTagsContainer.innerHTML = '';
+            
+            // Add category filter tag
+            if (activeFilters.category !== 'all') {
+                const categoryTag = document.createElement('span');
+                categoryTag.className = 'bg-brand-orange text-white text-xs px-3 py-1 rounded-full';
+                categoryTag.textContent = activeFilters.category.charAt(0).toUpperCase() + activeFilters.category.slice(1);
+                filterTagsContainer.appendChild(categoryTag);
+            }
+            
+            // Add other filter tags
+            if (activeFilters.color) {
+                const colorTag = document.createElement('span');
+                colorTag.className = 'bg-red-500 text-white text-xs px-3 py-1 rounded-full';
+                colorTag.textContent = activeFilters.color.charAt(0).toUpperCase() + activeFilters.color.slice(1);
+                filterTagsContainer.appendChild(colorTag);
+            }
+            
+            if (activeFilters.design) {
+                const designTag = document.createElement('span');
+                designTag.className = 'bg-blue-500 text-white text-xs px-3 py-1 rounded-full';
+                designTag.textContent = activeFilters.design.charAt(0).toUpperCase() + activeFilters.design.slice(1);
+                filterTagsContainer.appendChild(designTag);
+            }
+            
+            if (activeFilters.material) {
+                const materialTag = document.createElement('span');
+                materialTag.className = 'bg-green-500 text-white text-xs px-3 py-1 rounded-full';
+                materialTag.textContent = activeFilters.material.charAt(0).toUpperCase() + activeFilters.material.slice(1);
+                filterTagsContainer.appendChild(materialTag);
+            }
+            
+            if (activeFilters.application) {
+                const applicationTag = document.createElement('span');
+                applicationTag.className = 'bg-purple-500 text-white text-xs px-3 py-1 rounded-full';
+                applicationTag.textContent = activeFilters.application.charAt(0).toUpperCase() + activeFilters.application.slice(1);
+                filterTagsContainer.appendChild(applicationTag);
+            }
+        }
+
+        function applyFilters() {
+            const products = document.querySelectorAll('.product-card');
+            
             products.forEach(product => {
-                if (category === 'all' || product.dataset.category === category) {
+                let shouldShow = true;
+                
+                // Check category filter
+                if (activeFilters.category !== 'all' && product.dataset.category !== activeFilters.category) {
+                    shouldShow = false;
+                }
+                
+                // Check color filter
+                if (activeFilters.color && product.dataset.color !== activeFilters.color) {
+                    shouldShow = false;
+                }
+                
+                // Check design filter
+                if (activeFilters.design && product.dataset.design !== activeFilters.design) {
+                    shouldShow = false;
+                }
+                
+                // Check material filter
+                if (activeFilters.material && product.dataset.material !== activeFilters.material) {
+                    shouldShow = false;
+                }
+                
+                // Check application filter
+                if (activeFilters.application && !product.dataset.application.includes(activeFilters.application)) {
+                    shouldShow = false;
+                }
+                
+                // Apply filter animation
+                if (shouldShow) {
                     product.style.display = 'block';
                     setTimeout(() => {
                         product.style.opacity = '1';
@@ -585,6 +1003,34 @@
                 }
             });
         }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add click event listeners to filter buttons
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Get filter type and value from button attributes
+                    const filterType = this.getAttribute('onclick').match(/'([^']+)'/)[1];
+                    const filterValue = this.getAttribute('onclick').match(/'([^']+)'\)/)[1];
+                    
+                    // Update button styles
+                    filterButtons.forEach(btn => {
+                        btn.classList.remove('bg-brand-orange/10', 'border-brand-orange/30', 'text-brand-orange');
+                        btn.classList.add('bg-white/70', 'border-gray-200/50', 'text-dark-gray');
+                    });
+                    
+                    // Highlight active button
+                    this.classList.remove('bg-white/70', 'border-gray-200/50', 'text-dark-gray');
+                    this.classList.add('bg-brand-orange/10', 'border-brand-orange/30', 'text-brand-orange');
+                    
+                    // Apply filter
+                    filterProducts(filterType, filterValue);
+                });
+            });
+        });
     </script>
 </body>
 </html>
