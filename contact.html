@@ -6,6 +6,10 @@
     <title>Contact Us - Ishank Textile | Premium Fabric Manufacturing</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -651,26 +655,29 @@
             }
         });
 
+        // Firebase instances
+        const db = firebase.firestore();
+
         // Product Selection Functionality
         const DataManager = {
-            getProducts() {
-                return JSON.parse(localStorage.getItem('products') || '[]');
+            async getProducts() {
+                const snapshot = await db.collection('products').get();
+                return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
             },
-            getCategories() {
-                return JSON.parse(localStorage.getItem('categories') || '[]');
+            async getCategories() {
+                const snapshot = await db.collection('categories').get();
+                return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
             },
-            saveQuote(quote) {
-                const quotes = JSON.parse(localStorage.getItem('quotes') || '[]');
-                quote.id = Date.now().toString();
+            async saveQuote(quote) {
                 quote.createdAt = new Date().toISOString();
-                quotes.unshift(quote);
-                localStorage.setItem('quotes', JSON.stringify(quotes));
+                await db.collection('quotes').add(quote);
             }
         };
 
         // Load products into dropdown
-        function loadProducts() {
-            const products = DataManager.getProducts().filter(p => p.active);
+        async function loadProducts() {
+            const allProducts = await DataManager.getProducts();
+            const products = allProducts.filter(p => p.active);
             const select = document.getElementById('interestedProduct');
             
             // Clear existing options except first
@@ -687,7 +694,7 @@
             }
             
             // Group products by category
-            const categories = DataManager.getCategories();
+            const categories = await DataManager.getCategories();
             products.forEach(product => {
                 const category = categories.find(c => c.id === product.categoryId);
                 const option = document.createElement('option');
@@ -748,7 +755,7 @@
         }
 
         // Override form submission to save quote data
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
+        document.getElementById('contactForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
             // Get form data
@@ -777,7 +784,7 @@
             // Get selected product details
             let selectedProduct = null;
             if (data.interestedProduct) {
-                const products = DataManager.getProducts();
+                const products = await DataManager.getProducts();
                 selectedProduct = products.find(p => p.id === data.interestedProduct);
             }
             
@@ -799,7 +806,7 @@
                 whatsappUpdates: data.whatsappUpdates === 'on'
             };
             
-            DataManager.saveQuote(quote);
+            await DataManager.saveQuote(quote);
             
             // Show success modal
             showSuccessModal();
@@ -813,8 +820,8 @@
         });
 
         // Initialize on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            loadProducts();
+        document.addEventListener('DOMContentLoaded', async function() {
+            await loadProducts();
             checkPreselectedProduct();
         });
     </script>

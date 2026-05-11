@@ -6,6 +6,10 @@
     <title>Products Catalogue - Ishank Textile | Premium Fabric Manufacturing</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -787,13 +791,18 @@
             });
         }
 
+        // Firebase instance
+        const db = firebase.firestore();
+
         // Data Manager for dynamic content
         const DataManager = {
-            getCategories() {
-                return JSON.parse(localStorage.getItem('categories') || '[]');
+            async getCategories() {
+                const snapshot = await db.collection('categories').get();
+                return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
             },
-            getProducts() {
-                return JSON.parse(localStorage.getItem('products') || '[]');
+            async getProducts() {
+                const snapshot = await db.collection('products').get();
+                return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
             },
             getDefaultCategories() {
                 return [

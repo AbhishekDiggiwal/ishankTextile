@@ -6,6 +6,10 @@
     <title>About Us - Ishank Textile | Premium Fabric Manufacturing Since 2003</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -412,7 +416,7 @@
                         </div>
                         <div class="timeline-item">
                             <h3 class="text-xl font-bold text-dark-gray mb-2">2020 - Excellence</h3>
-                            <p class="text-gray-600">Achieved ISO certification and expanded to international markets.</p>
+                            <p class="text-gray-600">Obtained Import-Export license and GST registration, expanded to international markets.</p>
                         </div>
                         <div class="timeline-item">
                             <h3 class="text-xl font-bold text-dark-gray mb-2">2024 - Leadership</h3>
@@ -533,38 +537,70 @@
     <section class="py-20 bg-light-gray">
         <div class="container mx-auto px-6">
             <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-dark-gray heading-display mb-6">Leadership <span class="text-gradient">Team</span></h2>
+                <h2 class="text-4xl font-bold text-dark-gray heading-display mb-6">Our <span class="text-gradient">Founder</span></h2>
                 <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                    Experienced professionals committed to excellence and innovation
+                    A visionary leader committed to excellence and innovation in textile manufacturing
                 </p>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="max-w-md mx-auto">
                 <div class="text-center">
-                    <div class="w-32 h-32 bg-gradient-to-br from-brand-orange to-orange-600 rounded-full mx-auto mb-4 flex items-center justify-center">
-                        <span class="text-white text-4xl font-bold">SP</span>
+                    <div class="w-40 h-40 bg-gradient-to-br from-brand-orange to-orange-600 rounded-full mx-auto mb-6 flex items-center justify-center shadow-lg">
+                        <span class="text-white text-5xl font-bold">SP</span>
                     </div>
-                    <h3 class="text-xl font-bold text-dark-gray mb-2">Sunil Pandiya</h3>
-                    <p class="text-brand-orange font-semibold mb-2">Founder & CEO</p>
-                    <p class="text-gray-600">Visionary leader with 20+ years of textile industry experience, driving innovation and excellence.</p>
+                    <h3 class="text-2xl font-bold text-dark-gray mb-2">Sunil Pandiya</h3>
+                    <p class="text-brand-orange font-semibold mb-4 text-lg">Founder & CEO</p>
+                    <p class="text-gray-600 leading-relaxed">Visionary leader with 20+ years of textile industry experience, driving innovation and excellence since 2003.</p>
                 </div>
+            </div>
+        </div>
+    </section>
 
-                <div class="text-center">
-                    <div class="w-32 h-32 bg-gradient-to-br from-accent-blue to-blue-600 rounded-full mx-auto mb-4 flex items-center justify-center">
-                        <span class="text-white text-4xl font-bold">TM</span>
+    <!-- Certificates Section -->
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-dark-gray heading-display mb-6">Our <span class="text-gradient">Certifications</span></h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    Registered and certified for international trade and domestic compliance
+                </p>
+            </div>
+            
+            <div id="certificates-container" class="max-w-3xl mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- GST Certificate -->
+                    <div class="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-brand-orange/10 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-file-invoice text-brand-orange text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-dark-gray">GST Registration</h3>
+                                <a href="#" id="gst-certificate-link" target="_blank" class="text-sm text-brand-orange hover:underline">
+                                    View Certificate →
+                                </a>
+                            </div>
+                        </div>
                     </div>
-                    <h3 class="text-xl font-bold text-dark-gray mb-2">Technical Manager</h3>
-                    <p class="text-accent-blue font-semibold mb-2">Operations Head</p>
-                    <p class="text-gray-600">Expert in manufacturing processes and quality control, ensuring excellence in production.</p>
+                    
+                    <!-- Import Export Certificate -->
+                    <div class="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-accent-blue/10 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-globe text-accent-blue text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-dark-gray">Import Export License</h3>
+                                <a href="#" id="import-export-certificate-link" target="_blank" class="text-sm text-accent-blue hover:underline">
+                                    View Certificate →
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
-                <div class="text-center">
-                    <div class="w-32 h-32 bg-gradient-to-br from-accent-green to-green-600 rounded-full mx-auto mb-4 flex items-center justify-center">
-                        <span class="text-white text-4xl font-bold">SM</span>
-                    </div>
-                    <h3 class="text-xl font-bold text-dark-gray mb-2">Sales Manager</h3>
-                    <p class="text-accent-green font-semibold mb-2">Business Development</p>
-                    <p class="text-gray-600">Building strong client relationships and driving business growth across markets.</p>
+                
+                <div id="additional-certificates" class="mt-6 space-y-4">
+                    <!-- Additional certificates loaded dynamically -->
                 </div>
             </div>
         </div>
@@ -659,6 +695,49 @@
                 observer.observe(el);
             });
         });
+
+        // Firebase instance
+        const db = firebase.firestore();
+
+        // Load Certificates
+        async function loadCertificates() {
+            try {
+                const snapshot = await db.collection('certificates').get();
+                const certificates = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                
+                certificates.forEach(cert => {
+                    if (cert.type === 'gst' && cert.url) {
+                        document.getElementById('gst-certificate-link').href = cert.url;
+                    } else if (cert.type === 'import-export' && cert.url) {
+                        document.getElementById('import-export-certificate-link').href = cert.url;
+                    } else if (cert.url) {
+                        // Additional certificates
+                        const container = document.getElementById('additional-certificates');
+                        const certHtml = `
+                            <div class="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow">
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
+                                        <i class="fas fa-certificate text-gray-600 text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-semibold text-dark-gray">${cert.name}</h3>
+                                        <a href="${cert.url}" target="_blank" class="text-sm text-brand-orange hover:underline">
+                                            View Certificate →
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        container.insertAdjacentHTML('beforeend', certHtml);
+                    }
+                });
+            } catch (error) {
+                console.error('Error loading certificates:', error);
+            }
+        }
+
+        // Load certificates on page load
+        document.addEventListener('DOMContentLoaded', loadCertificates);
     </script>
 </body>
 </html>

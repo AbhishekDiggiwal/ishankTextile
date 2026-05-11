@@ -7,6 +7,10 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="firebase-config.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -79,20 +83,20 @@
         <!-- Login Card -->
         <div class="glass-card p-8">
             <form id="loginForm" class="space-y-6">
-                <!-- Username -->
+                <!-- Email -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Username</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <i class="fas fa-user text-gray-400"></i>
+                            <i class="fas fa-envelope text-gray-400"></i>
                         </div>
                         <input 
-                            type="text" 
-                            id="username" 
+                            type="email" 
+                            id="email" 
                             required
                             class="form-input w-full pl-10 pr-4 py-3 rounded-lg"
-                            placeholder="Enter username"
-                            autocomplete="username"
+                            placeholder="admin@example.com"
+                            autocomplete="email"
                         >
                     </div>
                 </div>
@@ -155,26 +159,17 @@
     </div>
 
     <script>
-        // Admin credentials (in production, this should be server-side)
-        const ADMIN_USERNAME = 'admin';
-        const ADMIN_PASSWORD = 'admin123'; // Change this in production!
+        // Firebase Auth instance
+        const auth = firebase.auth();
         
         // Check if already logged in
         function checkAuth() {
-            const isLoggedIn = sessionStorage.getItem('adminLoggedIn');
-            const loginTime = sessionStorage.getItem('adminLoginTime');
-            
-            if (isLoggedIn && loginTime) {
-                // Check if session is still valid (8 hours)
-                const hoursSinceLogin = (Date.now() - parseInt(loginTime)) / (1000 * 60 * 60);
-                if (hoursSinceLogin < 8) {
-                    // Redirect to dashboard
+            auth.onAuthStateChanged((user) => {
+                if (user) {
+                    // User is signed in, redirect to dashboard
                     window.location.href = 'admin-dashboard.html';
-                } else {
-                    // Session expired, clear it
-                    logout();
                 }
-            }
+            });
         }
         
         // Toggle password visibility
@@ -218,44 +213,43 @@
             e.preventDefault();
             hideError();
             
-            const username = document.getElementById('username').value.trim();
+            const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value;
             
             // Validate inputs
-            if (!username || !password) {
-                showError('Please enter both username and password');
+            if (!email || !password) {
+                showError('Please enter both email and password');
                 return;
             }
             
-            // Check credentials
-            if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
-                // Store login state in sessionStorage (cleared when browser closes)
-                sessionStorage.setItem('adminLoggedIn', 'true');
-                sessionStorage.setItem('adminLoginTime', Date.now().toString());
-                sessionStorage.setItem('adminUsername', username);
-                
-                // Redirect to dashboard
-                window.location.href = 'admin-dashboard.html';
-            } else {
-                showError('Invalid username or password');
-                document.getElementById('password').value = '';
-                document.getElementById('password').focus();
-            }
+            // Sign in with Firebase Auth
+            auth.signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // Signed in successfully
+                    window.location.href = 'admin-dashboard.html';
+                })
+                .catch((error) => {
+                    // Handle errors
+                    let errorMessage = 'Invalid email or password';
+                    if (error.code === 'auth/user-not-found') {
+                        errorMessage = 'No account found with this email';
+                    } else if (error.code === 'auth/wrong-password') {
+                        errorMessage = 'Incorrect password';
+                    } else if (error.code === 'auth/invalid-email') {
+                        errorMessage = 'Please enter a valid email address';
+                    }
+                    showError(errorMessage);
+                    document.getElementById('password').value = '';
+                });
         });
         
         // Clear error on input
-        document.getElementById('username').addEventListener('input', hideError);
+        document.getElementById('email').addEventListener('input', hideError);
         document.getElementById('password').addEventListener('input', hideError);
         
         // Check auth status on page load
         checkAuth();
         
-        // Logout function (can be called from other pages)
-        function logout() {
-            sessionStorage.removeItem('adminLoggedIn');
-            sessionStorage.removeItem('adminLoginTime');
-            sessionStorage.removeItem('adminUsername');
-        }
     </script>
 </body>
 </html>

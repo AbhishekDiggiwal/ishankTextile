@@ -8,6 +8,12 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+    <script src="firebase-config.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -167,6 +173,10 @@
                 </a>
 
                 <div class="px-4 mb-2 mt-6 text-xs font-semibold text-gray-400 uppercase tracking-wider">System</div>
+                <a href="#certificates" onclick="showSection('certificates')" class="sidebar-item flex items-center space-x-3 px-4 py-3 text-gray-700 hover:text-brand-orange">
+                    <i class="fas fa-certificate w-5"></i>
+                    <span>Certificates</span>
+                </a>
                 <a href="#settings" onclick="showSection('settings')" class="sidebar-item flex items-center space-x-3 px-4 py-3 text-gray-700 hover:text-brand-orange">
                     <i class="fas fa-cog w-5"></i>
                     <span>Settings</span>
@@ -543,8 +553,112 @@
                         </div>
                     </div>
                 </section>
+
+                <!-- Certificates Section -->
+                <section id="certificates-section" class="hidden space-y-6">
+                    <div class="glass-card p-6">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-lg font-bold text-dark-gray">Business Certificates</h3>
+                            <button onclick="openCertificateModal()" class="bg-brand-orange hover:bg-brand-orange-dark text-white px-4 py-2 rounded-lg transition-colors">
+                                <i class="fas fa-plus mr-2"></i>Upload Certificate
+                            </button>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                            <!-- GST Certificate -->
+                            <div class="border border-gray-200 rounded-lg p-4">
+                                <div class="flex items-start justify-between">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="w-10 h-10 bg-brand-orange/10 rounded-lg flex items-center justify-center">
+                                            <i class="fas fa-file-invoice text-brand-orange"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-medium text-dark-gray">GST Registration</h4>
+                                            <p class="text-sm text-gray-500">Required for tax compliance</p>
+                                        </div>
+                                    </div>
+                                    <span id="gst-status" class="text-xs px-2 py-1 rounded-full bg-gray-100 text-gray-600">Not Uploaded</span>
+                                </div>
+                                <div id="gst-actions" class="mt-4 flex gap-2">
+                                    <button onclick="openCertificateModal('gst')" class="text-sm text-brand-orange hover:underline">
+                                        <i class="fas fa-upload mr-1"></i>Upload
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Import Export Certificate -->
+                            <div class="border border-gray-200 rounded-lg p-4">
+                                <div class="flex items-start justify-between">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="w-10 h-10 bg-accent-blue/10 rounded-lg flex items-center justify-center">
+                                            <i class="fas fa-globe text-accent-blue"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-medium text-dark-gray">Import Export License</h4>
+                                            <p class="text-sm text-gray-500">Required for international trade</p>
+                                        </div>
+                                    </div>
+                                    <span id="import-export-status" class="text-xs px-2 py-1 rounded-full bg-gray-100 text-gray-600">Not Uploaded</span>
+                                </div>
+                                <div id="import-export-actions" class="mt-4 flex gap-2">
+                                    <button onclick="openCertificateModal('import-export')" class="text-sm text-accent-blue hover:underline">
+                                        <i class="fas fa-upload mr-1"></i>Upload
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Other Certificates -->
+                        <div>
+                            <h4 class="font-medium text-gray-700 mb-4">Other Certificates</h4>
+                            <div id="other-certificates-list" class="space-y-3">
+                                <!-- Dynamic content -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </div>
         </main>
+    </div>
+
+    <!-- Certificate Modal -->
+    <div id="certificate-modal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+        <div class="glass-card w-full max-w-md">
+            <div class="p-6 border-b border-gray-100 flex justify-between items-center">
+                <h3 id="certificate-modal-title" class="text-xl font-bold text-dark-gray">Upload Certificate</h3>
+                <button onclick="closeCertificateModal()" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <form id="certificate-form" class="p-6 space-y-4">
+                <input type="hidden" id="certificate-id">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Certificate Type</label>
+                    <select id="certificate-type" class="form-input w-full px-4 py-2 rounded-lg">
+                        <option value="gst">GST Registration</option>
+                        <option value="import-export">Import Export License</option>
+                        <option value="other">Other Certificate</option>
+                    </select>
+                </div>
+                <div id="certificate-name-container" class="hidden">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Certificate Name</label>
+                    <input type="text" id="certificate-name" class="form-input w-full px-4 py-2 rounded-lg" placeholder="e.g., ISO Certification">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Certificate File (PDF or Image)</label>
+                    <input type="file" id="certificate-file" accept=".pdf,image/*" required class="form-input w-full px-4 py-2 rounded-lg">
+                    <p class="text-xs text-gray-500 mt-1">Max file size: 5MB. Supported: PDF, JPG, PNG</p>
+                </div>
+                <div class="flex gap-3 pt-4">
+                    <button type="button" onclick="closeCertificateModal()" class="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+                        Cancel
+                    </button>
+                    <button type="submit" class="flex-1 bg-brand-orange hover:bg-brand-orange-dark text-white px-4 py-2 rounded-lg transition-colors">
+                        Upload
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 
     <!-- Category Modal -->
@@ -713,24 +827,32 @@
 
     <!-- JavaScript -->
     <script>
-        // Data Management
+        // Firestore Data Management
         const DataManager = {
-            // Initialize data with defaults if empty
-            init() {
-                if (!localStorage.getItem('categories')) {
-                    this.setCategories(this.getDefaultCategories());
+            // Initialize with default data if collections are empty
+            async init() {
+                // Check if categories exist
+                const categoriesSnapshot = await db.collection('categories').get();
+                if (categoriesSnapshot.empty) {
+                    const defaultCategories = this.getDefaultCategories();
+                    for (const category of defaultCategories) {
+                        await db.collection('categories').doc(category.id).set(category);
+                    }
                 }
-                if (!localStorage.getItem('products')) {
-                    this.setProducts(this.getDefaultProducts());
+
+                // Check if products exist
+                const productsSnapshot = await db.collection('products').get();
+                if (productsSnapshot.empty) {
+                    const defaultProducts = this.getDefaultProducts();
+                    for (const product of defaultProducts) {
+                        await db.collection('products').doc(product.id).set(product);
+                    }
                 }
-                if (!localStorage.getItem('quotes')) {
-                    this.setQuotes([]);
-                }
-                if (!localStorage.getItem('visitors')) {
-                    this.setVisitors(this.generateSampleVisitors());
-                }
-                if (!localStorage.getItem('settings')) {
-                    this.setSettings({
+
+                // Check if settings exist
+                const settingsDoc = await db.collection('settings').doc('general').get();
+                if (!settingsDoc.exists) {
+                    await db.collection('settings').doc('general').set({
                         companyName: 'Ishank Textile',
                         contactEmail: 'sunilpandiya909@gmail.com',
                         contactPhone: '+91 94141 12197'
@@ -739,84 +861,59 @@
             },
 
             // Categories
-            getCategories() {
-                return JSON.parse(localStorage.getItem('categories') || '[]');
+            async getCategories() {
+                const snapshot = await db.collection('categories').get();
+                return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
             },
-            setCategories(categories) {
-                localStorage.setItem('categories', JSON.stringify(categories));
-            },
-            addCategory(category) {
-                const categories = this.getCategories();
-                category.id = Date.now().toString();
+            async addCategory(category) {
+                const id = Date.now().toString();
+                category.id = id;
                 category.createdAt = new Date().toISOString();
-                categories.push(category);
-                this.setCategories(categories);
+                await db.collection('categories').doc(id).set(category);
                 return category;
             },
-            updateCategory(id, updates) {
-                const categories = this.getCategories();
-                const index = categories.findIndex(c => c.id === id);
-                if (index !== -1) {
-                    categories[index] = { ...categories[index], ...updates };
-                    this.setCategories(categories);
-                    return categories[index];
-                }
-                return null;
+            async updateCategory(id, updates) {
+                await db.collection('categories').doc(id).update(updates);
+                const doc = await db.collection('categories').doc(id).get();
+                return { id: doc.id, ...doc.data() };
             },
-            deleteCategory(id) {
-                const categories = this.getCategories();
-                const filtered = categories.filter(c => c.id !== id);
-                this.setCategories(filtered);
+            async deleteCategory(id) {
+                await db.collection('categories').doc(id).delete();
             },
 
             // Products
-            getProducts() {
-                return JSON.parse(localStorage.getItem('products') || '[]');
+            async getProducts() {
+                const snapshot = await db.collection('products').get();
+                return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
             },
-            setProducts(products) {
-                localStorage.setItem('products', JSON.stringify(products));
-            },
-            addProduct(product) {
-                const products = this.getProducts();
-                product.id = Date.now().toString();
+            async addProduct(product) {
+                const id = Date.now().toString();
+                product.id = id;
                 product.createdAt = new Date().toISOString();
-                products.push(product);
-                this.setProducts(products);
+                await db.collection('products').doc(id).set(product);
                 return product;
             },
-            updateProduct(id, updates) {
-                const products = this.getProducts();
-                const index = products.findIndex(p => p.id === id);
-                if (index !== -1) {
-                    products[index] = { ...products[index], ...updates };
-                    this.setProducts(products);
-                    return products[index];
-                }
-                return null;
+            async updateProduct(id, updates) {
+                await db.collection('products').doc(id).update(updates);
+                const doc = await db.collection('products').doc(id).get();
+                return { id: doc.id, ...doc.data() };
             },
-            deleteProduct(id) {
-                const products = this.getProducts();
-                const filtered = products.filter(p => p.id !== id);
-                this.setProducts(filtered);
+            async deleteProduct(id) {
+                await db.collection('products').doc(id).delete();
             },
 
             // Quotes
-            getQuotes() {
-                return JSON.parse(localStorage.getItem('quotes') || '[]');
+            async getQuotes() {
+                const snapshot = await db.collection('quotes').orderBy('createdAt', 'desc').get();
+                return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
             },
-            setQuotes(quotes) {
-                localStorage.setItem('quotes', JSON.stringify(quotes));
-            },
-            addQuote(quote) {
-                const quotes = this.getQuotes();
-                quote.id = Date.now().toString();
+            async addQuote(quote) {
                 quote.createdAt = new Date().toISOString();
-                quotes.unshift(quote);
-                this.setQuotes(quotes);
-                return quote;
+                const docRef = await db.collection('quotes').add(quote);
+                return { id: docRef.id, ...quote };
             },
 
-            // Visitors
+            // Visitors (kept in localStorage for simplicity - not critical)
             getVisitors() {
                 return JSON.parse(localStorage.getItem('visitors') || '[]');
             },
@@ -842,11 +939,58 @@
             },
 
             // Settings
-            getSettings() {
-                return JSON.parse(localStorage.getItem('settings') || '{}');
+            async getSettings() {
+                const doc = await db.collection('settings').doc('general').get();
+                return doc.exists ? doc.data() : {};
             },
-            setSettings(settings) {
-                localStorage.setItem('settings', JSON.stringify(settings));
+            async setSettings(settings) {
+                await db.collection('settings').doc('general').set(settings, { merge: true });
+            },
+
+            // Image Upload to Firebase Storage
+            async uploadImage(file) {
+                const filename = `images/${Date.now()}_${file.name}`;
+                const ref = storage.ref(filename);
+                await ref.put(file);
+                const url = await ref.getDownloadURL();
+                return url;
+            },
+
+            // Certificates
+            async getCertificates() {
+                const snapshot = await db.collection('certificates').get();
+                return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            },
+            async uploadCertificate(file, type, name = null) {
+                const filename = `certificates/${type}_${Date.now()}_${file.name}`;
+                const ref = storage.ref(filename);
+                await ref.put(file);
+                const url = await ref.getDownloadURL();
+                
+                // Save to Firestore
+                const certData = {
+                    type,
+                    url,
+                    name: name || (type === 'gst' ? 'GST Registration' : type === 'import-export' ? 'Import Export License' : 'Certificate'),
+                    filename: file.name,
+                    uploadedAt: new Date().toISOString()
+                };
+                
+                // Check if certificate of this type already exists
+                const existing = await db.collection('certificates').where('type', '==', type).get();
+                if (!existing.empty) {
+                    // Update existing
+                    const docId = existing.docs[0].id;
+                    await db.collection('certificates').doc(docId).update(certData);
+                    return { id: docId, ...certData };
+                } else {
+                    // Create new
+                    const docRef = await db.collection('certificates').add(certData);
+                    return { id: docRef.id, ...certData };
+                }
+            },
+            async deleteCertificate(id) {
+                await db.collection('certificates').doc(id).delete();
             },
 
             // Default Data
@@ -971,7 +1115,7 @@
         }
 
         // Section Navigation
-        function showSection(section) {
+        async function showSection(section) {
             // Hide all sections
             document.querySelectorAll('main > div > section').forEach(s => s.classList.add('hidden'));
             
@@ -989,33 +1133,36 @@
                 products: 'Products',
                 visitors: 'Visitors Analytics',
                 quotes: 'Quote Requests',
+                certificates: 'Business Certificates',
                 settings: 'Settings'
             };
             document.getElementById('page-title').textContent = titles[section];
             
             // Refresh data
             if (section === 'dashboard') {
-                updateKPIs();
-                updateCharts();
+                await updateKPIs();
+                await updateCharts();
             } else if (section === 'categories') {
-                renderCategories();
+                await renderCategories();
             } else if (section === 'products') {
-                renderProducts();
-                updateProductCategoryOptions();
+                await renderProducts();
+                await updateProductCategoryOptions();
             } else if (section === 'quotes') {
-                renderQuotes();
+                await renderQuotes();
             } else if (section === 'visitors') {
                 updateVisitorDetailChart();
                 renderTopPages();
+            } else if (section === 'certificates') {
+                await renderCertificates();
             }
         }
 
         // KPI Updates
-        function updateKPIs() {
+        async function updateKPIs() {
             const visitors = DataManager.getVisitors();
-            const quotes = DataManager.getQuotes();
-            const categories = DataManager.getCategories();
-            const products = DataManager.getProducts();
+            const quotes = await DataManager.getQuotes();
+            const categories = await DataManager.getCategories();
+            const products = await DataManager.getProducts();
             
             const today = new Date().toISOString().split('T')[0];
             const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
@@ -1040,10 +1187,10 @@
         // Charts
         let visitorsChart, quotesChart, mostRequestedChart, visitorsDetailChart;
 
-        function updateCharts() {
+        async function updateCharts() {
             updateVisitorChart();
-            updateQuoteChart();
-            updateMostRequestedChart();
+            await updateQuoteChart();
+            await updateMostRequestedChart();
         }
 
         function updateVisitorChart() {
@@ -1084,9 +1231,9 @@
             });
         }
 
-        function updateQuoteChart() {
+        async function updateQuoteChart() {
             const ctx = document.getElementById('quotesChart').getContext('2d');
-            const quotes = DataManager.getQuotes();
+            const quotes = await DataManager.getQuotes();
             const days = parseInt(document.getElementById('quote-chart-period').value) || 7;
             
             const dateMap = {};
@@ -1134,11 +1281,11 @@
             });
         }
 
-        function updateMostRequestedChart() {
+        async function updateMostRequestedChart() {
             const ctx = document.getElementById('mostRequestedChart').getContext('2d');
-            const quotes = DataManager.getQuotes();
+            const quotes = await DataManager.getQuotes();
             const days = parseInt(document.getElementById('requested-chart-period').value) || 7;
-            const products = DataManager.getProducts();
+            const products = await DataManager.getProducts();
             
             // Filter quotes by time period
             const cutoffDate = new Date();
@@ -1201,9 +1348,9 @@
         }
 
         // Categories Management
-        function renderCategories() {
-            const categories = DataManager.getCategories();
-            const products = DataManager.getProducts();
+        async function renderCategories() {
+            const categories = await DataManager.getCategories();
+            const products = await DataManager.getProducts();
             const tbody = document.getElementById('categories-table');
             
             tbody.innerHTML = categories.map(cat => {
@@ -1240,13 +1387,14 @@
             }).join('');
         }
 
-        function openCategoryModal(categoryId = null) {
+        async function openCategoryModal(categoryId = null) {
             const modal = document.getElementById('category-modal');
             const form = document.getElementById('category-form');
             const title = document.getElementById('category-modal-title');
             
             if (categoryId) {
-                const category = DataManager.getCategories().find(c => c.id === categoryId);
+                const categories = await DataManager.getCategories();
+                const category = categories.find(c => c.id === categoryId);
                 if (category) {
                     title.textContent = 'Edit Category';
                     document.getElementById('category-id').value = category.id;
@@ -1272,28 +1420,29 @@
             openCategoryModal(id);
         }
 
-        function toggleCategoryStatus(id) {
-            const category = DataManager.getCategories().find(c => c.id === id);
+        async function toggleCategoryStatus(id) {
+            const categories = await DataManager.getCategories();
+            const category = categories.find(c => c.id === id);
             if (category) {
                 const newStatus = !category.active;
-                DataManager.updateCategory(id, { active: newStatus });
-                renderCategories();
+                await DataManager.updateCategory(id, { active: newStatus });
+                await renderCategories();
                 showToast(`Category ${newStatus ? 'activated' : 'deactivated'} successfully`);
             }
         }
 
-        function deleteCategory(id) {
+        async function deleteCategory(id) {
             if (confirm('Are you sure you want to delete this category? All associated products will also be affected.')) {
-                DataManager.deleteCategory(id);
-                renderCategories();
+                await DataManager.deleteCategory(id);
+                await renderCategories();
                 showToast('Category deleted successfully');
             }
         }
 
         // Products Management
-        function renderProducts(filteredProducts = null) {
-            const products = filteredProducts || DataManager.getProducts();
-            const categories = DataManager.getCategories();
+        async function renderProducts(filteredProducts = null) {
+            const products = filteredProducts || await DataManager.getProducts();
+            const categories = await DataManager.getCategories();
             const tbody = document.getElementById('products-table');
             
             tbody.innerHTML = products.map(prod => {
@@ -1330,8 +1479,9 @@
             }).join('');
         }
 
-        function updateProductCategoryOptions() {
-            const categories = DataManager.getCategories().filter(c => c.active);
+        async function updateProductCategoryOptions() {
+            const allCategories = await DataManager.getCategories();
+            const categories = allCategories.filter(c => c.active);
             const selects = ['product-category', 'product-filter-category'];
             
             selects.forEach(selectId => {
@@ -1349,11 +1499,11 @@
             });
         }
 
-        function filterProducts() {
+        async function filterProducts() {
             const categoryId = document.getElementById('product-filter-category').value;
             const status = document.getElementById('product-filter-status').value;
             
-            let products = DataManager.getProducts();
+            let products = await DataManager.getProducts();
             
             if (categoryId) {
                 products = products.filter(p => p.categoryId === categoryId);
@@ -1366,25 +1516,27 @@
             renderProducts(products);
         }
 
-        function searchProducts() {
+        async function searchProducts() {
             const search = document.getElementById('product-search').value.toLowerCase();
-            const products = DataManager.getProducts().filter(p => 
+            const allProducts = await DataManager.getProducts();
+            const products = allProducts.filter(p => 
                 p.name.toLowerCase().includes(search) || 
                 p.code.toLowerCase().includes(search) ||
                 p.description.toLowerCase().includes(search)
             );
-            renderProducts(products);
+            await renderProducts(products);
         }
 
-        function openProductModal(productId = null) {
+        async function openProductModal(productId = null) {
             const modal = document.getElementById('product-modal');
             const form = document.getElementById('product-form');
             const title = document.getElementById('product-modal-title');
             
-            updateProductCategoryOptions();
+            await updateProductCategoryOptions();
             
             if (productId) {
-                const product = DataManager.getProducts().find(p => p.id === productId);
+                const products = await DataManager.getProducts();
+                const product = products.find(p => p.id === productId);
                 if (product) {
                     title.textContent = 'Edit Product';
                     document.getElementById('product-id').value = product.id;
@@ -1409,31 +1561,32 @@
             document.getElementById('product-modal').classList.add('hidden');
         }
 
-        function editProduct(id) {
-            openProductModal(id);
+        async function editProduct(id) {
+            await openProductModal(id);
         }
 
-        function toggleProductStatus(id) {
-            const product = DataManager.getProducts().find(p => p.id === id);
+        async function toggleProductStatus(id) {
+            const products = await DataManager.getProducts();
+            const product = products.find(p => p.id === id);
             if (product) {
                 const newStatus = !product.active;
-                DataManager.updateProduct(id, { active: newStatus });
-                renderProducts();
+                await DataManager.updateProduct(id, { active: newStatus });
+                await renderProducts();
                 showToast(`Product ${newStatus ? 'activated' : 'deactivated'} successfully`);
             }
         }
 
-        function deleteProduct(id) {
+        async function deleteProduct(id) {
             if (confirm('Are you sure you want to delete this product?')) {
-                DataManager.deleteProduct(id);
-                renderProducts();
+                await DataManager.deleteProduct(id);
+                await renderProducts();
                 showToast('Product deleted successfully');
             }
         }
 
         // Quotes
-        function renderQuotes() {
-            const quotes = DataManager.getQuotes();
+        async function renderQuotes() {
+            const quotes = await DataManager.getQuotes();
             const tbody = document.getElementById('quotes-table');
             const recentTbody = document.getElementById('recent-quotes-table');
             
@@ -1524,6 +1677,116 @@
                     <span class="text-gray-600">${count} visits</span>
                 </div>
             `).join('');
+        }
+
+        // Certificate Management
+        async function renderCertificates() {
+            const certificates = await DataManager.getCertificates();
+            
+            // Reset all statuses
+            document.getElementById('gst-status').textContent = 'Not Uploaded';
+            document.getElementById('gst-status').className = 'text-xs px-2 py-1 rounded-full bg-gray-100 text-gray-600';
+            document.getElementById('gst-actions').innerHTML = `
+                <button onclick="openCertificateModal('gst')" class="text-sm text-brand-orange hover:underline">
+                    <i class="fas fa-upload mr-1"></i>Upload
+                </button>
+            `;
+            
+            document.getElementById('import-export-status').textContent = 'Not Uploaded';
+            document.getElementById('import-export-status').className = 'text-xs px-2 py-1 rounded-full bg-gray-100 text-gray-600';
+            document.getElementById('import-export-actions').innerHTML = `
+                <button onclick="openCertificateModal('import-export')" class="text-sm text-accent-blue hover:underline">
+                    <i class="fas fa-upload mr-1"></i>Upload
+                </button>
+            `;
+            
+            // Clear other certificates list
+            const otherList = document.getElementById('other-certificates-list');
+            otherList.innerHTML = '';
+            
+            // Process certificates
+            certificates.forEach(cert => {
+                if (cert.type === 'gst') {
+                    document.getElementById('gst-status').textContent = 'Uploaded';
+                    document.getElementById('gst-status').className = 'text-xs px-2 py-1 rounded-full bg-green-100 text-green-600';
+                    document.getElementById('gst-actions').innerHTML = `
+                        <a href="${cert.url}" target="_blank" class="text-sm text-brand-orange hover:underline mr-3">
+                            <i class="fas fa-eye mr-1"></i>View
+                        </a>
+                        <button onclick="deleteCertificate('${cert.id}')" class="text-sm text-red-500 hover:underline">
+                            <i class="fas fa-trash mr-1"></i>Delete
+                        </button>
+                    `;
+                } else if (cert.type === 'import-export') {
+                    document.getElementById('import-export-status').textContent = 'Uploaded';
+                    document.getElementById('import-export-status').className = 'text-xs px-2 py-1 rounded-full bg-green-100 text-green-600';
+                    document.getElementById('import-export-actions').innerHTML = `
+                        <a href="${cert.url}" target="_blank" class="text-sm text-accent-blue hover:underline mr-3">
+                            <i class="fas fa-eye mr-1"></i>View
+                        </a>
+                        <button onclick="deleteCertificate('${cert.id}')" class="text-sm text-red-500 hover:underline">
+                            <i class="fas fa-trash mr-1"></i>Delete
+                        </button>
+                    `;
+                } else {
+                    // Add to other certificates
+                    const certHtml = `
+                        <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                            <div class="flex items-center space-x-3">
+                                <i class="fas fa-certificate text-gray-500"></i>
+                                <div>
+                                    <p class="font-medium text-dark-gray">${cert.name}</p>
+                                    <p class="text-sm text-gray-500">${new Date(cert.uploadedAt).toLocaleDateString()}</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-2">
+                                <a href="${cert.url}" target="_blank" class="text-sm text-brand-orange hover:underline">
+                                    <i class="fas fa-eye mr-1"></i>View
+                                </a>
+                                <button onclick="deleteCertificate('${cert.id}')" class="text-sm text-red-500 hover:underline">
+                                    <i class="fas fa-trash mr-1"></i>Delete
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    otherList.insertAdjacentHTML('beforeend', certHtml);
+                }
+            });
+        }
+
+        function openCertificateModal(type = null) {
+            const modal = document.getElementById('certificate-modal');
+            const typeSelect = document.getElementById('certificate-type');
+            const nameContainer = document.getElementById('certificate-name-container');
+            
+            // Reset form
+            document.getElementById('certificate-form').reset();
+            
+            // Set type if provided
+            if (type) {
+                typeSelect.value = type;
+            }
+            
+            // Show/hide name field based on type
+            if (type === 'other' || typeSelect.value === 'other') {
+                nameContainer.classList.remove('hidden');
+            } else {
+                nameContainer.classList.add('hidden');
+            }
+            
+            modal.classList.remove('hidden');
+        }
+
+        function closeCertificateModal() {
+            document.getElementById('certificate-modal').classList.add('hidden');
+        }
+
+        async function deleteCertificate(id) {
+            if (confirm('Are you sure you want to delete this certificate?')) {
+                await DataManager.deleteCertificate(id);
+                await renderCertificates();
+                showToast('Certificate deleted successfully');
+            }
         }
 
         // Data Import/Export
@@ -1651,7 +1914,7 @@
         }
 
         // Image Upload Handling
-        function handleCategoryImageUpload(input) {
+        async function handleCategoryImageUpload(input) {
             const file = input.files[0];
             if (!file) return;
 
@@ -1667,25 +1930,27 @@
                 return;
             }
 
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const base64Image = e.target.result;
+            try {
+                showToast('Uploading image...', 'info');
+                const imageUrl = await DataManager.uploadImage(file);
                 
                 // Store in hidden field
-                document.getElementById('category-image-data').value = base64Image;
+                document.getElementById('category-image-data').value = imageUrl;
                 document.getElementById('category-image').value = ''; // Clear URL field
                 
                 // Show preview
                 const preview = document.getElementById('category-image-preview');
-                preview.querySelector('img').src = base64Image;
+                preview.querySelector('img').src = imageUrl;
                 preview.classList.remove('hidden');
                 
                 showToast('Image uploaded successfully');
-            };
-            reader.readAsDataURL(file);
+            } catch (error) {
+                console.error('Image upload error:', error);
+                showToast('Failed to upload image', 'error');
+            }
         }
 
-        function handleProductImageUpload(input) {
+        async function handleProductImageUpload(input) {
             const file = input.files[0];
             if (!file) return;
 
@@ -1701,22 +1966,24 @@
                 return;
             }
 
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const base64Image = e.target.result;
+            try {
+                showToast('Uploading image...', 'info');
+                const imageUrl = await DataManager.uploadImage(file);
                 
                 // Store in hidden field
-                document.getElementById('product-image-data').value = base64Image;
+                document.getElementById('product-image-data').value = imageUrl;
                 document.getElementById('product-image').value = ''; // Clear URL field
                 
                 // Show preview
                 const preview = document.getElementById('product-image-preview');
-                preview.querySelector('img').src = base64Image;
+                preview.querySelector('img').src = imageUrl;
                 preview.classList.remove('hidden');
                 
                 showToast('Image uploaded successfully');
-            };
-            reader.readAsDataURL(file);
+            } catch (error) {
+                console.error('Image upload error:', error);
+                showToast('Failed to upload image', 'error');
+            }
         }
 
         function toggleCategoryImageInput() {
@@ -1807,7 +2074,7 @@
         };
 
         // Override form submissions to include image data
-        document.getElementById('category-form').addEventListener('submit', (e) => {
+        document.getElementById('category-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             
             const id = document.getElementById('category-id').value;
@@ -1830,19 +2097,19 @@
             };
             
             if (id) {
-                DataManager.updateCategory(id, category);
+                await DataManager.updateCategory(id, category);
                 showToast('Category updated successfully');
             } else {
-                DataManager.addCategory(category);
+                await DataManager.addCategory(category);
                 showToast('Category added successfully');
             }
             
             closeCategoryModal();
-            renderCategories();
-            updateKPIs();
+            await renderCategories();
+            await updateKPIs();
         });
 
-        document.getElementById('product-form').addEventListener('submit', (e) => {
+        document.getElementById('product-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             
             const id = document.getElementById('product-id').value;
@@ -1868,55 +2135,97 @@
             };
             
             if (id) {
-                DataManager.updateProduct(id, product);
+                await DataManager.updateProduct(id, product);
                 showToast('Product updated successfully');
             } else {
-                DataManager.addProduct(product);
+                await DataManager.addProduct(product);
                 showToast('Product added successfully');
             }
             
             closeProductModal();
-            renderProducts();
-            updateKPIs();
+            await renderProducts();
+            await updateKPIs();
         });
+
+        // Certificate form submission
+        document.getElementById('certificate-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const type = document.getElementById('certificate-type').value;
+            const file = document.getElementById('certificate-file').files[0];
+            const name = document.getElementById('certificate-name').value;
+            
+            if (!file) {
+                showToast('Please select a file', 'error');
+                return;
+            }
+            
+            // Validate file size (max 5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                showToast('File size should be less than 5MB', 'error');
+                return;
+            }
+            
+            try {
+                showToast('Uploading certificate...', 'info');
+                await DataManager.uploadCertificate(file, type, name || null);
+                
+                closeCertificateModal();
+                await renderCertificates();
+                showToast('Certificate uploaded successfully');
+            } catch (error) {
+                console.error('Certificate upload error:', error);
+                showToast('Failed to upload certificate', 'error');
+            }
+        });
+
+        // Certificate type change listener
+        document.getElementById('certificate-type').addEventListener('change', function() {
+            const nameContainer = document.getElementById('certificate-name-container');
+            if (this.value === 'other') {
+                nameContainer.classList.remove('hidden');
+                document.getElementById('certificate-name').required = true;
+            } else {
+                nameContainer.classList.add('hidden');
+                document.getElementById('certificate-name').required = false;
+            }
+        });
+
+        // Firebase instances
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        const storage = firebase.storage();
 
         // Authentication Check
         function checkAdminAuth() {
-            const isLoggedIn = sessionStorage.getItem('adminLoggedIn');
-            const loginTime = sessionStorage.getItem('adminLoginTime');
-            
-            if (!isLoggedIn || !loginTime) {
-                // Not logged in, redirect to login page
-                window.location.href = 'admin-login.html';
-                return false;
-            }
-            
-            // Check if session is still valid (8 hours)
-            const hoursSinceLogin = (Date.now() - parseInt(loginTime)) / (1000 * 60 * 60);
-            if (hoursSinceLogin >= 8) {
-                // Session expired
-                sessionStorage.removeItem('adminLoggedIn');
-                sessionStorage.removeItem('adminLoginTime');
-                sessionStorage.removeItem('adminUsername');
-                window.location.href = 'admin-login.html';
-                return false;
-            }
-            
-            return true;
+            return new Promise((resolve) => {
+                auth.onAuthStateChanged((user) => {
+                    if (!user) {
+                        // Not logged in, redirect to login page
+                        window.location.href = 'admin-login.html';
+                        resolve(false);
+                    } else {
+                        resolve(true);
+                    }
+                });
+            });
         }
         
         // Proper logout function
         function logout() {
-            sessionStorage.removeItem('adminLoggedIn');
-            sessionStorage.removeItem('adminLoginTime');
-            sessionStorage.removeItem('adminUsername');
-            window.location.href = 'admin-login.html';
+            auth.signOut().then(() => {
+                window.location.href = 'admin-login.html';
+            }).catch((error) => {
+                console.error('Logout error:', error);
+                window.location.href = 'admin-login.html';
+            });
         }
 
         // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
             // Check authentication first
-            if (!checkAdminAuth()) {
+            const isAuth = await checkAdminAuth();
+            if (!isAuth) {
                 return; // Stop if not authenticated
             }
             
