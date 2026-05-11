@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - Ishank Textile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-orange': '#f97316',
+                        'brand-orange-dark': '#ea580c',
+                        'dark-gray': '#1f2937',
+                    },
+                    fontFamily: {
+                        'sans': ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .login-bg {
+            background: linear-gradient(135deg, #1f2937 0%, #374151 50%, #1f2937 100%);
+        }
+        
+        .form-input {
+            transition: all 0.3s ease;
+            border: 2px solid #e5e7eb;
+        }
+        .form-input:focus {
+            border-color: #f97316;
+            box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
+        }
+        
+        .shake {
+            animation: shake 0.5s ease-in-out;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        
+        .error-message {
+            animation: slideDown 0.3s ease-out;
+        }
+        
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="login-bg min-h-screen flex items-center justify-center p-4">
+    <div class="w-full max-w-md">
+        <!-- Logo Section -->
+        <div class="text-center mb-8">
+            <div class="inline-flex items-center justify-center w-16 h-16 bg-brand-orange rounded-2xl mb-4 shadow-lg">
+                <span class="text-white font-bold text-2xl">IT</span>
+            </div>
+            <h1 class="text-2xl font-bold text-white mb-2">Admin Login</h1>
+            <p class="text-gray-400">Ishank Textile Management System</p>
+        </div>
+        
+        <!-- Login Card -->
+        <div class="glass-card p-8">
+            <form id="loginForm" class="space-y-6">
+                <!-- Username -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Username</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-user text-gray-400"></i>
+                        </div>
+                        <input 
+                            type="text" 
+                            id="username" 
+                            required
+                            class="form-input w-full pl-10 pr-4 py-3 rounded-lg"
+                            placeholder="Enter username"
+                            autocomplete="username"
+                        >
+                    </div>
+                </div>
+                
+                <!-- Password -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-lock text-gray-400"></i>
+                        </div>
+                        <input 
+                            type="password" 
+                            id="password" 
+                            required
+                            class="form-input w-full pl-10 pr-12 py-3 rounded-lg"
+                            placeholder="Enter password"
+                            autocomplete="current-password"
+                        >
+                        <button 
+                            type="button" 
+                            onclick="togglePassword()"
+                            class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
+                        >
+                            <i class="fas fa-eye" id="toggleIcon"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Error Message -->
+                <div id="errorMessage" class="hidden error-message bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg text-sm">
+                    <i class="fas fa-exclamation-circle mr-2"></i>
+                    <span id="errorText">Invalid credentials</span>
+                </div>
+                
+                <!-- Login Button -->
+                <button 
+                    type="submit" 
+                    class="w-full bg-brand-orange hover:bg-brand-orange-dark text-white font-semibold py-3 rounded-lg transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] shadow-lg hover:shadow-xl"
+                >
+                    <i class="fas fa-sign-in-alt mr-2"></i>
+                    Login
+                </button>
+                
+                <!-- Back to Website -->
+                <div class="text-center pt-4">
+                    <a href="index.html" class="text-gray-500 hover:text-brand-orange text-sm transition-colors">
+                        <i class="fas fa-arrow-left mr-1"></i>
+                        Back to Website
+                    </a>
+                </div>
+            </form>
+        </div>
+        
+        <!-- Security Notice -->
+        <div class="text-center mt-6 text-gray-500 text-xs">
+            <i class="fas fa-shield-alt mr-1"></i>
+            Secure Admin Access Only
+        </div>
+    </div>
+
+    <script>
+        // Admin credentials (in production, this should be server-side)
+        const ADMIN_USERNAME = 'admin';
+        const ADMIN_PASSWORD = 'admin123'; // Change this in production!
+        
+        // Check if already logged in
+        function checkAuth() {
+            const isLoggedIn = sessionStorage.getItem('adminLoggedIn');
+            const loginTime = sessionStorage.getItem('adminLoginTime');
+            
+            if (isLoggedIn && loginTime) {
+                // Check if session is still valid (8 hours)
+                const hoursSinceLogin = (Date.now() - parseInt(loginTime)) / (1000 * 60 * 60);
+                if (hoursSinceLogin < 8) {
+                    // Redirect to dashboard
+                    window.location.href = 'admin-dashboard.html';
+                } else {
+                    // Session expired, clear it
+                    logout();
+                }
+            }
+        }
+        
+        // Toggle password visibility
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const toggleIcon = document.getElementById('toggleIcon');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            }
+        }
+        
+        // Show error message
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            const errorText = document.getElementById('errorText');
+            const form = document.getElementById('loginForm');
+            
+            errorText.textContent = message;
+            errorDiv.classList.remove('hidden');
+            form.classList.add('shake');
+            
+            setTimeout(() => {
+                form.classList.remove('shake');
+            }, 500);
+        }
+        
+        // Hide error message
+        function hideError() {
+            document.getElementById('errorMessage').classList.add('hidden');
+        }
+        
+        // Login handler
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            hideError();
+            
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            
+            // Validate inputs
+            if (!username || !password) {
+                showError('Please enter both username and password');
+                return;
+            }
+            
+            // Check credentials
+            if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+                // Store login state in sessionStorage (cleared when browser closes)
+                sessionStorage.setItem('adminLoggedIn', 'true');
+                sessionStorage.setItem('adminLoginTime', Date.now().toString());
+                sessionStorage.setItem('adminUsername', username);
+                
+                // Redirect to dashboard
+                window.location.href = 'admin-dashboard.html';
+            } else {
+                showError('Invalid username or password');
+                document.getElementById('password').value = '';
+                document.getElementById('password').focus();
+            }
+        });
+        
+        // Clear error on input
+        document.getElementById('username').addEventListener('input', hideError);
+        document.getElementById('password').addEventListener('input', hideError);
+        
+        // Check auth status on page load
+        checkAuth();
+        
+        // Logout function (can be called from other pages)
+        function logout() {
+            sessionStorage.removeItem('adminLoggedIn');
+            sessionStorage.removeItem('adminLoginTime');
+            sessionStorage.removeItem('adminUsername');
+        }
+    </script>
+</body>
+</html>
