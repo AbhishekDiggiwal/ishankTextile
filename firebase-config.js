@@ -11,12 +11,14 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+}
 
-// Initialize services
-const auth = firebase.auth();
-const db = firebase.firestore();
-const storage = firebase.storage();
-
-// Export for use in other scripts
-window.firebaseServices = { auth, db, storage };
+// Initialize only the services loaded by the current page. Public pages do not
+// load every Firebase SDK, so each service is optional here.
+window.firebaseServices = {
+    auth: firebase.auth ? firebase.auth() : null,
+    db: firebase.firestore ? firebase.firestore() : null,
+    storage: firebase.storage ? firebase.storage() : null
+};

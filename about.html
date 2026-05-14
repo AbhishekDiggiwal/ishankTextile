@@ -1,743 +1,357 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Us - Ishank Textile | Premium Fabric Manufacturing Since 2003</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="firebase-config.js"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'dark-gray': '#1a1a1a',
-                        'medium-gray': '#6b7280',
-                        'light-gray': '#f3f4f6',
-                        'brand-orange': '#f97316',
-                        'accent-blue': '#2563eb',
-                        'accent-green': '#10b981',
-                    },
-                    animation: {
-                        'fade-in': 'fadeIn 0.6s ease-in-out',
-                        'slide-down': 'slideDown 0.4s ease-out',
-                        'slide-up': 'slideUp 0.4s ease-out',
-                        'slide-left': 'slideLeft 0.4s ease-out',
-                        'slide-right': 'slideRight 0.4s ease-out',
-                        'hover-lift': 'hoverLift 0.3s ease-out',
-                        'pulse-glow': 'pulseGlow 2s ease-in-out infinite',
-                        'float-animation': 'floatAnimation 3s ease-in-out infinite',
-                    },
-                    keyframes: {
-                        fadeIn: {
-                            '0%': { opacity: '0', transform: 'translateY(20px)' },
-                            '100%': { opacity: '1', transform: 'translateY(0)' },
-                        },
-                        slideDown: {
-                            '0%': { transform: 'translateY(-20px)', opacity: '0' },
-                            '100%': { transform: 'translateY(0)', opacity: '1' },
-                        },
-                        slideUp: {
-                            '0%': { transform: 'translateY(20px)', opacity: '0' },
-                            '100%': { transform: 'translateY(0)', opacity: '1' },
-                        },
-                        slideLeft: {
-                            '0%': { transform: 'translateX(30px)', opacity: '0' },
-                            '100%': { transform: 'translateX(0)', opacity: '1' },
-                        },
-                        slideRight: {
-                            '0%': { transform: 'translateX(-30px)', opacity: '0' },
-                            '100%': { transform: 'translateX(0)', opacity: '1' },
-                        },
-                        hoverLift: {
-                            '0%': { transform: 'translateY(0)' },
-                            '100%': { transform: 'translateY(-2px)' },
-                        },
-                        pulseGlow: {
-                            '0%, 100%': { boxShadow: '0 0 20px rgba(249, 115, 22, 0.4)' },
-                            '50%': { boxShadow: '0 0 30px rgba(249, 115, 22, 0.6)' },
-                        },
-                        floatAnimation: {
-                            '0%, 100%': { transform: 'translateY(0px)' },
-                            '50%': { transform: 'translateY(-10px)' },
-                        }
-                    }
-                }
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>About Us - Ishank Textile | Premium Fabric Manufacturing Since 2003</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary-fixed": "#121c26",
+                    "on-surface": "#1a1c1c",
+                    "surface-tint": "#be0728",
+                    "on-primary-fixed-variant": "#92001b",
+                    "on-primary-container": "#ffe8e6",
+                    "surface-container-low": "#f3f3f3",
+                    "on-surface-variant": "#5c403f",
+                    "tertiary-fixed": "#d9e3f1",
+                    "primary": "#aa0021",
+                    "secondary-fixed-dim": "#c0c7d0",
+                    "surface-container": "#eeeeee",
+                    "primary-fixed": "#ffdad8",
+                    "background": "#f9f9f9",
+                    "error-container": "#ffdad6",
+                    "on-error": "#ffffff",
+                    "surface-container-highest": "#e2e2e2",
+                    "surface-container-high": "#e8e8e8",
+                    "on-primary-fixed": "#410007",
+                    "tertiary-container": "#626c78",
+                    "surface-variant": "#e2e2e2",
+                    "secondary-container": "#dce3ed",
+                    "on-secondary": "#ffffff",
+                    "tertiary": "#4a545f",
+                    "secondary-fixed": "#dce3ed",
+                    "secondary": "#585f67",
+                    "on-tertiary-container": "#e3eefc",
+                    "error": "#ba1a1a",
+                    "on-secondary-fixed": "#151c23",
+                    "on-background": "#1a1c1c",
+                    "outline-variant": "#e5bdbb",
+                    "on-error-container": "#93000a",
+                    "inverse-surface": "#2f3131",
+                    "surface-container-lowest": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "on-tertiary": "#ffffff",
+                    "outline": "#906f6e",
+                    "inverse-primary": "#ffb3b0",
+                    "on-secondary-container": "#5e656d",
+                    "surface": "#f9f9f9",
+                    "primary-fixed-dim": "#ffb3b0",
+                    "tertiary-fixed-dim": "#bdc7d5",
+                    "primary-container": "#d11e33",
+                    "on-secondary-fixed-variant": "#40474f",
+                    "inverse-on-surface": "#f1f1f1",
+                    "on-tertiary-fixed-variant": "#3e4853",
+                    "surface-bright": "#f9f9f9",
+                    "surface-dim": "#dadada"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "margin-mobile": "20px",
+                    "stack-sm": "8px",
+                    "section-padding": "100px",
+                    "margin-desktop": "80px",
+                    "stack-md": "16px",
+                    "stack-lg": "32px",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "body-md": ["Rubik"],
+                    "body-lg": ["Rubik"],
+                    "headline-lg-mobile": ["Rubik"],
+                    "label-bold": ["Rubik"],
+                    "headline-md": ["Rubik"],
+                    "headline-lg": ["Rubik"],
+                    "display-lg": ["Rubik"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "label-bold": ["14px", {"lineHeight": "1.2", "letterSpacing": "0", "fontWeight": "600"}],
+                    "headline-md": ["28px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "headline-lg": ["40px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "display-lg": ["56px", {"lineHeight": "1.1", "letterSpacing": "0", "fontWeight": "700"}]
             }
-        }
+          },
+        },
+      }
     </script>
-    <style>
-        /* Modern Base Styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 200, 'GRAD' 0, 'opsz' 24;
         }
-        
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            line-height: 1.6;
-            color: #374151;
-            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-            min-height: 100vh;
-        }
-
-        /* Typography */
-        .heading-display {
-            font-family: 'Playfair Display', Georgia, serif;
-            font-weight: 700;
-            line-height: 1.2;
-            letter-spacing: -0.02em;
-        }
-
-        .text-gradient {
-            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        /* Modern Components */
-        .hero-pattern {
-            background-image: radial-gradient(circle at 20% 80%, rgba(249, 115, 22, 0.1) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(249, 115, 22, 0.05) 0%, transparent 50%), radial-gradient(circle at 50% 50%, rgba(249, 115, 22, 0.03) 0%, transparent 50%);
-            position: absolute;
-            inset: 0;
-        }
-
-        .glass-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.05), inset 0 0 0 1px rgba(255, 255, 255, 0.1);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .glass-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-            animation: shimmer 3s infinite;
-        }
-
-        .premium-badge {
-            background: linear-gradient(135deg, #f97316, #ea580c);
-            color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
-        }
-
-        .timeline-item {
-            position: relative;
-            padding-left: 40px;
-            margin-bottom: 2rem;
-        }
-
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 2px;
-            height: 100%;
-            background: linear-gradient(180deg, #f97316, #ea580c);
-        }
-
-        .timeline-item::after {
-            content: '';
-            position: absolute;
-            left: -5px;
-            top: 8px;
-            width: 12px;
-            height: 12px;
-            background: #f97316;
-            border-radius: 50%;
-            box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.2);
-        }
-
-        .feature-icon {
-            width: 48px;
-            height: 48px;
-            background: linear-gradient(135deg, #f97316, #ea580c);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 20px;
-        }
-
-        .stats-counter {
-            background: linear-gradient(135deg, #1a1a1a 0%, #374151 100%);
-            color: white;
-            border-radius: 50px;
-            font-size: 24px;
-            font-weight: 700;
-            min-width: 60px;
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        .btn-primary {
-            background-color: #f97316;
-            color: white;
-            font-weight: 600;
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.375rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 4px rgba(249, 115, 22, 0.1);
-            border: none;
-            cursor: pointer;
-        }
-        .btn-primary:hover {
-            background-color: #ea580c;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
-        }
-        .btn-secondary {
-            background-color: #1a1a1a;
-            color: white;
-            font-weight: 600;
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.375rem;
-            transition: all 0.3s ease;
-            border: 1px solid #374151;
-            cursor: pointer;
-        }
-        .btn-secondary:hover {
-            background-color: #374151;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        }
-        .glass-btn {
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            position: relative;
-            overflow: hidden;
-        }
-        .glass-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
-            pointer-events: none;
-        }
-        .whatsapp-icon {
-            width: 20px;
-            height: 20px;
-            fill: currentColor;
-        }
-        @keyframes shimmer {
-            0% { transform: rotate(45deg) translate(-200%, -200%); opacity: 0; }
-            50% { opacity: 1; }
-            100% { transform: rotate(45deg) translate(200%, 200%); opacity: 0; }
-        }
-        @keyframes floatAnimation {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-        }
-
-        /* Navigation Styles */
-        .nav-link {
-            position: relative;
-            color: #374151;
-            font-weight: 500;
-            padding: 8px 16px;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            text-decoration: none;
-        }
-
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: 0px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: #f97316;
-            transition: width 0.3s ease;
-        }
-
-        .nav-link:hover {
-            color: #f97316;
-            background: rgba(249, 115, 22, 0.05);
-        }
-
-        .nav-link:hover::after {
-            width: 100%;
+        .textile-overlay {
+            background-image: radial-gradient(circle at 2px 2px, rgba(0,0,0,0.05) 1px, transparent 0);
+            background-size: 24px 24px;
         }
     </style>
+
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
 </head>
-<body class="bg-brand-light">
-    <!-- Navigation Header -->
-    <header class="bg-white border-b border-gray-200 sticky top-0 z-50 backdrop-blur-sm bg-opacity-95">
-        <nav class="container mx-auto px-4 sm:px-6 py-3 sm:py-4">
-            <div class="flex justify-between items-center">
-                <!-- Logo -->
-                <div class="flex items-center space-x-2 sm:space-x-3 animate-fade-in min-w-0 flex-shrink-0">
-                    <div class="w-10 h-10 sm:w-12 sm:h-12 bg-dark-gray rounded-lg flex items-center justify-center shadow-lg">
-                        <span class="text-white font-bold text-lg sm:text-xl">IT</span>
-                    </div>
-                    <div class="hidden sm:block">
-                        <h3 class="text-xl font-bold text-dark-gray">ISHANK</h3>
-                        <p class="text-xs font-semibold text-brand-orange">TEXTILE</p>
-                    </div>
+<body class="bg-background text-on-surface font-body-md textile-overlay">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-surface/80 backdrop-blur-xl border-b border-white/10 shadow-2xl">
+<div class="max-w-[1200px] mx-auto px-lg flex items-center justify-between h-20">
+<div class="font-label-mono text-headline-md font-bold text-primary">ISHANK TEXTILE</div>
+<nav class="hidden md:flex gap-stack-lg items-center">
+<a class="font-body-md text-on-surface-variant hover:text-on-surface transition-colors" href="index.html">Systems</a>
+<a class="font-body-md text-on-surface-variant hover:text-on-surface transition-colors" href="products-catalogue.html">Materials</a>
+<a class="font-body-md text-on-surface-variant hover:text-on-surface transition-colors" href="products-catalogue.html">Inventory</a>
+<a class="font-body-md text-on-surface-variant hover:text-on-surface transition-colors" href="about.html">Logistics</a>
+<a class="font-body-md text-on-surface-variant hover:text-on-surface transition-colors" href="contact.html">Support</a>
+</nav>
+<div class="flex items-center gap-stack-md">
+<div class="hidden lg:block relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="bg-surface-container-high border-none rounded-full py-2 pl-10 pr-4 text-body-sm focus:ring-2 focus:ring-primary" placeholder="Search components..." type="text"/>
+</div>
+<button class="bg-primary-container text-on-primary-container px-6 py-2 rounded-full font-label-bold hover:scale-[1.02] transition-transform duration-150 active:scale-95">Get Quote</button>
+</div>
+</div>
+</header>
+<main class="pt-20">
+<!-- Hero Section: Since 2003 -->
+<section class="relative h-[819px] flex items-center overflow-hidden bg-on-tertiary-fixed">
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover opacity-40 grayscale hover:grayscale-0 transition-all duration-1000" data-alt="A high-angle, cinematic view of a sprawling modern textile factory floor at dusk. Thousands of precision looms are illuminated by focused industrial spot lighting, creating a high-contrast scene of deep charcoals and sharp red highlights. The atmosphere is professional and established, conveying two decades of manufacturing heritage through scale and technological complexity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDN38sfCYsQaSnOc02U9VkqcOg5rlZdMiF84mcaS9hskEkGUXdnfdgAO-P2eBswBd5pOaU7-jRqwNZis_gNMgKdBGG4MZymsK_fcxZpwZTnmdFESkLtAjP6jVsUtYsM6pHwovcDLngMt9BM28XN0RACbrND1MN4vuk9pYlWokRJHCMExsPB7UJ5Fb4Au-8x541YhIrdjExpPt2CDZYDaGPQh22g20DRE8bcswKpv3k53S-QZAFcnZOrqfT_G9_sfqviAK5mLB7-wT4"/>
+</div>
+<div class="max-w-[1200px] mx-auto px-lg relative z-10 w-full">
+<div class="max-w-2xl">
+<span class="inline-block py-1 px-3 bg-primary-container text-on-primary-container text-label-bold rounded-sm mb-stack-md">ESTABLISHED 2003</span>
+<h1 class="font-display-lg text-display-lg text-white mb-stack-md">Engineered for the Next Century of Textiles.</h1>
+<p class="font-body-lg text-body-lg text-secondary-fixed-dim max-w-xl">Ishank Textile has pioneered industrial weaving solutions for over two decades, merging traditional craftsmanship with high-fidelity manufacturing automation.</p>
+</div>
+</div>
+<div class="absolute bottom-0 right-0 p-margin-desktop hidden lg:block">
+<div class="text-right">
+<div class="font-display-lg text-primary text-[120px] leading-none font-bold">21+</div>
+<div class="font-label-bold text-white uppercase">Years of Excellence</div>
+</div>
+</div>
+</section>
+<!-- Our Story / Timeline: Bento Style -->
+<section class="py-section-padding bg-surface">
+<div class="max-w-[1200px] mx-auto px-lg">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<div class="lg:col-span-5">
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-stack-lg">Our Story</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mb-stack-lg">Founded by Sunil Pandiya, Ishank Textile began with a singular vision: to modernize the loom industry without losing the tactile soul of the fabric. What started as a regional workshop has scaled into an international industrial powerhouse.</p>
+<div class="space-y-stack-lg border-l-2 border-primary-fixed pl-stack-lg mt-stack-lg">
+<div class="relative">
+<div class="absolute -left-[41px] top-0 w-4 h-4 rounded-full bg-primary ring-4 ring-background"></div>
+<h4 class="font-label-bold text-primary">2003</h4>
+<p class="font-body-md text-on-surface">Foundation of Ishank Textile by Sunil Pandiya with 10 legacy looms.</p>
+</div>
+<div class="relative">
+<div class="absolute -left-[41px] top-0 w-4 h-4 rounded-full bg-secondary ring-4 ring-background"></div>
+<h4 class="font-label-bold text-on-surface">2012</h4>
+<p class="font-body-md text-on-surface">Digital integration and the first automated inventory tracking rollout.</p>
+</div>
+<div class="relative">
+<div class="absolute -left-[41px] top-0 w-4 h-4 rounded-full bg-secondary ring-4 ring-background"></div>
+<h4 class="font-label-bold text-on-surface">2024</h4>
+<p class="font-body-md text-on-surface">Implementation of digital logistics systems for faster inventory and dispatch visibility.</p>
+</div>
+</div>
+</div>
+<div class="lg:col-span-7 grid grid-cols-2 gap-stack-md">
+<div class="rounded-xl overflow-hidden shadow-xl bg-white border border-surface-container-highest p-stack-lg flex flex-col justify-end min-h-[300px] relative">
+<img class="absolute inset-0 w-full h-full object-cover" data-alt="A professional portrait of Sunil Pandiya, a distinguished industrial leader in his late 50s. He is standing in a brightly lit, modern textile design studio with high-end fabric swatches in the background. The lighting is soft and flattering, emphasizing a mood of authority, heritage, and visionary leadership. The color palette is composed of neutrals with subtle red accents in his attire." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMIv5Ytqq3xAtaDcgx3ujsoghX_n2IrEEAsIIrlwmEcZiKWXzbmUHfbGJLd6aC9ubXXjukl12xxSHiBoESASAqXpAbw_hNlqQ9b5oFDqDU-b_TXEuwuueGvn8Kt2wmdBmnjKd0SAA811axwo08XdoPIW2ZLjHyP4e1HNF382INf-1nY8mdPlXhPQKYHQ37aLntIRLjUD7l9FWFx96kJnln-uttxSQngp4IryWWLAWG_1-UeUuvJV-y7RpIUU1TxUHoOlYRAQjyIXI"/>
+<div class="absolute inset-0 bg-gradient-to-t from-on-surface to-transparent"></div>
+<div class="relative z-10">
+<h3 class="text-white font-headline-md">Sunil Pandiya</h3>
+<p class="text-primary-fixed font-label-bold">Founder &amp; CEO</p>
+</div>
+</div>
+<div class="bg-on-tertiary-fixed rounded-xl p-stack-lg flex flex-col justify-center items-center text-center">
+<span class="material-symbols-outlined text-[64px] text-primary mb-stack-md" style="font-variation-settings: 'FILL' 1;">precision_manufacturing</span>
+<div class="font-display-lg text-white text-headline-lg">100%</div>
+<p class="font-label-bold text-tertiary-fixed-dim">Industrial Precision</p>
+</div>
+<div class="col-span-2 rounded-xl overflow-hidden bg-white border border-surface-container-highest shadow-sm hover:shadow-xl transition-shadow duration-300">
+<div class="p-stack-lg flex items-center gap-stack-lg">
+<div class="p-stack-md bg-secondary-container rounded-full">
+<span class="material-symbols-outlined text-on-secondary-container">history_edu</span>
+</div>
+<div>
+<h4 class="font-headline-md text-on-surface">The Heritage Promise</h4>
+<p class="font-body-md text-on-surface-variant">Maintaining the highest standards of textile integrity for over two decades.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Manufacturing Excellence: Technical Features -->
+<section class="py-section-padding bg-on-tertiary-fixed text-white">
+<div class="max-w-[1200px] mx-auto px-lg">
+<div class="text-center mb-stack-lg">
+<h2 class="font-headline-lg text-headline-lg mb-stack-sm">Manufacturing Excellence</h2>
+<p class="font-body-lg text-tertiary-fixed-dim max-w-2xl mx-auto">Our facilities operate at the intersection of heavy machinery and real-time data analytics.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter mt-stack-lg">
+<!-- Technical Card 1 -->
+<div class="p-stack-lg bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-primary text-headline-lg mb-stack-md">settings_input_component</span>
+<h3 class="font-headline-md mb-stack-sm">Ishank Process v4</h3>
+<p class="font-body-md text-tertiary-fixed-dim">Our proprietary weaving algorithm optimizes tension and thread count in real-time, reducing waste by 18%.</p>
+</div>
+<!-- Technical Card 2 -->
+<div class="p-stack-lg bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-primary text-headline-lg mb-stack-md">inventory_2</span>
+<h3 class="font-headline-md mb-stack-sm">Dynamic Logistics</h3>
+<p class="font-body-md text-tertiary-fixed-dim">Fully integrated supply chain management ensuring zero-bottleneck production cycles for global exports.</p>
+</div>
+<!-- Technical Card 3 -->
+<div class="p-stack-lg bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-primary text-headline-lg mb-stack-md">shield_with_heart</span>
+<h3 class="font-headline-md mb-stack-sm">Quality Assurance</h3>
+<p class="font-body-md text-tertiary-fixed-dim">A 12-point inspection protocol for every square meter of fabric, compliant with international standards.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Certifications & Compliance -->
+<section class="py-section-padding bg-background">
+<div class="max-w-[1200px] mx-auto px-lg">
+<div class="flex flex-col md:flex-row items-end justify-between mb-stack-lg border-b border-surface-container-highest pb-stack-md">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Global Compliance</h2>
+<p class="font-body-md text-on-surface-variant">Validated industrial and tax transparency for seamless international trade.</p>
+</div>
+<div class="flex gap-stack-md mt-stack-md md:mt-0">
+<div class="px-4 py-2 bg-surface-container rounded font-label-bold text-on-surface border border-surface-container-highest">GST REGISTERED</div>
+<div class="px-4 py-2 bg-surface-container rounded font-label-bold text-on-surface border border-surface-container-highest">EXPORT LICENSED</div>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter" id="certificates-container">
+<div class="p-stack-lg bg-white border border-surface-container-highest rounded-xl text-center group hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary text-[40px] mb-stack-sm">verified</span>
+<h4 class="font-label-bold">ISO 9001:2015</h4>
+<p class="text-[12px] text-on-surface-variant uppercase">Quality Management</p>
+</div>
+<div class="p-stack-lg bg-white border border-surface-container-highest rounded-xl text-center group hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary text-[40px] mb-stack-sm">account_balance</span>
+<h4 class="font-label-bold">GST Compliance</h4>
+<p class="text-[12px] text-on-surface-variant uppercase">Tax ID: Available on request</p><a href="javascript:void(0)" id="gst-certificate-link" target="_blank" class="mt-3 inline-block text-primary font-label-bold text-xs uppercase">View Certificate</a>
+</div>
+<div class="p-stack-lg bg-white border border-surface-container-highest rounded-xl text-center group hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary text-[40px] mb-stack-sm">public</span>
+<h4 class="font-label-bold">Import-Export</h4>
+<p class="text-[12px] text-on-surface-variant uppercase">Global Trade Authorization</p><a href="javascript:void(0)" id="import-export-certificate-link" target="_blank" class="mt-3 inline-block text-primary font-label-bold text-xs uppercase">View Certificate</a>
+</div>
+<div class="p-stack-lg bg-white border border-surface-container-highest rounded-xl text-center group hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary text-[40px] mb-stack-sm">eco</span>
+<h4 class="font-label-bold">Environmental</h4>
+<p class="text-[12px] text-on-surface-variant uppercase">Sustainable Sourcing</p>
+</div>
+</div>
+</div>
+<div id="additional-certificates" class="max-w-[1200px] mx-auto px-lg mt-stack-lg grid grid-cols-1 md:grid-cols-3 gap-gutter"></div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest border-t border-white/5 py-xl">
+<div class="max-w-[1200px] mx-auto px-lg grid grid-cols-1 md:grid-cols-4 gap-md">
+<div class="md:col-span-1">
+<div class="font-label-mono text-headline-md text-on-surface font-bold mb-stack-md">ISHANK TEXTILE</div>
+<p class="text-body-sm text-on-surface-variant">The gold standard in textile engineering and industrial weaving since 2003.</p>
+</div>
+<div class="flex flex-col gap-2">
+<h5 class="font-label-bold text-on-surface">Operations</h5>
+<a class="text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="index.html">Manufacturing</a>
+<a class="text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="index.html">Systems</a>
+<a class="text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="about.html">Logistics</a>
+</div>
+<div class="flex flex-col gap-2">
+<h5 class="font-label-bold text-on-surface">Legal</h5>
+<a class="text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="index.html">Privacy Policy</a>
+<a class="text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="index.html">Terms of Service</a>
+<a class="text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="index.html">Compliance</a>
+</div>
+<div class="flex flex-col gap-2">
+<h5 class="font-label-bold text-on-surface">Connect</h5>
+<a class="text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="contact.html">Contact</a>
+<a class="text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="index.html">Environmental</a>
+<div class="mt-stack-md text-body-sm text-on-surface-variant">
+                    © 2024 Ishank Textile. All rights reserved.
                 </div>
+</div>
+</div>
+</footer>
 
-                <!-- Desktop Navigation -->
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="index.html" class="nav-link text-dark-gray hover:text-brand-orange font-medium transition-colors">Home</a>
-                    <a href="about.html" class="nav-link text-brand-orange font-semibold">About</a>
-                    <a href="products-catalogue.html" class="nav-link text-dark-gray hover:text-brand-orange font-medium transition-colors">Products</a>
-                    <a href="contact.html" class="nav-link text-dark-gray hover:text-brand-orange font-medium transition-colors">Contact</a>
-                    
-                    <!-- Quick Actions -->
-                    <div class="flex items-center space-x-2 sm:space-x-3 border-l border-gray-200 pl-4 sm:pl-6">
-                        <!-- Phone Number -->
-                        <a href="tel:9414112197" class="glass-btn flex items-center justify-center space-x-2 text-dark-gray hover:text-brand-orange transition-all duration-300 group min-w-[44px] h-[44px] px-3 rounded-xl backdrop-blur-sm bg-white/70 border border-gray-200/50 hover:bg-brand-orange/10 hover:border-brand-orange/30 hover:shadow-lg hover:shadow-brand-orange/10">
-                            <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 8V5z"></path>
-                            </svg>
-                            <span class="text-sm font-medium hidden xl:block whitespace-nowrap">+91 94141 12197</span>
-                        </a>
-                        
-                        <!-- WhatsApp Button -->
-                        <a href="https://wa.me/9414112197" target="_blank" class="glass-btn flex items-center justify-center space-x-2 bg-green-500/80 hover:bg-green-600/90 text-white min-w-[44px] h-[44px] px-3 rounded-xl backdrop-blur-sm border border-green-400/30 transition-all duration-300 hover:shadow-lg hover:shadow-green-500/20">
-                            <svg class="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0012.04 2zm0 1.67c2.2 0 4.26.86 5.82 2.42a8.225 8.225 0 012.42 5.83c0 4.54-3.7 8.23-8.24 8.23-1.48 0-2.93-.39-4.19-1.15l-.3-.18-.31.08-1.26.33.33-1.22.09-.34-.2-.32a8.188 8.188 0 01-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24M8.53 7.33c-.16 0-.43.06-.66.31-.23.25-.87.86-.87 2.07 0 1.22.89 2.39 1 2.56.12.17 1.76 2.67 4.25 3.73.59.27 1.05.42 1.41.53.59.19 1.13.16 1.56.1.48-.07 1.46-.6 1.67-1.18.21-.58.21-1.07.15-1.18-.07-.1-.23-.16-.48-.27-.25-.14-1.47-.74-1.69-.82-.23-.08-.37-.12-.56.12-.16.25-.64.81-.78.97-.15.17-.29.19-.53.07-.26-.13-1.06-.39-2-1.23-.74-.66-1.23-1.47-1.38-1.72-.12-.24-.01-.39.11-.5.11-.11.27-.29.37-.44.13-.14.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.11-.56-1.35-.77-1.84-.2-.48-.4-.42-.56-.43-.14 0-.3-.01-.47-.01z"/>
-                            </svg>
-                            <span class="text-sm font-medium hidden xl:block whitespace-nowrap">WhatsApp</span>
-                        </a>
-                    </div>
-                    
-                    <button class="glass-btn btn-primary text-sm min-w-[44px] h-[44px] px-4 rounded-xl backdrop-blur-sm border border-brand-orange/30 transition-all duration-300 hover:shadow-lg hover:shadow-brand-orange/20">Get Quote</button>
-                </div>
-                
-                <!-- Mobile Menu Button -->
-                <button class="md:hidden text-dark-gray hover:text-brand-orange transition-colors" onclick="toggleMobileMenu()">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                    </svg>
-                </button>
-            </div>
-            
-            <!-- Mobile Menu -->
-            <div id="mobileMenu" class="hidden md:hidden mt-4 pb-4 animate-slide-down border-t border-gray-200 pt-4">
-                <div class="space-y-2">
-                    <a href="index.html" class="block py-3 px-4 text-dark-gray hover:text-brand-orange hover:bg-brand-orange/5 font-medium transition-all rounded-lg">Home</a>
-                    <a href="about.html" class="block py-3 px-4 text-brand-orange bg-brand-orange/5 font-medium transition-all rounded-lg">About</a>
-                    <a href="products-catalogue.html" class="block py-3 px-4 text-dark-gray hover:text-brand-orange hover:bg-brand-orange/5 font-medium transition-all rounded-lg">Products</a>
-                    <a href="contact.html" class="block py-3 px-4 text-dark-gray hover:text-brand-orange hover:bg-brand-orange/5 font-medium transition-all rounded-lg">Contact</a>
-                </div>
-            </div>
-        </nav>
-    </header>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('button').forEach((button) => {
+      const label = button.textContent.trim().toLowerCase();
+      if (label.includes('quote') || label.includes('contact')) {
+        button.addEventListener('click', () => { window.location.href = 'contact.html'; });
+      }
+      if (label.includes('catalogue') || label.includes('catalog') || label.includes('collection') || label.includes('spec')) {
+        button.addEventListener('click', () => { window.location.href = 'products-catalogue.html'; });
+      }
+      if (label.includes('engineering')) {
+        button.addEventListener('click', () => { window.location.href = 'contact.html'; });
+      }
+    });
+  });
+</script>
 
-    <!-- About Hero Section -->
-    <section class="py-20 bg-gradient-to-br from-dark-gray via-gray-900 to-black text-white">
-        <div class="hero-pattern"></div>
-        <div class="container mx-auto px-6 text-center">
-            <div class="inline-block mb-8">
-                <span class="premium-badge">Since 2003</span>
-            </div>
-            <h1 class="text-4xl md:text-5xl font-bold text-white heading-display mb-6">About <span class="text-gradient">Ishank Textile</span></h1>
-            <p class="text-xl text-gray-300 mb-8 max-w-3xl mx-auto">
-                Two decades of excellence in premium fabric manufacturing, combining tradition with innovation
-            </p>
-        </div>
-    </section>
-
-    <!-- Our Story Section -->
-    <section class="py-20 bg-white">
-        <div class="container mx-auto px-6">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <div>
-                    <h2 class="text-4xl font-bold text-dark-gray heading-display mb-6">Our <span class="text-gradient">Story</span></h2>
-                    <p class="text-lg text-gray-600 mb-6">
-                        Founded in 2003, Ishank Textile began as a vision to revolutionize the fabric manufacturing industry in India. What started as a small operation has grown into a trusted name in premium textiles, serving clients across defense, medical, corporate, and hospitality sectors.
-                    </p>
-                    <p class="text-lg text-gray-600 mb-6">
-                        Our journey has been marked by continuous innovation, unwavering commitment to quality, and deep understanding of our clients' evolving needs. We've invested heavily in modern technology while preserving the craftsmanship that defines exceptional textiles.
-                    </p>
-                    <p class="text-lg text-gray-600 mb-8">
-                        Today, we stand as a testament to what passion, perseverance, and excellence can achieve. Our fabrics don't just meet standards – they set them.
-                    </p>
-                    <div class="flex flex-wrap gap-4">
-                        <div class="text-center">
-                            <div class="stats-counter">20+</div>
-                            <p class="text-gray-600 mt-2">Years Experience</p>
-                        </div>
-                        <div class="text-center">
-                            <div class="stats-counter">500+</div>
-                            <p class="text-gray-600 mt-2">Happy Clients</p>
-                        </div>
-                        <div class="text-center">
-                            <div class="stats-counter">1M+</div>
-                            <p class="text-gray-600 mt-2">Metres Produced</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="glass-card p-8">
-                    <div class="space-y-6">
-                        <div class="timeline-item">
-                            <h3 class="text-xl font-bold text-dark-gray mb-2">2003 - The Beginning</h3>
-                            <p class="text-gray-600">Started with a vision to deliver premium quality fabrics with unmatched color integrity.</p>
-                        </div>
-                        <div class="timeline-item">
-                            <h3 class="text-xl font-bold text-dark-gray mb-2">2010 - Expansion</h3>
-                            <p class="text-gray-600">Expanded operations and introduced advanced dyeing technologies.</p>
-                        </div>
-                        <div class="timeline-item">
-                            <h3 class="text-xl font-bold text-dark-gray mb-2">2015 - Innovation</h3>
-                            <p class="text-gray-600">Pioneered molecular-level color integrity technology in fabric manufacturing.</p>
-                        </div>
-                        <div class="timeline-item">
-                            <h3 class="text-xl font-bold text-dark-gray mb-2">2020 - Excellence</h3>
-                            <p class="text-gray-600">Obtained Import-Export license and GST registration, expanded to international markets.</p>
-                        </div>
-                        <div class="timeline-item">
-                            <h3 class="text-xl font-bold text-dark-gray mb-2">2024 - Leadership</h3>
-                            <p class="text-gray-600">Recognized as industry leader in premium fabric manufacturing.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Manufacturing Excellence Section -->
-    <section class="py-20 bg-light-gray">
-        <div class="container mx-auto px-6">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-dark-gray heading-display mb-6">Manufacturing <span class="text-gradient">Excellence</span></h2>
-                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                    Our state-of-the-art manufacturing facility combines cutting-edge technology with skilled craftsmanship
-                </p>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Technology -->
-                <div class="glass-card p-8 hover:transform hover:scale-105 transition-all duration-300">
-                    <div class="feature-icon mx-auto mb-6">🔬</div>
-                    <h3 class="text-2xl font-bold text-dark-gray mb-4 text-center">Advanced Technology</h3>
-                    <p class="text-gray-600 text-center mb-4">
-                        Computer-controlled dyeing systems with real-time monitoring and precision engineering ensure consistent quality across every metre.
-                    </p>
-                    <ul class="text-gray-600 space-y-2 text-sm">
-                        <li>• Automated dye mixing</li>
-                        <li>• Real-time quality control</li>
-                        <li>• Precision temperature control</li>
-                        <li>• Digital color matching</li>
-                    </ul>
-                </div>
-
-                <!-- Quality Control -->
-                <div class="glass-card p-8 hover:transform hover:scale-105 transition-all duration-300">
-                    <div class="feature-icon mx-auto mb-6">🎯</div>
-                    <h3 class="text-2xl font-bold text-dark-gray mb-4 text-center">Quality Control</h3>
-                    <p class="text-gray-600 text-center mb-4">
-                        Rigorous testing at every stage ensures our fabrics meet and exceed international quality standards.
-                    </p>
-                    <ul class="text-gray-600 space-y-2 text-sm">
-                        <li>• Laboratory testing</li>
-                        <li>• Color fastness verification</li>
-                        <li>• Durability testing</li>
-                        <li>• ISO compliance</li>
-                    </ul>
-                </div>
-
-                <!-- Sustainability -->
-                <div class="glass-card p-8 hover:transform hover:scale-105 transition-all duration-300">
-                    <div class="feature-icon mx-auto mb-6">🌱</div>
-                    <h3 class="text-2xl font-bold text-dark-gray mb-4 text-center">Sustainability</h3>
-                    <p class="text-gray-600 text-center mb-4">
-                        Environmentally responsible manufacturing processes that minimize our ecological footprint.
-                    </p>
-                    <ul class="text-gray-600 space-y-2 text-sm">
-                        <li>• Water recycling systems</li>
-                        <li>• Energy-efficient machinery</li>
-                        <li>• Waste reduction programs</li>
-                        <li>• Eco-friendly dyes</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Our Values Section -->
-    <section class="py-20 bg-white">
-        <div class="container mx-auto px-6">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-dark-gray heading-display mb-6">Our <span class="text-gradient">Values</span></h2>
-                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                    The principles that guide every decision we make and every fabric we produce
-                </p>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="flex items-start space-x-4">
-                    <div class="feature-icon flex-shrink-0">🏆</div>
-                    <div>
-                        <h3 class="text-xl font-bold text-dark-gray mb-2">Excellence</h3>
-                        <p class="text-gray-600">We pursue perfection in every thread, every color, and every metre of fabric we produce.</p>
-                    </div>
-                </div>
-
-                <div class="flex items-start space-x-4">
-                    <div class="feature-icon flex-shrink-0">🤝</div>
-                    <div>
-                        <h3 class="text-xl font-bold text-dark-gray mb-2">Integrity</h3>
-                        <p class="text-gray-600">We build lasting relationships through honesty, transparency, and reliable delivery.</p>
-                    </div>
-                </div>
-
-                <div class="flex items-start space-x-4">
-                    <div class="feature-icon flex-shrink-0">💡</div>
-                    <div>
-                        <h3 class="text-xl font-bold text-dark-gray mb-2">Innovation</h3>
-                        <p class="text-gray-600">We continuously push boundaries to develop new technologies and fabric solutions.</p>
-                    </div>
-                </div>
-
-                <div class="flex items-start space-x-4">
-                    <div class="feature-icon flex-shrink-0">❤️</div>
-                    <div>
-                        <h3 class="text-xl font-bold text-dark-gray mb-2">Passion</h3>
-                        <p class="text-gray-600">Our love for textiles drives us to create fabrics that inspire and perform.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Leadership Section -->
-    <section class="py-20 bg-light-gray">
-        <div class="container mx-auto px-6">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-dark-gray heading-display mb-6">Our <span class="text-gradient">Founder</span></h2>
-                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                    A visionary leader committed to excellence and innovation in textile manufacturing
-                </p>
-            </div>
-            
-            <div class="max-w-md mx-auto">
-                <div class="text-center">
-                    <div class="w-40 h-40 bg-gradient-to-br from-brand-orange to-orange-600 rounded-full mx-auto mb-6 flex items-center justify-center shadow-lg">
-                        <span class="text-white text-5xl font-bold">SP</span>
-                    </div>
-                    <h3 class="text-2xl font-bold text-dark-gray mb-2">Sunil Pandiya</h3>
-                    <p class="text-brand-orange font-semibold mb-4 text-lg">Founder & CEO</p>
-                    <p class="text-gray-600 leading-relaxed">Visionary leader with 20+ years of textile industry experience, driving innovation and excellence since 2003.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Certificates Section -->
-    <section class="py-20 bg-white">
-        <div class="container mx-auto px-6">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-dark-gray heading-display mb-6">Our <span class="text-gradient">Certifications</span></h2>
-                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                    Registered and certified for international trade and domestic compliance
-                </p>
-            </div>
-            
-            <div id="certificates-container" class="max-w-3xl mx-auto">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- GST Certificate -->
-                    <div class="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow">
-                        <div class="flex items-center space-x-4">
-                            <div class="w-12 h-12 bg-brand-orange/10 rounded-lg flex items-center justify-center">
-                                <i class="fas fa-file-invoice text-brand-orange text-xl"></i>
-                            </div>
-                            <div>
-                                <h3 class="font-semibold text-dark-gray">GST Registration</h3>
-                                <a href="#" id="gst-certificate-link" target="_blank" class="text-sm text-brand-orange hover:underline">
-                                    View Certificate →
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Import Export Certificate -->
-                    <div class="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow">
-                        <div class="flex items-center space-x-4">
-                            <div class="w-12 h-12 bg-accent-blue/10 rounded-lg flex items-center justify-center">
-                                <i class="fas fa-globe text-accent-blue text-xl"></i>
-                            </div>
-                            <div>
-                                <h3 class="font-semibold text-dark-gray">Import Export License</h3>
-                                <a href="#" id="import-export-certificate-link" target="_blank" class="text-sm text-accent-blue hover:underline">
-                                    View Certificate →
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div id="additional-certificates" class="mt-6 space-y-4">
-                    <!-- Additional certificates loaded dynamically -->
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="py-20 bg-gradient-to-br from-dark-gray via-gray-900 to-black text-white">
-        <div class="hero-pattern"></div>
-        <div class="container mx-auto px-6 text-center">
-            <h2 class="text-4xl font-bold text-white heading-display mb-6">Partner With <span class="text-gradient">Excellence</span></h2>
-            <p class="text-xl text-gray-300 mb-8 max-w-3xl mx-auto">
-                Experience the Ishank Textile difference – where quality meets innovation in every thread
-            </p>
-            <div class="flex flex-col sm:flex-row gap-6 justify-center">
-                <a href="products-catalogue.html" class="btn-primary text-lg px-8 py-4 rounded-xl">Explore Our Products</a>
-                <a href="contact.html" class="btn-secondary text-lg px-8 py-4 rounded-xl">Get In Touch</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="bg-dark-gray text-white">
-        <div class="container mx-auto px-6 py-12">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <!-- Company Info -->
-                <div class="md:col-span-2">
-                    <h3 class="text-xl font-bold text-brand-orange mb-4">Ishank Textile</h3>
-                    <p class="text-gray-400 mb-4">Manufacturing excellence since 2003</p>
-                    <div class="space-y-2">
-                        <p class="text-gray-400">📍 42, Ist Floor, Heera Panna Market</p>
-                        <p class="text-gray-400">📞 +91 94141 12197</p>
-                        <p class="text-gray-400">✉️ sunilpandiya909@gmail.com</p>
-                    </div>
-                </div>
-                
-                <!-- Quick Links -->
-                <div>
-                    <h4 class="text-lg font-semibold text-white mb-4">Quick Links</h4>
-                    <div class="space-y-2">
-                        <a href="index.html" class="text-gray-400 hover:text-brand-orange transition-colors">Home</a>
-                        <a href="about.html" class="text-gray-400 hover:text-brand-orange transition-colors">About</a>
-                        <a href="products-catalogue.html" class="text-gray-400 hover:text-brand-orange transition-colors">Products</a>
-                        <a href="contact.html" class="text-gray-400 hover:text-brand-orange transition-colors">Contact</a>
-                    </div>
-                </div>
-                
-                <!-- Services -->
-                <div>
-                    <h4 class="text-lg font-semibold text-white mb-4">Services</h4>
-                    <div class="space-y-2">
-                        <p class="text-gray-400">• Vat-Dyed Fabrics</p>
-                        <p class="text-gray-400">• Fiber-Dyed Fabrics</p>
-                        <p class="text-gray-400">• Custom Solutions</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="border-t border-gray-800 mt-8 pt-8 text-center">
-                <p class="text-gray-400 flex items-center justify-center gap-2">
-                    © 2024 Ishank Textile. All rights reserved. | Premium Fabric Manufacturing Since 2003
-                    <a href="admin-login.html" class="text-brand-orange hover:text-white transition-colors ml-2" title="Admin Login">
-                        <i class="fas fa-lock"></i>
-                    </a>
-                </p>
-            </div>
-        </div>
-    </footer>
-
-    <script>
-        // Mobile Menu Toggle
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobileMenu');
-            if (menu) {
-                menu.classList.toggle('hidden');
-            }
+<script>
+  async function loadCertificates() {
+    if (!window.firebase || !firebase.firestore) return;
+    try {
+      const db = firebase.firestore();
+      const snapshot = await db.collection('certificates').get();
+      const certificates = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      certificates.forEach((cert) => {
+        if (cert.type === 'gst') {
+          const link = document.getElementById('gst-certificate-link');
+          if (link) link.href = cert.url;
+        } else if (cert.type === 'import-export') {
+          const link = document.getElementById('import-export-certificate-link');
+          if (link) link.href = cert.url;
+        } else {
+          const container = document.getElementById('additional-certificates');
+          if (!container) return;
+          const card = document.createElement('div');
+          card.className = 'p-stack-lg bg-white border border-surface-container-highest rounded-xl text-center group hover:border-primary transition-colors';
+          card.innerHTML = '<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary text-[40px] mb-stack-sm">workspace_premium</span>' +
+            '<h4 class="font-label-bold">' + (cert.name || 'Certificate') + '</h4>' +
+            '<a href="' + cert.url + '" target="_blank" class="mt-3 inline-block text-primary font-label-bold text-xs uppercase">View Certificate</a>';
+          container.appendChild(card);
         }
-
-        // Smooth scroll animations
-        document.addEventListener('DOMContentLoaded', function() {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('animate-fade-in');
-                    }
-                });
-            }, {
-                threshold: 0.1
-            });
-
-            // Observe elements with animation
-            document.querySelectorAll('.glass-card, .timeline-item').forEach(el => {
-                observer.observe(el);
-            });
-        });
-
-        // Firebase instance
-        const db = firebase.firestore();
-
-        // Load Certificates
-        async function loadCertificates() {
-            try {
-                const snapshot = await db.collection('certificates').get();
-                const certificates = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                
-                certificates.forEach(cert => {
-                    if (cert.type === 'gst' && cert.url) {
-                        document.getElementById('gst-certificate-link').href = cert.url;
-                    } else if (cert.type === 'import-export' && cert.url) {
-                        document.getElementById('import-export-certificate-link').href = cert.url;
-                    } else if (cert.url) {
-                        // Additional certificates
-                        const container = document.getElementById('additional-certificates');
-                        const certHtml = `
-                            <div class="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow">
-                                <div class="flex items-center space-x-4">
-                                    <div class="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
-                                        <i class="fas fa-certificate text-gray-600 text-xl"></i>
-                                    </div>
-                                    <div>
-                                        <h3 class="font-semibold text-dark-gray">${cert.name}</h3>
-                                        <a href="${cert.url}" target="_blank" class="text-sm text-brand-orange hover:underline">
-                                            View Certificate →
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        `;
-                        container.insertAdjacentHTML('beforeend', certHtml);
-                    }
-                });
-            } catch (error) {
-                console.error('Error loading certificates:', error);
-            }
-        }
-
-        // Load certificates on page load
-        document.addEventListener('DOMContentLoaded', loadCertificates);
-    </script>
-</body>
-</html>
+      });
+    } catch (error) {
+      console.error('Error loading certificates:', error);
+    }
+  }
+  document.addEventListener('DOMContentLoaded', loadCertificates);
+</script>
+</body></html>

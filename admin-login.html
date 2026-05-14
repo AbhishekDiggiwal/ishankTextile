@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Login - Ishank Textile</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -16,12 +16,12 @@
             theme: {
                 extend: {
                     colors: {
-                        'brand-orange': '#f97316',
-                        'brand-orange-dark': '#ea580c',
-                        'dark-gray': '#1f2937',
+                        'brand-orange': '#d11e33',
+                        'brand-orange-dark': '#aa0021',
+                        'dark-gray': '#121c26',
                     },
                     fontFamily: {
-                        'sans': ['Inter', 'sans-serif'],
+                        'sans': ['Rubik', 'sans-serif'],
                     }
                 }
             }
@@ -32,12 +32,15 @@
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 16px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.14);
         }
         
         .login-bg {
-            background: linear-gradient(135deg, #1f2937 0%, #374151 50%, #1f2937 100%);
+            background:
+                radial-gradient(circle at 2px 2px, rgba(255,255,255,0.035) 1px, transparent 0),
+                linear-gradient(135deg, #121c26 0%, #232a31 50%, #121c26 100%);
+            background-size: 4px 4px, auto;
         }
         
         .form-input {
@@ -45,8 +48,8 @@
             border: 2px solid #e5e7eb;
         }
         .form-input:focus {
-            border-color: #f97316;
-            box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
+            border-color: #aa0021;
+            box-shadow: 0 0 0 3px rgba(170, 0, 33, 0.12);
         }
         
         .shake {
@@ -73,7 +76,7 @@
     <div class="w-full max-w-md">
         <!-- Logo Section -->
         <div class="text-center mb-8">
-            <div class="inline-flex items-center justify-center w-16 h-16 bg-brand-orange rounded-2xl mb-4 shadow-lg">
+            <div class="inline-flex items-center justify-center w-16 h-16 bg-brand-orange rounded-lg mb-4 shadow-lg">
                 <span class="text-white font-bold text-2xl">IT</span>
             </div>
             <h1 class="text-2xl font-bold text-white mb-2">Admin Login</h1>

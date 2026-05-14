@@ -1,829 +1,488 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us - Ishank Textile | Premium Fabric Manufacturing</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="firebase-config.js"></script>
-    <script>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Contact - Ishank Textile | Premium Fabric Manufacturing</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
         tailwind.config = {
+            darkMode: "class",
             theme: {
                 extend: {
-                    colors: {
-                        'dark-gray': '#1a1a1a',
-                        'medium-gray': '#6b7280',
-                        'light-gray': '#f3f4f6',
-                        'brand-orange': '#f97316',
+                    "colors": {
+                        "on-tertiary-fixed": "#121c26",
+                        "on-surface": "#1a1c1c",
+                        "surface-tint": "#be0728",
+                        "on-primary-fixed-variant": "#92001b",
+                        "on-primary-container": "#ffe8e6",
+                        "surface-container-low": "#f3f3f3",
+                        "on-surface-variant": "#5c403f",
+                        "tertiary-fixed": "#d9e3f1",
+                        "primary": "#aa0021",
+                        "secondary-fixed-dim": "#c0c7d0",
+                        "surface-container": "#eeeeee",
+                        "primary-fixed": "#ffdad8",
+                        "background": "#f9f9f9",
+                        "error-container": "#ffdad6",
+                        "on-error": "#ffffff",
+                        "surface-container-highest": "#e2e2e2",
+                        "surface-container-high": "#e8e8e8",
+                        "on-primary-fixed": "#410007",
+                        "tertiary-container": "#626c78",
+                        "surface-variant": "#e2e2e2",
+                        "secondary-container": "#dce3ed",
+                        "on-secondary": "#ffffff",
+                        "tertiary": "#4a545f",
+                        "secondary-fixed": "#dce3ed",
+                        "secondary": "#585f67",
+                        "on-tertiary-container": "#e3eefc",
+                        "error": "#ba1a1a",
+                        "on-secondary-fixed": "#151c23",
+                        "on-background": "#1a1c1c",
+                        "outline-variant": "#e5bdbb",
+                        "on-error-container": "#93000a",
+                        "inverse-surface": "#2f3131",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "outline": "#906f6e",
+                        "inverse-primary": "#ffb3b0",
+                        "on-secondary-container": "#5e656d",
+                        "surface": "#f9f9f9",
+                        "primary-fixed-dim": "#ffb3b0",
+                        "tertiary-fixed-dim": "#bdc7d5",
+                        "primary-container": "#d11e33",
+                        "on-secondary-fixed-variant": "#40474f",
+                        "inverse-on-surface": "#f1f1f1",
+                        "on-tertiary-fixed-variant": "#3e4853",
+                        "surface-bright": "#f9f9f9",
+                        "surface-dim": "#dadada"
                     },
-                    animation: {
-                        'fade-in': 'fadeIn 0.5s ease-in-out',
-                        'slide-down': 'slideDown 0.3s ease-out',
-                        'hover-lift': 'hoverLift 0.3s ease-out',
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
                     },
-                    keyframes: {
-                        fadeIn: {
-                            '0%': { opacity: '0' },
-                            '100%': { opacity: '1' },
-                        },
-                        slideDown: {
-                            '0%': { transform: 'translateY(-10px)', opacity: '0' },
-                            '100%': { transform: 'translateY(0)', opacity: '1' },
-                        },
-                        hoverLift: {
-                            '0%': { transform: 'translateY(0)' },
-                            '100%': { transform: 'translateY(-2px)' },
-                        }
+                    "spacing": {
+                        "margin-mobile": "20px",
+                        "stack-sm": "8px",
+                        "section-padding": "100px",
+                        "margin-desktop": "80px",
+                        "stack-md": "16px",
+                        "stack-lg": "32px",
+                        "gutter": "24px",
+                        "container-max": "1200px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Rubik"],
+                        "body-lg": ["Rubik"],
+                        "headline-lg-mobile": ["Rubik"],
+                        "label-bold": ["Rubik"],
+                        "headline-md": ["Rubik"],
+                        "headline-lg": ["Rubik"],
+                        "display-lg": ["Rubik"],
+                        "label-mono": ["Space Mono", "monospace"]
+                    },
+                    "fontSize": {
+                        "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-lg-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "label-bold": ["14px", {"lineHeight": "1.2", "letterSpacing": "0", "fontWeight": "600"}],
+                        "headline-md": ["28px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "headline-lg": ["40px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "display-lg": ["56px", {"lineHeight": "1.1", "letterSpacing": "0", "fontWeight": "700"}]
                     }
-                }
-            }
+                },
+            },
         }
     </script>
-    <style>
-        .btn-primary {
-            background-color: #f97316;
-            color: white;
-            font-weight: 600;
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.375rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 4px rgba(249, 115, 22, 0.1);
-        }
-        .btn-primary:hover {
-            background-color: #ea580c;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
-        }
-        .btn-secondary {
-            background-color: transparent;
-            color: #f97316;
-            font-weight: 600;
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.375rem;
-            transition: all 0.3s ease;
-            border: 2px solid #f97316;
-        }
-        .btn-secondary:hover {
-            background-color: #f97316;
-            color: white;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
-        }
-        .nav-link {
-            position: relative;
-            color: #374151;
-            font-weight: 500;
-            padding: 8px 16px;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            text-decoration: none;
-        }
+<style>.material-symbols-outlined {
+    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24
+    }
+.fabric-texture {
+    background-image: linear-gradient(rgba(249, 249, 249, 0.95), rgba(249, 249, 249, 0.95)), url(https://lh3.googleusercontent.com/aida-public/AB6AXuD3QHDUktuVszWcAERSqLSlgBzE0Fon1cAZPyW0pRfhAKvAuaCwJl6XKn1uN-MWK8uc02h7MMcgpMFMYsEdLnBGMR5PJ0Ot9HmalzgJtL0cIBgBvdJ2qiVA-wpgnFO1G4rvweY_U3AmY5w3oeyoppBaegbo7b5cTJ9yeoVu5iWKxqJA7gLLVVP4kF3-tieDqRcD_mek-FzhOihbHI0jIK5fhvbi1JPE-CxdX-KHgTYm0wB3GhduR1MHk8zsvtjjeRn-yYNcgRVpGQ4);
+    background-blend-mode: overlay
+    }</style>
 
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: 0px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: #f97316;
-            transition: width 0.3s ease;
-        }
-
-        .nav-link:hover {
-            color: #f97316;
-            background: rgba(249, 115, 22, 0.05);
-        }
-
-        .nav-link:hover::after {
-            width: 100%;
-        }
-        .card-hover {
-            transition: all 0.3s ease;
-        }
-        .card-hover:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
-        }
-        .glass-btn {
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            position: relative;
-            overflow: hidden;
-        }
-        .glass-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
-            pointer-events: none;
-        }
-        .whatsapp-icon {
-            width: 20px;
-            height: 20px;
-            fill: currentColor;
-        }
-        .form-input {
-            transition: all 0.3s ease;
-        }
-        .form-input:focus {
-            outline: none;
-            border-color: #f97316;
-            box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
-        }
-    </style>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
 </head>
-<body class="bg-brand-light">
-    <!-- Modern Navigation Header -->
-    <header class="bg-white border-b border-gray-200 sticky top-0 z-50 backdrop-blur-sm bg-opacity-95">
-        <nav class="container mx-auto px-4 sm:px-6 py-3 sm:py-4">
-            <div class="flex justify-between items-center">
-                <!-- Modern Logo -->
-                <div class="flex items-center space-x-2 sm:space-x-3 animate-fade-in min-w-0 flex-shrink-0">
-                    <div class="w-10 h-10 sm:w-12 sm:h-12 bg-dark-gray rounded-lg flex items-center justify-center shadow-lg">
-                        <span class="text-white font-bold text-lg sm:text-xl tracking-tight">IT</span>
-                    </div>
-                    <div class="min-w-0">
-                        <h1 class="text-lg sm:text-xl font-bold text-dark-gray tracking-tight truncate">ISHANK</h1>
-                        <p class="text-xs font-semibold text-brand-orange tracking-wider">TEXTILE</p>
-                    </div>
-                </div>
-                
-                <!-- Desktop Navigation -->
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="index.html" class="nav-link text-dark-gray hover:text-brand-orange font-medium transition-colors">Home</a>
-                    <a href="about.html" class="nav-link text-dark-gray hover:text-brand-orange font-medium transition-colors">About</a>
-                    <a href="products-catalogue.html" class="nav-link text-dark-gray hover:text-brand-orange font-medium transition-colors">Products</a>
-                    <a href="#" class="nav-link text-brand-orange font-semibold">Contact</a>
-                    
-                    <!-- Quick Actions -->
-                    <div class="flex items-center space-x-2 sm:space-x-3 border-l border-gray-200 pl-4 sm:pl-6">
-                        <!-- Phone Number -->
-                        <a href="tel:9414112197" class="glass-btn flex items-center justify-center space-x-2 text-dark-gray hover:text-brand-orange transition-all duration-300 group min-w-[44px] h-[44px] px-3 rounded-xl backdrop-blur-sm bg-white/70 border border-gray-200/50 hover:bg-brand-orange/10 hover:border-brand-orange/30 hover:shadow-lg hover:shadow-brand-orange/10">
-                            <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 8V5z"></path>
-                            </svg>
-                            <span class="text-sm font-medium hidden xl:block whitespace-nowrap">+91 94141 12197</span>
-                        </a>
-                        
-                        <!-- WhatsApp Button -->
-                        <a href="https://wa.me/9414112197" target="_blank" class="glass-btn flex items-center justify-center space-x-2 bg-green-500/80 hover:bg-green-600/90 text-white min-w-[44px] h-[44px] px-3 rounded-xl backdrop-blur-sm border border-green-400/30 transition-all duration-300 hover:shadow-lg hover:shadow-green-500/20">
-                            <svg class="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0012.04 2zm0 1.67c2.2 0 4.26.86 5.82 2.42a8.225 8.225 0 012.42 5.83c0 4.54-3.7 8.23-8.24 8.23-1.48 0-2.93-.39-4.19-1.15l-.3-.18-.31.08-1.26.33.33-1.22.09-.34-.2-.32a8.188 8.188 0 01-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24M8.53 7.33c-.16 0-.43.06-.66.31-.23.25-.87.86-.87 2.07 0 1.22.89 2.39 1 2.56.12.17 1.76 2.67 4.25 3.73.59.27 1.05.42 1.41.53.59.19 1.13.16 1.56.1.48-.07 1.46-.6 1.67-1.18.21-.58.21-1.07.15-1.18-.07-.1-.23-.16-.48-.27-.25-.14-1.47-.74-1.69-.82-.23-.08-.37-.12-.56.12-.16.25-.64.81-.78.97-.15.17-.29.19-.53.07-.26-.13-1.06-.39-2-1.23-.74-.66-1.23-1.47-1.38-1.72-.12-.24-.01-.39.11-.5.11-.11.27-.29.37-.44.13-.14.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.11-.56-1.35-.77-1.84-.2-.48-.4-.42-.56-.43-.14 0-.3-.01-.47-.01z"/>
-                            </svg>
-                            <span class="text-sm font-medium hidden xl:block whitespace-nowrap">WhatsApp</span>
-                        </a>
-                    </div>
-                    
-                    <button class="glass-btn btn-primary text-sm min-w-[44px] h-[44px] px-4 rounded-xl backdrop-blur-sm border border-brand-orange/30 transition-all duration-300 hover:shadow-lg hover:shadow-brand-orange/20">Get Quote</button>
-                </div>
-                
-                <!-- Modern Mobile Menu Button -->
-                <button class="md:hidden text-dark-gray hover:text-brand-orange transition-colors" onclick="toggleMobileMenu()">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                    </svg>
-                </button>
-            </div>
-            
-            <!-- Mobile Menu -->
-            <div id="mobileMenu" class="hidden md:hidden mt-4 pb-4 animate-slide-down border-t border-gray-200 pt-4">
-                <div class="space-y-2">
-                    <a href="index.html" class="block py-3 px-4 text-dark-gray hover:text-brand-orange hover:bg-brand-orange/5 font-medium transition-all rounded-lg">Home</a>
-                    <a href="about.html" class="block py-3 px-4 text-dark-gray hover:text-brand-orange hover:bg-brand-orange/5 font-medium transition-all rounded-lg">About</a>
-                    <a href="products-catalogue.html" class="block py-3 px-4 text-dark-gray hover:text-brand-orange hover:bg-brand-orange/5 font-medium transition-all rounded-lg">Products</a>
-                    <a href="#" class="block py-3 px-4 text-brand-orange bg-brand-orange/5 font-medium transition-all rounded-lg">Contact</a>
-                </div>
-                
-                <!-- Mobile Quick Actions -->
-                <div class="mt-6 space-y-3">
-                    <a href="tel:9414112197" class="flex items-center justify-center space-x-2 glass-btn text-dark-gray hover:text-brand-orange transition-all duration-300 min-h-[44px] px-4 rounded-xl backdrop-blur-sm bg-white/70 border border-gray-200/50 hover:bg-brand-orange/10 hover:border-brand-orange/30">
-                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 8V5z"></path>
-                        </svg>
-                        <span class="font-medium">Call +91 94141 12197</span>
-                    </a>
-                    <a href="https://wa.me/9414112197" target="_blank" class="flex items-center justify-center space-x-2 glass-btn bg-green-500/80 hover:bg-green-600/90 text-white min-h-[44px] px-4 rounded-xl backdrop-blur-sm border border-green-400/30 transition-all duration-300">
-                        <svg class="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0012.04 2zm0 1.67c2.2 0 4.26.86 5.82 2.42a8.225 8.225 0 012.42 5.83c0 4.54-3.7 8.23-8.24 8.23-1.48 0-2.93-.39-4.19-1.15l-.3-.18-.31.08-1.26.33.33-1.22.09-.34-.2-.32a8.188 8.188 0 01-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24M8.53 7.33c-.16 0-.43.06-.66.31-.23.25-.87.86-.87 2.07 0 1.22.89 2.39 1 2.56.12.17 1.76 2.67 4.25 3.73.59.27 1.05.42 1.41.53.59.19 1.13.16 1.56.1.48-.07 1.46-.6 1.67-1.18.21-.58.21-1.07.15-1.18-.07-.1-.23-.16-.48-.27-.25-.14-1.47-.74-1.69-.82-.23-.08-.37-.12-.56.12-.16.25-.64.81-.78.97-.15.17-.29.19-.53.07-.26-.13-1.06-.39-2-1.23-.74-.66-1.23-1.47-1.38-1.72-.12-.24-.01-.39.11-.5.11-.11.27-.29.37-.44.13-.14.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.11-.56-1.35-.77-1.84-.2-.48-.4-.42-.56-.43-.14 0-.3-.01-.47-.01z"/>
-                        </svg>
-                        <span class="font-medium">WhatsApp</span>
-                    </a>
-                    <button class="glass-btn btn-primary min-h-[44px] px-4 rounded-xl backdrop-blur-sm border border-brand-orange/30 w-full">Get Quote</button>
-                </div>
-            </div>
-        </nav>
-    </header>
-
-    
-    <!-- Modern Page Header -->
-    <section class="relative bg-gradient-to-br from-dark-gray via-gray-900 to-black text-white overflow-hidden">
-        <div class="absolute inset-0 bg-gradient-to-t from-brand-orange/10 to-transparent"></div>
-        <div class="container mx-auto px-6 py-24 relative z-10 text-center">
-            <div class="inline-block px-4 py-2 bg-brand-orange/20 border border-brand-orange/30 rounded-full mb-6">
-                <span class="text-brand-orange font-semibold text-sm">Get in Touch</span>
-            </div>
-            <h1 class="text-5xl md:text-6xl font-bold mb-6 leading-tight">
-                Contact <span class="text-brand-orange">Us</span>
-            </h1>
-            <p class="text-xl mb-8 text-gray-300 leading-relaxed max-w-3xl mx-auto">
-                Reach out to us for premium fabric solutions, bulk orders, or any inquiries about our manufacturing capabilities.
-            </p>
-        </div>
-    </section>
-
-    <!-- Contact Form & Information Section -->
-    <section class="py-20 bg-light-gray">
-        <div class="container mx-auto px-6">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                <!-- Contact Form -->
-                <div class="animate-fade-in">
-                    <div class="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
-                        <h2 class="text-2xl font-bold text-dark-gray mb-6">Send Us a Message</h2>
-                        <form id="contactForm" class="space-y-6">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div>
-                                    <label for="firstName" class="block text-sm font-medium text-dark-gray mb-2">First Name *</label>
-                                    <input 
-                                        type="text" 
-                                        id="firstName" 
-                                        name="firstName" 
-                                        required
-                                        class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-orange/20 bg-white/70 backdrop-blur-sm"
-                                        placeholder="John"
-                                    >
-                                </div>
-                                <div>
-                                    <label for="lastName" class="block text-sm font-medium text-dark-gray mb-2">Last Name *</label>
-                                    <input 
-                                        type="text" 
-                                        id="lastName" 
-                                        name="lastName" 
-                                        required
-                                        class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-orange/20 bg-white/70 backdrop-blur-sm"
-                                        placeholder="Doe"
-                                    >
-                                </div>
-                            </div>
-                            
-                            <div>
-                                <label for="email" class="block text-sm font-medium text-dark-gray mb-2">Email Address *</label>
-                                <input 
-                                    type="email" 
-                                    id="email" 
-                                    name="email" 
-                                    required
-                                    class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-orange/20 bg-white/70 backdrop-blur-sm"
-                                    placeholder="john.doe@example.com"
-                                >
-                            </div>
-                            
-                            <div>
-                                <label for="phone" class="block text-sm font-medium text-dark-gray mb-2">Phone Number</label>
-                                <input 
-                                    type="tel" 
-                                    id="phone" 
-                                    name="phone"
-                                    class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-orange/20 bg-white/70 backdrop-blur-sm"
-                                    placeholder="+91 98765 43210"
-                                >
-                            </div>
-                            
-                            <div>
-                                <label for="subject" class="block text-sm font-medium text-dark-gray mb-2">Subject *</label>
-                                <select 
-                                    id="subject" 
-                                    name="subject" 
-                                    required
-                                    class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-orange/20 bg-white/70 backdrop-blur-sm"
-                                >
-                                    <option value="">Select a subject</option>
-                                    <option value="general">General Inquiry</option>
-                                    <option value="quote">Request Quote</option>
-                                    <option value="bulk">Bulk Order</option>
-                                    <option value="catalogue">Request Catalogue</option>
-                                    <option value="technical">Technical Support</option>
-                                    <option value="partnership">Business Partnership</option>
-                                </select>
-                            </div>
-
-                            <!-- Product Selection -->
-                            <div id="product-selection-container" class="hidden">
-                                <label for="interestedProduct" class="block text-sm font-medium text-dark-gray mb-2">
-                                    Interested Product <span class="text-brand-orange">*</span>
-                                </label>
-                                <select 
-                                    id="interestedProduct" 
-                                    name="interestedProduct"
-                                    class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-orange/20 bg-white/70 backdrop-blur-sm"
-                                >
-                                    <option value="">Select a product</option>
-                                    <!-- Products will be loaded dynamically -->
-                                </select>
-                                <p class="text-xs text-gray-500 mt-1">Required for quote and bulk order requests</p>
-                            </div>
-
-                            <div>
-                                <label for="quantity" class="block text-sm font-medium text-dark-gray mb-2">Quantity (metres)</label>
-                                <input 
-                                    type="number" 
-                                    id="quantity" 
-                                    name="quantity"
-                                    min="1"
-                                    class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-orange/20 bg-white/70 backdrop-blur-sm"
-                                    placeholder="e.g., 500"
-                                >
-                            </div>
-                            
-                            <div>
-                                <label for="message" class="block text-sm font-medium text-dark-gray mb-2">Message *</label>
-                                <textarea 
-                                    id="message" 
-                                    name="message" 
-                                    rows="5" 
-                                    required
-                                    class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-orange/20 bg-white/70 backdrop-blur-sm resize-none"
-                                    placeholder="Tell us about your requirements..."
-                                ></textarea>
-                            </div>
-                            
-                            <div class="flex items-start">
-                                <input 
-                                    type="checkbox" 
-                                    id="whatsappUpdates" 
-                                    name="whatsappUpdates"
-                                    class="mt-1 w-4 h-4 text-brand-orange border-gray-300 rounded focus:ring-brand-orange"
-                                >
-                                <label for="whatsappUpdates" class="ml-2 text-sm text-medium-gray">
-                                    I'd like to receive updates via WhatsApp
-                                </label>
-                            </div>
-                            
-                            <button type="submit" class="glass-btn btn-primary w-full py-4 text-lg font-semibold rounded-xl backdrop-blur-sm border border-brand-orange/30 hover:shadow-lg hover:shadow-brand-orange/20 transition-all duration-300">
-                                Send Message
-                            </button>
-                        </form>
-                    </div>
-                </div>
-                
-                <!-- Contact Information -->
-                <div class="space-y-8 animate-fade-in">
-                    <!-- Direct Contact -->
-                    <div class="bg-white rounded-2xl shadow-xl p-8 border border-gray-100 card-hover">
-                        <h3 class="text-xl font-bold text-dark-gray mb-6 flex items-center">
-                            <svg class="w-6 h-6 text-brand-orange mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-                            </svg>
-                            Direct Contact
+<body class="bg-background text-on-background font-body-md selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-surface/80 backdrop-blur-xl border-b border-white/10 shadow-2xl">
+<div class="max-w-[1200px] mx-auto px-6 flex items-center justify-between h-20">
+<div class="font-label-mono text-headline-md font-bold text-primary">ISHANK TEXTILE</div>
+<div class="hidden md:flex items-center gap-stack-lg">
+<a class="font-body-md text-on-surface-variant hover:text-on-surface transition-colors" href="index.html">Systems</a>
+<a class="font-body-md text-on-surface-variant hover:text-on-surface transition-colors" href="products-catalogue.html">Materials</a>
+<a class="font-body-md text-on-surface-variant hover:text-on-surface transition-colors" href="products-catalogue.html">Inventory</a>
+<a class="font-body-md text-on-surface-variant hover:text-on-surface transition-colors" href="about.html">Logistics</a>
+<a class="font-body-md text-primary border-b-2 border-primary pb-1" href="contact.html">Support</a>
+</div>
+<div class="flex items-center gap-stack-md">
+<button class="hidden lg:block bg-primary-container text-on-primary-container px-stack-lg py-2 font-label-bold rounded-lg hover:scale-[1.02] transition-transform duration-150 active:scale-95">Get Quote</button>
+<img alt="Operator Profile" class="w-10 h-10 rounded-full border-2 border-primary/20" data-alt="A professional portrait of a senior industrial manufacturing operator in a clean, modern factory environment. The lighting is crisp and technical, highlighting textures of professional attire. The background features high-end textile machinery with a soft bokeh effect, reinforcing a sense of industrial expertise and operational authority." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBttmFY720dEWm72KoEOkG0yqwXnYITVxW6HvH1ol-JkhS_oU_vfLtRXg26u4ZfggfhVhNu0UOIKTLig_BOURJoDSd5_L28jiJvbernnEFdLEGDigiNgbZ2R5wqstNDOf4qiYrPjUTdfmI9WK7Vb9zcnnKIsa7_0-0Vo3bn-uVQEiIvdOVKELX0UZMWo4NMLTeRk84emkWWppLgkqSnvY6suUsbLMeLZ545kOsnxLCXQSOrw1RQHWFRfEKEPn1QRsFTDZ23j-FlTtM"/>
+</div>
+</div>
+</nav>
+<main class="pt-24 pb-section-padding">
+<!-- Hero Section -->
+<header class="max-w-[1200px] mx-auto px-6 mt-16 mb-stack-lg">
+<div class="max-w-2xl">
+<h1 class="font-display-lg text-display-lg text-on-surface mb-stack-sm uppercase">Industrial Support at Scale</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Direct support for quotations, fabric requirements, bulk orders, and manufacturing inquiries. Connect with the Ishank Textile team in Bhilwara.</p>
+</div>
+</header>
+<div class="max-w-[1200px] mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Left: Quotation Inquiry Form -->
+<section class="lg:col-span-7 bg-surface-container-lowest rounded-xl p-stack-lg shadow-[0px_4px_20px_rgba(0,0,0,0.05)] border border-surface-container-high">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-stack-md flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="settings_input_component">settings_input_component</span>
+                    Quotation Inquiry
+                </h2>
+<form id="contactForm" class="space-y-stack-md">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-stack-md">
+<div class="flex flex-col gap-1">
+<label class="font-label-bold text-on-surface-variant uppercase text-xs" for="firstName">First Name</label>
+<input class="bg-surface border-surface-variant focus:border-primary focus:ring-1 focus:ring-primary rounded-lg p-3 outline-none transition-all" id="firstName" name="firstName" placeholder="Abhishek" required type="text"/>
+</div>
+<div class="flex flex-col gap-1">
+<label class="font-label-bold text-on-surface-variant uppercase text-xs" for="lastName">Last Name / Company</label>
+<input class="bg-surface border-surface-variant focus:border-primary focus:ring-1 focus:ring-primary rounded-lg p-3 outline-none transition-all" id="lastName" name="lastName" placeholder="Diggiwal Textiles" required type="text"/>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-stack-md">
+<div class="flex flex-col gap-1">
+<label class="font-label-bold text-on-surface-variant uppercase text-xs" for="email">Email</label>
+<input class="bg-surface border-surface-variant focus:border-primary focus:ring-1 focus:ring-primary rounded-lg p-3 outline-none transition-all" id="email" name="email" placeholder="buyer@company.com" required type="email"/>
+</div>
+<div class="flex flex-col gap-1">
+<label class="font-label-bold text-on-surface-variant uppercase text-xs" for="phone">Phone</label>
+<input class="bg-surface border-surface-variant focus:border-primary focus:ring-1 focus:ring-primary rounded-lg p-3 outline-none transition-all" id="phone" name="phone" placeholder="+91 94141 12197" type="tel"/>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<label class="font-label-bold text-on-surface-variant uppercase text-xs" for="subject">Inquiry Type</label>
+<select class="bg-surface border-surface-variant focus:border-primary focus:ring-1 focus:ring-primary rounded-lg p-3 outline-none transition-all" id="subject" name="subject" required>
+<option value="">Select inquiry type</option>
+<option value="quote">Request Quote</option>
+<option value="bulk">Bulk Order</option>
+<option value="technical">Technical Fabric Consultation</option>
+<option value="general">General Inquiry</option>
+</select>
+</div>
+<div id="product-selection-container" class="hidden grid grid-cols-1 md:grid-cols-2 gap-stack-md">
+<div class="flex flex-col gap-1">
+<label class="font-label-bold text-on-surface-variant uppercase text-xs" for="interestedProduct">Interested Product</label>
+<select class="bg-surface border-surface-variant focus:border-primary focus:ring-1 focus:ring-primary rounded-lg p-3 outline-none transition-all" id="interestedProduct" name="interestedProduct">
+<option value="">Select product</option>
+</select>
+</div>
+<div class="flex flex-col gap-1">
+<label class="font-label-bold text-on-surface-variant uppercase text-xs" for="quantity">Estimated Quantity</label>
+<input class="bg-surface border-surface-variant focus:border-primary focus:ring-1 focus:ring-primary rounded-lg p-3 outline-none transition-all" id="quantity" name="quantity" placeholder="500 meters" type="text"/>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<label class="font-label-bold text-on-surface-variant uppercase text-xs" for="message">Detailed Requirements</label>
+<textarea class="bg-surface border-surface-variant focus:border-primary focus:ring-1 focus:ring-primary rounded-lg p-3 outline-none transition-all" id="message" name="message" placeholder="Fabric type, GSM, color, application, delivery timeline..." required rows="5"></textarea>
+</div>
+<label class="flex items-center gap-3 text-on-surface-variant">
+<input class="rounded-none border-outline text-primary focus:ring-primary" id="whatsappUpdates" name="whatsappUpdates" type="checkbox"/>
+<span>Send updates on WhatsApp</span>
+</label>
+<button class="w-full bg-primary-container text-on-primary-container py-4 font-headline-md rounded-lg shadow-lg hover:scale-[1.01] transition-all active:scale-[0.99] flex items-center justify-center gap-3" type="submit">
+Initialize Contact
+<span class="material-symbols-outlined" data-icon="send">send</span>
+</button>
+</form>
+</section>
+<!-- Right: Direct Channels & Hub -->
+<div class="lg:col-span-5 space-y-gutter">
+<!-- Direct Channels -->
+<section class="bg-on-tertiary-fixed text-on-tertiary-container rounded-xl p-stack-lg border border-white/5 shadow-2xl">
+<h3 class="font-headline-md text-headline-md mb-stack-md">Direct Channels</h3>
+<div class="space-y-stack-md">
+<div class="flex items-start gap-stack-md p-stack-md bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="phone_in_talk">phone_in_talk</span>
+<div>
+<p class="font-label-bold uppercase text-xs text-on-tertiary-container/60">Technical Hotline</p>
+<p class="font-headline-md text-white">+91 94141 12197</p>
+</div>
+</div>
+<div class="flex items-start gap-stack-md p-stack-md bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-[#25D366] text-3xl" data-icon="chat">chat</span>
+<div>
+<p class="font-label-bold uppercase text-xs text-on-tertiary-container/60">WhatsApp Industrial Support</p>
+<p class="font-headline-md text-white">+91 94141 12197</p>
+</div>
+</div>
+<div class="flex items-start gap-stack-md p-stack-md bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="mail">mail</span>
+<div>
+<p class="font-label-bold uppercase text-xs text-on-tertiary-container/60">Operations Email</p>
+<p class="font-headline-md text-white">sunilpandiya909@gmail.com</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Operational Hours -->
+<section class="bg-surface-container-high rounded-xl p-stack-lg border border-surface-container-highest">
+<div class="flex justify-between items-center mb-stack-md">
+<h3 class="font-label-bold text-on-surface uppercase flex items-center gap-2">
+<span class="material-symbols-outlined" data-icon="schedule">schedule</span>
+                            Operational Hours
                         </h3>
-                        <div class="space-y-4">
-                            <div class="flex items-start space-x-3">
-                                <div class="w-10 h-10 bg-brand-orange/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                                    <svg class="w-5 h-5 text-brand-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 8V5z"></path>
-                                    </svg>
-                                </div>
-                                <div>
-                                    <p class="font-medium text-dark-gray">Phone</p>
-                                    <a href="tel:9414112197" class="text-brand-orange hover:text-brand-orange/80 transition-colors">+91 94141 12197</a>
-                                </div>
-                            </div>
-                            
-                            <div class="flex items-start space-x-3">
-                                <div class="w-10 h-10 bg-green-500/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                                    <svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0012.04 2zm0 1.67c2.2 0 4.26.86 5.82 2.42a8.225 8.225 0 012.42 5.83c0 4.54-3.7 8.23-8.24 8.23-1.48 0-2.93-.39-4.19-1.15l-.3-.18-.31.08-1.26.33.33-1.22.09-.34-.2-.32a8.188 8.188 0 01-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24M8.53 7.33c-.16 0-.43.06-.66.31-.23.25-.87.86-.87 2.07 0 1.22.89 2.39 1 2.56.12.17 1.76 2.67 4.25 3.73.59.27 1.05.42 1.41.53.59.19 1.13.16 1.56.1.48-.07 1.46-.6 1.67-1.18.21-.58.21-1.07.15-1.18-.07-.1-.23-.16-.48-.27-.25-.14-1.47-.74-1.69-.82-.23-.08-.37-.12-.56.12-.16.25-.64.81-.78.97-.15.17-.29.19-.53.07-.26-.13-1.06-.39-2-1.23-.74-.66-1.23-1.47-1.38-1.72-.12-.24-.01-.39.11-.5.11-.11.27-.29.37-.44.13-.14.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.11-.56-1.35-.77-1.84-.2-.48-.4-.42-.56-.43-.14 0-.3-.01-.47-.01z"/>
-                                    </svg>
-                                </div>
-                                <div>
-                                    <p class="font-medium text-dark-gray">WhatsApp</p>
-                                    <a href="https://wa.me/9414112197" target="_blank" class="text-green-500 hover:text-green-600 transition-colors">Chat with us</a>
-                                </div>
-                            </div>
-                            
-                            <div class="flex items-start space-x-3">
-                                <div class="w-10 h-10 bg-brand-orange/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                                    <svg class="w-5 h-5 text-brand-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-                                    </svg>
-                                </div>
-                                <div>
-                                    <p class="font-medium text-dark-gray">Email</p>
-                                    <a href="mailto:sunilpandiya909@gmail.com" class="text-brand-orange hover:text-brand-orange/80 transition-colors">sunilpandiya909@gmail.com</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Office Address -->
-                    <div class="bg-white rounded-2xl shadow-xl p-8 border border-gray-100 card-hover">
-                        <h3 class="text-xl font-bold text-dark-gray mb-6 flex items-center">
-                            <svg class="w-6 h-6 text-brand-orange mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                            </svg>
-                            Office Location
-                        </h3>
-                        <div class="space-y-4">
-                            <div class="flex items-start space-x-3">
-                                <div class="w-10 h-10 bg-brand-orange/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                                    <svg class="w-5 h-5 text-brand-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
-                                    </svg>
-                                </div>
-                                <div>
-                                    <p class="font-medium text-dark-gray">Address</p>
-                                    <p class="text-medium-gray leading-relaxed">
-                                        Ishank Textile<br>
-                                        Bhilwara, Rajasthan<br>
-                                        India - 311001
-                                    </p>
-                                </div>
-                            </div>
-                            
-                            <div class="flex items-start space-x-3">
-                                <div class="w-10 h-10 bg-brand-orange/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                                    <svg class="w-5 h-5 text-brand-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                    </svg>
-                                </div>
-                                <div>
-                                    <p class="font-medium text-dark-gray">Business Hours</p>
-                                    <p class="text-medium-gray leading-relaxed">
-                                        Monday - Saturday: 9:00 AM - 6:00 PM<br>
-                                        Sunday: Closed
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Quick Actions -->
-                    <div class="bg-gradient-to-br from-brand-orange to-brand-orange/90 rounded-2xl shadow-xl p-8 text-white">
-                        <h3 class="text-xl font-bold mb-6">Quick Actions</h3>
-                        <div class="space-y-3">
-                            <a href="tel:9414112197" class="glass-btn flex items-center justify-center space-x-3 bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/30 px-4 py-3 rounded-xl transition-all duration-300">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 8V5z"></path>
-                                </svg>
-                                <span class="font-medium">Call Now</span>
-                            </a>
-                            <a href="https://wa.me/9414112197" target="_blank" class="glass-btn flex items-center justify-center space-x-3 bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/30 px-4 py-3 rounded-xl transition-all duration-300">
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0012.04 2zm0 1.67c2.2 0 4.26.86 5.82 2.42a8.225 8.225 0 012.42 5.83c0 4.54-3.7 8.23-8.24 8.23-1.48 0-2.93-.39-4.19-1.15l-.3-.18-.31.08-1.26.33.33-1.22.09-.34-.2-.32a8.188 8.188 0 01-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24M8.53 7.33c-.16 0-.43.06-.66.31-.23.25-.87.86-.87 2.07 0 1.22.89 2.39 1 2.56.12.17 1.76 2.67 4.25 3.73.59.27 1.05.42 1.41.53.59.19 1.13.16 1.56.1.48-.07 1.46-.6 1.67-1.18.21-.58.21-1.07.15-1.18-.07-.1-.23-.16-.48-.27-.25-.14-1.47-.74-1.69-.82-.23-.08-.37-.12-.56.12-.16.25-.64.81-.78.97-.15.17-.29.19-.53.07-.26-.13-1.06-.39-2-1.23-.74-.66-1.23-1.47-1.38-1.72-.12-.24-.01-.39.11-.5.11-.11.27-.29.37-.44.13-.14.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.11-.56-1.35-.77-1.84-.2-.48-.4-.42-.56-.43-.14 0-.3-.01-.47-.01z"/>
-                                </svg>
-                                <span class="font-medium">WhatsApp Chat</span>
-                            </a>
-                            <a href="products-catalogue.html" class="glass-btn flex items-center justify-center space-x-3 bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/30 px-4 py-3 rounded-xl transition-all duration-300">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
-                                </svg>
-                                <span class="font-medium">View Products</span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+<span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-bold uppercase">Active Now</span>
+</div>
+<ul class="space-y-2 font-body-md text-on-surface-variant">
+<li class="flex justify-between border-b border-surface-variant pb-1"><span>Monday - Saturday</span> <span class="font-bold text-on-surface">11:00 - 20:00 IST</span></li>
+<li class="flex justify-between"><span>Sunday</span> <span class="font-bold text-primary italic">Emergency Only</span></li>
+</ul>
+</section>
+<!-- Bhilwara Manufacturing Hub -->
+<section class="bg-surface-container-lowest rounded-xl overflow-hidden border border-surface-container-high shadow-lg">
+<div class="h-48 relative overflow-hidden bg-slate-200">
+<!-- Minimalist Map Graphic Placeholder -->
+<div class="absolute inset-0 fabric-texture opacity-40"></div>
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="relative">
+<div class="w-12 h-12 bg-primary rounded-full animate-pulse opacity-20 scale-150 absolute -top-3 -left-3"></div>
+<span class="material-symbols-outlined text-primary text-5xl relative z-10" data-icon="location_on" data-weight="fill">location_on</span>
+</div>
+</div>
+<img class="absolute inset-0 w-full h-full object-cover mix-blend-multiply opacity-20" data-alt="A sophisticated black and white aerial view of a modern industrial complex in Bhilwara. The architectural lines are sharp and repetitive, highlighting the scale of textile manufacturing. The lighting is dramatic, with long shadows emphasizing the industrial precision. The overall aesthetic is high-contrast, clean, and corporate, representing the power and history of the textile hub." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCiS70vjTBzB8E8slnBd-fp65sAk4fHAtnuqeHlD6ghQtoBaHut7ynnlKvU9hljXHd7poUkt-fLytZS8hdbttdiZXrKakN2t-ULHnaoKeAVL4rC7S4FA9j2xGfUFRKVyVAe3AVfGe4F0Q-g7qDJpPqpz8LqImnumiIV4JI4hLFpfiAE_9IUrKYGcZlU4sTnTlqP7Kc-jMIomYUTkRr5OPiTaVR3S-rjrduRaiU13FwCP9PS3Wa-lZlAfVPJple9GiwzXVsMCq4xdaQ"/>
+</div>
+<div class="p-stack-lg">
+<h3 class="font-headline-md text-on-surface mb-2">Bhilwara Manufacturing Hub</h3>
+<p class="text-on-surface-variant font-body-md leading-relaxed">
+                            42, Ist Floor, Heera Panna Market,<br/>
+                            Pur Road, Bhilwara - 311001, Rajasthan
+                        </p>
+<button class="mt-stack-md text-primary font-label-bold flex items-center gap-1 hover:gap-2 transition-all">
+                            DIRECTIONS TO HUB
+                            <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</section>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest dark:bg-surface-container-lowest w-full py-16 border-t border-white/5">
+<div class="max-w-[1200px] mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-stack-md">
+<div class="md:col-span-1">
+<div class="font-label-mono text-headline-md text-on-surface font-bold mb-stack-sm">ISHANK TEXTILE</div>
+<p class="text-on-surface-variant text-body-sm leading-relaxed mb-stack-md">Precision engineering for the global textile industry. Scaling production through intelligent automation.</p>
+</div>
+<div>
+<h4 class="font-label-bold text-on-surface uppercase mb-stack-md">Governance</h4>
+<div class="flex flex-col gap-2">
+<a class="font-body-sm text-on-surface-variant hover:text-primary transition-colors" href="index.html">Privacy Policy</a>
+<a class="font-body-sm text-on-surface-variant hover:text-primary transition-colors" href="index.html">Terms of Service</a>
+<a class="font-body-sm text-on-surface-variant hover:text-primary transition-colors" href="index.html">Compliance</a>
+</div>
+</div>
+<div>
+<h4 class="font-label-bold text-on-surface uppercase mb-stack-md">Industry</h4>
+<div class="flex flex-col gap-2">
+<a class="font-body-sm text-on-surface-variant hover:text-primary transition-colors" href="index.html">Environmental</a>
+<a class="font-body-sm text-on-surface-variant hover:text-primary transition-colors" href="index.html">Logistics Hub</a>
+<a class="font-body-sm text-on-surface-variant hover:text-primary transition-colors" href="index.html">System Catalog</a>
+</div>
+</div>
+<div>
+<h4 class="font-label-bold text-on-surface uppercase mb-stack-md">Connectivity</h4>
+<div class="flex flex-col gap-2">
+<a class="font-body-sm text-primary" href="contact.html">Contact Support</a>
+<a class="font-body-sm text-on-surface-variant hover:text-primary transition-colors" href="index.html">Carrier Status</a>
+<p class="text-on-surface-variant text-body-sm mt-4">© 2024 Ishank Textile. All rights reserved.</p>
+</div>
+</div>
+</div>
+</footer>
 
-    <!-- Success Message Modal -->
-    <div id="successModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 animate-slide-down">
-            <div class="text-center">
-                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg class="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                </div>
-                <h3 class="text-2xl font-bold text-dark-gray mb-2">Message Sent Successfully!</h3>
-                <p class="text-medium-gray mb-6">Thank you for contacting Ishank Textile. We'll get back to you within 24 hours.</p>
-                <button onclick="closeSuccessModal()" class="glass-btn btn-primary px-6 py-3 rounded-xl backdrop-blur-sm border border-brand-orange/30 hover:shadow-lg hover:shadow-brand-orange/20 transition-all duration-300">
-                    Close
-                </button>
-            </div>
-        </div>
+<div id="successModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[100] hidden items-center justify-center p-4">
+  <div class="bg-surface-container-lowest border border-surface-container-high rounded-xl p-stack-lg max-w-md w-full shadow-2xl text-center">
+    <div class="w-16 h-16 mx-auto rounded-full bg-primary-fixed flex items-center justify-center mb-stack-md">
+      <span class="material-symbols-outlined text-primary text-4xl">check_circle</span>
     </div>
+    <h3 class="font-headline-md text-headline-md text-on-surface mb-stack-sm">Inquiry Submitted</h3>
+    <p class="text-on-surface-variant mb-stack-lg">Thank you for contacting Ishank Textile. Our team will review your requirement and respond shortly.</p>
+    <button onclick="closeSuccessModal()" class="w-full bg-primary text-on-primary py-3 rounded-lg font-label-bold uppercase">Close</button>
+  </div>
+</div>
 
-    <!-- Footer -->
-    <footer class="bg-dark-gray text-white">
-        <div class="container mx-auto px-6 py-12">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <!-- Company Info -->
-                <div>
-                    <div class="flex items-center space-x-3 mb-4">
-                        <div class="w-10 h-10 bg-brand-orange rounded-lg flex items-center justify-center">
-                            <span class="text-white font-bold text-lg">IT</span>
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-lg">ISHANK</h3>
-                            <p class="text-brand-orange text-sm font-semibold">TEXTILE</p>
-                        </div>
-                    </div>
-                    <p class="text-gray-400 text-sm leading-relaxed">
-                        Premium fabric manufacturing since 2003, delivering quality and excellence in every thread.
-                    </p>
-                </div>
-                
-                <!-- Quick Links -->
-                <div>
-                    <h4 class="text-lg font-semibold text-white mb-4">Quick Links</h4>
-                    <div class="space-y-2">
-                        <a href="index.html" class="text-gray-400 hover:text-brand-orange transition-colors">Home</a>
-                        <a href="about.html" class="text-gray-400 hover:text-brand-orange transition-colors">About</a>
-                        <a href="products-catalogue.html" class="text-gray-400 hover:text-brand-orange transition-colors">Products</a>
-                        <a href="#" class="text-gray-400 hover:text-brand-orange transition-colors">Contact</a>
-                    </div>
-                </div>
-                
-                <!-- Contact Info -->
-                <div>
-                    <h4 class="font-semibold text-lg mb-4">Contact Info</h4>
-                    <ul class="space-y-2 text-gray-400 text-sm">
-                        <li class="flex items-center space-x-2">
-                            <svg class="w-4 h-4 text-brand-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 8V5z"></path>
-                            </svg>
-                            <span>+91 94141 12197</span>
-                        </li>
-                        <li class="flex items-center space-x-2">
-                            <svg class="w-4 h-4 text-brand-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-                            </svg>
-                            <span>sunilpandiya909@gmail.com</span>
-                        </li>
-                        <li class="flex items-start space-x-2">
-                            <svg class="w-4 h-4 text-brand-orange mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                            </svg>
-                            <span>Bhilwara, Rajasthan</span>
-                        </li>
-                    </ul>
-                </div>
-                
-                <!-- Business Hours -->
-                <div>
-                    <h4 class="font-semibold text-lg mb-4">Business Hours</h4>
-                    <ul class="space-y-2 text-gray-400 text-sm">
-                        <li>Mon - Sat: 9:00 AM - 6:00 PM</li>
-                        <li>Sunday: Closed</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400 text-sm">
-                <p class="flex items-center justify-center gap-2">
-                    &copy; 2024 Ishank Textile. All rights reserved. | Premium Fabric Manufacturing Since 2003
-                    <a href="admin-login.html" class="text-brand-orange hover:text-white transition-colors ml-2" title="Admin Login">
-                        <i class="fas fa-lock"></i>
-                    </a>
-                </p>
-            </div>
-        </div>
-    </footer>
-
-    <script>
-        // Mobile Menu Toggle
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobileMenu');
-            menu.classList.toggle('hidden');
+<script>
+  const fallbackCategories = [
+    { id: '1', name: 'Vat-Dyed Fabrics', active: true },
+    { id: '2', name: 'Fiber-Dyed Fabrics', active: true },
+    { id: '3', name: 'Wollen Fabrics', active: true },
+    { id: '4', name: 'Hosiery Fabrics', active: true },
+    { id: '5', name: 'Cotton Fabrics', active: true }
+  ];
+  const fallbackProducts = [
+    { id: '1', code: 'VD-001', name: 'Vat-Dyed Premium Fabric', categoryId: '1', startingPrice: 380, active: true },
+    { id: '2', code: 'FD-001', name: 'Fiber-Dyed Advanced Fabric', categoryId: '2', startingPrice: 420, active: true },
+    { id: '3', code: 'WL-001', name: 'Premium Wollen Fabric', categoryId: '3', startingPrice: 320, active: true },
+    { id: '4', code: 'HS-001', name: 'Premium Hosiery Fabric', categoryId: '4', startingPrice: 280, active: true },
+    { id: '5', code: 'CT-001', name: 'Premium Cotton Fabric', categoryId: '5', startingPrice: 180, active: true }
+  ];
+  const DataManager = {
+    async getProducts() {
+      try {
+        if (window.firebase && firebase.firestore) {
+          const snapshot = await firebase.firestore().collection('products').get();
+          const products = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+          if (products.length) return products;
         }
-
-        // Contact Form Submission
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Get form data
-            const formData = new FormData(this);
-            const data = Object.fromEntries(formData);
-            
-            // Simple validation
-            if (!data.firstName || !data.lastName || !data.email || !data.subject || !data.message) {
-                alert('Please fill in all required fields.');
-                return;
-            }
-            
-            // Email validation
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(data.email)) {
-                alert('Please enter a valid email address.');
-                return;
-            }
-            
-            // Show success modal
-            showSuccessModal();
-            
-            // Reset form
-            this.reset();
-            
-            // In a real application, you would send this data to your server
-            console.log('Form submitted:', data);
-        });
-
-        // Success Modal Functions
-        function showSuccessModal() {
-            const modal = document.getElementById('successModal');
-            modal.classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
+      } catch (error) { console.warn('Using fallback products:', error); }
+      return JSON.parse(localStorage.getItem('products') || JSON.stringify(fallbackProducts));
+    },
+    async getCategories() {
+      try {
+        if (window.firebase && firebase.firestore) {
+          const snapshot = await firebase.firestore().collection('categories').get();
+          const categories = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+          if (categories.length) return categories;
         }
-
-        function closeSuccessModal() {
-            const modal = document.getElementById('successModal');
-            modal.classList.add('hidden');
-            document.body.style.overflow = 'auto';
+      } catch (error) { console.warn('Using fallback categories:', error); }
+      return JSON.parse(localStorage.getItem('categories') || JSON.stringify(fallbackCategories));
+    },
+    async saveQuote(quote) {
+      quote.createdAt = new Date().toISOString();
+      try {
+        if (window.firebase && firebase.firestore) {
+          await firebase.firestore().collection('quotes').add(quote);
+          return;
         }
-
-        // Close modal on background click
-        document.getElementById('successModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeSuccessModal();
-            }
-        });
-
-        // Close modal on escape key
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeSuccessModal();
-            }
-        });
-
-        // Firebase instances
-        const db = firebase.firestore();
-
-        // Product Selection Functionality
-        const DataManager = {
-            async getProducts() {
-                const snapshot = await db.collection('products').get();
-                return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-            },
-            async getCategories() {
-                const snapshot = await db.collection('categories').get();
-                return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-            },
-            async saveQuote(quote) {
-                quote.createdAt = new Date().toISOString();
-                await db.collection('quotes').add(quote);
-            }
-        };
-
-        // Load products into dropdown
-        async function loadProducts() {
-            const allProducts = await DataManager.getProducts();
-            const products = allProducts.filter(p => p.active);
-            const select = document.getElementById('interestedProduct');
-            
-            // Clear existing options except first
-            while (select.options.length > 1) {
-                select.remove(1);
-            }
-            
-            if (products.length === 0) {
-                const option = document.createElement('option');
-                option.value = '';
-                option.textContent = 'No products available';
-                select.appendChild(option);
-                return;
-            }
-            
-            // Group products by category
-            const categories = await DataManager.getCategories();
-            products.forEach(product => {
-                const category = categories.find(c => c.id === product.categoryId);
-                const option = document.createElement('option');
-                option.value = product.id;
-                option.textContent = `${product.code} - ${product.name} ${category ? '(' + category.name + ')' : ''} - ₹${product.startingPrice}/m`;
-                option.dataset.product = JSON.stringify(product);
-                select.appendChild(option);
-            });
-        }
-
-        // Show/hide product selection based on subject
-        document.getElementById('subject').addEventListener('change', function() {
-            const container = document.getElementById('product-selection-container');
-            const productSelect = document.getElementById('interestedProduct');
-            
-            if (this.value === 'quote' || this.value === 'bulk') {
-                container.classList.remove('hidden');
-                productSelect.required = true;
-            } else {
-                container.classList.add('hidden');
-                productSelect.required = false;
-                productSelect.value = '';
-            }
-        });
-
-        // Check for pre-selected product from URL or sessionStorage
-        function checkPreselectedProduct() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const productId = urlParams.get('quote');
-            
-            if (!productId) {
-                const stored = sessionStorage.getItem('quoteProduct');
-                if (stored) {
-                    const product = JSON.parse(stored);
-                    selectProduct(product.id);
-                    sessionStorage.removeItem('quoteProduct');
-                }
-                return;
-            }
-            
-            selectProduct(productId);
-        }
-
-        function selectProduct(productId) {
-            const subjectSelect = document.getElementById('subject');
-            const productSelect = document.getElementById('interestedProduct');
-            const container = document.getElementById('product-selection-container');
-            
-            // Set subject to quote
-            subjectSelect.value = 'quote';
-            
-            // Show product selection
-            container.classList.remove('hidden');
-            productSelect.required = true;
-            
-            // Select the product
-            productSelect.value = productId;
-        }
-
-        // Override form submission to save quote data
-        document.getElementById('contactForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            // Get form data
-            const formData = new FormData(this);
-            const data = Object.fromEntries(formData);
-            
-            // Simple validation
-            if (!data.firstName || !data.lastName || !data.email || !data.subject || !data.message) {
-                alert('Please fill in all required fields.');
-                return;
-            }
-            
-            // Email validation
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(data.email)) {
-                alert('Please enter a valid email address.');
-                return;
-            }
-            
-            // Validate product selection for quote/bulk orders
-            if ((data.subject === 'quote' || data.subject === 'bulk') && !data.interestedProduct) {
-                alert('Please select a product for your quote/bulk order request.');
-                return;
-            }
-            
-            // Get selected product details
-            let selectedProduct = null;
-            if (data.interestedProduct) {
-                const products = await DataManager.getProducts();
-                selectedProduct = products.find(p => p.id === data.interestedProduct);
-            }
-            
-            // Save quote to admin dashboard
-            const quote = {
-                customerName: `${data.firstName} ${data.lastName}`,
-                email: data.email,
-                phone: data.phone || '',
-                subject: data.subject,
-                productId: data.interestedProduct || null,
-                product: selectedProduct ? {
-                    id: selectedProduct.id,
-                    name: selectedProduct.name,
-                    code: selectedProduct.code,
-                    price: selectedProduct.startingPrice
-                } : null,
-                quantity: data.quantity || '',
-                message: data.message,
-                whatsappUpdates: data.whatsappUpdates === 'on'
-            };
-            
-            await DataManager.saveQuote(quote);
-            
-            // Show success modal
-            showSuccessModal();
-            
-            // Reset form
-            this.reset();
-            document.getElementById('product-selection-container').classList.add('hidden');
-            
-            // Log for debugging
-            console.log('Quote submitted:', quote);
-        });
-
-        // Initialize on page load
-        document.addEventListener('DOMContentLoaded', async function() {
-            await loadProducts();
-            checkPreselectedProduct();
-        });
-    </script>
-</body>
-</html>
+      } catch (error) { console.warn('Saving quote locally:', error); }
+      const quotes = JSON.parse(localStorage.getItem('quotes') || '[]');
+      quotes.unshift(Object.assign({ id: Date.now().toString() }, quote));
+      localStorage.setItem('quotes', JSON.stringify(quotes));
+    }
+  };
+  function showSuccessModal() {
+    const modal = document.getElementById('successModal');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeSuccessModal() {
+    const modal = document.getElementById('successModal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+    document.body.style.overflow = 'auto';
+  }
+  async function loadProducts() {
+    const products = (await DataManager.getProducts()).filter((product) => product.active !== false);
+    const categories = await DataManager.getCategories();
+    const select = document.getElementById('interestedProduct');
+    while (select.options.length > 1) select.remove(1);
+    products.forEach((product) => {
+      const category = categories.find((item) => item.id === product.categoryId);
+      const option = document.createElement('option');
+      option.value = product.id;
+      option.textContent = (product.code || 'IT') + ' - ' + product.name + ' ' + (category ? '(' + category.name + ')' : '') + ' - ₹' + (product.startingPrice || product.price || 0) + '/m';
+      option.dataset.product = JSON.stringify(product);
+      select.appendChild(option);
+    });
+  }
+  function toggleProductSelection() {
+    const subject = document.getElementById('subject');
+    const container = document.getElementById('product-selection-container');
+    const productSelect = document.getElementById('interestedProduct');
+    if (subject.value === 'quote' || subject.value === 'bulk') {
+      container.classList.remove('hidden');
+      productSelect.required = true;
+    } else {
+      container.classList.add('hidden');
+      productSelect.required = false;
+      productSelect.value = '';
+    }
+  }
+  function selectProduct(productId) {
+    document.getElementById('subject').value = 'quote';
+    toggleProductSelection();
+    document.getElementById('interestedProduct').value = productId;
+  }
+  function checkPreselectedProduct() {
+    const productId = new URLSearchParams(window.location.search).get('quote');
+    if (productId) {
+      selectProduct(productId);
+      return;
+    }
+    const stored = sessionStorage.getItem('quoteProduct');
+    if (stored) {
+      const product = JSON.parse(stored);
+      selectProduct(product.id);
+      sessionStorage.removeItem('quoteProduct');
+    }
+  }
+  document.addEventListener('DOMContentLoaded', async () => {
+    await loadProducts();
+    checkPreselectedProduct();
+    document.getElementById('subject').addEventListener('change', toggleProductSelection);
+    document.getElementById('successModal').addEventListener('click', (event) => {
+      if (event.target.id === 'successModal') closeSuccessModal();
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') closeSuccessModal();
+    });
+    document.querySelectorAll('button').forEach((button) => {
+      const label = button.textContent.trim().toLowerCase();
+      if (label.includes('quote') && button.type !== 'submit') {
+        button.addEventListener('click', () => { window.location.href = 'contact.html'; });
+      }
+    });
+    document.getElementById('contactForm').addEventListener('submit', async function(event) {
+      event.preventDefault();
+      const data = Object.fromEntries(new FormData(this));
+      if (!data.firstName || !data.lastName || !data.email || !data.subject || !data.message) {
+        alert('Please fill in all required fields.');
+        return;
+      }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
+        alert('Please enter a valid email address.');
+        return;
+      }
+      if ((data.subject === 'quote' || data.subject === 'bulk') && !data.interestedProduct) {
+        alert('Please select a product for your quote/bulk order request.');
+        return;
+      }
+      let selectedProduct = null;
+      if (data.interestedProduct) {
+        const products = await DataManager.getProducts();
+        selectedProduct = products.find((product) => product.id === data.interestedProduct);
+      }
+      const quote = {
+        customerName: data.firstName + ' ' + data.lastName,
+        email: data.email,
+        phone: data.phone || '',
+        subject: data.subject,
+        productId: data.interestedProduct || null,
+        product: selectedProduct ? {
+          id: selectedProduct.id,
+          name: selectedProduct.name,
+          code: selectedProduct.code,
+          price: selectedProduct.startingPrice || selectedProduct.price
+        } : null,
+        quantity: data.quantity || '',
+        message: data.message,
+        whatsappUpdates: data.whatsappUpdates === 'on'
+      };
+      await DataManager.saveQuote(quote);
+      showSuccessModal();
+      this.reset();
+      toggleProductSelection();
+    });
+  });
+</script>
+</body></html>
