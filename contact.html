@@ -7,7 +7,6 @@
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
@@ -116,22 +115,20 @@
 </head>
 <body class="bg-background text-on-background font-body-md selection:bg-primary-fixed selection:text-on-primary-fixed">
 <!-- TopNavBar -->
-<nav class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-surface/80 backdrop-blur-xl border-b border-white/10 shadow-2xl">
-<div class="max-w-[1200px] mx-auto px-6 flex items-center justify-between h-20">
+<header class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-surface/80 backdrop-blur-xl border-b border-white/10 shadow-2xl">
+<div class="max-w-[1200px] mx-auto px-gutter flex items-center justify-between h-20">
 <div class="font-label-mono text-headline-md font-bold text-primary">ISHANK TEXTILE</div>
-<div class="hidden md:flex items-center gap-stack-lg">
-<a class="font-body-md text-on-surface-variant hover:text-on-surface transition-colors" href="index.html">Systems</a>
-<a class="font-body-md text-on-surface-variant hover:text-on-surface transition-colors" href="products-catalogue.html">Materials</a>
-<a class="font-body-md text-on-surface-variant hover:text-on-surface transition-colors" href="products-catalogue.html">Inventory</a>
-<a class="font-body-md text-on-surface-variant hover:text-on-surface transition-colors" href="about.html">Logistics</a>
-<a class="font-body-md text-primary border-b-2 border-primary pb-1" href="contact.html">Support</a>
-</div>
-<div class="flex items-center gap-stack-md">
-<button class="hidden lg:block bg-primary-container text-on-primary-container px-stack-lg py-2 font-label-bold rounded-lg hover:scale-[1.02] transition-transform duration-150 active:scale-95">Get Quote</button>
-<img alt="Operator Profile" class="w-10 h-10 rounded-full border-2 border-primary/20" data-alt="A professional portrait of a senior industrial manufacturing operator in a clean, modern factory environment. The lighting is crisp and technical, highlighting textures of professional attire. The background features high-end textile machinery with a soft bokeh effect, reinforcing a sense of industrial expertise and operational authority." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBttmFY720dEWm72KoEOkG0yqwXnYITVxW6HvH1ol-JkhS_oU_vfLtRXg26u4ZfggfhVhNu0UOIKTLig_BOURJoDSd5_L28jiJvbernnEFdLEGDigiNgbZ2R5wqstNDOf4qiYrPjUTdfmI9WK7Vb9zcnnKIsa7_0-0Vo3bn-uVQEiIvdOVKELX0UZMWo4NMLTeRk84emkWWppLgkqSnvY6suUsbLMeLZ545kOsnxLCXQSOrw1RQHWFRfEKEPn1QRsFTDZ23j-FlTtM"/>
-</div>
-</div>
+<nav class="hidden md:flex items-center space-x-stack-lg">
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-label-bold text-label-bold" href="index.html">Home</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-label-bold text-label-bold" href="products-catalogue.html">Materials</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-label-bold text-label-bold" href="about.html">About Us</a>
+<a class="text-primary border-b-2 border-primary pb-1 font-label-bold text-label-bold" href="contact.html">Support</a>
 </nav>
+<div class="flex items-center gap-stack-md">
+<a href="contact.html" class="hidden md:flex items-center gap-2 px-6 py-2 bg-primary text-on-primary font-label-bold text-label-bold hover:scale-[1.02] transition-transform duration-150 rounded-lg">Get Quote</a>
+</div>
+</div>
+</header>
 <main class="pt-24 pb-section-padding">
 <!-- Hero Section -->
 <header class="max-w-[1200px] mx-auto px-6 mt-16 mb-stack-lg">
@@ -178,7 +175,8 @@
 <option value="general">General Inquiry</option>
 </select>
 </div>
-<div id="product-selection-container" class="hidden grid grid-cols-1 md:grid-cols-2 gap-stack-md">
+<div id="product-selection-container" class="hidden">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-stack-md">
 <div class="flex flex-col gap-1">
 <label class="font-label-bold text-on-surface-variant uppercase text-xs" for="interestedProduct">Interested Product</label>
 <select class="bg-surface border-surface-variant focus:border-primary focus:ring-1 focus:ring-primary rounded-lg p-3 outline-none transition-all" id="interestedProduct" name="interestedProduct">
@@ -190,6 +188,7 @@
 <input class="bg-surface border-surface-variant focus:border-primary focus:ring-1 focus:ring-primary rounded-lg p-3 outline-none transition-all" id="quantity" name="quantity" placeholder="500 meters" type="text"/>
 </div>
 </div>
+</div>
 <div class="flex flex-col gap-1">
 <label class="font-label-bold text-on-surface-variant uppercase text-xs" for="message">Detailed Requirements</label>
 <textarea class="bg-surface border-surface-variant focus:border-primary focus:ring-1 focus:ring-primary rounded-lg p-3 outline-none transition-all" id="message" name="message" placeholder="Fabric type, GSM, color, application, delivery timeline..." required rows="5"></textarea>
@@ -199,7 +198,7 @@
 <span>Send updates on WhatsApp</span>
 </label>
 <button class="w-full bg-primary-container text-on-primary-container py-4 font-headline-md rounded-lg shadow-lg hover:scale-[1.01] transition-all active:scale-[0.99] flex items-center justify-center gap-3" type="submit">
-Initialize Contact
+Send Inquiry
 <span class="material-symbols-outlined" data-icon="send">send</span>
 </button>
 </form>
@@ -210,27 +209,27 @@ Initialize Contact
 <section class="bg-on-tertiary-fixed text-on-tertiary-container rounded-xl p-stack-lg border border-white/5 shadow-2xl">
 <h3 class="font-headline-md text-headline-md mb-stack-md">Direct Channels</h3>
 <div class="space-y-stack-md">
-<div class="flex items-start gap-stack-md p-stack-md bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer group">
+<a href="tel:+919414112197" class="flex items-start gap-stack-md p-stack-md bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer group no-underline">
 <span class="material-symbols-outlined text-primary text-3xl" data-icon="phone_in_talk">phone_in_talk</span>
 <div>
-<p class="font-label-bold uppercase text-xs text-on-tertiary-container/60">Technical Hotline</p>
+<p class="font-label-bold uppercase text-xs text-on-tertiary-container/60">Call Us</p>
 <p class="font-headline-md text-white">+91 94141 12197</p>
 </div>
-</div>
-<div class="flex items-start gap-stack-md p-stack-md bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer">
+</a>
+<a href="https://wa.me/919414112197" target="_blank" rel="noopener noreferrer" class="flex items-start gap-stack-md p-stack-md bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer no-underline">
 <span class="material-symbols-outlined text-[#25D366] text-3xl" data-icon="chat">chat</span>
 <div>
-<p class="font-label-bold uppercase text-xs text-on-tertiary-container/60">WhatsApp Industrial Support</p>
+<p class="font-label-bold uppercase text-xs text-on-tertiary-container/60">Whatsapp Us</p>
 <p class="font-headline-md text-white">+91 94141 12197</p>
 </div>
-</div>
-<div class="flex items-start gap-stack-md p-stack-md bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer">
+</a>
+<a href="mailto:sunilpandiya909@gmail.com" class="flex items-start gap-stack-md p-stack-md bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer no-underline">
 <span class="material-symbols-outlined text-primary text-3xl" data-icon="mail">mail</span>
 <div>
-<p class="font-label-bold uppercase text-xs text-on-tertiary-container/60">Operations Email</p>
+<p class="font-label-bold uppercase text-xs text-on-tertiary-container/60">Mail Us</p>
 <p class="font-headline-md text-white">sunilpandiya909@gmail.com</p>
 </div>
-</div>
+</a>
 </div>
 </section>
 <!-- Operational Hours -->
@@ -249,27 +248,28 @@ Initialize Contact
 </section>
 <!-- Bhilwara Manufacturing Hub -->
 <section class="bg-surface-container-lowest rounded-xl overflow-hidden border border-surface-container-high shadow-lg">
-<div class="h-48 relative overflow-hidden bg-slate-200">
-<!-- Minimalist Map Graphic Placeholder -->
-<div class="absolute inset-0 fabric-texture opacity-40"></div>
-<div class="absolute inset-0 flex items-center justify-center">
-<div class="relative">
-<div class="w-12 h-12 bg-primary rounded-full animate-pulse opacity-20 scale-150 absolute -top-3 -left-3"></div>
-<span class="material-symbols-outlined text-primary text-5xl relative z-10" data-icon="location_on" data-weight="fill">location_on</span>
-</div>
-</div>
-<img class="absolute inset-0 w-full h-full object-cover mix-blend-multiply opacity-20" data-alt="A sophisticated black and white aerial view of a modern industrial complex in Bhilwara. The architectural lines are sharp and repetitive, highlighting the scale of textile manufacturing. The lighting is dramatic, with long shadows emphasizing the industrial precision. The overall aesthetic is high-contrast, clean, and corporate, representing the power and history of the textile hub." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCiS70vjTBzB8E8slnBd-fp65sAk4fHAtnuqeHlD6ghQtoBaHut7ynnlKvU9hljXHd7poUkt-fLytZS8hdbttdiZXrKakN2t-ULHnaoKeAVL4rC7S4FA9j2xGfUFRKVyVAe3AVfGe4F0Q-g7qDJpPqpz8LqImnumiIV4JI4hLFpfiAE_9IUrKYGcZlU4sTnTlqP7Kc-jMIomYUTkRr5OPiTaVR3S-rjrduRaiU13FwCP9PS3Wa-lZlAfVPJple9GiwzXVsMCq4xdaQ"/>
+<div class="h-48 relative overflow-hidden">
+<iframe
+  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3606.123!2d74.6251753!3d25.3448297!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjXCsDIwJzQxLjQiTiA3NMKwMzcnMzkuOSJF!5e0!3m2!1sen!2sin!4v1700000000000"
+  width="100%"
+  height="100%"
+  style="border:0;"
+  allowfullscreen=""
+  loading="lazy"
+  referrerpolicy="no-referrer-when-downgrade"
+  class="absolute inset-0 w-full h-full">
+</iframe>
 </div>
 <div class="p-stack-lg">
-<h3 class="font-headline-md text-on-surface mb-2">Bhilwara Manufacturing Hub</h3>
+<h3 class="font-headline-md text-on-surface mb-2">Ishank Textile</h3>
 <p class="text-on-surface-variant font-body-md leading-relaxed">
                             42, Ist Floor, Heera Panna Market,<br/>
                             Pur Road, Bhilwara - 311001, Rajasthan
                         </p>
-<button class="mt-stack-md text-primary font-label-bold flex items-center gap-1 hover:gap-2 transition-all">
+<a href="https://www.google.com/maps/place/25%C2%B020'41.4%22N+74%C2%B037'39.9%22E/@25.3448297,74.6251753,17z/data=!3m1!4b1!4m4!3m3!8m2!3d25.3448297!4d74.6277502?hl=en&entry=ttu&g_ep=EgoyMDI2MDUxMy4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer" class="mt-stack-md text-primary font-label-bold flex items-center gap-1 hover:gap-2 transition-all">
                             DIRECTIONS TO HUB
                             <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
-</button>
+</a>
 </div>
 </section>
 </div>

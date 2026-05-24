@@ -6,7 +6,6 @@
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <style>
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
@@ -122,6 +121,14 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
 <script src="firebase-config.js"></script>
+<!-- Firebase services exposed as module-level variables for use in DataManager -->
+<script>
+  // Safely expose Firebase services after firebase-config.js has run.
+  // Falls back to null if Firebase is not configured (placeholder credentials).
+  var db = (window.firebaseServices && window.firebaseServices.db) ? window.firebaseServices.db : null;
+  var auth = (window.firebaseServices && window.firebaseServices.auth) ? window.firebaseServices.auth : null;
+  var storage = (window.firebaseServices && window.firebaseServices.storage) ? window.firebaseServices.storage : null;
+</script>
 <style>
   .sidebar-item.active { background: #d11e33; color: #ffe8e6; }
   .sidebar-item.active .material-symbols-outlined, .sidebar-item.active i { color: #ffe8e6; }
@@ -147,13 +154,13 @@
     <span class="font-label-mono text-headline-md font-bold text-primary md:hidden">IT</span>
   </div>
   <nav class="mt-stack-lg px-4 space-y-2">
-    <a href="#dashboard" onclick="showSection('dashboard')" class="sidebar-item active flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group"><span class="material-symbols-outlined">dashboard</span><span class="hidden md:block font-label-bold">Dashboard</span></a>
-    <a href="#categories" onclick="showSection('categories')" class="sidebar-item flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group"><span class="material-symbols-outlined">category</span><span class="hidden md:block font-label-bold">Categories</span></a>
-    <a href="#products" onclick="showSection('products')" class="sidebar-item flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group"><span class="material-symbols-outlined">inventory_2</span><span class="hidden md:block font-label-bold">Products</span></a>
-    <a href="#visitors" onclick="showSection('visitors')" class="sidebar-item flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group"><span class="material-symbols-outlined">analytics</span><span class="hidden md:block font-label-bold">Visitors</span></a>
-    <a href="#quotes" onclick="showSection('quotes')" class="sidebar-item flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group"><span class="material-symbols-outlined">request_quote</span><span class="hidden md:block font-label-bold">Quotes</span></a>
-    <a href="#certificates" onclick="showSection('certificates')" class="sidebar-item flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group"><span class="material-symbols-outlined">workspace_premium</span><span class="hidden md:block font-label-bold">Certificates</span></a>
-    <a href="#settings" onclick="showSection('settings')" class="sidebar-item flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group"><span class="material-symbols-outlined">settings</span><span class="hidden md:block font-label-bold">Settings</span></a>
+    <a href="#dashboard" onclick="showSection('dashboard', event)" class="sidebar-item active flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group"><span class="material-symbols-outlined">dashboard</span><span class="hidden md:block font-label-bold">Dashboard</span></a>
+    <a href="#categories" onclick="showSection('categories', event)" class="sidebar-item flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group"><span class="material-symbols-outlined">category</span><span class="hidden md:block font-label-bold">Categories</span></a>
+    <a href="#products" onclick="showSection('products', event)" class="sidebar-item flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group"><span class="material-symbols-outlined">inventory_2</span><span class="hidden md:block font-label-bold">Products</span></a>
+    <a href="#visitors" onclick="showSection('visitors', event)" class="sidebar-item flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group"><span class="material-symbols-outlined">analytics</span><span class="hidden md:block font-label-bold">Visitors</span></a>
+    <a href="#quotes" onclick="showSection('quotes', event)" class="sidebar-item flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group"><span class="material-symbols-outlined">request_quote</span><span class="hidden md:block font-label-bold">Quotes</span></a>
+    <a href="#certificates" onclick="showSection('certificates', event)" class="sidebar-item flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group"><span class="material-symbols-outlined">workspace_premium</span><span class="hidden md:block font-label-bold">Certificates</span></a>
+    <a href="#settings" onclick="showSection('settings', event)" class="sidebar-item flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group"><span class="material-symbols-outlined">settings</span><span class="hidden md:block font-label-bold">Settings</span></a>
     <a href="index.html" class="flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group"><span class="material-symbols-outlined">open_in_new</span><span class="hidden md:block font-label-bold">View Site</span></a>
   </nav>
   <div class="absolute bottom-8 left-0 w-full px-4">
@@ -529,7 +536,6 @@
                 </section>
             </div>
         </main>
-    </div>
 
     <!-- Certificate Modal -->
     <div id="certificate-modal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
@@ -1025,7 +1031,10 @@
         }
 
         // Section Navigation
-        async function showSection(section) {
+        async function showSection(section, event) {
+            // Prevent default anchor navigation
+            if (event) event.preventDefault();
+
             // Hide all sections
             document.querySelectorAll('main > div > section').forEach(s => s.classList.add('hidden'));
 
@@ -1034,7 +1043,8 @@
 
             // Update sidebar
             document.querySelectorAll('.sidebar-item').forEach(item => item.classList.remove('active'));
-            event.target.closest('.sidebar-item').classList.add('active');
+            const sidebarItem = event && event.target ? event.target.closest('.sidebar-item') : document.querySelector(`.sidebar-item[href="#${section}"]`);
+            if (sidebarItem) sidebarItem.classList.add('active');
 
             // Update page title
             const titles = {
@@ -2101,45 +2111,26 @@
             }
         });
 
-        // Firebase instances
-        const auth = firebase.auth();
-        const db = firebase.firestore();
-        const storage = firebase.storage();
-
-        // Authentication Check
-        function checkAdminAuth() {
-            return new Promise((resolve) => {
-                auth.onAuthStateChanged((user) => {
-                    if (!user) {
-                        // Not logged in, redirect to login page
-                        window.location.href = 'admin-login.html';
-                        resolve(false);
-                    } else {
-                        resolve(true);
-                    }
-                });
-            });
-        }
-
-        // Proper logout function
+        // Authentication Check — bypassed: admin accesses dashboard directly.
+        // When Firebase is configured, logout() will sign out properly.
         function logout() {
-            auth.signOut().then(() => {
+            if (auth) {
+                auth.signOut().then(() => {
+                    window.location.href = 'admin-login.html';
+                }).catch(() => {
+                    window.location.href = 'admin-login.html';
+                });
+            } else {
                 window.location.href = 'admin-login.html';
-            }).catch((error) => {
-                console.error('Logout error:', error);
-                window.location.href = 'admin-login.html';
-            });
+            }
         }
 
         // Initialize
         document.addEventListener('DOMContentLoaded', async () => {
-            // Check authentication first
-            const isAuth = await checkAdminAuth();
-            if (!isAuth) {
-                return; // Stop if not authenticated
+            // Initialize Firestore data only when db is available (Firebase configured)
+            if (db) {
+                DataManager.init().catch(err => console.warn('DataManager.init skipped:', err));
             }
-
-            DataManager.init();
             updateKPIs();
             updateCharts();
             renderCategories();
