@@ -115,7 +115,10 @@
 <!-- TopNavBar -->
 <header class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-surface/80 backdrop-blur-xl border-b border-white/10 shadow-2xl">
 <div class="max-w-[1200px] mx-auto px-gutter flex items-center justify-between h-20">
-<div class="font-label-mono text-headline-md font-bold text-primary">ISHANK TEXTILE</div>
+<div class="font-label-mono text-headline-md font-bold text-primary flex items-center gap-3">
+<img class="h-12 w-auto object-contain" src="logo.png" alt="Ishank Textile Logo"/>
+<span>ISHANK TEXTILE</span>
+</div>
 <nav class="hidden md:flex items-center space-x-stack-lg">
 <a class="text-on-surface-variant hover:text-on-surface transition-colors font-label-bold text-label-bold" href="index.html">Home</a>
 <a class="text-primary border-b-2 border-primary pb-1 font-label-bold text-label-bold" href="products-catalogue.html">Materials</a>
@@ -131,11 +134,11 @@
 </div>
 </div>
 </header>
-<main class="mt-24 max-w-[1200px] mx-auto px-lg pb-section-padding">
+<main class="mt-24 max-w-[1200px] mx-auto px-gutter pb-section-padding">
 <!-- Page Header -->
 <header class="py-stack-lg border-b border-outline-variant/30 mb-stack-lg">
-<h1 class="font-display-lg text-display-lg text-on-surface uppercase">Material Inventory <span class="text-primary">02</span></h1>
-<p class="font-body-lg text-body-lg text-on-surface-variant mt-stack-sm max-w-2xl">Premium textile solutions engineered for Defense, Medical, Corporate, Hospitality, Army, Police, and high-performance uniform sectors.</p>
+<h1 class="font-display-lg text-display-lg text-on-surface uppercase">Material Inventory</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mt-stack-sm max-w-2xl">Premium textile solutions engineered for School, Defense, Medical, Corporate, Hospitality, Army, Police, and high-performance uniform sectors.</p>
 </header>
 <div class="flex flex-col md:flex-row gap-gutter">
 <!-- Sidebar Filter -->
@@ -393,8 +396,9 @@
 </div>
 </div>
 </div>
+</div>
 <!-- Pagination -->
-<div class="mt-section-padding flex justify-center items-center gap-stack-md">
+<div id="pagination" class="mt-section-padding flex justify-center items-center gap-stack-md">
 <button class="p-2 border border-outline-variant text-on-surface-variant hover:border-primary hover:text-primary transition-colors">
 <span class="material-symbols-outlined">chevron_left</span>
 </button>
@@ -409,45 +413,52 @@
 </div>
 </main>
 <!-- Footer -->
-<footer class="bg-surface-container-lowest dark:bg-surface-container-lowest border-t border-white/5 w-full py-xl">
-<div class="max-w-[1200px] mx-auto px-lg grid grid-cols-1 md:grid-cols-4 gap-md">
-<div class="md:col-span-1">
-<div class="font-label-mono text-headline-md text-on-surface font-bold mb-stack-md">ISHANK TEXTILE</div>
-<p class="text-on-surface-variant font-body-sm mb-stack-lg">Advanced textile engineering for the modern industrial landscape. Quality certified since 2003.</p>
-</div>
-<div>
-<h5 class="font-label-bold text-on-surface uppercase mb-stack-md">Resources</h5>
-<ul class="space-y-2 text-on-surface-variant font-body-sm">
-<li><a class="hover:text-primary transition-colors" href="index.html">Material Safety Data</a></li>
-<li><a class="hover:text-primary transition-colors" href="index.html">Compliance</a></li>
-<li><a class="hover:text-primary transition-colors" href="index.html">Environmental</a></li>
-<li><a class="hover:text-primary transition-colors" href="index.html">Loom Specs</a></li>
-</ul>
-</div>
-<div>
-<h5 class="font-label-bold text-on-surface uppercase mb-stack-md">Company</h5>
-<ul class="space-y-2 text-on-surface-variant font-body-sm">
-<li><a class="hover:text-primary transition-colors" href="index.html">Privacy Policy</a></li>
-<li><a class="hover:text-primary transition-colors" href="index.html">Terms of Service</a></li>
-<li><a class="hover:text-primary transition-colors" href="contact.html">Contact</a></li>
-<li><a class="hover:text-primary transition-colors" href="index.html">Press Kit</a></li>
-</ul>
-</div>
-<div>
-<h5 class="font-label-bold text-on-surface uppercase mb-stack-md">Industrial Portal</h5>
-<div class="flex flex-col gap-2">
-<p class="text-on-surface-variant font-body-sm">Sign up for production alerts.</p>
-<div class="flex">
-<input class="bg-surface-container px-3 py-2 border-none w-full focus:ring-1 focus:ring-primary text-body-sm" placeholder="Email" type="email"/>
-<button class="bg-primary text-on-primary p-2">
-<span class="material-symbols-outlined">send</span>
-</button>
+<footer class="bg-surface-container-lowest dark:bg-surface-container-lowest border-t border-white/5 w-full py-12">
+<div class="max-w-[1200px] mx-auto px-gutter flex flex-col md:flex-row flex-wrap md:justify-between items-start gap-8">
+<div class="w-full md:w-auto md:max-w-[280px]">
+<div class="font-label-mono text-headline-md text-on-surface font-bold mb-4 leading-none">ISHANK TEXTILE</div>
+<p class="text-on-surface-variant text-body-sm">
+                    Ishank Textile: Manufacturing precision fabrics since 2003. Leading the B2B textile revolution from Bhilwara, Rajasthan.
+                </p>
+<div class="mt-6 flex gap-4">
+<a class="text-primary hover:scale-110 transition-transform" href="tel:+919414112197">
+<span class="material-symbols-outlined">call</span>
+</a>
+<a class="text-primary hover:scale-110 transition-transform" href="mailto:sunilpandiya909@gmail.com">
+<span class="material-symbols-outlined">mail</span>
+</a>
 </div>
 </div>
+<div class="w-full md:w-auto">
+<h4 class="font-label-bold text-label-bold uppercase text-on-surface mb-4 leading-none">Quick Navigation</h4>
+<nav class="flex flex-col gap-2">
+<a class="text-on-surface-variant hover:text-primary transition-colors text-body-sm" href="index.html">Home</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-body-sm" href="products-catalogue.html">Materials</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-body-sm" href="about.html">About Us</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-body-sm" href="contact.html">Support</a>
+</nav>
+</div>
+<div class="w-full md:w-auto">
+<h4 class="font-label-bold text-label-bold uppercase text-on-surface mb-4 leading-none">Company</h4>
+<nav class="flex flex-col gap-2">
+<a class="text-on-surface-variant hover:text-primary transition-colors text-body-sm" href="index.html">Website Terms & Condition</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-body-sm" href="index.html">Privacy Policy</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-body-sm" href="index.html">Business Terms & Condition</a>
+</nav>
+</div>
+<div class="w-full md:w-auto md:max-w-[240px]">
+<h4 class="font-label-bold text-label-bold uppercase text-on-surface mb-4 leading-none">Visit Us</h4>
+<p class="text-on-surface-variant text-body-sm mb-4">
+                    42, 1st Floor, Heera Panna Market<br/>
+                    Pur Road, Bhilwara, Rajasthan
+                </p>
+<a href="https://www.google.com/maps/place/25%C2%B020'41.4%22N+74%C2%B037'39.9%22E/@25.3448297,74.6251753,17z/data=!3m1!4b1!4m4!3m3!8m2!3d25.3448297!4d74.6277502?hl=en&amp;entry=ttu&amp;g_ep=EgoyMDI2MDUxMy4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer" class="block w-full h-24 bg-surface-container rounded-lg overflow-hidden grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all cursor-pointer">
+<img class="w-full h-full object-cover" data-alt="A stylized minimalist map of Bhilwara city center highlighting the textile district. The map uses a clean corporate aesthetic with gray and navy tones, and a red marker for the Ishank Textile location." data-location="Bhilwara" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAqEMlLr46bM1xQY7JbpLXGpmZ5UBiqu-9UJ7_0pqlYzBO-wySIgRYK5VLPx6qN2epfHQSYChyrSyfZW4ogf_v7qpMNcz_HWmxUxNIMCUYCGuUhOAtOVTYllk63PIPfysOiV9xJ5p7fEuDLF9oX-ZXMEwO8-dg4STs_QfvcMk9yI03wfzSWpciRYtUx6_d4ib8eoNdp-pgOu7D2hcAmA7I4cFI3rR1X8esw_g-zeDbuSXxtvh69JOhxDBN1EHAC9NgIpqcpu_3WGM0"/>
+</a>
 </div>
 </div>
-<div class="max-w-[1200px] mx-auto px-lg mt-stack-lg pt-stack-lg border-t border-outline-variant/10">
-<p class="text-center font-body-sm text-on-surface-variant">© 2024 Ishank Textile. All rights reserved.</p>
+<div class="max-w-[1200px] mx-auto px-gutter mt-12 pt-8 border-t border-outline/5 text-center">
+<p class="text-on-surface-variant text-body-sm font-body-sm">© 2024 Ishank Textile. All rights reserved.</p>
 </div>
 </footer>
 
@@ -511,12 +522,16 @@
       '<div class="grid grid-cols-2 gap-stack-sm my-stack-md border-y border-outline-variant/30 py-stack-md"><div class="flex flex-col"><span class="text-on-surface-variant text-[12px] uppercase font-label-bold">GSM</span><span class="font-body-md font-bold">' + escapeHtml(product.gsm || 'Custom') + '</span></div><div class="flex flex-col"><span class="text-on-surface-variant text-[12px] uppercase font-label-bold">Width</span><span class="font-body-md font-bold">' + escapeHtml(product.width || '150 CM') + '</span></div><div class="flex flex-col"><span class="text-on-surface-variant text-[12px] uppercase font-label-bold">Weave</span><span class="font-body-md font-bold">' + escapeHtml(product.weave || (category ? category.name : 'Industrial')) + '</span></div><div class="flex flex-col"><span class="text-on-surface-variant text-[12px] uppercase font-label-bold">Use</span><span class="font-body-md font-bold">' + escapeHtml(applications[0] || 'B2B') + '</span></div></div>' +
       '<div class="mt-auto flex gap-stack-sm"><button type="button" onclick="requestQuote(\'' + escapeHtml(product.id) + '\')" class="flex-grow bg-secondary text-on-secondary py-3 font-label-bold uppercase text-[12px] hover:bg-on-surface-variant transition-colors">Request Quote</button><button type="button" onclick="requestQuote(\'' + escapeHtml(product.id) + '\')" aria-label="Request quote for ' + escapeHtml(product.name) + '" class="px-4 border-2 border-primary text-primary flex items-center justify-center hover:bg-primary hover:text-on-primary transition-colors"><span class="material-symbols-outlined">add_shopping_cart</span></button></div></div></article>';
   }
+  const ITEMS_PER_PAGE = 4;
+  let currentPage = 1;
+  let currentFilteredProducts = [];
+
   function applyFilters() {
     const selectedCategories = Array.from(document.querySelectorAll('[data-filter="category"]:checked')).map((input) => input.value);
     const selectedApplications = Array.from(document.querySelectorAll('[data-filter="application"]:checked')).map((input) => input.value.toLowerCase());
     const maxPrice = Number(document.getElementById('priceRange')?.value || 500);
     const search = (document.getElementById('catalog-search')?.value || '').toLowerCase();
-    const filtered = allProducts.filter((product) => {
+    currentFilteredProducts = allProducts.filter((product) => {
       const apps = productApplications(product).join(' ').toLowerCase();
       const categoryMatch = !selectedCategories.length || selectedCategories.includes(product.categoryId);
       const appMatch = !selectedApplications.length || selectedApplications.some((item) => apps.includes(item));
@@ -524,8 +539,24 @@
       const searchMatch = !search || [product.name, product.code, product.description, apps].join(' ').toLowerCase().includes(search);
       return product.active !== false && categoryMatch && appMatch && priceMatch && searchMatch;
     });
-    renderProducts(filtered);
+    currentPage = 1;
+    renderProductsPage();
   }
+
+  function renderProductsPage() {
+    const totalPages = Math.ceil(currentFilteredProducts.length / ITEMS_PER_PAGE);
+    if (currentPage > totalPages && totalPages > 0) {
+      currentPage = totalPages;
+    }
+    
+    const startIdx = (currentPage - 1) * ITEMS_PER_PAGE;
+    const endIdx = startIdx + ITEMS_PER_PAGE;
+    const pageProducts = currentFilteredProducts.slice(startIdx, endIdx);
+    
+    renderProducts(pageProducts);
+    renderPaginationControls(totalPages);
+  }
+
   function renderProducts(products) {
     const container = document.getElementById('productsGrid');
     if (!container) return;
@@ -535,6 +566,49 @@
     }
     container.innerHTML = products.map(productCard).join('');
   }
+
+  function renderPaginationControls(totalPages) {
+    const paginationContainer = document.getElementById('pagination');
+    if (!paginationContainer) return;
+    
+    if (totalPages === 0) {
+      paginationContainer.style.display = 'none';
+      return;
+    }
+    
+    paginationContainer.style.display = 'flex';
+    let html = '';
+    
+    // Left arrow
+    const prevDisabled = currentPage === 1 ? 'disabled style="opacity: 0.3; pointer-events: none;"' : '';
+    html += '<button onclick="goToPage(' + (currentPage - 1) + ')" class="p-2 border border-outline-variant text-on-surface-variant hover:border-primary hover:text-primary transition-colors disabled:opacity-30 disabled:pointer-events-none" ' + prevDisabled + '>' +
+      '<span class="material-symbols-outlined">chevron_left</span>' +
+      '</button>';
+      
+    // Page numbers
+    for (let i = 1; i <= totalPages; i++) {
+      if (i === currentPage) {
+        html += '<button class="w-10 h-10 bg-primary text-on-primary font-label-bold">' + i + '</button>';
+      } else {
+        html += '<button onclick="goToPage(' + i + ')" class="w-10 h-10 border border-outline-variant font-label-bold hover:bg-surface-container transition-colors">' + i + '</button>';
+      }
+    }
+    
+    // Right arrow
+    const nextDisabled = currentPage === totalPages ? 'disabled style="opacity: 0.3; pointer-events: none;"' : '';
+    html += '<button onclick="goToPage(' + (currentPage + 1) + ')" class="p-2 border border-outline-variant text-on-surface-variant hover:border-primary hover:text-primary transition-colors disabled:opacity-30 disabled:pointer-events-none" ' + nextDisabled + '>' +
+      '<span class="material-symbols-outlined">chevron_right</span>' +
+      '</button>';
+      
+    paginationContainer.innerHTML = html;
+  }
+
+  window.goToPage = function(page) {
+    currentPage = page;
+    renderProductsPage();
+    window.scrollTo({ top: 200, behavior: 'smooth' });
+  };
+
   function requestQuote(productId) {
     const product = allProducts.find((item) => item.id === productId);
     if (product) sessionStorage.setItem('quoteProduct', JSON.stringify(product));
@@ -556,7 +630,8 @@
   document.addEventListener('DOMContentLoaded', async () => {
     allCategories = (await DataManager.getCategories()).filter((category) => category.active !== false);
     allProducts = (await DataManager.getProducts()).filter((product) => product.active !== false);
-    renderProducts(allProducts);
+    currentFilteredProducts = allProducts;
+    renderProductsPage();
     recordVisit();
     document.querySelectorAll('[data-filter]').forEach((input) => input.addEventListener('change', applyFilters));
     document.getElementById('priceRange')?.addEventListener('input', applyFilters);
@@ -567,7 +642,9 @@
       if (priceRange) priceRange.value = 500;
       const search = document.getElementById('catalog-search');
       if (search) search.value = '';
-      renderProducts(allProducts);
+      currentFilteredProducts = allProducts;
+      currentPage = 1;
+      renderProductsPage();
     });
     document.querySelectorAll('button').forEach((button) => {
       if (button.textContent.trim().toLowerCase().includes('quote') && !button.onclick) {
