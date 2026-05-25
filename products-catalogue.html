@@ -136,56 +136,90 @@
 </header>
 <main class="mt-24 max-w-[1200px] mx-auto px-gutter pb-section-padding">
 <!-- Page Header -->
-<header class="py-stack-lg border-b border-outline-variant/30 mb-stack-lg">
-<h1 class="font-display-lg text-display-lg text-on-surface uppercase">Material Inventory</h1>
-<p class="font-body-lg text-body-lg text-on-surface-variant mt-stack-sm max-w-2xl">Premium textile solutions engineered for School, Defense, Medical, Corporate, Hospitality, Army, Police, and high-performance uniform sectors.</p>
+<header id="catalogHeader" class="py-stack-lg border-b border-outline-variant/30 mb-stack-lg">
+<h1 id="catalogTitle" class="font-display-lg text-display-lg text-on-surface uppercase">Material Inventory</h1>
+<p id="catalogDesc" class="font-body-lg text-body-lg text-on-surface-variant mt-stack-sm max-w-2xl">Premium textile solutions engineered for School, Defense, Medical, Corporate, Hospitality, Army, Police, and high-performance uniform sectors.</p>
 </header>
-<div class="flex flex-col md:flex-row gap-gutter">
-<!-- Sidebar Filter -->
-<aside class="w-full md:w-64 flex-shrink-0 space-y-stack-lg">
-<section>
-<h3 class="font-label-bold text-label-bold uppercase text-primary mb-stack-md border-l-4 border-primary pl-3">Specifications</h3>
-<div id="categoryFilters" class="space-y-stack-sm">
-    <div class="text-body-sm opacity-60 animate-pulse pl-1">Loading categories...</div>
+
+<!-- Categories Landing View -->
+<div id="categoriesView" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+    <div class="lg:col-span-3 p-stack-lg text-center animate-pulse text-on-surface-variant opacity-60">Loading Collections...</div>
 </div>
-</section>
-<section>
-<h3 class="font-label-bold text-label-bold uppercase text-primary mb-stack-md border-l-4 border-primary pl-3">Applications</h3>
-<div class="space-y-stack-sm">
-<label class="flex items-center gap-2 cursor-pointer group">
-<input class="rounded-none border-outline text-primary focus:ring-primary" type="checkbox" data-filter="application" value="defense"/>
-<span class="text-body-md group-hover:text-primary transition-colors">Defense &amp; Security</span>
-</label>
-<label class="flex items-center gap-2 cursor-pointer group">
-<input class="rounded-none border-outline text-primary focus:ring-primary" type="checkbox" data-filter="application" value="medical"/>
-<span class="text-body-md group-hover:text-primary transition-colors">Medical Grade</span>
-</label>
-<label class="flex items-center gap-2 cursor-pointer group">
-<input class="rounded-none border-outline text-primary focus:ring-primary" type="checkbox" data-filter="application" value="corporate"/>
-<span class="text-body-md group-hover:text-primary transition-colors">Corporate Apparel</span>
-</label>
-<label class="flex items-center gap-2 cursor-pointer group">
-<input class="rounded-none border-outline text-primary focus:ring-primary" type="checkbox" data-filter="application" value="hospitality"/>
-<span class="text-body-md group-hover:text-primary transition-colors">Hospitality</span>
-</label>
-</div>
-</section>
-<section>
-<h3 class="font-label-bold text-label-bold uppercase text-primary mb-stack-md border-l-4 border-primary pl-3">GSM Range</h3>
-<div class="px-2">
-<input id="priceRange" class="w-full h-1 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-primary" min="100" max="500" value="500" type="range"/>
-<div class="flex justify-between mt-2 text-body-sm text-on-surface-variant">
-<span>100 GSM</span>
-<span>500 GSM</span>
-</div>
-</div>
-</section>
-<div class="pt-stack-md">
-<button id="resetFilters" class="w-full py-stack-sm border-2 border-secondary text-secondary font-label-bold hover:bg-secondary hover:text-on-secondary transition-all active:scale-95 uppercase text-[12px]">Reset Filters</button>
-</div>
-</aside>
-<!-- Product Grid (Bento Style) -->
-<div id="productsGrid" class="flex-grow grid grid-cols-1 lg:grid-cols-2 gap-gutter">
+
+<!-- Products Catalogue View -->
+<div id="productsView" class="space-y-6 hidden">
+    <!-- Top Back Navigation -->
+    <div class="flex items-center">
+        <button onclick="showCategoriesView()" class="inline-flex items-center gap-2 text-primary font-label-bold text-xs uppercase hover:text-primary/80 transition-all focus:outline-none group">
+            <span class="material-symbols-outlined text-sm transition-transform group-hover:-translate-x-0.5" style="font-variation-settings: 'FILL' 0, 'wght' 600, 'GRAD' 0, 'opsz' 18">arrow_back</span>
+            Back to Collections
+        </button>
+    </div>
+
+    <div class="flex flex-col md:flex-row gap-gutter">
+        <!-- Sidebar Filter -->
+        <aside class="w-full md:w-64 flex-shrink-0 space-y-stack-lg">
+            <section>
+            <h3 class="font-label-bold text-label-bold uppercase text-primary mb-stack-md border-l-4 border-primary pl-3">Specifications</h3>
+            <div id="categoryFilters" class="space-y-stack-sm">
+                <div class="text-body-sm opacity-60 animate-pulse pl-1">Loading categories...</div>
+            </div>
+            </section>
+            <section>
+            <h3 class="font-label-bold text-label-bold uppercase text-primary mb-stack-md border-l-4 border-primary pl-3">Applications</h3>
+            <div class="space-y-stack-sm">
+            <label class="flex items-center gap-2 cursor-pointer group">
+            <input class="rounded-none border-outline text-primary focus:ring-primary" type="checkbox" data-filter="application" value="defense"/>
+            <span class="text-body-md group-hover:text-primary transition-colors">Defense &amp; Security</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer group">
+            <input class="rounded-none border-outline text-primary focus:ring-primary" type="checkbox" data-filter="application" value="medical"/>
+            <span class="text-body-md group-hover:text-primary transition-colors">Medical Grade</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer group">
+            <input class="rounded-none border-outline text-primary focus:ring-primary" type="checkbox" data-filter="application" value="corporate"/>
+            <span class="text-body-md group-hover:text-primary transition-colors">Corporate Apparel</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer group">
+            <input class="rounded-none border-outline text-primary focus:ring-primary" type="checkbox" data-filter="application" value="hospitality"/>
+            <span class="text-body-md group-hover:text-primary transition-colors">Hospitality</span>
+            </label>
+            </div>
+            </section>
+            <section>
+            <h3 class="font-label-bold text-label-bold uppercase text-primary mb-stack-md border-l-4 border-primary pl-3">GSM Range</h3>
+            <div class="px-2">
+            <input id="priceRange" class="w-full h-1 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-primary" min="100" max="500" value="500" type="range"/>
+            <div class="flex justify-between mt-2 text-body-sm text-on-surface-variant">
+            <span>100 GSM</span>
+            <span>500 GSM</span>
+            </div>
+            </div>
+            </section>
+            <div class="pt-stack-md">
+            <button id="resetFilters" class="w-full py-stack-sm border-2 border-secondary text-secondary font-label-bold hover:bg-secondary hover:text-on-secondary transition-all active:scale-95 uppercase text-[12px]">Reset Filters</button>
+            </div>
+        </aside>
+
+        <!-- Right side grid area container -->
+        <div class="flex-grow flex flex-col gap-6">
+            <!-- Inventory Control Bar -->
+            <div class="flex items-center justify-between border-b border-outline-variant/30 pb-4">
+                <div class="text-body-md text-on-surface-variant">
+                    Showing <span id="resultCount" class="font-bold text-on-surface">0</span> fabrics
+                </div>
+                <div class="flex items-center gap-1">
+                    <button id="viewGridBtn" onclick="setViewMode('grid')" class="p-1.5 rounded hover:bg-surface-container transition-colors focus:outline-none text-primary" title="Grid View">
+                        <span class="material-symbols-outlined text-md flex items-center justify-center" style="font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 20">grid_view</span>
+                    </button>
+                    <button id="viewListBtn" onclick="setViewMode('list')" class="p-1.5 rounded hover:bg-surface-container transition-colors focus:outline-none opacity-40 hover:opacity-100" title="List View">
+                        <span class="material-symbols-outlined text-md flex items-center justify-center" style="font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 20">view_list</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Product Grid -->
+            <div id="productsGrid" class="grid grid-cols-1 lg:grid-cols-2 gap-gutter">
 <!-- Product Card 1 -->
 <div class="group bg-surface-container-lowest border border-outline-variant/50 flex flex-col hover:shadow-2xl transition-all duration-300 relative overflow-hidden fabric-texture-overlay">
 <div class="h-64 overflow-hidden relative">
@@ -378,10 +412,10 @@
 <span class="material-symbols-outlined">add_shopping_cart</span>
 </button>
 </div>
-</div>
-</div>
-</div>
-</div>
+</div> <!-- Closes Card 5 -->
+</div> <!-- Closes productsGrid -->
+</div> <!-- Closes flex flex-col gap-6 right container -->
+</div> <!-- Closes flex flex-col md:flex-row gap-gutter -->
 <!-- Pagination -->
 <div id="pagination" class="mt-section-padding flex justify-center items-center gap-stack-md">
 <button class="p-2 border border-outline-variant text-on-surface-variant hover:border-primary hover:text-primary transition-colors">
@@ -395,7 +429,8 @@
 <button class="p-2 border border-outline-variant text-on-surface-variant hover:border-primary hover:text-primary transition-colors">
 <span class="material-symbols-outlined">chevron_right</span>
 </button>
-</div>
+</div> <!-- Closes pagination -->
+</div> <!-- Closes productsView -->
 </main>
 <!-- Footer -->
 <footer class="bg-surface-container-lowest dark:bg-surface-container-lowest border-t border-white/5 w-full py-12">
@@ -486,17 +521,28 @@
   };
   let allProducts = [];
   let allCategories = [];
+  let currentViewMode = 'grid'; // 'grid' or 'list'
+  let currentActiveCategory = null;
+
   function escapeHtml(value) {
     return String(value || '').replace(/[&<>"]/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[char]));
   }
   function productApplications(product) {
     return Array.isArray(product.applications) ? product.applications : String(product.applications || '').split(',').map((item) => item.trim()).filter(Boolean);
   }
+
   function productCard(product, index) {
+    if (currentViewMode === 'list') {
+      return productCardList(product, index);
+    }
+    return productCardGrid(product, index);
+  }
+
+  function productCardGrid(product, index) {
     const category = allCategories.find((item) => item.id === product.categoryId);
     const applications = productApplications(product);
     const price = product.startingPrice || product.price || 0;
-    const featured = index === 2;
+    const featured = index === 2 && currentViewMode !== 'list';
     const cardClass = featured ? 'lg:col-span-2 group bg-surface-container border border-outline-variant/50 flex flex-col md:flex-row hover:shadow-2xl transition-all duration-300 relative overflow-hidden fabric-texture-overlay product-card' : 'group bg-surface-container-lowest border border-outline-variant/50 flex flex-col hover:shadow-2xl transition-all duration-300 relative overflow-hidden fabric-texture-overlay product-card';
     const imageClass = featured ? 'w-full md:w-1/2 h-80 overflow-hidden relative' : 'h-64 overflow-hidden relative';
     const contentClass = featured ? 'p-stack-lg flex flex-col justify-center w-full md:w-1/2' : 'p-stack-lg flex flex-col flex-grow';
@@ -507,6 +553,26 @@
       '<div class="grid grid-cols-2 gap-stack-sm my-stack-md border-y border-outline-variant/30 py-stack-md"><div class="flex flex-col"><span class="text-on-surface-variant text-[12px] uppercase font-label-bold">GSM</span><span class="font-body-md font-bold">' + escapeHtml(product.gsm || 'Custom') + '</span></div><div class="flex flex-col"><span class="text-on-surface-variant text-[12px] uppercase font-label-bold">Width</span><span class="font-body-md font-bold">' + escapeHtml(product.width || '150 CM') + '</span></div><div class="flex flex-col"><span class="text-on-surface-variant text-[12px] uppercase font-label-bold">Weave</span><span class="font-body-md font-bold">' + escapeHtml(product.weave || (category ? category.name : 'Industrial')) + '</span></div><div class="flex flex-col"><span class="text-on-surface-variant text-[12px] uppercase font-label-bold">Use</span><span class="font-body-md font-bold">' + escapeHtml(applications[0] || 'B2B') + '</span></div></div>' +
       '<div class="mt-auto flex gap-stack-sm"><button type="button" onclick="requestQuote(\'' + escapeHtml(product.id) + '\')" class="flex-grow bg-secondary text-on-secondary py-3 font-label-bold uppercase text-[12px] hover:bg-on-surface-variant transition-colors">Request Quote</button><button type="button" onclick="requestQuote(\'' + escapeHtml(product.id) + '\')" aria-label="Request quote for ' + escapeHtml(product.name) + '" class="px-4 border-2 border-primary text-primary flex items-center justify-center hover:bg-primary hover:text-on-primary transition-colors"><span class="material-symbols-outlined">add_shopping_cart</span></button></div></div></article>';
   }
+
+  function productCardList(product, index) {
+    const category = allCategories.find((item) => item.id === product.categoryId);
+    const applications = productApplications(product);
+    const price = product.startingPrice || product.price || 0;
+    
+    const cardClass = 'group bg-surface-container border border-outline-variant/50 flex flex-col md:flex-row hover:shadow-2xl transition-all duration-300 relative overflow-hidden fabric-texture-overlay product-card h-auto md:h-64';
+    const imageClass = 'w-full md:w-[280px] h-64 md:h-full overflow-hidden relative flex-shrink-0';
+    const contentClass = 'p-stack-lg flex flex-col justify-between flex-grow';
+    
+    return '<article class="' + cardClass + '" data-category="' + escapeHtml(product.categoryId) + '" data-price="' + price + '" data-application="' + applications.join(' ').toLowerCase() + '">' +
+      '<div class="' + imageClass + '"><img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="' + escapeHtml(product.image || fallbackProducts[index % fallbackProducts.length].image) + '" alt="' + escapeHtml(product.name) + '"><div class="absolute top-4 left-4 bg-primary text-on-primary px-3 py-1 text-[10px] uppercase font-label-bold rounded-full">' + escapeHtml(category ? category.name : 'Textile') + '</div></div>' +
+      '<div class="' + contentClass + '">' +
+      '  <div class="flex justify-between items-start gap-stack-md"><div><h4 class="font-headline-md text-headline-md text-on-surface">' + escapeHtml(product.name) + '</h4><p class="text-on-surface-variant font-body-sm">' + escapeHtml(product.code || (category ? category.name : 'Premium textile')) + '</p></div><span class="text-primary font-headline-md text-xl">₹' + price + '<span class="text-body-sm text-on-surface-variant font-normal">/m</span></span></div>' +
+      '  <p class="text-on-surface-variant font-body-sm my-2 line-clamp-2">' + escapeHtml(product.description) + '</p>' +
+      '  <div class="grid grid-cols-4 gap-stack-sm my-stack-sm border-y border-outline-variant/20 py-stack-sm"><div class="flex flex-col"><span class="text-on-surface-variant text-[10px] uppercase font-label-bold">GSM</span><span class="font-body-sm font-bold">' + escapeHtml(product.gsm || 'Custom') + '</span></div><div class="flex flex-col"><span class="text-on-surface-variant text-[10px] uppercase font-label-bold">Width</span><span class="font-body-sm font-bold">' + escapeHtml(product.width || '150 CM') + '</span></div><div class="flex flex-col"><span class="text-on-surface-variant text-[10px] uppercase font-label-bold">Weave</span><span class="font-body-sm font-bold">' + escapeHtml(product.weave || (category ? category.name : 'Industrial')) + '</span></div><div class="flex flex-col"><span class="text-on-surface-variant text-[10px] uppercase font-label-bold">Use</span><span class="font-body-sm font-bold">' + escapeHtml(applications[0] || 'B2B') + '</span></div></div>' +
+      '  <div class="mt-auto flex gap-stack-sm"><button type="button" onclick="requestQuote(\'' + escapeHtml(product.id) + '\')" class="flex-grow bg-secondary text-on-secondary py-2.5 font-label-bold uppercase text-[11px] hover:bg-on-surface-variant transition-colors">Request Quote</button><button type="button" onclick="requestQuote(\'' + escapeHtml(product.id) + '\')" aria-label="Request quote for ' + escapeHtml(product.name) + '" class="px-4 border-2 border-primary text-primary flex items-center justify-center hover:bg-primary hover:text-on-primary transition-colors"><span class="material-symbols-outlined text-sm">add_shopping_cart</span></button></div>' +
+      '</div></article>';
+  }
+
   const ITEMS_PER_PAGE = 4;
   let currentPage = 1;
   let currentFilteredProducts = [];
@@ -545,6 +611,12 @@
   function renderProducts(products) {
     const container = document.getElementById('productsGrid');
     if (!container) return;
+    
+    const resultCountEl = document.getElementById('resultCount');
+    if (resultCountEl) {
+      resultCountEl.textContent = currentFilteredProducts.length;
+    }
+
     if (!products.length) {
       container.innerHTML = '<div class="lg:col-span-2 p-stack-lg bg-surface-container-lowest border border-outline-variant/50 text-center"><h3 class="font-headline-md text-on-surface">No products match your filters</h3><p class="text-on-surface-variant mt-2">Reset filters or contact us for a custom textile requirement.</p></div>';
       return;
@@ -567,7 +639,7 @@
     // Left arrow
     const prevDisabled = currentPage === 1 ? 'disabled style="opacity: 0.3; pointer-events: none;"' : '';
     html += '<button onclick="goToPage(' + (currentPage - 1) + ')" class="p-2 border border-outline-variant text-on-surface-variant hover:border-primary hover:text-primary transition-colors disabled:opacity-30 disabled:pointer-events-none" ' + prevDisabled + '>' +
-      '<span class="material-symbols-outlined">chevron_left</span>' +
+      '<span class="material-symbols-outlined flex items-center">chevron_left</span>' +
       '</button>';
       
     // Page numbers
@@ -582,7 +654,7 @@
     // Right arrow
     const nextDisabled = currentPage === totalPages ? 'disabled style="opacity: 0.3; pointer-events: none;"' : '';
     html += '<button onclick="goToPage(' + (currentPage + 1) + ')" class="p-2 border border-outline-variant text-on-surface-variant hover:border-primary hover:text-primary transition-colors disabled:opacity-30 disabled:pointer-events-none" ' + nextDisabled + '>' +
-      '<span class="material-symbols-outlined">chevron_right</span>' +
+      '<span class="material-symbols-outlined flex items-center">chevron_right</span>' +
       '</button>';
       
     paginationContainer.innerHTML = html;
@@ -591,7 +663,7 @@
   window.goToPage = function(page) {
     currentPage = page;
     renderProductsPage();
-    window.scrollTo({ top: 200, behavior: 'smooth' });
+    window.scrollTo({ top: 150, behavior: 'smooth' });
   };
 
   function requestQuote(productId) {
@@ -634,12 +706,145 @@
     });
   }
 
+  window.setViewMode = function(mode) {
+    currentViewMode = mode;
+    
+    // Toggle active state in the control bar buttons
+    const gridBtn = document.getElementById('viewGridBtn');
+    const listBtn = document.getElementById('viewListBtn');
+    const gridEl = document.getElementById('productsGrid');
+    
+    if (mode === 'grid') {
+      gridBtn?.classList.add('text-primary');
+      gridBtn?.classList.remove('opacity-40');
+      listBtn?.classList.add('opacity-40');
+      listBtn?.classList.remove('text-primary');
+      
+      gridEl?.classList.remove('grid-cols-1');
+      gridEl?.classList.add('lg:grid-cols-2');
+    } else {
+      listBtn?.classList.add('text-primary');
+      listBtn?.classList.remove('opacity-40');
+      gridBtn?.classList.add('opacity-40');
+      gridBtn?.classList.remove('text-primary');
+      
+      gridEl?.classList.remove('lg:grid-cols-2');
+      gridEl?.classList.add('grid-cols-1');
+    }
+    
+    // Re-render the active page
+    renderProductsPage();
+  };
+
+  window.showCategoriesView = function(pushState = true) {
+    currentActiveCategory = null;
+    
+    if (pushState) {
+      history.pushState(null, '', window.location.pathname);
+    }
+    
+    // Update Header
+    const titleEl = document.getElementById('catalogTitle');
+    const descEl = document.getElementById('catalogDesc');
+    if (titleEl) titleEl.textContent = 'Fabric Collections';
+    if (descEl) descEl.textContent = 'Explore our premium range of industrial, medical, defense, and high-performance textiles engineered since 2003.';
+    
+    // Toggle Views
+    document.getElementById('productsView')?.classList.add('hidden');
+    document.getElementById('categoriesView')?.classList.remove('hidden');
+    
+    renderCategoriesGrid();
+  };
+
+  window.selectCategory = function(categoryId, pushState = true) {
+    currentActiveCategory = categoryId;
+    
+    if (pushState) {
+      history.pushState({ categoryId }, '', '?category=' + encodeURIComponent(categoryId));
+    }
+    
+    // Update Header
+    const titleEl = document.getElementById('catalogTitle');
+    const descEl = document.getElementById('catalogDesc');
+    if (titleEl) titleEl.textContent = 'Material Inventory';
+    if (descEl) descEl.textContent = 'Premium textile solutions engineered for School, Defense, Medical, Corporate, Hospitality, Army, Police, and high-performance uniform sectors.';
+    
+    // Check corresponding specification checkbox in sidebar filters and uncheck others
+    document.querySelectorAll('[data-filter="category"]').forEach((input) => {
+      input.checked = (input.value === categoryId);
+    });
+    
+    // Toggle Views
+    document.getElementById('categoriesView')?.classList.add('hidden');
+    document.getElementById('productsView')?.classList.remove('hidden');
+    
+    // Apply filters and render
+    applyFilters();
+    
+    // Smooth scroll to top of viewport content
+    window.scrollTo({ top: 150, behavior: 'smooth' });
+  };
+
+  function renderCategoriesGrid() {
+    const container = document.getElementById('categoriesView');
+    if (!container) return;
+    
+    if (allCategories.length === 0) {
+      container.innerHTML = '<div class="lg:col-span-3 p-stack-lg text-center text-on-surface-variant opacity-50">No collections available right now.</div>';
+      return;
+    }
+    
+    container.innerHTML = allCategories.map((category, index) => {
+      // Find minimum starting price for products in this category
+      const catProducts = allProducts.filter(p => p.categoryId === category.id && p.active !== false);
+      const minPrice = catProducts.reduce((min, p) => {
+        const price = parseFloat(p.startingPrice || p.price || 0);
+        return price > 0 && (min === 0 || price < min) ? price : min;
+      }, 0) || parseFloat(category.startingPrice || 180);
+      
+      const cardImage = category.image || (catProducts[0] ? catProducts[0].image : 'https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=800');
+      
+      return `
+        <div onclick="selectCategory('${escapeHtml(category.id)}')" class="group bg-surface-container border border-outline-variant/30 flex flex-col hover:shadow-2xl transition-all duration-300 rounded-xl overflow-hidden relative fabric-texture-overlay cursor-pointer product-card">
+          <div class="h-56 overflow-hidden relative">
+            <img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="${escapeHtml(cardImage)}" alt="${escapeHtml(category.name)}"/>
+            <div class="absolute top-4 right-4 bg-primary text-on-primary px-3 py-1 text-[10px] uppercase font-label-bold rounded-full">Collection</div>
+          </div>
+          <div class="p-stack-lg flex flex-col flex-grow">
+            <h3 class="font-headline-md text-headline-md text-on-surface mb-2 group-hover:text-primary transition-colors">${escapeHtml(category.name)}</h3>
+            <p class="text-on-surface-variant font-body-sm mb-6 flex-grow leading-relaxed line-clamp-3">${escapeHtml(category.description || 'Premium engineered fabric solution.')}</p>
+            <div class="mt-auto flex justify-between items-center pt-4 border-t border-outline-variant/20">
+              <span class="text-primary font-headline-md text-sm">Starting from <span class="text-lg font-bold">₹${minPrice}</span><span class="text-xs text-on-surface-variant font-normal">/m</span></span>
+              <span class="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-on-primary group-hover:translate-x-1 transition-transform">
+                <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 0, 'wght' 600, 'GRAD' 0, 'opsz' 18">arrow_forward</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function checkUrlAndRender() {
+    const params = new URLSearchParams(window.location.search);
+    const categoryId = params.get('category');
+    if (categoryId) {
+      selectCategory(categoryId, false);
+    } else {
+      showCategoriesView(false);
+    }
+  }
+
+  // Hook into browser forward/backward buttons
+  window.addEventListener('popstate', (event) => {
+    checkUrlAndRender();
+  });
+
   document.addEventListener('DOMContentLoaded', async () => {
     allCategories = (await DataManager.getCategories()).filter((category) => category.active !== false);
     allProducts = (await DataManager.getProducts()).filter((product) => product.active !== false);
     renderCategoryFilters();
-    currentFilteredProducts = allProducts;
-    renderProductsPage();
+    checkUrlAndRender();
     recordVisit();
     document.querySelectorAll('[data-filter]').forEach((input) => input.addEventListener('change', applyFilters));
     document.getElementById('priceRange')?.addEventListener('input', applyFilters);
