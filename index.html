@@ -112,6 +112,10 @@
     grid-template-columns: repeat(12, 1fr);
     gap: 24px
     }</style>
+
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
 </head>
 <body class="bg-background text-on-surface font-body-md">
 <!-- TopNavBar -->
@@ -226,7 +230,7 @@
 </div>
 <a class="text-primary border-b border-primary font-label-bold text-label-bold uppercase mt-4 md:mt-0" href="products-catalogue.html">View All Collections</a>
 </div>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-stack-lg">
+<div id="premiumProductsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-stack-lg">
 <!-- Vat-Dyed Card -->
 <div class="bg-white border border-outline/10 rounded-xl overflow-hidden shadow-sm hover:shadow-2xl transition-all group">
 <div class="h-64 overflow-hidden relative">
@@ -369,11 +373,98 @@
 </footer>
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
+  const fallbackCategories = [
+    { id: '1', name: 'Vat-Dyed Fabrics', description: 'Molecular-level color integrity with 24-hour freshness shield', startingPrice: 380, active: true },
+    { id: '2', name: 'Fiber-Dyed Fabrics', description: 'Advanced fiber-dyeing technology with superior color fastness', startingPrice: 420, active: true },
+    { id: '3', name: 'Wollen Fabrics', description: 'High-quality woolen fabric with excellent thermal properties', startingPrice: 320, active: true },
+    { id: '4', name: 'Hosiery Fabrics', description: 'Premium hosiery fabric with superior elasticity and comfort', startingPrice: 280, active: true },
+    { id: '5', name: 'Cotton Fabrics', description: 'Premium cotton fabric with natural breathability and comfort', startingPrice: 180, active: true }
+  ];
+  const fallbackProducts = [
+    { id: '1', code: 'VD-001', name: 'Vat-Dyed Premium Fabric', categoryId: '1', description: 'Molecular-level color integrity with 24-hour freshness shield. Perfect for high-end uniform applications.', startingPrice: 380, image: 'https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=1000', applications: ['Defense', 'Medical', 'Corporate'], active: true, gsm: '240 - 280', weave: 'Twill / Ripstop', width: '150 CM' },
+    { id: '2', code: 'FD-001', name: 'Fiber-Dyed Advanced Fabric', categoryId: '2', description: 'Advanced fiber-dyeing technology with superior color fastness and durability.', startingPrice: 420, image: 'https://images.unsplash.com/photo-1528459801416-a9e53bbf4e17?w=1000', applications: ['Army', 'Police', 'Security'], active: true, gsm: '220 - 300', weave: 'Poly-Viscose', width: '160 CM' }
+  ];
+  const DataManager = {
+    async getCategories() {
+      try {
+        if (window.firebase && firebase.firestore) {
+          const snapshot = await firebase.firestore().collection('categories').get();
+          const categories = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+          if (categories.length) return categories;
+        }
+      } catch (error) { console.warn('Using fallback categories:', error); }
+      return JSON.parse(localStorage.getItem('categories') || JSON.stringify(fallbackCategories));
+    },
+    async getProducts() {
+      try {
+        if (window.firebase && firebase.firestore) {
+          const snapshot = await firebase.firestore().collection('products').get();
+          const products = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+          if (products.length) return products;
+        }
+      } catch (error) { console.warn('Using fallback products:', error); }
+      return JSON.parse(localStorage.getItem('products') || JSON.stringify(fallbackProducts));
+    }
+  };
+
+  function escapeHtml(value) {
+    return String(value || '').replace(/[&<>"]/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[char]));
+  }
+
+  function renderPremiumProductCard(product, index) {
+    const price = product.startingPrice || product.price || 0;
+    const badgeText = index === 0 ? 'MOST POPULAR' : 'TECHNICAL GRADE';
+    const badgeClass = index === 0 ? 'bg-primary text-on-primary' : 'bg-secondary text-on-secondary';
+    const btnClass = index === 0 
+      ? 'w-full py-4 bg-primary text-on-primary font-label-bold text-label-bold uppercase rounded-lg hover:brightness-110 transition-all'
+      : 'w-full py-4 border-2 border-primary text-primary font-label-bold text-label-bold uppercase rounded-lg hover:bg-primary/5 transition-all';
+    
+    const weaveLabel = product.weave ? 'Weave' : 'Composition';
+    const weaveValue = product.weave || product.composition || 'Premium Blend';
+    
+    const gsmLabel = product.gsm ? 'GSM' : 'Fastness';
+    const gsmValue = product.gsm || product.fastness || 'Standard';
+
+    return `
+      <div class="bg-white border border-outline/10 rounded-xl overflow-hidden shadow-sm hover:shadow-2xl transition-all group">
+        <div class="h-64 overflow-hidden relative">
+          <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" src="${escapeHtml(product.image)}" alt="${escapeHtml(product.name)}"/>
+          <div class="absolute top-4 right-4 ${badgeClass} px-3 py-1 rounded text-xs font-bold">${badgeText}</div>
+        </div>
+        <div class="p-stack-lg">
+          <div class="flex justify-between items-start mb-4">
+            <h3 class="font-headline-md text-headline-md text-on-surface">${escapeHtml(product.name)}</h3>
+            <span class="font-headline-md text-primary">₹${price}<span class="text-sm font-normal text-on-surface-variant">/m</span></span>
+          </div>
+          <div class="grid grid-cols-2 gap-4 mb-6">
+            <div class="bg-surface-container p-3 rounded">
+              <span class="text-[10px] uppercase block opacity-60">${weaveLabel}</span>
+              <span class="font-label-bold">${escapeHtml(weaveValue)}</span>
+            </div>
+            <div class="bg-surface-container p-3 rounded">
+              <span class="text-[10px] uppercase block opacity-60">${gsmLabel}</span>
+              <span class="font-label-bold">${escapeHtml(gsmValue)}</span>
+            </div>
+          </div>
+          <p class="text-on-surface-variant mb-6">${escapeHtml(product.description)}</p>
+          <button onclick="requestQuote('${escapeHtml(product.id)}')" class="${btnClass}">Request Quote</button>
+        </div>
+      </div>
+    `;
+  }
+
+  window.requestQuote = function(productId) {
+    window.location.href = 'contact.html?quote=' + encodeURIComponent(productId);
+  };
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    // Bind all static buttons
     document.querySelectorAll('button').forEach((button) => {
       const label = button.textContent.trim().toLowerCase();
       if (label.includes('quote') || label.includes('contact')) {
-        button.addEventListener('click', () => { window.location.href = 'contact.html'; });
+        if (!button.onclick) {
+          button.addEventListener('click', () => { window.location.href = 'contact.html'; });
+        }
       }
       if (label.includes('catalogue') || label.includes('catalog') || label.includes('collection') || label.includes('spec')) {
         button.addEventListener('click', () => { window.location.href = 'products-catalogue.html'; });
@@ -382,6 +473,35 @@
         button.addEventListener('click', () => { window.location.href = 'contact.html'; });
       }
     });
+
+    // Dynamic Premium Clothing loader
+    try {
+      const categories = await DataManager.getCategories();
+      const products = await DataManager.getProducts();
+
+      // Look for Category 'Premium Clothing' (case-insensitive)
+      const premiumCategory = categories.find(c => c.name && c.name.toLowerCase().includes('premium clothing'))
+        || categories.find(c => c.name && c.name.toLowerCase().includes('premium'))
+        || categories.find(c => c.name && c.name.toLowerCase().includes('clothing'));
+      
+      if (premiumCategory) {
+        const premiumProducts = products.filter(p => p.categoryId === premiumCategory.id && p.active !== false);
+        if (premiumProducts.length >= 2) {
+          const container = document.getElementById('premiumProductsContainer');
+          if (container) {
+            container.innerHTML = premiumProducts.slice(0, 2).map((prod, idx) => renderPremiumProductCard(prod, idx)).join('');
+          }
+        } else if (products.length >= 2) {
+          // If less than 2 products in Premium Clothing, fallback to first 2 available active products
+          const container = document.getElementById('premiumProductsContainer');
+          if (container) {
+            container.innerHTML = products.slice(0, 2).map((prod, idx) => renderPremiumProductCard(prod, idx)).join('');
+          }
+        }
+      }
+    } catch (err) {
+      console.warn('Failed to load dynamic premium products:', err);
+    }
   });
 </script>
 </body></html>
