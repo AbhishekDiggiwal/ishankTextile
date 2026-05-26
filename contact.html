@@ -333,13 +333,37 @@ Send Inquiry
 </footer>
 
 <div id="successModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[100] hidden items-center justify-center p-4">
-  <div class="bg-surface-container-lowest border border-surface-container-high rounded-xl p-6 max-w-md w-full shadow-2xl text-center">
-    <div class="w-16 h-16 mx-auto rounded-full bg-emerald-500/10 flex items-center justify-center mb-4">
-      <span class="material-symbols-outlined text-emerald-500 text-4xl" style="font-variation-settings: 'FILL' 1, 'wght' 600, 'GRAD' 0, 'opsz' 40">check_circle</span>
+  <!-- Confirmation Card (Glassmorphism) -->
+  <div class="relative z-20 w-full max-w-[520px] bg-white/80 backdrop-blur-2xl border border-white/40 shadow-2xl rounded-xl overflow-hidden p-stack-lg md:p-12 flex flex-col items-center text-center">
+    <!-- Icon Cluster (Premium Green check symbol) -->
+    <div class="mb-stack-lg flex items-center justify-center w-24 h-24 rounded-full bg-emerald-500/10 border-4 border-emerald-500 animate-pulse">
+      <span class="material-symbols-outlined text-[64px] text-emerald-500" style="font-variation-settings: 'FILL' 1; 'wght' 600;">check_circle</span>
     </div>
-    <h3 class="font-headline-md text-xl font-bold text-on-surface mb-2">Inquiry Submitted</h3>
-    <p class="text-on-surface-variant text-sm mb-6 leading-relaxed">Thank you for contacting Ishank Textile. Our team will review your requirement and respond shortly.</p>
-    <button onclick="closeSuccessModal()" class="w-full bg-primary text-on-primary py-3 rounded-lg font-label-bold uppercase hover:brightness-110 transition-all">Close</button>
+    <!-- Content -->
+    <div class="space-y-stack-md">
+      <h1 class="font-headline-md text-headline-md md:text-headline-lg text-on-background tracking-tight">
+        Inquiry Received
+      </h1>
+      <p class="font-body-lg text-body-lg text-on-surface-variant max-w-[400px] mx-auto">
+        Your fabric quotation inquiry has been successfully logged. Our sales team will review your requirements and reach out within 24 hours.
+      </p>
+    </div>
+    <!-- Action -->
+    <div class="mt-12 w-full">
+      <button class="group relative w-full bg-[#232A31] hover:bg-on-background text-white font-label-bold text-label-bold py-5 rounded-lg transition-all duration-300 active:scale-95 flex items-center justify-center gap-2 overflow-hidden" onclick="closeSuccessModal()">
+        <span>Close</span>
+        <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+        <!-- Button Shine Effect -->
+        <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+      </button>
+    </div>
+    <!-- Branding Subtext -->
+    <div class="mt-stack-lg pt-stack-md border-t border-on-surface-variant/10 w-full flex flex-col items-center">
+      <span class="font-label-mono text-[10px] uppercase tracking-widest text-on-surface-variant/60 block text-center">
+        Ishank Textile Premium Fabric Manufacturing
+      </span>
+      <span class="text-[9px] text-on-surface-variant/40 mt-1 block text-center">Since 2003 • Bhilwara, Rajasthan</span>
+    </div>
   </div>
 </div>
 
@@ -403,6 +427,13 @@ Send Inquiry
     modal.classList.add('hidden');
     modal.classList.remove('flex');
     document.body.style.overflow = 'auto';
+    
+    // Reset the inquiry section form and product dynamic visibility
+    const form = document.getElementById('contactForm');
+    if (form) {
+      form.reset();
+      toggleProductSelection();
+    }
   }
   async function loadProducts() {
     const products = (await DataManager.getProducts()).filter((product) => product.active !== false);
@@ -512,9 +543,7 @@ Send Inquiry
           whatsappUpdates: data.whatsappUpdates === 'on'
         };
         await DataManager.saveQuote(quote);
-        this.reset();
-        toggleProductSelection();
-        window.location.href = 'inquiry-confirmation.html';
+        showSuccessModal();
       } catch (err) {
         console.error('Error submitting inquiry:', err);
         alert('An unexpected error occurred. Please try again.');
