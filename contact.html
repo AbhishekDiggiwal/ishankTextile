@@ -512,9 +512,9 @@ Send Inquiry
           whatsappUpdates: data.whatsappUpdates === 'on'
         };
         await DataManager.saveQuote(quote);
-        showSuccessModal();
         this.reset();
         toggleProductSelection();
+        window.location.href = 'inquiry-confirmation.html';
       } catch (err) {
         console.error('Error submitting inquiry:', err);
         alert('An unexpected error occurred. Please try again.');
