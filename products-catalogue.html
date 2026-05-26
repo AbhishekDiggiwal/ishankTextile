@@ -500,9 +500,10 @@
   const DataManager = {
     async getCategories() {
       try {
-        if (window.firebase && firebase.firestore) {
+        const db = window.firebaseServices && window.firebaseServices.db;
+        if (db) {
           const snapshot = await Promise.race([
-            firebase.firestore().collection('categories').get(),
+            db.collection('categories').get(),
             new Promise((_, reject) => setTimeout(() => reject(new Error('Firestore read timeout')), 3000))
           ]);
           const categories = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
@@ -513,9 +514,10 @@
     },
     async getProducts() {
       try {
-        if (window.firebase && firebase.firestore) {
+        const db = window.firebaseServices && window.firebaseServices.db;
+        if (db) {
           const snapshot = await Promise.race([
-            firebase.firestore().collection('products').get(),
+            db.collection('products').get(),
             new Promise((_, reject) => setTimeout(() => reject(new Error('Firestore read timeout')), 3000))
           ]);
           const products = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));

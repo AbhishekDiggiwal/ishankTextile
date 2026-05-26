@@ -26,7 +26,7 @@ if (hasRealCredentials) {
         // load every Firebase SDK, so each service is optional here.
         window.firebaseServices = {
             auth: firebase.auth ? firebase.auth() : null,
-            db: firebase.firestore ? firebase.firestore() : null,
+            db: firebase.firestore ? firebase.app().firestore("ishanktextiles") : null,
             storage: firebase.storage ? firebase.storage() : null
         };
     } catch (e) {
