@@ -388,21 +388,27 @@
     async getCategories() {
       try {
         if (window.firebase && firebase.firestore) {
-          const snapshot = await firebase.firestore().collection('categories').get();
+          const snapshot = await Promise.race([
+            firebase.firestore().collection('categories').get(),
+            new Promise((_, reject) => setTimeout(() => reject(new Error('Firestore read timeout')), 3000))
+          ]);
           const categories = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
           if (categories.length) return categories;
         }
-      } catch (error) { console.warn('Using fallback categories:', error); }
+      } catch (error) { console.warn('Using fallback categories (Firestore failed or timed out):', error); }
       return JSON.parse(localStorage.getItem('categories') || JSON.stringify(fallbackCategories));
     },
     async getProducts() {
       try {
         if (window.firebase && firebase.firestore) {
-          const snapshot = await firebase.firestore().collection('products').get();
+          const snapshot = await Promise.race([
+            firebase.firestore().collection('products').get(),
+            new Promise((_, reject) => setTimeout(() => reject(new Error('Firestore read timeout')), 3000))
+          ]);
           const products = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
           if (products.length) return products;
         }
-      } catch (error) { console.warn('Using fallback products:', error); }
+      } catch (error) { console.warn('Using fallback products (Firestore failed or timed out):', error); }
       return JSON.parse(localStorage.getItem('products') || JSON.stringify(fallbackProducts));
     }
   };
