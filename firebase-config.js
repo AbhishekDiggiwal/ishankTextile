@@ -2,12 +2,13 @@
 // Replace with your own Firebase project credentials after creating project at https://console.firebase.google.com
 
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_PROJECT_ID.appspot.com",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyC959Is_n8ou_DMq1KMr_sEiq1QTepcJ6k",
+  authDomain: "ishanktextile.firebaseapp.com",
+  projectId: "ishanktextile",
+  storageBucket: "ishanktextile.firebasestorage.app",
+  messagingSenderId: "858913371452",
+  appId: "1:858913371452:web:14aa27ecf860bbb34a5a39",
+  measurementId: "G-DQHESC75K4"
 };
 
 // Initialize Firebase only if real credentials are provided
