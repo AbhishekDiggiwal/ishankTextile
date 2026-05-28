@@ -106,6 +106,19 @@
             background-image: radial-gradient(circle at 2px 2px, rgba(0,0,0,0.05) 1px, transparent 0);
             background-size: 24px 24px;
         }
+        .cert-card-reveal {
+            opacity: 0;
+            transform: scale(0.9);
+            filter: blur(8px);
+            transition: opacity 0.8s cubic-bezier(0.34, 1.56, 0.64, 1),
+                        transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1),
+                        filter 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .cert-card-reveal.active {
+            opacity: 1;
+            transform: scale(1);
+            filter: blur(0);
+        }
     </style>
 
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -377,7 +390,7 @@
 
       certsToRender.forEach((cert) => {
         const card = document.createElement('div');
-        card.className = 'p-stack-lg bg-white border border-surface-container-highest rounded-xl text-center group hover:border-primary transition-colors flex flex-col justify-between items-center h-full';
+        card.className = 'cert-card-reveal p-stack-lg bg-white border border-surface-container-highest rounded-xl text-center group hover:border-primary transition-colors flex flex-col justify-between items-center h-full';
         
         let actionHtml = '';
         if (cert.url) {
@@ -398,6 +411,25 @@
           actionHtml;
           
         container.appendChild(card);
+      });
+
+      // Staggered elastic zoom + unblur reveal for certificate cards
+      const certObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const card = entry.target;
+            const index = Array.from(container.children).indexOf(card);
+            // Stagger each card by 120ms
+            setTimeout(() => {
+              card.classList.add('active');
+            }, index * 120);
+            certObserver.unobserve(card);
+          }
+        });
+      }, { threshold: 0.15 });
+
+      container.querySelectorAll('.cert-card-reveal').forEach((card) => {
+        certObserver.observe(card);
       });
     } catch (error) {
       console.error('Error loading certificates:', error);
