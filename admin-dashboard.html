@@ -863,10 +863,10 @@
                         const filename = `images/${Date.now()}_${file.name}`;
                         const ref = storage.ref(filename);
                         
-                        // Set a timeout of 4 seconds on the upload to prevent infinite retries
+                        // Set a timeout of 30 seconds on the upload to allow larger files to upload
                         await Promise.race([
                             ref.put(file),
-                            new Promise((_, reject) => setTimeout(() => reject(new Error('Storage upload timed out')), 4000))
+                            new Promise((_, reject) => setTimeout(() => reject(new Error('Storage upload timed out')), 30000))
                         ]);
                         
                         return await ref.getDownloadURL();
@@ -897,10 +897,10 @@
                         const filename = `certificates/${name.replace(/[^a-zA-Z0-9]/g, '_')}_${Date.now()}_${file.name}`;
                         const ref = storage.ref(filename);
                         
-                        // Set a timeout of 4 seconds on the upload to prevent infinite retries
+                        // Set a timeout of 30 seconds on the upload to allow larger files to upload
                         await Promise.race([
                             ref.put(file),
-                            new Promise((_, reject) => setTimeout(() => reject(new Error('Storage upload timed out')), 4000))
+                            new Promise((_, reject) => setTimeout(() => reject(new Error('Storage upload timed out')), 30000))
                         ]);
                         
                         url = await ref.getDownloadURL();
