@@ -2179,8 +2179,15 @@
             if (previewContainer) previewContainer.classList.remove('hidden');
         });
 
-        // Authentication Check — bypassed: admin accesses dashboard directly.
-        // When Firebase is configured, logout() will sign out properly.
+        // Authentication Check — Redirect to login if not signed in
+        if (auth) {
+            auth.onAuthStateChanged((user) => {
+                if (!user) {
+                    window.location.href = 'admin-login.html';
+                }
+            });
+        }
+
         function logout() {
             if (auth) {
                 auth.signOut().then(() => {
