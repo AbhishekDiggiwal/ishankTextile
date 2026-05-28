@@ -355,7 +355,12 @@
         }
       ];
 
-      const certsToRender = certificates.length > 0 ? certificates : defaultCertificates;
+      let certsToRender = [...certificates];
+      if (certsToRender.length < 4) {
+        const paddingCount = 4 - certsToRender.length;
+        const paddingCerts = defaultCertificates.slice(-paddingCount);
+        certsToRender = certsToRender.concat(paddingCerts);
+      }
 
       certsToRender.forEach((cert) => {
         const card = document.createElement('div');
