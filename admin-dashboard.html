@@ -754,6 +754,26 @@
 
     <!-- JavaScript -->
     <script>
+        // Global Error and Promise Rejection Handlers for easy debugging
+        window.addEventListener('error', function(event) {
+            console.error('Global Error caught:', event.error);
+            const msg = event.message || event.error?.message || 'Unknown runtime error';
+            if (typeof showToast === 'function') {
+                showToast(`Error: ${msg}`, 'error');
+            } else {
+                alert(`Error: ${msg}`);
+            }
+        });
+        window.addEventListener('unhandledrejection', function(event) {
+            console.error('Unhandled Promise Rejection:', event.reason);
+            const msg = event.reason?.message || event.reason || 'Unhandled promise rejection';
+            if (typeof showToast === 'function') {
+                showToast(`Promise Error: ${msg}`, 'error');
+            } else {
+                alert(`Promise Error: ${msg}`);
+            }
+        });
+
         // Firestore Data Management
         const DataManager = {
             // Initialize with default data if collections are empty
