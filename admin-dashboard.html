@@ -268,7 +268,6 @@
             <th class="px-6 py-4 font-label-bold text-xs uppercase text-on-surface-variant">Product</th>
             <th class="px-6 py-4 font-label-bold text-xs uppercase text-on-surface-variant">Quantity</th>
             <th class="px-6 py-4 font-label-bold text-xs uppercase text-on-surface-variant">Date</th>
-            <th class="px-6 py-4 font-label-bold text-xs uppercase text-on-surface-variant">Status</th>
           </tr>
         </thead>
         <tbody id="recent-quotes-table" class="divide-y divide-outline-variant"></tbody>
@@ -399,7 +398,6 @@
                                         <th class="text-left py-3 px-4">Product</th>
                                         <th class="text-left py-3 px-4">Quantity</th>
                                         <th class="text-left py-3 px-4">Date</th>
-                                        <th class="text-left py-3 px-4">Status</th>
                                     </tr>
                                 </thead>
                                 <tbody id="quotes-table">
@@ -1570,28 +1568,46 @@
                 // Get product info - can be from quote.product object or legacy format
                 const productName = quote.product?.name || quote.productName || (quote.productId ? 'Unknown Product' : 'N/A');
                 const productCode = quote.product?.code || '';
+                const dateStr = quote.createdAt ? new Date(quote.createdAt).toLocaleDateString() : 'N/A';
+                const qtyStr = quote.quantity ? `${quote.quantity}m` : 'N/A';
 
-                return `
-                <tr class="border-b border-gray-100">
-                    ${!isRecent ? `<td class="py-3 px-4 font-mono text-sm">${quote.id?.slice(-6)}</td>` : ''}
-                    <td class="py-3 px-4 font-medium">${quote.customerName || 'N/A'}</td>
-                    ${!isRecent ? `<td class="py-3 px-4 text-gray-600">${quote.email || '-'}</td>` : ''}
-                    ${!isRecent ? `<td class="py-3 px-4 text-gray-600">${quote.phone || '-'}</td>` : ''}
-                    <td class="py-3 px-4 text-gray-600">
-                        ${productName !== 'N/A' ? `
-                            <div class="flex items-center space-x-2">
-                                <span class="text-xs bg-brand-orange/10 text-brand-orange px-2 py-1 rounded">${productCode || 'N/A'}</span>
-                                <span>${productName}</span>
-                            </div>
-                            ${quote.quantity ? `<div class="text-xs text-gray-500 mt-1">Qty: ${quote.quantity}m</div>` : ''}
-                        ` : '<span class="text-gray-400">No product selected</span>'}
-                    </td>
-                    ${!isRecent ? `<td class="py-3 px-4 text-gray-600">${new Date(quote.createdAt).toLocaleDateString()}</td>` : ''}
-                    <td class="py-3 px-4">
-                        <span class="status-active text-white text-xs px-2 py-1 rounded-full">New</span>
-                    </td>
-                </tr>
-                `;
+                if (isRecent) {
+                    return `
+                    <tr class="border-b border-gray-100 hover:bg-gray-50/50 transition-colors">
+                        <td class="px-6 py-4 font-medium text-dark-gray">${quote.customerName || 'N/A'}</td>
+                        <td class="px-6 py-4 text-gray-600">${quote.email || '-'}</td>
+                        <td class="px-6 py-4 text-gray-600">
+                            ${productName !== 'N/A' ? `
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-xs bg-brand-orange/10 text-brand-orange px-2 py-1 rounded">${productCode || 'N/A'}</span>
+                                    <span>${productName}</span>
+                                </div>
+                            ` : '<span class="text-gray-400">No product selected</span>'}
+                        </td>
+                        <td class="px-6 py-4 text-gray-600 font-medium">${qtyStr}</td>
+                        <td class="px-6 py-4 text-gray-600">${dateStr}</td>
+                    </tr>
+                    `;
+                } else {
+                    return `
+                    <tr class="border-b border-gray-100 hover:bg-gray-50/50 transition-colors">
+                        <td class="py-3 px-4 font-mono text-sm">${quote.id ? quote.id.slice(-6).toUpperCase() : 'N/A'}</td>
+                        <td class="py-3 px-4 font-medium text-dark-gray">${quote.customerName || 'N/A'}</td>
+                        <td class="py-3 px-4 text-gray-600">${quote.email || '-'}</td>
+                        <td class="py-3 px-4 text-gray-600">${quote.phone || '-'}</td>
+                        <td class="py-3 px-4 text-gray-600">
+                            ${productName !== 'N/A' ? `
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-xs bg-brand-orange/10 text-brand-orange px-2 py-1 rounded">${productCode || 'N/A'}</span>
+                                    <span>${productName}</span>
+                                </div>
+                            ` : '<span class="text-gray-400">No product selected</span>'}
+                        </td>
+                        <td class="py-3 px-4 text-gray-600 font-medium">${qtyStr}</td>
+                        <td class="py-3 px-4 text-gray-600">${dateStr}</td>
+                    </tr>
+                    `;
+                }
             };
 
             tbody.innerHTML = quotes.map(q => renderRow(q)).join('');
@@ -1845,8 +1861,8 @@
             showToast('No new notifications');
         }
 
-        function exportQuotes() {
-            const quotes = DataManager.getQuotes();
+        async function exportQuotes() {
+            const quotes = await DataManager.getQuotes();
             const csv = [
                 ['ID', 'Customer', 'Email', 'Phone', 'Product', 'Quantity', 'Date'].join(','),
                 ...quotes.map(q => [
