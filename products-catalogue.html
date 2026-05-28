@@ -113,11 +113,11 @@
 </head>
 <body class="bg-background text-on-surface font-body-md overflow-x-hidden">
 <!-- TopNavBar -->
-<header class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-surface/80 backdrop-blur-xl border-b border-white/10 shadow-2xl">
+<header class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-surface/80 backdrop-blur-xl border-b border-outline-variant/30 shadow-2xl">
 <div class="max-w-[1200px] mx-auto px-gutter flex items-center justify-between h-20">
 <div class="font-label-mono text-headline-md font-bold text-primary flex items-center gap-3">
 <img class="h-12 w-auto object-contain" src="logo.png" alt="Ishank Textile Logo"/>
-<span>ISHANK TEXTILE</span>
+<span class="truncate">ISHANK TEXTILE</span>
 </div>
 <nav class="hidden md:flex items-center space-x-stack-lg">
 <a class="text-on-surface-variant hover:text-on-surface transition-colors font-label-bold text-label-bold" href="index.html">Home</a>
@@ -131,7 +131,20 @@
 <input class="w-40 bg-surface-container-high border-none rounded-full py-1 pl-9 pr-3 text-[13px] focus:ring-2 focus:ring-primary" id="catalog-search" placeholder="Search..." type="text"/>
 </div>
 <a href="contact.html" class="hidden md:flex items-center gap-2 px-6 py-2 bg-primary text-on-primary font-label-bold text-label-bold hover:scale-[1.02] transition-transform duration-150 rounded-lg">Get Quote</a>
+<button onclick="toggleMobileMenu()" class="md:hidden text-on-surface p-2 focus:outline-none flex items-center justify-center" aria-label="Toggle Menu">
+<span class="material-symbols-outlined text-3xl align-middle">menu</span>
+</button>
 </div>
+</div>
+<!-- Mobile Navigation Menu Dropdown -->
+<div id="mobile-menu" class="hidden md:hidden fixed top-20 left-0 w-full bg-surface/95 backdrop-blur-xl border-b border-outline-variant/30 shadow-xl z-40 transition-all duration-300 transform -translate-y-4 opacity-0">
+<nav class="flex flex-col p-6 space-y-4">
+<a class="text-on-surface hover:text-primary transition-colors font-label-bold text-lg py-2 border-b border-outline-variant/10" href="index.html">Home</a>
+<a class="text-primary font-label-bold text-lg py-2 border-b border-outline-variant/10" href="products-catalogue.html">Materials</a>
+<a class="text-on-surface hover:text-primary transition-colors font-label-bold text-lg py-2 border-b border-outline-variant/10" href="about.html">About Us</a>
+<a class="text-on-surface hover:text-primary transition-colors font-label-bold text-lg py-2 border-b border-outline-variant/10" href="contact.html">Support</a>
+<a href="contact.html" class="flex items-center justify-center gap-2 px-6 py-3 bg-primary text-on-primary font-label-bold rounded-lg shadow-md">Get Quote</a>
+</nav>
 </div>
 </header>
 <main class="mt-24 max-w-[1200px] mx-auto px-gutter pb-section-padding">
@@ -354,8 +367,8 @@
 <span class="font-body-md font-bold">320 GSM</span>
 </div>
 <div class="flex flex-col">
-<span class="text-on-surface-variant text-[12px] uppercase font-label-bold">ISO Spec</span>
-<span class="font-body-md font-bold">20471</span>
+<span class="text-on-surface-variant text-[12px] uppercase font-label-bold">Export Spec</span>
+<span class="font-body-md font-bold">Class 1</span>
 </div>
 <div class="flex flex-col">
 <span class="text-on-surface-variant text-[12px] uppercase font-label-bold">Dye System</span>
@@ -873,5 +886,23 @@
       }
     });
   });
+
+  function toggleMobileMenu() {
+    const menu = document.getElementById('mobile-menu');
+    if (!menu) return;
+    if (menu.classList.contains('hidden')) {
+      menu.classList.remove('hidden');
+      setTimeout(() => {
+        menu.classList.remove('-translate-y-4', 'opacity-0');
+        menu.classList.add('translate-y-0', 'opacity-100');
+      }, 10);
+    } else {
+      menu.classList.remove('translate-y-0', 'opacity-100');
+      menu.classList.add('-translate-y-4', 'opacity-0');
+      setTimeout(() => {
+        menu.classList.add('hidden');
+      }, 300);
+    }
+  }
 </script>
 </body></html>
