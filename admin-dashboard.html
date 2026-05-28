@@ -494,7 +494,7 @@
 
     <!-- Certificate Modal -->
     <div id="certificate-modal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-        <div class="glass-card w-full max-w-md">
+        <div class="glass-card w-full max-w-md rounded-2xl overflow-hidden">
             <div class="p-6 border-b border-gray-100 flex justify-between items-center">
                 <h3 id="certificate-modal-title" class="text-xl font-bold text-dark-gray">Upload Certificate</h3>
                 <button onclick="closeCertificateModal()" class="text-gray-400 hover:text-gray-600">
@@ -2083,7 +2083,6 @@
         });
 
         // Certificate form submission
-        // Certificate form submission
         document.getElementById('certificate-form').addEventListener('submit', async (e) => {
             e.preventDefault();
 
@@ -2102,16 +2101,34 @@
                 return;
             }
 
+            // Disable submit button and show spinner to prevent multiple clicks
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalBtnHtml = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `<i class="fas fa-spinner fa-spin mr-2"></i>Uploading...`;
+
             try {
                 showToast('Uploading certificate...', 'info');
-                await DataManager.uploadCertificate(file, name, icon);
+                const result = await DataManager.uploadCertificate(file, name, icon);
+                
+                // Explicit size safety check: if Base64 string is too large for Firestore (1MB limit)
+                if (result && result.url && result.url.startsWith('data:') && result.url.length > 1000000) {
+                    throw new Error('File is too large for database storage. Please compress the file under 700KB, or ensure Firebase Storage is enabled in your console.');
+                }
 
                 closeCertificateModal();
                 await renderCertificates();
                 showToast('Certificate uploaded successfully');
             } catch (error) {
                 console.error('Certificate upload error:', error);
-                showToast('Failed to upload certificate', 'error');
+                let displayError = error.message || 'Unknown error';
+                if (displayError.includes('too large') || displayError.includes('size limit') || displayError.includes('Document parent') || displayError.includes('InvalidArgument')) {
+                    displayError = 'File is too large for database fallback. Please compress the PDF/image under 700KB, or ensure Firebase Storage is enabled in your Firebase Console.';
+                }
+                showToast('Upload failed: ' + displayError, 'error');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnHtml;
             }
         });
 
@@ -2230,7 +2247,7 @@
 
     <!-- Document Viewer Modal -->
     <div id="doc-viewer-modal" class="hidden fixed inset-0 bg-black/80 z-[100] flex items-center justify-center p-4">
-        <div class="bg-white rounded-xl overflow-hidden w-full max-w-4xl h-[85vh] flex flex-col shadow-2xl relative">
+        <div class="bg-white rounded-2xl overflow-hidden w-full max-w-5xl h-[85vh] flex flex-col shadow-2xl relative">
             <div class="p-4 border-b border-gray-200 flex justify-between items-center bg-gray-50">
                 <h3 id="doc-viewer-title" class="text-lg font-bold text-gray-800">Document Viewer</h3>
                 <button onclick="closeDocViewer()" class="text-gray-500 hover:text-gray-700 p-2 rounded-lg hover:bg-gray-200 transition-colors flex items-center">
