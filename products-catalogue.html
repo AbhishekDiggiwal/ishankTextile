@@ -149,7 +149,7 @@
 </header>
 <main class="mt-24 max-w-[1200px] mx-auto px-gutter pb-section-padding">
 <!-- Page Header -->
-<header id="catalogHeader" class="py-stack-lg border-b border-outline-variant/30 mb-stack-lg">
+<header id="catalogHeader" class="py-stack-lg border-b border-outline-variant/30 mb-stack-lg opacity-0 transition-opacity duration-300">
 <h1 id="catalogTitle" class="font-display-lg text-display-lg text-on-surface uppercase">Fabric Collections</h1>
 <p id="catalogDesc" class="font-body-lg text-body-lg text-on-surface-variant mt-stack-sm max-w-2xl">Explore our premium range of school uniform, industrial, medical, defense, and high-performance textiles engineered since 2003.</p>
 </header>
@@ -769,6 +769,8 @@
     const descEl = document.getElementById('catalogDesc');
     if (titleEl) titleEl.textContent = 'Fabric Collections';
     if (descEl) descEl.textContent = 'Explore our premium range of school uniform, industrial, medical, defense, and high-performance textiles engineered since 2003.';
+    // Reveal header
+    document.getElementById('catalogHeader')?.classList.remove('opacity-0');
     
     // Toggle Views
     document.getElementById('productsView')?.classList.add('hidden');
@@ -787,8 +789,11 @@
     // Update Header
     const titleEl = document.getElementById('catalogTitle');
     const descEl = document.getElementById('catalogDesc');
-    if (titleEl) titleEl.textContent = 'Material Inventory';
+    const catName = (allCategories.find(c => c.id === categoryId) || {}).name || 'Fabric Collection';
+    if (titleEl) titleEl.textContent = catName;
     if (descEl) descEl.textContent = 'Premium textile solutions engineered for School, Defense, Medical, Corporate, Hospitality, Army, Police, and high-performance uniform sectors.';
+    // Reveal header
+    document.getElementById('catalogHeader')?.classList.remove('opacity-0');
     
     // Check corresponding specification checkbox in sidebar filters and uncheck others
     document.querySelectorAll('[data-filter="category"]').forEach((input) => {
