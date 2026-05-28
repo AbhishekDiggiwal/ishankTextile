@@ -227,19 +227,19 @@
 </div>
 <div class="grid grid-cols-1 md:grid-cols-3 gap-gutter mt-stack-lg">
 <!-- Technical Card 1 -->
-<div class="p-stack-lg bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 transition-colors">
+<div id="mfg-card-1" class="p-stack-lg bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 transition-all duration-700 ease-out opacity-0 translate-y-6 transform">
 <span class="material-symbols-outlined text-primary text-headline-lg mb-stack-md">settings_input_component</span>
 <h3 class="font-headline-md mb-stack-sm">Ishank Process v4</h3>
 <p class="font-body-md text-tertiary-fixed-dim">Our proprietary weaving algorithm optimizes tension and thread count in real-time, reducing waste by 18%.</p>
 </div>
 <!-- Technical Card 2 -->
-<div class="p-stack-lg bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 transition-colors">
+<div id="mfg-card-2" class="p-stack-lg bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 transition-all duration-700 ease-out opacity-0 translate-y-6 transform">
 <span class="material-symbols-outlined text-primary text-headline-lg mb-stack-md">inventory_2</span>
 <h3 class="font-headline-md mb-stack-sm">Dynamic Logistics</h3>
 <p class="font-body-md text-tertiary-fixed-dim">Fully integrated supply chain management ensuring zero-bottleneck production cycles for global exports.</p>
 </div>
 <!-- Technical Card 3 -->
-<div class="p-stack-lg bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 transition-colors">
+<div id="mfg-card-3" class="p-stack-lg bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 transition-all duration-700 ease-out opacity-0 translate-y-6 transform">
 <span class="material-symbols-outlined text-primary text-headline-lg mb-stack-md">shield_with_heart</span>
 <h3 class="font-headline-md mb-stack-sm">Quality Assurance</h3>
 <p class="font-body-md text-tertiary-fixed-dim">A 12-point inspection protocol for every square meter of fabric, compliant with international standards.</p>
@@ -481,9 +481,33 @@
       observer.observe(statEl);
     }
 
-    // Initialize both animations
+    // Initialize both stat animations
     animateStat('stat-21-years', 'count-21', 21, '+', 1200);
     animateStat('stat-precision-card', 'count-precision', 100, '%', 1500);
+
+    // Staggered fade-slide-up reveal for Manufacturing Excellence cards
+    const mfgCards = [
+      document.getElementById('mfg-card-1'),
+      document.getElementById('mfg-card-2'),
+      document.getElementById('mfg-card-3')
+    ];
+
+    const mfgObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const card = entry.target;
+          const index = parseInt(card.id.replace('mfg-card-', '')) - 1;
+          // Stagger each card by 150ms
+          setTimeout(() => {
+            card.classList.remove('opacity-0', 'translate-y-6');
+            card.classList.add('opacity-100', 'translate-y-0');
+          }, index * 150);
+          mfgObserver.unobserve(card);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    mfgCards.forEach((card) => { if (card) mfgObserver.observe(card); });
   });
 
   function toggleMobileMenu() {
