@@ -1,6 +1,6 @@
 {
   "firestore": {
-    "database": "(default)",
+    "database": "ishanktextiles",
     "location": "asia-south2",
     "rules": "firestore.rules",
     "indexes": "firestore.indexes.json"
