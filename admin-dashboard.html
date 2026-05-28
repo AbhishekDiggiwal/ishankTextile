@@ -564,6 +564,17 @@
                     <label class="block text-sm font-medium text-gray-700 mb-2">Certificate File (PDF or Image)</label>
                     <input type="file" id="certificate-file" accept=".pdf,image/*" required class="form-input w-full px-4 py-2 rounded-lg">
                     <p class="text-xs text-gray-500 mt-1">Max file size: 5MB. Supported: PDF, JPG, PNG</p>
+                    
+                    <!-- Document Preview Container -->
+                    <div id="certificate-file-preview" class="hidden mt-3 p-3 bg-gray-50 rounded-lg border border-gray-200 flex items-center gap-3">
+                        <div id="cert-preview-thumbnail" class="w-12 h-12 rounded bg-gray-100 flex items-center justify-center flex-shrink-0 border border-gray-200 overflow-hidden">
+                            <!-- Injected thumbnail -->
+                        </div>
+                        <div class="flex-grow min-w-0">
+                            <p id="cert-preview-filename" class="text-xs font-bold text-gray-700 truncate">filename.pdf</p>
+                            <p id="cert-preview-filesize" class="text-[10px] text-gray-500">1.2 MB</p>
+                        </div>
+                    </div>
                 </div>
                 <div class="flex gap-3 pt-4">
                     <button type="button" onclick="closeCertificateModal()" class="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
@@ -878,10 +889,26 @@
                 return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
             },
             async uploadCertificate(file, type, name = null) {
-                const filename = `certificates/${type}_${Date.now()}_${file.name}`;
-                const ref = storage.ref(filename);
-                await ref.put(file);
-                const url = await ref.getDownloadURL();
+                let url = '';
+                try {
+                    if (storage) {
+                        const filename = `certificates/${type}_${Date.now()}_${file.name}`;
+                        const ref = storage.ref(filename);
+                        await ref.put(file);
+                        url = await ref.getDownloadURL();
+                    } else {
+                        throw new Error('Storage service is not available');
+                    }
+                } catch (storageError) {
+                    console.warn('Firebase Storage upload failed, trying Base64 fallback...', storageError);
+                    // Base64 fallback
+                    url = await new Promise((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.onload = (e) => resolve(e.target.result);
+                        reader.onerror = (err) => reject(err);
+                        reader.readAsDataURL(file);
+                    });
+                }
 
                 // Save to Firestore
                 const certData = {
@@ -1699,6 +1726,10 @@
 
         function closeCertificateModal() {
             document.getElementById('certificate-modal').classList.add('hidden');
+            const previewContainer = document.getElementById('certificate-file-preview');
+            if (previewContainer) {
+                previewContainer.classList.add('hidden');
+            }
         }
 
         async function deleteCertificate(id) {
@@ -2109,6 +2140,43 @@
                 nameContainer.classList.add('hidden');
                 document.getElementById('certificate-name').required = false;
             }
+        });
+
+        // Certificate file preview listener
+        document.getElementById('certificate-file').addEventListener('change', function() {
+            const file = this.files[0];
+            const previewContainer = document.getElementById('certificate-file-preview');
+            const thumbnailDiv = document.getElementById('cert-preview-thumbnail');
+            const filenameP = document.getElementById('cert-preview-filename');
+            const filesizeP = document.getElementById('cert-preview-filesize');
+            
+            if (!file) {
+                if (previewContainer) previewContainer.classList.add('hidden');
+                return;
+            }
+            
+            if (filenameP) filenameP.textContent = file.name;
+            if (filesizeP) filesizeP.textContent = (file.size / (1024 * 1024)).toFixed(2) + ' MB';
+            
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    if (thumbnailDiv) {
+                        thumbnailDiv.innerHTML = `<img src="${e.target.result}" class="w-full h-full object-cover">`;
+                    }
+                };
+                reader.readAsDataURL(file);
+            } else if (file.type === 'application/pdf') {
+                if (thumbnailDiv) {
+                    thumbnailDiv.innerHTML = `<span class="material-symbols-outlined text-3xl text-red-500" style="font-variation-settings: 'FILL' 1;">picture_as_pdf</span>`;
+                }
+            } else {
+                if (thumbnailDiv) {
+                    thumbnailDiv.innerHTML = `<span class="material-symbols-outlined text-3xl text-gray-400">description</span>`;
+                }
+            }
+            
+            if (previewContainer) previewContainer.classList.remove('hidden');
         });
 
         // Authentication Check — bypassed: admin accesses dashboard directly.

@@ -341,9 +341,9 @@
 
 <script>
   async function loadCertificates() {
-    if (!window.firebase || !firebase.firestore) return;
+    const db = window.firebaseServices && window.firebaseServices.db;
+    if (!db) return;
     try {
-      const db = firebase.firestore();
       const snapshot = await db.collection('certificates').get();
       const certificates = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
       certificates.forEach((cert) => {
