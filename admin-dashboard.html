@@ -155,7 +155,7 @@
   </div>
   <nav class="mt-stack-lg px-4 space-y-2">
     <a href="#dashboard" onclick="showSection('dashboard', event)" class="sidebar-item active flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group"><span class="material-symbols-outlined">dashboard</span><span class="hidden md:block font-label-bold">Dashboard</span></a>
-    <a href="#categories" onclick="showSection('categories', event)" class="sidebar-item flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group"><span class="material-symbols-outlined">category</span><span class="hidden md:block font-label-bold">Categories</span></a>
+    <a href="#categories" onclick="showSection('categories', event)" class="sidebar-item flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group"><span class="material-symbols-outlined">category</span><span class="hidden md:block font-label-bold">Product Category</span></a>
     <a href="#products" onclick="showSection('products', event)" class="sidebar-item flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group"><span class="material-symbols-outlined">inventory_2</span><span class="hidden md:block font-label-bold">Products</span></a>
     <a href="#visitors" onclick="showSection('visitors', event)" class="sidebar-item flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group"><span class="material-symbols-outlined">analytics</span><span class="hidden md:block font-label-bold">Visitors</span></a>
     <a href="#quotes" onclick="showSection('quotes', event)" class="sidebar-item flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group"><span class="material-symbols-outlined">request_quote</span><span class="hidden md:block font-label-bold">Quotes</span></a>
@@ -177,10 +177,6 @@
       <p class="text-on-surface-variant mt-2 font-body-md">Real-time visitors, products, certificates, and quotation metrics for Ishank Textile.</p>
     </div>
     <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-stack-md">
-      <div class="relative">
-        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
-        <input id="admin-global-search" class="pl-10 pr-4 py-2 bg-surface-container-lowest border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all w-full sm:w-64" placeholder="Search systems..." type="text"/>
-      </div>
       <button onclick="refreshData()" class="border border-outline-variant text-on-surface px-4 py-2 rounded-lg font-label-bold hover:border-primary hover:text-primary transition-colors"><span class="material-symbols-outlined text-sm align-middle">refresh</span></button>
     </div>
   </header>
@@ -287,6 +283,12 @@
                         </button>
                     </div>
 
+                    <!-- Filter Bar -->
+                    <div class="glass-card p-4 flex flex-wrap gap-4 items-center">
+                        <div class="flex-1"></div>
+                        <input type="text" id="category-search" onkeyup="searchCategories()" placeholder="Search categories..." class="form-input px-4 py-2 rounded-lg w-64">
+                    </div>
+
                     <div class="glass-card p-6">
                         <div class="overflow-x-auto">
                             <table class="data-table w-full">
@@ -297,7 +299,6 @@
                                         <th class="text-left py-3 px-4">Description</th>
                                         <th class="text-left py-3 px-4">Starting Price</th>
                                         <th class="text-left py-3 px-4">Products Count</th>
-                                        <th class="text-left py-3 px-4">Status</th>
                                         <th class="text-left py-3 px-4">Actions</th>
                                     </tr>
                                 </thead>
@@ -346,7 +347,6 @@
                                         <th class="text-left py-3 px-4">Product Name</th>
                                         <th class="text-left py-3 px-4">Category</th>
                                         <th class="text-left py-3 px-4">Starting Price</th>
-                                        <th class="text-left py-3 px-4">Status</th>
                                         <th class="text-left py-3 px-4">Actions</th>
                                     </tr>
                                 </thead>
@@ -416,19 +416,27 @@
                             <form id="general-settings-form" class="space-y-4">
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-2">Company Name</label>
-                                    <input type="text" id="setting-company-name" class="form-input w-full px-4 py-2 rounded-lg" value="Ishank Textile">
+                                    <input type="text" id="setting-company-name" readonly class="form-input w-full px-4 py-2 rounded-lg bg-gray-50 text-gray-600 cursor-not-allowed" value="Ishank Textile">
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-2">Contact Email</label>
-                                    <input type="email" id="setting-contact-email" class="form-input w-full px-4 py-2 rounded-lg" value="sunilpandiya909@gmail.com">
+                                    <input type="email" id="setting-contact-email" readonly class="form-input w-full px-4 py-2 rounded-lg bg-gray-50 text-gray-600 cursor-not-allowed" value="sunilpandiya909@gmail.com">
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-2">Contact Phone</label>
-                                    <input type="tel" id="setting-contact-phone" class="form-input w-full px-4 py-2 rounded-lg" value="+91 94141 12197">
+                                    <input type="tel" id="setting-contact-phone" readonly class="form-input w-full px-4 py-2 rounded-lg bg-gray-50 text-gray-600 cursor-not-allowed" value="+91 94141 12197">
                                 </div>
-                                <button type="submit" class="bg-brand-orange hover:bg-brand-orange-dark text-white px-6 py-2 rounded-lg font-medium transition-all">
-                                    Save Changes
-                                </button>
+                                <div class="flex items-center gap-3">
+                                    <button type="button" id="edit-settings-btn" onclick="enterSettingsEditMode()" class="bg-brand-orange hover:bg-brand-orange-dark text-white px-6 py-2 rounded-lg font-medium transition-all">
+                                        Edit
+                                    </button>
+                                    <button type="submit" id="save-settings-btn" disabled class="bg-brand-orange/50 text-white px-6 py-2 rounded-lg font-medium transition-all cursor-not-allowed hidden">
+                                        Save Changes
+                                    </button>
+                                    <button type="button" id="cancel-settings-btn" onclick="exitSettingsEditMode(false)" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-2 rounded-lg font-medium transition-all hidden">
+                                        Cancel
+                                    </button>
+                                </div>
                             </form>
                         </div>
 
@@ -1322,15 +1330,15 @@
         }
 
         // Categories Management
-        async function renderCategories() {
-            const categories = await DataManager.getCategories();
+        async function renderCategories(filteredCategories = null) {
+            const categories = filteredCategories || await DataManager.getCategories();
             const products = await DataManager.getProducts();
             const tbody = document.getElementById('categories-table');
 
             tbody.innerHTML = categories.map(cat => {
                 const productCount = products.filter(p => p.categoryId === cat.id).length;
                 return `
-                    <tr class="border-b border-gray-100">
+                    <tr class="border-b border-gray-100 hover:bg-gray-50/50 transition-colors">
                         <td class="py-3 px-4">
                             <img src="${cat.image || 'https://via.placeholder.com/50'}" alt="${cat.name}" class="w-12 h-12 rounded-lg object-cover">
                         </td>
@@ -1338,11 +1346,6 @@
                         <td class="py-3 px-4 text-gray-600 text-sm max-w-xs truncate">${cat.description || '-'}</td>
                         <td class="py-3 px-4 text-brand-orange font-semibold">₹${cat.startingPrice || '-'}</td>
                         <td class="py-3 px-4">${productCount}</td>
-                        <td class="py-3 px-4">
-                            <span class="status-${cat.active ? 'active' : 'inactive'} text-white text-xs px-2 py-1 rounded-full">
-                                ${cat.active ? 'Active' : 'Inactive'}
-                            </span>
-                        </td>
                         <td class="py-3 px-4">
                             <div class="flex items-center space-x-2">
                                 <button onclick="toggleCategoryStatus('${cat.id}')" class="${cat.active ? 'text-green-500 hover:text-green-700' : 'text-gray-400 hover:text-gray-600'}" title="${cat.active ? 'Deactivate' : 'Activate'}">
@@ -1422,7 +1425,7 @@
             tbody.innerHTML = products.map(prod => {
                 const category = categories.find(c => c.id === prod.categoryId);
                 return `
-                    <tr class="border-b border-gray-100">
+                    <tr class="border-b border-gray-100 hover:bg-gray-50/50 transition-colors">
                         <td class="py-3 px-4">
                             <img src="${prod.image || 'https://via.placeholder.com/50'}" alt="${prod.name}" class="w-12 h-12 rounded-lg object-cover">
                         </td>
@@ -1430,11 +1433,6 @@
                         <td class="py-3 px-4 font-medium text-dark-gray">${prod.name}</td>
                         <td class="py-3 px-4 text-gray-600">${category?.name || 'Uncategorized'}</td>
                         <td class="py-3 px-4 text-brand-orange font-semibold">₹${prod.startingPrice}</td>
-                        <td class="py-3 px-4">
-                            <span class="status-${prod.active ? 'active' : 'inactive'} text-white text-xs px-2 py-1 rounded-full">
-                                ${prod.active ? 'Active' : 'Inactive'}
-                            </span>
-                        </td>
                         <td class="py-3 px-4">
                             <div class="flex items-center space-x-2">
                                 <button onclick="toggleProductStatus('${prod.id}')" class="${prod.active ? 'text-green-500 hover:text-green-700' : 'text-gray-400 hover:text-gray-600'}" title="${prod.active ? 'Deactivate' : 'Activate'}">
@@ -1810,25 +1808,153 @@
             input.value = '';
         }
 
-        function resetAllData() {
-            if (confirm('WARNING: This will delete ALL data and reset to defaults. This action cannot be undone. Are you sure?')) {
-                localStorage.removeItem('categories');
-                localStorage.removeItem('products');
-                localStorage.removeItem('quotes');
-                localStorage.removeItem('visitors');
-                localStorage.removeItem('settings');
+        async function searchCategories() {
+            const search = document.getElementById('category-search').value.toLowerCase();
+            const allCategories = await DataManager.getCategories();
+            const categories = allCategories.filter(c =>
+                c.name.toLowerCase().includes(search) ||
+                (c.description && c.description.toLowerCase().includes(search))
+            );
+            await renderCategories(categories);
+        }
 
-                DataManager.init();
-
-                showToast('All data has been reset to defaults');
-                updateKPIs();
-                renderCategories();
-                renderProducts();
+        async function resetAllData() {
+            if (!confirm('WARNING: This will delete ALL database records and reset to defaults. This action cannot be undone. Are you sure?')) {
+                return;
+            }
+            
+            const password = prompt('Please enter your Admin Password to authorize database reset:');
+            if (password === null) return; // User cancelled
+            if (!password) {
+                alert('Password is required.');
+                return;
+            }
+            
+            try {
+                if (auth && auth.currentUser) {
+                    const credential = firebase.auth.EmailAuthProvider.credential(auth.currentUser.email, password);
+                    await auth.currentUser.reauthenticateWithCredential(credential);
+                } else {
+                    if (password !== 'admin123') throw new Error('Incorrect password');
+                }
+                
+                showToast('Resetting database...');
+                const collections = ['categories', 'products', 'quotes', 'certificates'];
+                for (const colName of collections) {
+                    const snapshot = await db.collection(colName).get();
+                    const batch = db.batch();
+                    snapshot.docs.forEach(doc => batch.delete(doc.ref));
+                    await batch.commit();
+                }
+                
+                await DataManager.init();
+                showToast('All database records reset to defaults');
+                await refreshData();
+            } catch (err) {
+                console.error("Auth verification failed for reset:", err);
+                alert('Authorization failed: Incorrect admin password.');
             }
         }
 
-        // Settings
-        document.getElementById('general-settings-form').addEventListener('submit', (e) => {
+        // Settings State & Management
+        let originalSettings = {
+            companyName: 'Ishank Textile',
+            contactEmail: 'sunilpandiya909@gmail.com',
+            contactPhone: '+91 94141 12197'
+        };
+
+        async function loadSettings() {
+            if (db) {
+                try {
+                    const settings = await DataManager.getSettings();
+                    if (settings && Object.keys(settings).length > 0) {
+                        originalSettings = {
+                            companyName: settings.companyName || '',
+                            contactEmail: settings.contactEmail || '',
+                            contactPhone: settings.contactPhone || ''
+                        };
+                        document.getElementById('setting-company-name').value = originalSettings.companyName;
+                        document.getElementById('setting-contact-email').value = originalSettings.contactEmail;
+                        document.getElementById('setting-contact-phone').value = originalSettings.contactPhone;
+                    }
+                } catch (err) {
+                    console.error("Error loading settings:", err);
+                }
+            }
+        }
+
+        function enterSettingsEditMode() {
+            // Save current input values in originalSettings as a baseline
+            originalSettings = {
+                companyName: document.getElementById('setting-company-name').value,
+                contactEmail: document.getElementById('setting-contact-email').value,
+                contactPhone: document.getElementById('setting-contact-phone').value
+            };
+
+            const inputs = ['setting-company-name', 'setting-contact-email', 'setting-contact-phone'];
+            inputs.forEach(id => {
+                const el = document.getElementById(id);
+                el.removeAttribute('readonly');
+                el.classList.remove('bg-gray-50', 'text-gray-600', 'cursor-not-allowed');
+                el.classList.add('bg-white', 'text-dark-gray');
+            });
+
+            document.getElementById('edit-settings-btn').classList.add('hidden');
+            document.getElementById('save-settings-btn').classList.remove('hidden');
+            document.getElementById('cancel-settings-btn').classList.remove('hidden');
+            
+            // Initially disable save changes until edit happens
+            const saveBtn = document.getElementById('save-settings-btn');
+            saveBtn.disabled = true;
+            saveBtn.className = "bg-brand-orange/50 text-white px-6 py-2 rounded-lg font-medium transition-all cursor-not-allowed";
+        }
+
+        function exitSettingsEditMode(isSaved = false) {
+            const inputs = ['setting-company-name', 'setting-contact-email', 'setting-contact-phone'];
+            
+            if (!isSaved) {
+                // Restore original values
+                document.getElementById('setting-company-name').value = originalSettings.companyName;
+                document.getElementById('setting-contact-email').value = originalSettings.contactEmail;
+                document.getElementById('setting-contact-phone').value = originalSettings.contactPhone;
+            }
+
+            inputs.forEach(id => {
+                const el = document.getElementById(id);
+                el.setAttribute('readonly', true);
+                el.classList.add('bg-gray-50', 'text-gray-600', 'cursor-not-allowed');
+                el.classList.remove('bg-white', 'text-dark-gray');
+            });
+
+            document.getElementById('edit-settings-btn').classList.remove('hidden');
+            document.getElementById('save-settings-btn').classList.add('hidden');
+            document.getElementById('cancel-settings-btn').classList.add('hidden');
+        }
+
+        // Add event listener to form inputs to enable/disable Save button when changes are made
+        const settingsForm = document.getElementById('general-settings-form');
+        ['setting-company-name', 'setting-contact-email', 'setting-contact-phone'].forEach(id => {
+            document.getElementById(id).addEventListener('input', () => {
+                const currentName = document.getElementById('setting-company-name').value;
+                const currentEmail = document.getElementById('setting-contact-email').value;
+                const currentPhone = document.getElementById('setting-contact-phone').value;
+
+                const hasChanges = currentName !== originalSettings.companyName ||
+                                   currentEmail !== originalSettings.contactEmail ||
+                                   currentPhone !== originalSettings.contactPhone;
+
+                const saveBtn = document.getElementById('save-settings-btn');
+                if (hasChanges) {
+                    saveBtn.disabled = false;
+                    saveBtn.className = "bg-brand-orange hover:bg-brand-orange-dark text-white px-6 py-2 rounded-lg font-medium transition-all";
+                } else {
+                    saveBtn.disabled = true;
+                    saveBtn.className = "bg-brand-orange/50 text-white px-6 py-2 rounded-lg font-medium transition-all cursor-not-allowed";
+                }
+            });
+        });
+
+        settingsForm.addEventListener('submit', async (e) => {
             e.preventDefault();
 
             const settings = {
@@ -1837,18 +1963,60 @@
                 contactPhone: document.getElementById('setting-contact-phone').value
             };
 
-            DataManager.setSettings(settings);
-            showToast('Settings saved successfully');
+            try {
+                await DataManager.setSettings(settings);
+                originalSettings = settings;
+                exitSettingsEditMode(true);
+                showToast('Settings saved successfully');
+            } catch (err) {
+                console.error("Error saving settings:", err);
+                showToast('Error saving settings');
+            }
         });
 
         // Utilities
-        function refreshData() {
-            updateKPIs();
-            renderCategories();
-            renderProducts();
-            renderQuotes();
-            updateCharts();
-            showToast('Data refreshed');
+        async function refreshData() {
+            // Find active tab
+            let activeSection = 'dashboard';
+            const sections = ['dashboard', 'categories', 'products', 'quotes', 'visitors', 'certificates', 'settings'];
+            for (const sec of sections) {
+                const el = document.getElementById(`${sec}-section`);
+                if (el && !el.classList.contains('hidden')) {
+                    activeSection = sec;
+                    break;
+                }
+            }
+
+            try {
+                showToast(`Refreshing ${activeSection === 'categories' ? 'Product Category' : activeSection} data...`);
+                
+                if (activeSection === 'dashboard') {
+                    await updateKPIs();
+                    await updateCharts();
+                    await renderQuotes(); // Recent quotes reside on dashboard card
+                } else if (activeSection === 'categories') {
+                    await renderCategories();
+                } else if (activeSection === 'products') {
+                    await renderProducts();
+                    await updateProductCategoryOptions();
+                } else if (activeSection === 'quotes') {
+                    await renderQuotes();
+                } else if (activeSection === 'visitors') {
+                    updateVisitorDetailChart();
+                    renderTopPages();
+                } else if (activeSection === 'certificates') {
+                    if (typeof renderCertificates === 'function') {
+                        await renderCertificates();
+                    }
+                } else if (activeSection === 'settings') {
+                    await loadSettings();
+                }
+                
+                showToast('Data refreshed');
+            } catch (err) {
+                console.error("Error refreshing data:", err);
+                showToast('Error refreshing data');
+            }
         }
 
         function logout() {
@@ -1992,57 +2160,67 @@
 
         // Override modal open functions to handle image preview
         const originalOpenCategoryModal = openCategoryModal;
-        openCategoryModal = function(categoryId = null) {
+        openCategoryModal = async function(categoryId = null) {
             // Clear previous image data
             clearCategoryImage();
             document.getElementById('category-image-url-container').classList.add('hidden');
 
             if (categoryId) {
-                const category = DataManager.getCategories().find(c => c.id === categoryId);
-                if (category && category.image) {
-                    // Check if it's a base64 image or URL
-                    if (category.image.startsWith('data:image')) {
-                        document.getElementById('category-image-data').value = category.image;
-                        const preview = document.getElementById('category-image-preview');
-                        preview.querySelector('img').src = category.image;
-                        preview.classList.remove('hidden');
-                    } else {
-                        // It's a URL
-                        document.getElementById('category-image').value = category.image;
-                        document.getElementById('category-image-url-container').classList.remove('hidden');
+                try {
+                    const categories = await DataManager.getCategories();
+                    const category = categories.find(c => c.id === categoryId);
+                    if (category && category.image) {
+                        // Check if it's a base64 image or URL
+                        if (category.image.startsWith('data:image')) {
+                            document.getElementById('category-image-data').value = category.image;
+                            const preview = document.getElementById('category-image-preview');
+                            preview.querySelector('img').src = category.image;
+                            preview.classList.remove('hidden');
+                        } else {
+                            // It's a URL
+                            document.getElementById('category-image').value = category.image;
+                            document.getElementById('category-image-url-container').classList.remove('hidden');
+                        }
                     }
+                } catch (err) {
+                    console.error("Error in openCategoryModal override:", err);
                 }
             }
 
             // Call original function
-            originalOpenCategoryModal(categoryId);
+            await originalOpenCategoryModal(categoryId);
         };
 
         const originalOpenProductModal = openProductModal;
-        openProductModal = function(productId = null) {
+        openProductModal = async function(productId = null) {
             // Clear previous image data
             clearProductImage();
             document.getElementById('product-image-url-container').classList.add('hidden');
 
             if (productId) {
-                const product = DataManager.getProducts().find(p => p.id === productId);
-                if (product && product.image) {
-                    // Check if it's a base64 image or URL
-                    if (product.image.startsWith('data:image')) {
-                        document.getElementById('product-image-data').value = product.image;
-                        const preview = document.getElementById('product-image-preview');
-                        preview.querySelector('img').src = product.image;
-                        preview.classList.remove('hidden');
-                    } else {
-                        // It's a URL
-                        document.getElementById('product-image').value = product.image;
-                        document.getElementById('product-image-url-container').classList.remove('hidden');
+                try {
+                    const products = await DataManager.getProducts();
+                    const product = products.find(p => p.id === productId);
+                    if (product && product.image) {
+                        // Check if it's a base64 image or URL
+                        if (product.image.startsWith('data:image')) {
+                            document.getElementById('product-image-data').value = product.image;
+                            const preview = document.getElementById('product-image-preview');
+                            preview.querySelector('img').src = product.image;
+                            preview.classList.remove('hidden');
+                        } else {
+                            // It's a URL
+                            document.getElementById('product-image').value = product.image;
+                            document.getElementById('product-image-url-container').classList.remove('hidden');
+                        }
                     }
+                } catch (err) {
+                    console.error("Error in openProductModal override:", err);
                 }
             }
 
             // Call original function
-            originalOpenProductModal(productId);
+            await originalOpenProductModal(productId);
         };
 
         // Override form submissions to include image data
@@ -2262,13 +2440,18 @@
         document.addEventListener('DOMContentLoaded', async () => {
             // Initialize Firestore data only when db is available (Firebase configured)
             if (db) {
-                DataManager.init().catch(err => console.warn('DataManager.init skipped:', err));
+                try {
+                    await DataManager.init();
+                } catch (err) {
+                    console.warn('DataManager.init skipped:', err);
+                }
+                await loadSettings();
             }
-            updateKPIs();
-            updateCharts();
-            renderCategories();
-            renderProducts();
-            renderQuotes();
+            await updateKPIs();
+            await updateCharts();
+            await renderCategories();
+            await renderProducts();
+            await renderQuotes();
         });
 
         // Close modals on outside click
