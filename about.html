@@ -198,9 +198,9 @@
 <p class="text-primary-fixed font-label-bold">Founder &amp; CEO</p>
 </div>
 </div>
-<div class="bg-on-tertiary-fixed rounded-xl p-stack-lg flex flex-col justify-center items-center text-center">
+<div class="bg-on-tertiary-fixed rounded-xl p-stack-lg flex flex-col justify-center items-center text-center opacity-0 translate-y-8 transition-all duration-1000 ease-out transform" id="stat-precision-card">
 <span class="material-symbols-outlined text-[64px] text-primary mb-stack-md" style="font-variation-settings: 'FILL' 1;">precision_manufacturing</span>
-<div class="font-display-lg text-white text-headline-lg">100%</div>
+<div class="font-display-lg text-white text-headline-lg select-none" id="count-precision">0%</div>
 <p class="font-label-bold text-tertiary-fixed-dim">Industrial Precision</p>
 </div>
 <div class="col-span-2 rounded-xl overflow-hidden bg-white border border-surface-container-highest shadow-sm hover:shadow-xl transition-shadow duration-300">
@@ -448,10 +448,12 @@
   document.addEventListener('DOMContentLoaded', () => {
     loadCertificates();
 
-    // Intersection Observer to trigger counting up and slide-up transition of the "21+" statistic card
-    const statEl = document.getElementById('stat-21-years');
-    const countEl = document.getElementById('count-21');
-    if (statEl && countEl) {
+    // Helper function to animate stat card with Intersection Observer
+    function animateStat(statId, countId, targetVal, suffix, duration = 1200) {
+      const statEl = document.getElementById(statId);
+      const countEl = document.getElementById(countId);
+      if (!statEl || !countEl) return;
+
       const observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
@@ -461,13 +463,12 @@
             
             // Dynamic count-up logic
             let current = 0;
-            const target = 21;
-            const duration = 1200; // 1.2 seconds transition
-            const stepTime = Math.floor(duration / target);
+            const target = targetVal;
+            const stepTime = Math.max(Math.floor(duration / target), 10);
             
             const timer = setInterval(() => {
               current++;
-              countEl.textContent = current + '+';
+              countEl.textContent = current + suffix;
               if (current >= target) {
                 clearInterval(timer);
               }
@@ -479,6 +480,10 @@
       }, { threshold: 0.1 });
       observer.observe(statEl);
     }
+
+    // Initialize both animations
+    animateStat('stat-21-years', 'count-21', 21, '+', 1200);
+    animateStat('stat-precision-card', 'count-precision', 100, '%', 1500);
   });
 
   function toggleMobileMenu() {
