@@ -941,6 +941,27 @@
                 }
             },
             async deleteCertificate(id) {
+                try {
+                    // Fetch document first to get the Storage URL
+                    const doc = await db.collection('certificates').doc(id).get();
+                    if (doc.exists) {
+                        const data = doc.data();
+                        const url = data.url;
+                        // Check if it is a Firebase Storage URL (not a Base64 data URL fallback)
+                        if (url && (url.includes('firebasestorage.googleapis.com') || url.includes('ishanktextile.firebasestorage.app') || url.startsWith('gs://')) && storage) {
+                            try {
+                                const ref = storage.refFromURL(url);
+                                await ref.delete();
+                                console.log('Successfully deleted certificate file from Firebase Storage bucket');
+                            } catch (storageError) {
+                                console.warn('Could not delete file from Firebase Storage (it may have been deleted already):', storageError);
+                            }
+                        }
+                    }
+                } catch (err) {
+                    console.error('Error during certificate file deletion from storage:', err);
+                }
+                // Always delete the Firestore document database entry
                 await db.collection('certificates').doc(id).delete();
             },
 
