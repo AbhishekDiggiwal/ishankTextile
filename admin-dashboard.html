@@ -876,11 +876,31 @@
 
             // Image Upload to Firebase Storage
             async uploadImage(file) {
-                const filename = `images/${Date.now()}_${file.name}`;
-                const ref = storage.ref(filename);
-                await ref.put(file);
-                const url = await ref.getDownloadURL();
-                return url;
+                try {
+                    if (storage) {
+                        const filename = `images/${Date.now()}_${file.name}`;
+                        const ref = storage.ref(filename);
+                        
+                        // Set a timeout of 4 seconds on the upload to prevent infinite retries
+                        await Promise.race([
+                            ref.put(file),
+                            new Promise((_, reject) => setTimeout(() => reject(new Error('Storage upload timed out')), 4000))
+                        ]);
+                        
+                        return await ref.getDownloadURL();
+                    } else {
+                        throw new Error('Storage service is not available');
+                    }
+                } catch (storageError) {
+                    console.warn('Firebase Storage upload failed, trying Base64 fallback...', storageError);
+                    // Base64 fallback
+                    return await new Promise((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.onload = (e) => resolve(e.target.result);
+                        reader.onerror = (err) => reject(err);
+                        reader.readAsDataURL(file);
+                    });
+                }
             },
 
             // Certificates
@@ -894,7 +914,13 @@
                     if (storage) {
                         const filename = `certificates/${type}_${Date.now()}_${file.name}`;
                         const ref = storage.ref(filename);
-                        await ref.put(file);
+                        
+                        // Set a timeout of 4 seconds on the upload to prevent infinite retries
+                        await Promise.race([
+                            ref.put(file),
+                            new Promise((_, reject) => setTimeout(() => reject(new Error('Storage upload timed out')), 4000))
+                        ]);
+                        
                         url = await ref.getDownloadURL();
                     } else {
                         throw new Error('Storage service is not available');
