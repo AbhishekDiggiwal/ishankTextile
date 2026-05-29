@@ -155,8 +155,8 @@
   </div>
   <nav class="mt-stack-lg px-4 space-y-2">
     <a href="#dashboard" onclick="showSection('dashboard', event)" class="sidebar-item active flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group"><span class="material-symbols-outlined">dashboard</span><span class="hidden md:block font-label-bold">Dashboard</span></a>
-    <a href="#categories" onclick="showSection('categories', event)" class="sidebar-item flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group"><span class="material-symbols-outlined">category</span><span class="hidden md:block font-label-bold">Product Category</span></a>
-    <a href="#products" onclick="showSection('products', event)" class="sidebar-item flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group"><span class="material-symbols-outlined">inventory_2</span><span class="hidden md:block font-label-bold">Products</span></a>
+    <a href="#categories" onclick="showSection('categories', event)" class="sidebar-item flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group"><span class="material-symbols-outlined">category</span><span class="hidden md:block font-label-bold">Fabric Category</span></a>
+    <a href="#products" onclick="showSection('products', event)" class="sidebar-item flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group"><span class="material-symbols-outlined">inventory_2</span><span class="hidden md:block font-label-bold">Fabrics</span></a>
     <a href="#visitors" onclick="showSection('visitors', event)" class="sidebar-item flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group"><span class="material-symbols-outlined">analytics</span><span class="hidden md:block font-label-bold">Visitors</span></a>
     <a href="#quotes" onclick="showSection('quotes', event)" class="sidebar-item flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group"><span class="material-symbols-outlined">request_quote</span><span class="hidden md:block font-label-bold">Quotes</span></a>
     <a href="#certificates" onclick="showSection('certificates', event)" class="sidebar-item flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group"><span class="material-symbols-outlined">workspace_premium</span><span class="hidden md:block font-label-bold">Certificates</span></a>
@@ -174,7 +174,7 @@
   <header class="flex flex-col xl:flex-row xl:items-center justify-between gap-gutter mb-section-padding">
     <div>
       <h1 id="page-title" class="font-headline-lg text-headline-lg text-on-surface">Operations Overview</h1>
-      <p class="text-on-surface-variant mt-2 font-body-md">Real-time visitors, products, certificates, and quotation metrics for Ishank Textile.</p>
+      <p class="text-on-surface-variant mt-2 font-body-md">Real-time visitors, fabrics, certificates, and quotation metrics for Ishank Textile.</p>
     </div>
     <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-stack-md">
       <button onclick="refreshData()" class="border border-outline-variant text-on-surface px-4 py-2 rounded-lg font-label-bold hover:border-primary hover:text-primary transition-colors"><span class="material-symbols-outlined text-sm align-middle">refresh</span></button>
@@ -205,7 +205,7 @@
         <span class="material-symbols-outlined text-secondary">category</span>
         <span class="text-xs font-mono text-on-surface-variant bg-surface-container px-2 py-1 rounded">Active</span>
       </div>
-      <h3 class="text-on-surface-variant font-label-bold">Categories</h3>
+      <h3 class="text-on-surface-variant font-label-bold">Fabric Categories</h3>
       <p id="kpi-categories" class="font-mono text-display-lg text-on-surface mt-2">0</p>
     </div>
     <div class="glass-card p-6 rounded-xl shadow-sm border-l-4 border-primary-container">
@@ -213,7 +213,7 @@
         <span class="material-symbols-outlined text-primary-container">inventory_2</span>
         <span class="text-xs font-mono text-green-600 bg-green-50 px-2 py-1 rounded">Stable</span>
       </div>
-      <h3 class="text-on-surface-variant font-label-bold">Products</h3>
+      <h3 class="text-on-surface-variant font-label-bold">Fabrics</h3>
       <p id="kpi-products" class="font-mono text-display-lg text-on-surface mt-2">0</p>
     </div>
   </section>
@@ -231,7 +231,7 @@
     <section class="glass-card rounded-xl p-6 shadow-sm flex flex-col justify-between overflow-hidden relative">
       <div class="relative z-10">
         <h2 class="font-headline-md text-on-surface mb-2">Quote Analytics</h2>
-        <p class="text-on-surface-variant font-body-md text-sm mb-stack-md">Inquiry volume and requested material mix.</p>
+        <p class="text-on-surface-variant font-body-md text-sm mb-stack-md">Inquiry volume and requested fabric mix.</p>
         <select id="quote-chart-period" onchange="updateQuoteChart()" class="form-input px-3 py-1 rounded-lg text-sm mb-stack-md w-full">
           <option value="7">7 Days</option>
           <option value="30">30 Days</option>
@@ -261,7 +261,7 @@
           <tr class="bg-surface-container-low border-b border-outline-variant">
             <th class="px-6 py-4 font-label-bold text-xs uppercase text-on-surface-variant">Customer</th>
             <th class="px-6 py-4 font-label-bold text-xs uppercase text-on-surface-variant">Email</th>
-            <th class="px-6 py-4 font-label-bold text-xs uppercase text-on-surface-variant">Product</th>
+            <th class="px-6 py-4 font-label-bold text-xs uppercase text-on-surface-variant">Fabric</th>
             <th class="px-6 py-4 font-label-bold text-xs uppercase text-on-surface-variant">Quantity</th>
             <th class="px-6 py-4 font-label-bold text-xs uppercase text-on-surface-variant">Date</th>
           </tr>
@@ -274,8 +274,8 @@
     <section id="categories-section" class="hidden space-y-6">
                     <div class="flex justify-between items-center">
                         <div>
-                            <h3 class="text-lg font-bold text-dark-gray">Product Categories</h3>
-                            <p class="text-sm text-gray-500">Manage product categories and their details</p>
+                            <h3 class="text-lg font-bold text-dark-gray">Fabric Categories</h3>
+                            <p class="text-sm text-gray-500">Manage fabric categories and their details</p>
                         </div>
                         <button onclick="openCategoryModal()" class="bg-brand-orange hover:bg-brand-orange-dark text-white px-6 py-2 rounded-lg font-medium transition-all flex items-center space-x-2">
                             <i class="fas fa-plus"></i>
@@ -298,7 +298,7 @@
                                         <th class="text-left py-3 px-4">Category Name</th>
                                         <th class="text-left py-3 px-4">Description</th>
                                         <th class="text-left py-3 px-4">Starting Price</th>
-                                        <th class="text-left py-3 px-4">Products Count</th>
+                                        <th class="text-left py-3 px-4">Fabrics Count</th>
                                         <th class="text-left py-3 px-4">Actions</th>
                                     </tr>
                                 </thead>
@@ -314,12 +314,12 @@
                 <section id="products-section" class="hidden space-y-6">
                     <div class="flex justify-between items-center">
                         <div>
-                            <h3 class="text-lg font-bold text-dark-gray">Products</h3>
-                            <p class="text-sm text-gray-500">Manage products within categories</p>
+                            <h3 class="text-lg font-bold text-dark-gray">Fabrics</h3>
+                            <p class="text-sm text-gray-500">Manage fabrics within categories</p>
                         </div>
                         <button onclick="openProductModal()" class="bg-brand-orange hover:bg-brand-orange-dark text-white px-6 py-2 rounded-lg font-medium transition-all flex items-center space-x-2">
                             <i class="fas fa-plus"></i>
-                            <span>Add Product</span>
+                            <span>Add Fabric</span>
                         </button>
                     </div>
 
@@ -344,7 +344,7 @@
                                     <tr class="border-b border-gray-200">
                                         <th class="text-left py-3 px-4">Image</th>
                                         <th class="text-left py-3 px-4">Design Code</th>
-                                        <th class="text-left py-3 px-4">Product Name</th>
+                                        <th class="text-left py-3 px-4">Fabric Name</th>
                                         <th class="text-left py-3 px-4">Category</th>
                                         <th class="text-left py-3 px-4">Starting Price</th>
                                         <th class="text-left py-3 px-4">Actions</th>
@@ -560,7 +560,7 @@
     <div id="category-modal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 overflow-y-auto">
         <div class="glass-card w-full max-w-lg modal-enter my-8 max-h-[90vh] overflow-y-auto">
             <div class="p-6 border-b border-gray-100 flex justify-between items-center">
-                <h3 id="category-modal-title" class="text-xl font-bold text-dark-gray">Add Category</h3>
+                <h3 id="category-modal-title" class="text-xl font-bold text-dark-gray">Add Fabric Category</h3>
                 <button onclick="closeCategoryModal()" class="text-gray-400 hover:text-gray-600">
                     <i class="fas fa-times text-xl"></i>
                 </button>
@@ -633,7 +633,7 @@
     <div id="product-modal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 overflow-y-auto">
         <div class="glass-card w-full max-w-lg modal-enter my-8 max-h-[90vh] overflow-y-auto">
             <div class="p-6 border-b border-gray-100 flex justify-between items-center">
-                <h3 id="product-modal-title" class="text-xl font-bold text-dark-gray">Add Product</h3>
+                <h3 id="product-modal-title" class="text-xl font-bold text-dark-gray">Add Fabric</h3>
                 <button onclick="closeProductModal()" class="text-gray-400 hover:text-gray-600">
                     <i class="fas fa-times text-xl"></i>
                 </button>
