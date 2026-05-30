@@ -285,8 +285,13 @@
 
                     <!-- Filter Bar -->
                     <div class="glass-card p-4 flex flex-wrap gap-4 items-center">
+                        <select id="category-filter-status" onchange="filterCategories()" class="form-input px-4 py-2 rounded-lg">
+                            <option value="">All Status</option>
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                        </select>
                         <div class="flex-1"></div>
-                        <input type="text" id="category-search" onkeyup="searchCategories()" placeholder="Search categories..." class="form-input px-4 py-2 rounded-lg w-64">
+                        <input type="text" id="category-search" onkeyup="filterCategories()" placeholder="Search categories..." class="form-input px-4 py-2 rounded-lg w-64">
                     </div>
 
                     <div class="glass-card p-6">
@@ -764,6 +769,15 @@
                     }
                 }
 
+                // Check if quotes exist
+                const quotesSnapshot = await db.collection('quotes').get();
+                if (quotesSnapshot.empty) {
+                    const defaultQuotes = this.getDefaultQuotes();
+                    for (const quote of defaultQuotes) {
+                        await db.collection('quotes').add(quote);
+                    }
+                }
+
                 // Check if settings exist
                 const settingsDoc = await db.collection('settings').doc('general').get();
                 if (!settingsDoc.exists) {
@@ -830,7 +844,12 @@
 
             // Visitors (kept in localStorage for simplicity - not critical)
             getVisitors() {
-                return JSON.parse(localStorage.getItem('visitors') || '[]');
+                let visitors = JSON.parse(localStorage.getItem('visitors') || '[]');
+                if (visitors.length === 0) {
+                    visitors = this.generateSampleVisitors();
+                    this.setVisitors(visitors);
+                }
+                return visitors;
             },
             setVisitors(visitors) {
                 localStorage.setItem('visitors', JSON.stringify(visitors));
@@ -1051,19 +1070,59 @@
                 ];
             },
 
+            getDefaultQuotes() {
+                const quotes = [];
+                const customers = [
+                    { name: 'Arjun Mehta', email: 'arjun.mehta@example.com', phone: '+91 98765 43210' },
+                    { name: 'Priya Sharma', email: 'priya.sharma@example.com', phone: '+91 91234 56789' },
+                    { name: 'Rohan Gupta', email: 'rohan.gupta@example.com', phone: '+91 99887 76655' },
+                    { name: 'Ananya Iyer', email: 'ananya.iyer@example.com', phone: '+91 98761 23456' },
+                    { name: 'Vikram Singh', email: 'vikram.singh@example.com', phone: '+91 94567 12345' },
+                    { name: 'Neha Patel', email: 'neha.patel@example.com', phone: '+91 93210 98765' }
+                ];
+                const products = [
+                    { id: '1', name: 'Vat-Dyed Premium Fabric', code: 'VD-001' },
+                    { id: '2', name: 'Fiber-Dyed Advanced Fabric', code: 'FD-001' }
+                ];
+
+                // Generate quotes across the last 30 days
+                for (let i = 0; i < 15; i++) {
+                    const customer = customers[i % customers.length];
+                    const product = products[i % products.length];
+                    const date = new Date();
+                    // spread quotes randomly over last 20 days
+                    date.setDate(date.getDate() - Math.floor(Math.random() * 20));
+                    date.setHours(Math.floor(Math.random() * 12) + 9, Math.floor(Math.random() * 60));
+                    
+                    quotes.push({
+                        customerName: customer.name,
+                        email: customer.email,
+                        phone: customer.phone,
+                        productId: product.id,
+                        productName: product.name,
+                        productCode: product.code,
+                        product: product,
+                        quantity: Math.floor(Math.random() * 500) + 100,
+                        notes: `Interested in dynamic volume ordering. Code: ${product.code}`,
+                        createdAt: date.toISOString()
+                    });
+                }
+                return quotes;
+            },
+
             generateSampleVisitors() {
                 const visitors = [];
-                for (let i = 6; i >= 0; i--) {
+                for (let i = 29; i >= 0; i--) {
                     const date = new Date();
                     date.setDate(date.getDate() - i);
                     visitors.push({
                         date: date.toISOString().split('T')[0],
-                        count: Math.floor(Math.random() * 50) + 20,
+                        count: Math.floor(Math.random() * 80) + 40,
                         pages: {
-                            home: Math.floor(Math.random() * 20) + 5,
-                            products: Math.floor(Math.random() * 15) + 3,
-                            about: Math.floor(Math.random() * 10) + 2,
-                            contact: Math.floor(Math.random() * 8) + 1
+                            home: Math.floor(Math.random() * 30) + 15,
+                            products: Math.floor(Math.random() * 25) + 10,
+                            about: Math.floor(Math.random() * 15) + 5,
+                            contact: Math.floor(Math.random() * 10) + 3
                         }
                     });
                 }
@@ -1204,7 +1263,16 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                boxWidth: 12,
+                                font: { size: 11, family: 'Rubik' }
+                            }
+                        }
+                    },
                     scales: {
                         y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.05)' } },
                         x: { grid: { display: false } }
@@ -1254,7 +1322,16 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                boxWidth: 12,
+                                font: { size: 11, family: 'Rubik' }
+                            }
+                        }
+                    },
                     scales: {
                         y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.05)' } },
                         x: { grid: { display: false } }
@@ -1319,7 +1396,14 @@
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
-                        legend: { display: false }
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                boxWidth: 12,
+                                font: { size: 11, family: 'Rubik' }
+                            }
+                        }
                     },
                     scales: {
                         x: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.05)' } },
@@ -1414,6 +1498,23 @@
                 await renderCategories();
                 showToast('Category deleted successfully');
             }
+        }
+
+        async function filterCategories() {
+            const status = document.getElementById('category-filter-status').value;
+            const search = document.getElementById('category-search').value.toLowerCase();
+            let categories = await DataManager.getCategories();
+            
+            if (status) {
+                categories = categories.filter(c => c.active === (status === 'active'));
+            }
+            if (search) {
+                categories = categories.filter(c =>
+                    c.name.toLowerCase().includes(search) ||
+                    (c.description && c.description.toLowerCase().includes(search))
+                );
+            }
+            await renderCategories(categories);
         }
 
         // Products Management
@@ -1635,6 +1736,16 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                boxWidth: 12,
+                                font: { size: 11, family: 'Rubik' }
+                            }
+                        }
+                    },
                     scales: {
                         y: { beginAtZero: true },
                         x: { display: false }
