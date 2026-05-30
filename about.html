@@ -110,9 +110,9 @@
             opacity: 0;
             transform: translateY(24px);
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-            transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-                        transform 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-                        box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+            transition: opacity 0.7s ease-out,
+                        transform 0.7s ease-out,
+                        box-shadow 0.3s ease-out,
                         border-color 0.3s ease;
         }
         .cert-card-reveal.active {
@@ -120,8 +120,8 @@
             transform: translateY(0);
         }
         .cert-card-reveal.active:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            box-shadow: 0 12px 24px -5px rgba(170, 0, 33, 0.22), 0 8px 16px -6px rgba(170, 0, 33, 0.22);
+            border-color: #aa0021;
         }
     </style>
 
