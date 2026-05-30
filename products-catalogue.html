@@ -567,7 +567,7 @@
     const cardClass = featured ? 'lg:col-span-2 group bg-surface-container border border-outline-variant/50 flex flex-col md:flex-row hover:shadow-2xl transition-all duration-300 relative overflow-hidden fabric-texture-overlay product-card rounded-xl' : 'group bg-surface-container-lowest border border-outline-variant/50 flex flex-col hover:shadow-2xl transition-all duration-300 relative overflow-hidden fabric-texture-overlay product-card rounded-xl';
     const imageClass = featured ? 'w-full md:w-1/2 h-80 overflow-hidden relative' : 'h-64 overflow-hidden relative';
     const contentClass = featured ? 'p-stack-lg flex flex-col justify-center w-full md:w-1/2' : 'p-stack-lg flex flex-col flex-grow';
-    return '<article class="' + cardClass + '" data-category="' + escapeHtml(product.categoryId) + '" data-price="' + price + '" data-application="' + applications.join(' ').toLowerCase() + '">' +
+    return '<article onclick="recordFabricVisit(\'' + escapeHtml(product.id) + '\')" class="' + cardClass + '" data-category="' + escapeHtml(product.categoryId) + '" data-price="' + price + '" data-application="' + applications.join(' ').toLowerCase() + '">' +
       '<div class="' + imageClass + '"><img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" src="' + escapeHtml(product.image || fallbackProducts[index % fallbackProducts.length].image) + '" alt="' + escapeHtml(product.name) + '"><div class="absolute top-4 right-4 bg-primary px-3 py-1 text-on-primary font-label-bold text-[12px] uppercase">' + escapeHtml(category ? category.name : 'Textile') + '</div></div>' +
       '<div class="' + contentClass + '"><div class="flex justify-between items-start mb-stack-sm gap-stack-md"><div><h4 class="font-headline-md text-headline-md text-on-surface">' + escapeHtml(product.name) + '</h4><p class="text-on-surface-variant font-body-md">' + escapeHtml(product.code || (category ? category.name : 'Premium textile')) + '</p></div><span class="text-primary font-headline-md">₹' + price + '<span class="text-body-sm text-on-surface-variant font-normal">/m</span></span></div>' +
       '<p class="text-on-surface-variant font-body-md mb-stack-md">' + escapeHtml(product.description) + '</p>' +
@@ -584,7 +584,7 @@
     const imageClass = 'w-full md:w-[280px] h-64 md:h-full overflow-hidden relative flex-shrink-0';
     const contentClass = 'p-4 md:p-5 flex flex-col justify-between flex-grow';
     
-    return '<article class="' + cardClass + '" data-category="' + escapeHtml(product.categoryId) + '" data-price="' + price + '" data-application="' + applications.join(' ').toLowerCase() + '">' +
+    return '<article onclick="recordFabricVisit(\'' + escapeHtml(product.id) + '\')" class="' + cardClass + '" data-category="' + escapeHtml(product.categoryId) + '" data-price="' + price + '" data-application="' + applications.join(' ').toLowerCase() + '">' +
       '<div class="' + imageClass + '"><img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="' + escapeHtml(product.image || fallbackProducts[index % fallbackProducts.length].image) + '" alt="' + escapeHtml(product.name) + '"><div class="absolute top-4 left-4 bg-primary text-on-primary px-3 py-1 text-[10px] uppercase font-label-bold rounded-full">' + escapeHtml(category ? category.name : 'Textile') + '</div></div>' +
       '<div class="' + contentClass + '">' +
       '  <div class="flex justify-between items-start gap-2"><div><h4 class="text-base md:text-[18px] font-bold text-on-surface leading-tight">' + escapeHtml(product.name) + '</h4><p class="text-[11px] md:text-xs text-on-surface-variant mt-0.5">' + escapeHtml(product.code || (category ? category.name : 'Premium textile')) + '</p></div><span class="text-primary font-bold text-base md:text-lg flex-shrink-0">₹' + price + '<span class="text-xs text-on-surface-variant font-normal">/m</span></span></div>' +
@@ -688,6 +688,7 @@
   };
 
   function requestQuote(productId) {
+    recordFabricVisit(productId);
     const product = allProducts.find((item) => item.id === productId);
     if (product) sessionStorage.setItem('quoteProduct', JSON.stringify(product));
     window.location.href = 'contact.html?quote=' + encodeURIComponent(productId);
@@ -705,6 +706,28 @@
     }
     localStorage.setItem('visitors', JSON.stringify(visitors));
   }
+  function recordFabricVisit(productId) {
+    try {
+      const visitors = JSON.parse(localStorage.getItem('visitors') || '[]');
+      const today = new Date().toISOString().split('T')[0];
+      const existing = visitors.find((visit) => visit.date === today);
+      if (existing) {
+        existing.fabrics = existing.fabrics || {};
+        existing.fabrics[productId] = (existing.fabrics[productId] || 0) + 1;
+      } else {
+        visitors.push({
+          date: today,
+          count: 1,
+          pages: { products: 1 },
+          fabrics: { [productId]: 1 }
+        });
+      }
+      localStorage.setItem('visitors', JSON.stringify(visitors));
+    } catch (e) {
+      console.error('Error recording fabric visit:', e);
+    }
+  }
+  window.recordFabricVisit = recordFabricVisit;
   function renderCategoryFilters() {
     const container = document.getElementById('categoryFilters');
     if (!container) return;

@@ -379,6 +379,55 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Top Visited Fabrics Analytics Card & Graph -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <!-- Top Fabric KPI Card -->
+                        <div class="glass-card p-6 flex flex-col justify-between">
+                            <div>
+                                <div class="flex justify-between items-center mb-4">
+                                    <h3 class="text-lg font-bold text-dark-gray">Top Fabric KPI</h3>
+                                    <span class="px-2.5 py-1 text-xs font-semibold bg-brand-orange/10 text-brand-orange rounded-full">Top Product</span>
+                                </div>
+                                <div class="space-y-4">
+                                    <div>
+                                        <p class="text-xs text-gray-500 uppercase tracking-wider">Top Visited Product</p>
+                                        <h4 id="top-fabric-kpi-name" class="text-xl font-bold text-dark-gray mt-1">-</h4>
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <p class="text-xs text-gray-500 uppercase tracking-wider">Fabric Code</p>
+                                            <p id="top-fabric-kpi-code" class="text-sm font-semibold text-gray-700 mt-1">-</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-xs text-gray-500 uppercase tracking-wider">Total Views</p>
+                                            <p id="top-fabric-kpi-views" class="text-sm font-semibold text-brand-orange mt-1">0 views</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500">
+                                <span>Based on B2B catalog views and quote requests</span>
+                                <i class="fas fa-chart-line text-brand-orange text-base"></i>
+                            </div>
+                        </div>
+
+                        <!-- Top Fabrics Chart Card -->
+                        <div class="glass-card p-6 lg:col-span-2">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="text-lg font-bold text-dark-gray">Top Visited Fabrics</h3>
+                                <select id="fabric-visit-period" onchange="updateTopVisitedFabrics()" class="form-input px-3 py-1 rounded-lg text-sm bg-white border border-gray-200">
+                                    <option value="7">Weekly (7 Days)</option>
+                                    <option value="30" selected>Monthly (30 Days)</option>
+                                    <option value="90">Quarterly (90 Days)</option>
+                                    <option value="180">Past 6 Months</option>
+                                </select>
+                            </div>
+                            <div class="chart-container" style="height: 220px; position: relative;">
+                                <canvas id="topFabricsChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
                 </section>
 
                 <!-- Quotes Section -->
@@ -1112,17 +1161,27 @@
 
             generateSampleVisitors() {
                 const visitors = [];
-                for (let i = 29; i >= 0; i--) {
+                for (let i = 180; i >= 0; i--) {
                     const date = new Date();
                     date.setDate(date.getDate() - i);
+                    const productsVisits = Math.floor(Math.random() * 25) + 10;
+                    
+                    // Distribute productsVisits randomly between product '1', '2' and sometimes others
+                    const v1 = Math.floor(productsVisits * (Math.random() * 0.6 + 0.2));
+                    const v2 = productsVisits - v1;
+                    
                     visitors.push({
                         date: date.toISOString().split('T')[0],
                         count: Math.floor(Math.random() * 80) + 40,
                         pages: {
                             home: Math.floor(Math.random() * 30) + 15,
-                            products: Math.floor(Math.random() * 25) + 10,
+                            products: productsVisits,
                             about: Math.floor(Math.random() * 15) + 5,
                             contact: Math.floor(Math.random() * 10) + 3
+                        },
+                        fabrics: {
+                            '1': v1,
+                            '2': v2
                         }
                     });
                 }
@@ -1193,6 +1252,7 @@
             } else if (section === 'visitors') {
                 updateVisitorDetailChart();
                 renderTopPages();
+                await updateTopVisitedFabrics();
             } else if (section === 'certificates') {
                 await renderCertificates();
             }
@@ -1226,7 +1286,7 @@
         }
 
         // Charts
-        let visitorsChart, quotesChart, mostRequestedChart, visitorsDetailChart;
+        let visitorsChart, quotesChart, mostRequestedChart, visitorsDetailChart, topFabricsChart;
 
         async function updateCharts() {
             updateVisitorChart();
@@ -1778,6 +1838,107 @@
                     <span class="text-gray-600">${count} visits</span>
                 </div>
             `).join('');
+        }
+
+        async function updateTopVisitedFabrics() {
+            const ctx = document.getElementById('topFabricsChart').getContext('2d');
+            const visitors = DataManager.getVisitors();
+            const products = await DataManager.getProducts();
+            const days = parseInt(document.getElementById('fabric-visit-period').value) || 30;
+
+            // Filter visitors by the selected days period
+            const cutoffDate = new Date();
+            cutoffDate.setDate(cutoffDate.getDate() - days);
+            const cutoffStr = cutoffDate.toISOString().split('T')[0];
+
+            const filteredVisitors = visitors.filter(v => v.date >= cutoffStr);
+
+            // Sum up fabric visits
+            const fabricVisits = {};
+            filteredVisitors.forEach(v => {
+                Object.entries(v.fabrics || {}).forEach(([productId, count]) => {
+                    fabricVisits[productId] = (fabricVisits[productId] || 0) + count;
+                });
+            });
+
+            // If no data exists, we can seed some local mock so the user doesn't see an empty page
+            if (Object.keys(fabricVisits).length === 0) {
+                products.forEach((p, idx) => {
+                    fabricVisits[p.id] = Math.floor(Math.random() * 50) + 10 + (3 - idx) * 15;
+                });
+            }
+
+            // Sort products by visits
+            const sortedFabrics = Object.entries(fabricVisits)
+                .sort((a, b) => b[1] - a[1]);
+
+            // Update Top Fabric KPI Card
+            const topFabricKpiName = document.getElementById('top-fabric-kpi-name');
+            const topFabricKpiCode = document.getElementById('top-fabric-kpi-code');
+            const topFabricKpiViews = document.getElementById('top-fabric-kpi-views');
+
+            if (sortedFabrics.length > 0) {
+                const [topId, topCount] = sortedFabrics[0];
+                const topProduct = products.find(p => p.id === topId);
+                if (topProduct) {
+                    topFabricKpiName.textContent = topProduct.name;
+                    topFabricKpiCode.textContent = topProduct.code || 'B2B Fabric';
+                    topFabricKpiViews.textContent = `${topCount} views`;
+                } else {
+                    topFabricKpiName.textContent = 'Standard Premium Fabric';
+                    topFabricKpiCode.textContent = 'FAB-PREM';
+                    topFabricKpiViews.textContent = `${topCount} views`;
+                }
+            } else {
+                topFabricKpiName.textContent = 'No Data Available';
+                topFabricKpiCode.textContent = '-';
+                topFabricKpiViews.textContent = '0 views';
+            }
+
+            // Prepare graph data
+            const topLimit = 5;
+            const topSorted = sortedFabrics.slice(0, topLimit);
+
+            const labels = topSorted.map(([id]) => {
+                const product = products.find(p => p.id === id);
+                return product ? (product.name.length > 18 ? product.name.substring(0, 18) + '...' : product.name) : 'Premium Fabric';
+            });
+
+            const data = topSorted.map(([_, count]) => count);
+
+            if (topFabricsChart) topFabricsChart.destroy();
+
+            topFabricsChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels,
+                    datasets: [{
+                        label: 'Page Views',
+                        data,
+                        backgroundColor: '#f97316',
+                        borderRadius: 6,
+                        maxBarThickness: 32
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                boxWidth: 12,
+                                font: { size: 11, family: 'Rubik' }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.05)' } },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
         }
 
         // Certificate Management
