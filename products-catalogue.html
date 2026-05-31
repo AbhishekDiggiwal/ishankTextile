@@ -235,8 +235,12 @@
             <div id="productsGrid" class="grid grid-cols-1 lg:grid-cols-2 gap-gutter">
                 <!-- Dynamic B2B fabrics are loaded here from database -->
             </div>
-<!-- Pagination -->
-<div id="pagination" class="mt-8 flex justify-center items-center gap-stack-md">
+</div> <!-- Closes flex flex-col gap-6 right container -->
+</div> <!-- Closes flex flex-col md:flex-row gap-gutter -->
+</div> <!-- Closes productsView -->
+
+<!-- Pagination (fixed below all cards and right above the footer) -->
+<div id="pagination" style="display: none;" class="mt-12 flex justify-center items-center gap-stack-md">
 <button class="p-2 border border-outline-variant text-on-surface-variant hover:border-primary hover:text-primary transition-colors">
 <span class="material-symbols-outlined">chevron_left</span>
 </button>
@@ -249,9 +253,6 @@
 <span class="material-symbols-outlined">chevron_right</span>
 </button>
 </div> <!-- Closes pagination -->
-</div> <!-- Closes flex flex-col gap-6 right container -->
-</div> <!-- Closes flex flex-col md:flex-row gap-gutter -->
-</div> <!-- Closes productsView -->
 </main>
 <!-- Footer -->
 <footer class="bg-surface-container-lowest dark:bg-surface-container-lowest border-t border-white/5 w-full py-12">
@@ -606,6 +607,10 @@
     // Toggle Views
     document.getElementById('productsView')?.classList.add('hidden');
     document.getElementById('categoriesView')?.classList.remove('hidden');
+    
+    // Explicitly hide pagination when viewing categories
+    const paginationContainer = document.getElementById('pagination');
+    if (paginationContainer) paginationContainer.style.display = 'none';
     
     renderCategoriesGrid();
   };
