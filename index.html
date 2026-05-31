@@ -137,25 +137,6 @@
 .product-card-reveal-right.reveal-active {
     opacity: 1;
     transform: translateX(0);
-}
-/* Odometer/Rolling Slots Reveal */
-.odometer-digit {
-    position: relative;
-    display: inline-block;
-    height: 1.15em;
-    overflow: hidden;
-    line-height: 1.15em;
-    vertical-align: top;
-}
-.odometer-strip {
-    display: flex;
-    flex-direction: column;
-    transform: translateY(0);
-}
-.odometer-strip span {
-    display: block;
-    height: 1.15em;
-    text-align: center;
 }</style>
 
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -209,24 +190,8 @@
 <h1 class="font-display-lg text-4xl sm:text-5xl md:text-display-lg text-white mb-stack-md uppercase leading-tight">
                     Premium Fabric <br/> <span class="text-primary-fixed">Manufacturing</span>
 </h1>
-                    Ishank Textile delivers molecular-level color integrity and industrial-grade textiles to over <span id="hero-partner-count" class="text-primary-fixed font-bold inline-flex items-center hover:scale-110 hover:text-white transition-all duration-300 cursor-default select-none align-middle overflow-visible">
-                        <span class="odometer-digit w-[0.62em]">
-                            <span class="odometer-strip transition-transform duration-[1.8s] cubic-bezier(0.16, 1, 0.3, 1)">
-                                <span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span>
-                            </span>
-                        </span>
-                        <span class="odometer-digit w-[0.62em]">
-                            <span class="odometer-strip transition-transform duration-[2.2s] cubic-bezier(0.16, 1, 0.3, 1)">
-                                <span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span>
-                            </span>
-                        </span>
-                        <span class="odometer-digit w-[0.62em]">
-                            <span class="odometer-strip transition-transform duration-[2.6s] cubic-bezier(0.16, 1, 0.3, 1)">
-                                <span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span>
-                            </span>
-                        </span>
-                        <span>+</span>
-                    </span> global partners from the heart of Bhilwara.
+<p class="max-w-2xl mx-auto font-body-md md:font-body-lg text-base md:text-body-lg text-white/80 mb-stack-lg">
+                    Ishank Textile delivers molecular-level color integrity and industrial-grade textiles to over <span id="hero-partner-count" class="text-primary-fixed font-bold inline-block hover:scale-110 hover:text-white transition-all duration-300 cursor-default select-none">0+</span> global partners from the heart of Bhilwara.
                 </p>
 <div class="flex items-center justify-center gap-stack-md">
 <button class="relative px-10 py-4 bg-primary text-on-primary font-label-bold text-label-bold uppercase transition-all shadow-xl group overflow-hidden rounded-full">
@@ -553,28 +518,40 @@
   };
 
   document.addEventListener('DOMContentLoaded', async () => {
-    // Odometer/Rolling Slots animation for Hero "500+" partners
-    setTimeout(() => {
-      const strips = document.querySelectorAll('#hero-partner-count .odometer-strip');
-      const targetDigits = [5, 0, 0];
-      
-      strips.forEach((strip, index) => {
-        const digitValue = targetDigits[index];
-        // Shift using translateY to -digitValue * 10%
-        strip.style.transform = `translateY(-${digitValue * 10}%)`;
-      });
+    // Count-up animation for "500+" global partners
+    const partnerCountEl = document.getElementById('hero-partner-count');
+    if (partnerCountEl) {
+      const targetVal = 500;
+      const durationTime = 1600; // 1.6 seconds count-up
+      const startValTime = performance.now();
 
-      // Temporary scale-pulse highlights on completion (at 2.6s)
-      setTimeout(() => {
-        const countEl = document.getElementById('hero-partner-count');
-        if (countEl) {
-          countEl.classList.add('scale-110', 'text-white');
+      function animateCounter(timestamp) {
+        const timeElapsed = timestamp - startValTime;
+        const animationProgress = Math.min(timeElapsed / durationTime, 1);
+        
+        // Easing out quadratic: ultra-smooth deceleration at the end
+        const easedProgress = animationProgress * (2 - animationProgress);
+        const calculatedCount = Math.floor(easedProgress * targetVal);
+        
+        partnerCountEl.textContent = calculatedCount + '+';
+
+        if (animationProgress < 1) {
+          requestAnimationFrame(animateCounter);
+        } else {
+          partnerCountEl.textContent = targetVal + '+';
+          // Neat micro-scale highlight trigger on completion
+          partnerCountEl.classList.add('scale-110', 'text-white');
           setTimeout(() => {
-            countEl.classList.remove('scale-110', 'text-white');
+            partnerCountEl.classList.remove('scale-110', 'text-white');
           }, 300);
         }
-      }, 2600);
-    }, 400);
+      }
+      
+    // Delay animation start slightly to match hero text reveal transitions
+    setTimeout(() => {
+      requestAnimationFrame(animateCounter);
+    }, 300);
+  }
 
   // Bento Grid scroll-reveal stagger animation
   const bentoCards = document.querySelectorAll('.bento-card-reveal');
