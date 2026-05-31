@@ -116,7 +116,7 @@
 .bento-card-reveal {
     opacity: 0;
     transform: translateY(40px) scale(0.98);
-    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1), transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .bento-card-reveal.reveal-active {
     opacity: 1;
@@ -126,12 +126,12 @@
 .product-card-reveal-left {
     opacity: 0;
     transform: translateX(-40px);
-    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1), transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .product-card-reveal-right {
     opacity: 0;
     transform: translateX(40px);
-    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1), transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .product-card-reveal-left.reveal-active,
 .product-card-reveal-right.reveal-active {
@@ -569,7 +569,7 @@
           const card = entry.target;
           card.style.transitionDelay = triggerDelay + 'ms';
           card.classList.add('reveal-active');
-          triggerDelay += 120; // 120ms stagger
+          triggerDelay += 180; // 180ms stagger
           observer.unobserve(card);
         }
       });
@@ -664,7 +664,7 @@
             const card = entry.target;
             card.style.transitionDelay = triggerDelay + 'ms';
             card.classList.add('reveal-active');
-            triggerDelay += 150; // 150ms stagger
+            triggerDelay += 220; // 220ms stagger
             observer.unobserve(card);
           }
         });
