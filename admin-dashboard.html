@@ -2080,11 +2080,15 @@
                                 <span>Uploaded on: ${new Date(cert.uploadedAt).toLocaleDateString()}</span>
                             </div>
                         </div>
-                        <div class="flex gap-3 pt-3 border-t border-gray-100">
-                            <button onclick="viewDocument('${cert.url}', '${cert.name}')" class="flex-1 bg-gray-100 hover:bg-gray-200 text-dark-gray font-semibold py-2 rounded-lg text-sm transition-colors flex items-center justify-center gap-1">
+                        <div class="flex gap-2 pt-3 border-t border-gray-100">
+                            <button onclick="viewDocument('${cert.url}', '${cert.name}')" class="flex-1 bg-gray-100 hover:bg-gray-200 text-dark-gray font-semibold py-2 rounded-lg text-sm transition-colors flex items-center justify-center gap-1" title="View Document">
                                 <span class="material-symbols-outlined text-sm">visibility</span>
                                 <span>View</span>
                             </button>
+                            <a href="${cert.url}" target="_blank" download="${cert.filename || 'document'}" class="flex-1 bg-gray-100 hover:bg-gray-200 text-dark-gray font-semibold py-2 rounded-lg text-sm transition-colors flex items-center justify-center gap-1" title="Download Document">
+                                <span class="material-symbols-outlined text-sm">download</span>
+                                <span>Download</span>
+                            </a>
                             <button onclick="deleteCertificate('${cert.id}')" class="bg-red-50 hover:bg-red-100 text-red-600 p-2 rounded-lg transition-colors flex items-center justify-center" title="Delete">
                                 <span class="material-symbols-outlined text-sm">delete</span>
                             </button>
