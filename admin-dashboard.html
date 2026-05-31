@@ -553,7 +553,7 @@
                     <div class="glass-card p-6">
                         <div class="border-b border-gray-200 pb-4 mb-6">
                             <h3 class="text-lg font-bold text-dark-gray">Business Policies</h3>
-                            <p class="text-sm text-gray-500">Upload and edit legal policies and terms of service for the website (.txt or .md format)</p>
+                            <p class="text-sm text-gray-500">Upload corporate policy files (.txt, .md, .doc, or .docx format) to display dynamically on the website.</p>
                         </div>
                         
                         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -573,15 +573,15 @@
                                     </div>
                                 </div>
                                 <div class="space-y-2 mt-4">
-                                    <label class="w-full flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-100 cursor-pointer text-xs font-label-bold transition-colors">
+                                    <label class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-primary text-on-primary hover:bg-primary/95 cursor-pointer text-xs font-label-bold transition-colors shadow-md rounded-lg">
                                         <span class="material-symbols-outlined text-sm">upload_file</span>
-                                        <span>Upload File</span>
-                                        <input type="file" accept=".txt,.md" class="hidden" onchange="uploadPolicyFile(this, 'website_terms')">
+                                        <span>Upload Document</span>
+                                        <input type="file" accept=".txt,.md,.doc,.docx" class="hidden" onchange="uploadPolicyFile(this, 'website_terms')">
                                     </label>
-                                    <button onclick="togglePolicyEditor('website_terms')" class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-secondary text-on-secondary rounded-lg hover:bg-on-surface-variant text-xs font-label-bold transition-colors">
-                                        <span class="material-symbols-outlined text-sm">edit_note</span>
-                                        <span>View / Edit Text</span>
-                                    </button>
+                                    <a id="policy-terms-download" target="_blank" class="w-full flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-xs font-label-bold transition-colors pointer-events-none opacity-40">
+                                        <span class="material-symbols-outlined text-sm">download</span>
+                                        <span>Download Current</span>
+                                    </a>
                                 </div>
                             </div>
 
@@ -601,15 +601,15 @@
                                     </div>
                                 </div>
                                 <div class="space-y-2 mt-4">
-                                    <label class="w-full flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-100 cursor-pointer text-xs font-label-bold transition-colors">
+                                    <label class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-primary text-on-primary hover:bg-primary/95 cursor-pointer text-xs font-label-bold transition-colors shadow-md rounded-lg">
                                         <span class="material-symbols-outlined text-sm">upload_file</span>
-                                        <span>Upload File</span>
-                                        <input type="file" accept=".txt,.md" class="hidden" onchange="uploadPolicyFile(this, 'privacy_policy')">
+                                        <span>Upload Document</span>
+                                        <input type="file" accept=".txt,.md,.doc,.docx" class="hidden" onchange="uploadPolicyFile(this, 'privacy_policy')">
                                     </label>
-                                    <button onclick="togglePolicyEditor('privacy_policy')" class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-secondary text-on-secondary rounded-lg hover:bg-on-surface-variant text-xs font-label-bold transition-colors">
-                                        <span class="material-symbols-outlined text-sm">edit_note</span>
-                                        <span>View / Edit Text</span>
-                                    </button>
+                                    <a id="policy-privacy-download" target="_blank" class="w-full flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-xs font-label-bold transition-colors pointer-events-none opacity-40">
+                                        <span class="material-symbols-outlined text-sm">download</span>
+                                        <span>Download Current</span>
+                                    </a>
                                 </div>
                             </div>
 
@@ -629,32 +629,15 @@
                                     </div>
                                 </div>
                                 <div class="space-y-2 mt-4">
-                                    <label class="w-full flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-100 cursor-pointer text-xs font-label-bold transition-colors">
+                                    <label class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-primary text-on-primary hover:bg-primary/95 cursor-pointer text-xs font-label-bold transition-colors shadow-md rounded-lg">
                                         <span class="material-symbols-outlined text-sm">upload_file</span>
-                                        <span>Upload File</span>
-                                        <input type="file" accept=".txt,.md" class="hidden" onchange="uploadPolicyFile(this, 'business_terms')">
+                                        <span>Upload Document</span>
+                                        <input type="file" accept=".txt,.md,.doc,.docx" class="hidden" onchange="uploadPolicyFile(this, 'business_terms')">
                                     </label>
-                                    <button onclick="togglePolicyEditor('business_terms')" class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-secondary text-on-secondary rounded-lg hover:bg-on-surface-variant text-xs font-label-bold transition-colors">
-                                        <span class="material-symbols-outlined text-sm">edit_note</span>
-                                        <span>View / Edit Text</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Interactive Policy Editors (Collapsible Textareas) -->
-                        <div id="policy-editors-container" class="mt-8 space-y-6 hidden">
-                            <div class="border-t border-gray-100 pt-6">
-                                <div class="flex justify-between items-center mb-3">
-                                    <h4 id="active-editor-title" class="font-bold text-dark-gray text-base">Edit Policy Content</h4>
-                                    <button onclick="closePolicyEditor()" class="text-gray-400 hover:text-gray-600 text-xs flex items-center gap-1 font-semibold">
-                                        <span class="material-symbols-outlined text-sm">close</span> Close Editor
-                                    </button>
-                                </div>
-                                <textarea id="policy-editor-textarea" rows="18" class="form-input w-full p-4 font-mono text-sm leading-relaxed" placeholder="Paste or type policy text here in plain text or markdown..."></textarea>
-                                <div class="flex justify-end gap-3 mt-4">
-                                    <button onclick="closePolicyEditor()" class="px-5 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-xs font-semibold transition-colors">Cancel</button>
-                                    <button id="save-policy-text-btn" onclick="savePolicyText()" class="px-6 py-2 bg-brand-orange hover:bg-brand-orange-dark text-white rounded-lg text-xs font-semibold transition-colors">Save Verbatim Text</button>
+                                    <a id="policy-business-download" target="_blank" class="w-full flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-xs font-label-bold transition-colors pointer-events-none opacity-40">
+                                        <span class="material-symbols-outlined text-sm">download</span>
+                                        <span>Download Current</span>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -2145,7 +2128,6 @@
 
         // Policy Management
         let currentPolicies = {};
-        let activePolicyKey = null;
 
         async function renderPolicies() {
             try {
@@ -2160,20 +2142,33 @@
                 currentPolicies = {};
             }
 
-            // Populate terms & conditions
-            const terms = currentPolicies.website_terms || {};
-            document.getElementById('policy-terms-date').textContent = terms.updatedAt ? new Date(terms.updatedAt).toLocaleString() : 'Never';
-            document.getElementById('policy-terms-filename').textContent = terms.filename || 'No file uploaded yet';
+            const keys = ['website_terms', 'privacy_policy', 'business_terms'];
+            const idMap = {
+                website_terms: 'terms',
+                privacy_policy: 'privacy',
+                business_terms: 'business'
+            };
 
-            // Populate privacy policy
-            const privacy = currentPolicies.privacy_policy || {};
-            document.getElementById('policy-privacy-date').textContent = privacy.updatedAt ? new Date(privacy.updatedAt).toLocaleString() : 'Never';
-            document.getElementById('policy-privacy-filename').textContent = privacy.filename || 'No file uploaded yet';
-
-            // Populate business terms
-            const business = currentPolicies.business_terms || {};
-            document.getElementById('policy-business-date').textContent = business.updatedAt ? new Date(business.updatedAt).toLocaleString() : 'Never';
-            document.getElementById('policy-business-filename').textContent = business.filename || 'No file uploaded yet';
+            keys.forEach(key => {
+                const policy = currentPolicies[key] || {};
+                const shortId = idMap[key];
+                
+                document.getElementById(`policy-${shortId}-date`).textContent = policy.updatedAt ? new Date(policy.updatedAt).toLocaleString() : 'Never';
+                document.getElementById(`policy-${shortId}-filename`).textContent = policy.filename || 'No file uploaded yet';
+                
+                const dlBtn = document.getElementById(`policy-${shortId}-download`);
+                if (dlBtn) {
+                    if (policy.url) {
+                        dlBtn.href = policy.url;
+                        dlBtn.classList.remove('pointer-events-none', 'opacity-40');
+                        dlBtn.classList.add('hover:bg-gray-100');
+                    } else {
+                        dlBtn.removeAttribute('href');
+                        dlBtn.classList.add('pointer-events-none', 'opacity-40');
+                        dlBtn.classList.remove('hover:bg-gray-100');
+                    }
+                }
+            });
         }
 
         async function uploadPolicyFile(input, policyKey) {
@@ -2181,105 +2176,89 @@
             if (!file) return;
 
             const ext = file.name.split('.').pop().toLowerCase();
-            if (ext !== 'txt' && ext !== 'md') {
-                showToast('Only plain text (.txt) or markdown (.md) files are supported.', 'error');
+            const supportedExts = ['txt', 'md', 'doc', 'docx'];
+            if (!supportedExts.includes(ext)) {
+                showToast('Only plain text (.txt, .md) or Word (.doc, .docx) files are supported.', 'error');
                 return;
             }
 
+            showToast('Reading and uploading policy file...', 'info');
+
+            let fileUrl = '';
+            try {
+                if (storage) {
+                    const filename = `policies/${policyKey}_${Date.now()}_${file.name}`;
+                    const ref = storage.ref(filename);
+                    await ref.put(file);
+                    fileUrl = await ref.getDownloadURL();
+                }
+            } catch (storageError) {
+                console.warn('Storage upload failed, only using local text:', storageError);
+            }
+
             const reader = new FileReader();
-            reader.onload = async (e) => {
-                const fileText = e.target.result;
-                showToast('Reading and uploading policy file...', 'info');
 
-                let fileUrl = '';
-                try {
-                    if (storage) {
-                        const filename = `policies/${policyKey}_${Date.now()}_${file.name}`;
-                        const ref = storage.ref(filename);
-                        await ref.put(file);
-                        fileUrl = await ref.getDownloadURL();
-                    }
-                } catch (storageError) {
-                    console.warn('Storage upload failed, only saving text to firestore:', storageError);
-                }
-
-                const policyData = {
-                    text: fileText,
-                    filename: file.name,
-                    url: fileUrl,
-                    updatedAt: new Date().toISOString()
+            if (ext === 'txt' || ext === 'md') {
+                reader.onload = async (e) => {
+                    const fileText = e.target.result;
+                    await savePolicyToDatabase(policyKey, file.name, fileUrl, fileText, false);
                 };
-
-                try {
-                    await db.collection('settings').doc('policies').set({
-                        [policyKey]: policyData
-                    }, { merge: true });
-                    
-                    showToast('Policy updated successfully!');
-                    await renderPolicies();
-                    
-                    if (activePolicyKey === policyKey) {
-                        document.getElementById('policy-editor-textarea').value = fileText;
+                reader.onerror = () => showToast('Failed to read local file.', 'error');
+                reader.readAsText(file);
+            } else if (ext === 'docx') {
+                reader.onload = async (e) => {
+                    const arrayBuffer = e.target.result;
+                    try {
+                        if (typeof mammoth === 'undefined') {
+                            await loadMammothScript();
+                        }
+                        
+                        const result = await mammoth.convertToHtml({ arrayBuffer: arrayBuffer });
+                        const fileHtml = result.value || '';
+                        
+                        await savePolicyToDatabase(policyKey, file.name, fileUrl, fileHtml, false);
+                    } catch (mammothError) {
+                        console.error('Error parsing docx file with mammoth:', mammothError);
+                        await savePolicyToDatabase(policyKey, file.name, fileUrl, '', true);
                     }
-                } catch (firestoreError) {
-                    console.error('Error saving policy to firestore:', firestoreError);
-                    showToast('Failed to save policy to database.', 'error');
-                }
-            };
-            reader.onerror = () => {
-                showToast('Failed to read local file.', 'error');
-            };
-            reader.readAsText(file);
+                };
+                reader.onerror = () => showToast('Failed to read Word file.', 'error');
+                reader.readAsArrayBuffer(file);
+            } else {
+                // For older .doc files, we just upload to storage and mark as isBinaryOnly
+                await savePolicyToDatabase(policyKey, file.name, fileUrl, '', true);
+            }
         }
 
-        function togglePolicyEditor(policyKey) {
-            activePolicyKey = policyKey;
-            const container = document.getElementById('policy-editors-container');
-            const titleEl = document.getElementById('active-editor-title');
-            const textarea = document.getElementById('policy-editor-textarea');
-
-            const titles = {
-                website_terms: 'Edit Website Terms & Conditions',
-                privacy_policy: 'Edit Privacy Policy',
-                business_terms: 'Edit Business Terms & Conditions'
-            };
-
-            titleEl.textContent = titles[policyKey] || 'Edit Policy Content';
-            const policyData = currentPolicies[policyKey] || {};
-            textarea.value = policyData.text || '';
-            
-            container.classList.remove('hidden');
-            container.scrollIntoView({ behavior: 'smooth' });
+        function loadMammothScript() {
+            return new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.src = 'https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js';
+                script.onload = () => resolve();
+                script.onerror = () => reject(new Error('Failed to load mammoth.js from CDN'));
+                document.head.appendChild(script);
+            });
         }
 
-        function closePolicyEditor() {
-            document.getElementById('policy-editors-container').classList.add('hidden');
-            activePolicyKey = null;
-        }
-
-        async function savePolicyText() {
-            if (!activePolicyKey) return;
-            const text = document.getElementById('policy-editor-textarea').value;
-            showToast('Saving policy content...', 'info');
-
+        async function savePolicyToDatabase(policyKey, filename, fileUrl, text, isBinaryOnly) {
             const policyData = {
                 text: text,
-                filename: 'edited_in_dashboard.txt',
-                url: '',
+                filename: filename,
+                url: fileUrl,
+                isBinaryOnly: isBinaryOnly,
                 updatedAt: new Date().toISOString()
             };
 
             try {
                 await db.collection('settings').doc('policies').set({
-                    [activePolicyKey]: policyData
+                    [policyKey]: policyData
                 }, { merge: true });
                 
-                showToast('Policy text updated successfully!');
+                showToast('Policy updated successfully!');
                 await renderPolicies();
-                closePolicyEditor();
             } catch (firestoreError) {
-                console.error('Error saving policy text to firestore:', firestoreError);
-                showToast('Failed to save policy text to database.', 'error');
+                console.error('Error saving policy to firestore:', firestoreError);
+                showToast('Failed to save policy to database.', 'error');
             }
         }
 
