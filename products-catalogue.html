@@ -130,7 +130,7 @@
 <span class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">search</span>
 <input class="w-40 bg-surface-container-high border-none rounded-full py-1 pl-9 pr-3 text-[13px] focus:ring-2 focus:ring-primary" id="catalog-search" placeholder="Search..." type="text"/>
 </div>
-<a href="contact.html" class="hidden md:flex items-center gap-2 px-6 py-2 bg-primary text-on-primary font-label-bold text-label-bold hover:scale-[1.02] transition-transform duration-150 rounded-lg">Get Quote</a>
+<a href="contact.html" class="hidden md:flex items-center gap-2 px-6 py-2 bg-primary text-on-primary font-label-bold text-label-bold hover:scale-[1.02] transition-transform duration-150 rounded-full">Get Quote</a>
 <button onclick="toggleMobileMenu()" class="md:hidden text-on-surface p-2 focus:outline-none flex items-center justify-center" aria-label="Toggle Menu">
 <span class="material-symbols-outlined text-3xl align-middle">menu</span>
 </button>
@@ -143,7 +143,7 @@
 <a class="text-primary font-label-bold text-lg py-2 border-b border-outline-variant/10" href="products-catalogue.html">Fabrics</a>
 <a class="text-on-surface hover:text-primary transition-colors font-label-bold text-lg py-2 border-b border-outline-variant/10" href="about.html">About Us</a>
 <a class="text-on-surface hover:text-primary transition-colors font-label-bold text-lg py-2 border-b border-outline-variant/10" href="contact.html">Support</a>
-<a href="contact.html" class="flex items-center justify-center gap-2 px-6 py-3 bg-primary text-on-primary font-label-bold rounded-lg shadow-md">Get Quote</a>
+<a href="contact.html" class="flex items-center justify-center gap-2 px-6 py-3 bg-primary text-on-primary font-label-bold rounded-full shadow-md">Get Quote</a>
 </nav>
 </div>
 </header>
@@ -210,7 +210,7 @@
             </div>
             </section>
             <div class="pt-2">
-            <button id="resetFilters" class="w-full py-stack-sm border-2 border-secondary text-secondary font-label-bold hover:bg-secondary hover:text-on-secondary transition-all active:scale-95 uppercase text-[12px]">Reset Filters</button>
+            <button id="resetFilters" class="w-full py-stack-sm border-2 border-secondary text-secondary font-label-bold hover:bg-secondary hover:text-on-secondary transition-all active:scale-95 rounded-full uppercase text-[12px]">Reset Filters</button>
             </div>
         </aside>
 
@@ -381,7 +381,7 @@
       '<div class="' + contentClass + '"><div class="flex justify-between items-start mb-stack-sm gap-stack-md"><div><h4 class="font-headline-md text-headline-md text-on-surface">' + escapeHtml(product.name) + '</h4><p class="text-on-surface-variant font-body-md">' + escapeHtml(product.code || (category ? category.name : 'Premium textile')) + '</p></div><span class="text-primary font-headline-md">₹' + price + '<span class="text-body-sm text-on-surface-variant font-normal">/m</span></span></div>' +
       '<p class="text-on-surface-variant font-body-md mb-stack-md">' + escapeHtml(product.description) + '</p>' +
       '<div class="grid grid-cols-2 gap-stack-sm my-stack-md border-y border-outline-variant/30 py-stack-md"><div class="flex flex-col"><span class="text-on-surface-variant text-[12px] uppercase font-label-bold">GSM</span><span class="font-body-md font-bold">' + escapeHtml(product.gsm || 'Custom') + '</span></div><div class="flex flex-col"><span class="text-on-surface-variant text-[12px] uppercase font-label-bold">Width</span><span class="font-body-md font-bold">' + escapeHtml(product.width || '150 CM') + '</span></div><div class="flex flex-col"><span class="text-on-surface-variant text-[12px] uppercase font-label-bold">Weave</span><span class="font-body-md font-bold">' + escapeHtml(product.weave || (category ? category.name : 'Industrial')) + '</span></div><div class="flex flex-col"><span class="text-on-surface-variant text-[12px] uppercase font-label-bold">Use</span><span class="font-body-md font-bold">' + escapeHtml(applications[0] || 'B2B') + '</span></div></div>' +
-      '<div class="mt-auto flex gap-stack-sm"><button type="button" onclick="requestQuote(\'' + escapeHtml(product.id) + '\')" class="w-full bg-secondary text-on-secondary py-3 font-label-bold uppercase text-[12px] hover:bg-on-surface-variant transition-colors">Request Quote</button></div></div></article>';
+      '<div class="mt-auto flex gap-stack-sm"><button type="button" onclick="requestQuote(\'' + escapeHtml(product.id) + '\')" class="w-full bg-secondary text-on-secondary py-3 font-label-bold uppercase text-[12px] hover:bg-on-surface-variant rounded-full transition-colors">Request Quote</button></div></div></article>';
   }
 
   function productCardList(product, index) {
@@ -399,7 +399,7 @@
       '  <div class="flex justify-between items-start gap-2"><div><h4 class="text-base md:text-[18px] font-bold text-on-surface leading-tight">' + escapeHtml(product.name) + '</h4><p class="text-[11px] md:text-xs text-on-surface-variant mt-0.5">' + escapeHtml(product.code || (category ? category.name : 'Premium textile')) + '</p></div><span class="text-primary font-bold text-base md:text-lg flex-shrink-0">₹' + price + '<span class="text-xs text-on-surface-variant font-normal">/m</span></span></div>' +
       '  <p class="text-on-surface-variant text-xs md:text-[13px] my-1 line-clamp-2 md:line-clamp-1">' + escapeHtml(product.description) + '</p>' +
       '  <div class="grid grid-cols-4 gap-2 my-1 border-y border-outline-variant/20 py-1"><div class="flex flex-col"><span class="text-on-surface-variant text-[9px] md:text-[10px] uppercase font-label-bold">GSM</span><span class="text-xs font-bold">' + escapeHtml(product.gsm || 'Custom') + '</span></div><div class="flex flex-col"><span class="text-on-surface-variant text-[9px] md:text-[10px] uppercase font-label-bold">Width</span><span class="text-xs font-bold">' + escapeHtml(product.width || '150 CM') + '</span></div><div class="flex flex-col"><span class="text-on-surface-variant text-[9px] md:text-[10px] uppercase font-label-bold">Weave</span><span class="text-xs font-bold">' + escapeHtml(product.weave || (category ? category.name : 'Industrial')) + '</span></div><div class="flex flex-col"><span class="text-on-surface-variant text-[9px] md:text-[10px] uppercase font-label-bold">Use</span><span class="text-xs font-bold">' + escapeHtml(applications[0] || 'B2B') + '</span></div></div>' +
-      '  <div class="mt-auto flex gap-2"><button type="button" onclick="requestQuote(\'' + escapeHtml(product.id) + '\')" class="w-full bg-secondary text-on-secondary py-2 font-label-bold uppercase text-[10px] md:text-[11px] hover:bg-on-surface-variant transition-colors">Request Quote</button></div>' +
+      '  <div class="mt-auto flex gap-2"><button type="button" onclick="requestQuote(\'' + escapeHtml(product.id) + '\')" class="w-full bg-secondary text-on-secondary py-2 font-label-bold uppercase text-[10px] md:text-[11px] hover:bg-on-surface-variant rounded-full transition-colors">Request Quote</button></div>' +
       '</div></article>';
   }
 
@@ -468,22 +468,22 @@
     
     // Left arrow
     const prevDisabled = currentPage === 1 ? 'disabled style="opacity: 0.3; pointer-events: none;"' : '';
-    html += '<button onclick="goToPage(' + (currentPage - 1) + ')" class="p-2 border border-outline-variant text-on-surface-variant hover:border-primary hover:text-primary transition-colors disabled:opacity-30 disabled:pointer-events-none" ' + prevDisabled + '>' +
+    html += '<button onclick="goToPage(' + (currentPage - 1) + ')" class="p-2 border border-outline-variant text-on-surface-variant hover:border-primary hover:text-primary transition-colors rounded-full disabled:opacity-30 disabled:pointer-events-none" ' + prevDisabled + '>' +
       '<span class="material-symbols-outlined flex items-center">chevron_left</span>' +
       '</button>';
       
     // Page numbers
     for (let i = 1; i <= totalPages; i++) {
       if (i === currentPage) {
-        html += '<button class="w-10 h-10 bg-primary text-on-primary font-label-bold">' + i + '</button>';
+        html += '<button class="w-10 h-10 bg-primary text-on-primary font-label-bold rounded-full">' + i + '</button>';
       } else {
-        html += '<button onclick="goToPage(' + i + ')" class="w-10 h-10 border border-outline-variant font-label-bold hover:bg-surface-container transition-colors">' + i + '</button>';
+        html += '<button onclick="goToPage(' + i + ')" class="w-10 h-10 border border-outline-variant font-label-bold hover:bg-surface-container transition-colors rounded-full">' + i + '</button>';
       }
     }
     
     // Right arrow
     const nextDisabled = currentPage === totalPages ? 'disabled style="opacity: 0.3; pointer-events: none;"' : '';
-    html += '<button onclick="goToPage(' + (currentPage + 1) + ')" class="p-2 border border-outline-variant text-on-surface-variant hover:border-primary hover:text-primary transition-colors disabled:opacity-30 disabled:pointer-events-none" ' + nextDisabled + '>' +
+    html += '<button onclick="goToPage(' + (currentPage + 1) + ')" class="p-2 border border-outline-variant text-on-surface-variant hover:border-primary hover:text-primary transition-colors rounded-full disabled:opacity-30 disabled:pointer-events-none" ' + nextDisabled + '>' +
       '<span class="material-symbols-outlined flex items-center">chevron_right</span>' +
       '</button>';
       
