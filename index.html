@@ -111,7 +111,33 @@
     display: grid;
     grid-template-columns: repeat(12, 1fr);
     gap: 24px
-    }</style>
+    }
+/* Bento Grid Scroll-Reveal Animations */
+.bento-card-reveal {
+    opacity: 0;
+    transform: translateY(40px) scale(0.98);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.bento-card-reveal.reveal-active {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+/* Loom Weft Card Scroll-Reveal */
+.product-card-reveal-left {
+    opacity: 0;
+    transform: translateX(-40px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.product-card-reveal-right {
+    opacity: 0;
+    transform: translateX(40px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.product-card-reveal-left.reveal-active,
+.product-card-reveal-right.reveal-active {
+    opacity: 1;
+    transform: translateX(0);
+}</style>
 
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
@@ -190,7 +216,7 @@
 <div class="w-20 h-1 bg-primary mx-auto mt-4"></div>
 </div>
 <div class="bento-grid">
-<div class="col-span-12 md:col-span-8 bg-surface-container-low p-stack-lg rounded-xl border border-outline/10 flex flex-col justify-between group hover:shadow-2xl hover:border-primary/20 hover:-translate-y-1 transition-all duration-300">
+<div class="col-span-12 md:col-span-8 bg-surface-container-low p-stack-lg rounded-xl border border-outline/10 flex flex-col justify-between group hover:shadow-2xl hover:border-primary/20 hover:-translate-y-1 transition-all duration-300 bento-card-reveal">
 <div>
 <span class="material-symbols-outlined text-primary text-4xl mb-4 inline-block group-hover:rotate-[15deg] group-hover:scale-110 transition-transform duration-300">science</span>
 <h3 class="font-headline-md text-headline-md mb-2">Molecular Color Integrity</h3>
@@ -214,7 +240,7 @@
 </div>
 </div>
 </div>
-<div class="col-span-12 md:col-span-4 bg-primary-container p-stack-lg rounded-xl flex flex-col justify-between text-on-primary-container group hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+<div class="col-span-12 md:col-span-4 bg-primary-container p-stack-lg rounded-xl flex flex-col justify-between text-on-primary-container group hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 bento-card-reveal">
 <div>
 <span class="material-symbols-outlined text-4xl mb-4 inline-block group-hover:scale-110 group-hover:rotate-6 transition-transform duration-300">precision_manufacturing</span>
 <h3 class="font-headline-md text-headline-md mb-2">Advanced Looming</h3>
@@ -224,12 +250,12 @@
 <img class="w-full h-full object-cover rounded-lg grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500" data-alt="Close up shot of a high-tech textile machine's needle assembly moving at speed. Technical lighting highlights the metallic textures and the fine thread path. The aesthetic is clinical, industrial, and high-performance." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDlnpjb7EwoS5gz0nFQ8U4u1BZw2sxJlq1Y1qFo3fm9iMY8JCKwAY7QRJxuywXnwKctPS_sWHkW8LCBenhs4C64AcB4oE8h0DlGRBwj6LkPHvxLDzfP9xt6wwtjVU1w0Rdtt3AeKTAztOqYlfG3S7ng7vVxLHCuZlqRUfoqmExY-C3HP4SZ0XdHCIH78UMX_9SlTXljVUj7mlpDKPN04rKBiKUPMg24sMIdIjuOq_wWDX5PgwCO_VlbRYIcSNhOFS12KufsFbtPjTo"/>
 </div>
 </div>
-<div class="col-span-12 md:col-span-4 bg-secondary-container p-stack-lg rounded-xl border border-outline/10 group hover:shadow-2xl hover:border-primary/20 hover:-translate-y-1 transition-all duration-300">
+<div class="col-span-12 md:col-span-4 bg-secondary-container p-stack-lg rounded-xl border border-outline/10 group hover:shadow-2xl hover:border-primary/20 hover:-translate-y-1 transition-all duration-300 bento-card-reveal">
 <span class="material-symbols-outlined text-secondary text-4xl mb-4 inline-block group-hover:translate-x-3 group-hover:scale-110 transition-transform duration-300 ease-out">local_shipping</span>
 <h3 class="font-headline-md text-headline-md mb-2">Rapid Delivery</h3>
 <p class="text-on-secondary-container">Optimized logistics pipeline ensuring 48-hour dispatch for all stock inventory items across the subcontinent.</p>
 </div>
-<div class="col-span-12 md:col-span-8 bg-surface-container-highest p-stack-lg rounded-xl border border-outline/10 flex items-center gap-stack-lg group hover:shadow-2xl hover:border-primary/20 hover:-translate-y-1 transition-all duration-300">
+<div class="col-span-12 md:col-span-8 bg-surface-container-highest p-stack-lg rounded-xl border border-outline/10 flex items-center gap-stack-lg group hover:shadow-2xl hover:border-primary/20 hover:-translate-y-1 transition-all duration-300 bento-card-reveal">
 <div class="hidden md:block w-1/3 overflow-hidden rounded-lg">
 <img class="rounded-lg w-full h-full object-cover group-hover:scale-105 transition-all duration-500 ease-out" data-alt="A stack of high-quality textile swatches in deep navy, industrial grey, and dark burgundy. The fabric weave is clearly visible, showing professional twill and ripstop patterns. Soft, natural light emphasizes the tactile quality of the fabrics." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD7CF5BnGBkvyGBBrYN0oQxqxcYUgEDPePzeOdLKK9OcWPILiTM5GCldkZJnLynPVQumduZeviB_1MuiJ9YNiqbpTmrlP4RCR1sCIkiUoylT4_bGaMMiFP6-Lf86as5FJCxIRgxposCAOC59CO74mrr9d-rJ1P3v37hIZBsboPV0RVmrL5u-MY0RifA1ztuHIFiWsH6zrlrsvR8n8kE3Jyilz0v22oFwk1Svngwj-Rc66oun99zgxwFM6PsxhbPLf7VRZRhiLtmxnE"/>
 </div>
@@ -256,7 +282,7 @@
 </div>
 <div id="premiumProductsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-stack-lg">
 <!-- Vat-Dyed Card -->
-<div class="bg-white border border-outline/10 rounded-xl overflow-hidden shadow-sm hover:shadow-2xl transition-all group">
+<div class="bg-white border border-outline/10 rounded-xl overflow-hidden shadow-sm hover:shadow-2xl transition-all group product-card-reveal-left">
 <div class="h-64 overflow-hidden relative">
 <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A macro shot of a deep burgundy vat-dyed fabric. The camera angle captures the intricate weave and the richness of the dye. The lighting is dramatic and artistic, focusing on the quality and durability of the material. Corporate and premium feel." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBSVsXCIpZdl7G9KpjFxsVxAW97YuwvJTx2Lsu04e6hD9RCQuc8Z88TXs2AyFy_ZX4OxqSJky5lam6u_cz9N7VKCkzsyoNect4eIM1Iw1WsH7xuxd_IkV2-j8zWZ8e3zEiOywqBha1jqajErSThMNaFNjimJGNhlteGzRm8D5pkgfWm3LSt8HrhrO1BEooHeb02CUcrKo4PE4yNptchyDvHweU8xP6fKUitACtZLLU6LnLQfqLm_tO60Dkq1UzKxVTVtL9_bdR_5v4"/>
 <div class="absolute top-4 right-4 bg-primary text-on-primary px-3 py-1 rounded text-xs font-bold">MOST POPULAR</div>
@@ -281,7 +307,7 @@
 </div>
 </div>
 <!-- Fiber-Dyed Card -->
-<div class="bg-white border border-outline/10 rounded-xl overflow-hidden shadow-sm hover:shadow-2xl transition-all group">
+<div class="bg-white border border-outline/10 rounded-xl overflow-hidden shadow-sm hover:shadow-2xl transition-all group product-card-reveal-right">
 <div class="h-64 overflow-hidden relative">
 <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A stack of navy and charcoal fiber-dyed textiles in an industrial setting. The image emphasizes the uniformity and depth of the color. The visual style is modern, technical, and focuses on the precision of the manufacturing process." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBNWEx4PB2lVtMpoBRrUY8HyEH4dG2i9bJfSmjMl-XE16_dAvNehCYSlEJHKvRFTroTqzO-kWpzKUSTA8QQT6h6Cg4CU_JoY3Yga6Ya35Mp3F2aUCRo-72fvYyE385O4WL3vjUX5hkPbd7s2czjvlwEIu22uP5Cf_Ssf4o78YCgfusRdTiaIINxBqgE6C8bm_oH68zQtt0m0dHd8nI7pEY4igJ7ObLpv2tl6BB0_P3vh1xqnGkju6lgp25XBl8Vqjmylq9_3SSxIsE"/>
 <div class="absolute top-4 right-4 bg-secondary text-on-secondary px-3 py-1 rounded text-xs font-bold">TECHNICAL GRADE</div>
@@ -457,8 +483,10 @@
     const gsmLabel = product.gsm ? 'GSM' : 'Fastness';
     const gsmValue = product.gsm || product.fastness || 'Standard';
 
+    const revealClass = index % 2 === 0 ? 'product-card-reveal-left' : 'product-card-reveal-right';
+
     return `
-      <div class="bg-white border border-outline/10 rounded-xl overflow-hidden shadow-sm hover:shadow-2xl transition-all group">
+      <div class="bg-white border border-outline/10 rounded-xl overflow-hidden shadow-sm hover:shadow-2xl transition-all group ${revealClass}">
         <div class="h-64 overflow-hidden relative">
           <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" src="${escapeHtml(product.image)}" alt="${escapeHtml(product.name)}"/>
           <div class="absolute top-4 right-4 ${badgeClass} px-3 py-1 rounded text-xs font-bold">${badgeText}</div>
@@ -519,14 +547,41 @@
         }
       }
       
-      // Delay animation start slightly to match hero text reveal transitions
-      setTimeout(() => {
-        requestAnimationFrame(animateCounter);
-      }, 300);
-    }
+    // Delay animation start slightly to match hero text reveal transitions
+    setTimeout(() => {
+      requestAnimationFrame(animateCounter);
+    }, 300);
+  }
 
-    // Bind all static buttons
-    document.querySelectorAll('button').forEach((button) => {
+  // Bento Grid scroll-reveal stagger animation
+  const bentoCards = document.querySelectorAll('.bento-card-reveal');
+  if (bentoCards.length) {
+    const observerOptions = {
+      root: null, // viewport
+      rootMargin: '0px 0px -80px 0px', // trigger slightly before entering fully
+      threshold: 0.15 // 15% visibility triggers
+    };
+
+    const bentoObserver = new IntersectionObserver((entries, observer) => {
+      let triggerDelay = 0;
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const card = entry.target;
+          card.style.transitionDelay = triggerDelay + 'ms';
+          card.classList.add('reveal-active');
+          triggerDelay += 120; // 120ms stagger
+          observer.unobserve(card);
+        }
+      });
+    }, observerOptions);
+
+    bentoCards.forEach((card) => {
+      bentoObserver.observe(card);
+    });
+  }
+
+  // Bind all static buttons
+  document.querySelectorAll('button').forEach((button) => {
       const label = button.textContent.trim().toLowerCase();
       if (label.includes('quote') || label.includes('contact')) {
         if (!button.onclick) {
@@ -569,6 +624,9 @@
     } catch (err) {
       console.warn('Failed to load dynamic premium products:', err);
     }
+
+    // Premium Cards scroll-reveal stagger animation
+    initProductCardsReveal();
   });
 
   function toggleMobileMenu() {
@@ -586,6 +644,35 @@
       setTimeout(() => {
         menu.classList.add('hidden');
       }, 300);
+    }
+  }
+
+  // Premium Cards scroll-reveal stagger animation
+  function initProductCardsReveal() {
+    const productCards = document.querySelectorAll('.product-card-reveal-left, .product-card-reveal-right');
+    if (productCards.length) {
+      const observerOptions = {
+        root: null,
+        rootMargin: '0px 0px -80px 0px',
+        threshold: 0.1
+      };
+
+      const productObserver = new IntersectionObserver((entries, observer) => {
+        let triggerDelay = 0;
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const card = entry.target;
+            card.style.transitionDelay = triggerDelay + 'ms';
+            card.classList.add('reveal-active');
+            triggerDelay += 150; // 150ms stagger
+            observer.unobserve(card);
+          }
+        });
+      }, observerOptions);
+
+      productCards.forEach((card) => {
+        productObserver.observe(card);
+      });
     }
   }
 </script>
