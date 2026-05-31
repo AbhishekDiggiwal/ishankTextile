@@ -171,7 +171,7 @@
 
     <div class="flex flex-col md:flex-row gap-gutter">
         <!-- Sidebar Filter -->
-        <aside class="w-full md:w-64 flex-shrink-0 space-y-stack-lg">
+        <aside class="w-full md:w-64 flex-shrink-0 space-y-stack-lg md:sticky md:top-28 max-h-[calc(100vh-140px)] overflow-y-auto pr-2">
             <section>
             <h3 class="font-label-bold text-label-bold uppercase text-primary mb-stack-md border-l-4 border-primary pl-3">Specifications</h3>
             <div id="categoryFilters" class="space-y-stack-sm">
@@ -403,7 +403,7 @@
       '</div></article>';
   }
 
-  const ITEMS_PER_PAGE = 4;
+  const ITEMS_PER_PAGE = 10;
   let currentPage = 1;
   let currentFilteredProducts = [];
 
