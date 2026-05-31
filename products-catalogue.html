@@ -171,36 +171,36 @@
 
     <div class="flex flex-col md:flex-row gap-gutter">
         <!-- Sidebar Filter -->
-        <aside class="w-full md:w-64 flex-shrink-0 space-y-stack-lg md:sticky md:top-28 max-h-[calc(100vh-140px)] overflow-y-auto pr-2">
+        <aside class="w-full md:w-64 flex-shrink-0 space-y-4 md:sticky md:top-24">
             <section>
-            <h3 class="font-label-bold text-label-bold uppercase text-primary mb-stack-md border-l-4 border-primary pl-3">Specifications</h3>
+            <h3 class="font-label-bold text-label-bold uppercase text-primary mb-2 border-l-4 border-primary pl-3">Specifications</h3>
             <div id="categoryFilters" class="space-y-stack-sm">
                 <div class="text-body-sm opacity-60 animate-pulse pl-1">Loading categories...</div>
             </div>
             </section>
             <section>
-            <h3 class="font-label-bold text-label-bold uppercase text-primary mb-stack-md border-l-4 border-primary pl-3">Applications</h3>
+            <h3 class="font-label-bold text-label-bold uppercase text-primary mb-2 border-l-4 border-primary pl-3">Applications</h3>
             <div class="space-y-stack-sm">
             <label class="flex items-center gap-2 cursor-pointer group">
             <input class="rounded-none border-outline text-primary focus:ring-primary" type="checkbox" data-filter="application" value="defense"/>
-            <span class="text-body-md group-hover:text-primary transition-colors">Defense &amp; Security</span>
+            <span class="text-sm group-hover:text-primary transition-colors">Defense &amp; Security</span>
             </label>
             <label class="flex items-center gap-2 cursor-pointer group">
             <input class="rounded-none border-outline text-primary focus:ring-primary" type="checkbox" data-filter="application" value="medical"/>
-            <span class="text-body-md group-hover:text-primary transition-colors">Medical Grade</span>
+            <span class="text-sm group-hover:text-primary transition-colors">Medical Grade</span>
             </label>
             <label class="flex items-center gap-2 cursor-pointer group">
             <input class="rounded-none border-outline text-primary focus:ring-primary" type="checkbox" data-filter="application" value="corporate"/>
-            <span class="text-body-md group-hover:text-primary transition-colors">Corporate Apparel</span>
+            <span class="text-sm group-hover:text-primary transition-colors">Corporate Apparel</span>
             </label>
             <label class="flex items-center gap-2 cursor-pointer group">
             <input class="rounded-none border-outline text-primary focus:ring-primary" type="checkbox" data-filter="application" value="hospitality"/>
-            <span class="text-body-md group-hover:text-primary transition-colors">Hospitality</span>
+            <span class="text-sm group-hover:text-primary transition-colors">Hospitality</span>
             </label>
             </div>
             </section>
             <section>
-            <h3 class="font-label-bold text-label-bold uppercase text-primary mb-stack-md border-l-4 border-primary pl-3">GSM Range</h3>
+            <h3 class="font-label-bold text-label-bold uppercase text-primary mb-2 border-l-4 border-primary pl-3">GSM Range</h3>
             <div class="px-2">
             <input id="priceRange" class="w-full h-1 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-primary" min="100" max="500" value="500" type="range"/>
             <div class="flex justify-between mt-2 text-body-sm text-on-surface-variant">
@@ -209,7 +209,7 @@
             </div>
             </div>
             </section>
-            <div class="pt-stack-md">
+            <div class="pt-2">
             <button id="resetFilters" class="w-full py-stack-sm border-2 border-secondary text-secondary font-label-bold hover:bg-secondary hover:text-on-secondary transition-all active:scale-95 uppercase text-[12px]">Reset Filters</button>
             </div>
         </aside>
@@ -549,7 +549,7 @@
     container.innerHTML = allCategories.map((category) => `
       <label class="flex items-center gap-2 cursor-pointer group">
         <input class="rounded-none border-outline text-primary focus:ring-primary" type="checkbox" data-filter="category" value="${escapeHtml(category.id)}"/>
-        <span class="text-body-md group-hover:text-primary transition-colors">${escapeHtml(category.name)}</span>
+        <span class="text-sm group-hover:text-primary transition-colors">${escapeHtml(category.name)}</span>
       </label>
     `).join('');
     
