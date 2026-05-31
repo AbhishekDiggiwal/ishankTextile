@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Business Terms & Conditions - Ishank Textile | Premium Fabric Manufacturing</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+    .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .textile-overlay {
+        background-image: radial-gradient(circle at 2px 2px, rgba(0,0,0,0.03) 1px, transparent 0);
+        background-size: 20px 20px;
+    }
+</style>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+                  "on-tertiary-fixed": "#121c26",
+                  "on-surface": "#1a1c1c",
+                  "surface-tint": "#be0728",
+                  "on-primary-fixed-variant": "#92001b",
+                  "on-primary-container": "#ffe8e6",
+                  "surface-container-low": "#f3f3f3",
+                  "on-surface-variant": "#5c403f",
+                  "tertiary-fixed": "#d9e3f1",
+                  "primary": "#aa0021",
+                  "secondary-fixed-dim": "#c0c7d0",
+                  "surface-container": "#eeeeee",
+                  "primary-fixed": "#ffdad8",
+                  "background": "#f9f9f9",
+                  "error-container": "#ffdad6",
+                  "on-error": "#ffffff",
+                  "surface-container-highest": "#e2e2e2",
+                  "surface-container-high": "#e8e8e8",
+                  "on-primary-fixed": "#410007",
+                  "tertiary-container": "#626c78",
+                  "surface-variant": "#e2e2e2",
+                  "secondary-container": "#dce3ed",
+                  "on-secondary": "#ffffff",
+                  "tertiary": "#4a545f",
+                  "secondary-fixed": "#dce3ed",
+                  "secondary": "#585f67",
+                  "on-tertiary-container": "#e3eefc",
+                  "error": "#ba1a1a",
+                  "on-secondary-fixed": "#151c23",
+                  "on-background": "#1a1c1c",
+                  "outline-variant": "#e5bdbb",
+                  "on-error-container": "#93000a",
+                  "inverse-surface": "#2f3131",
+                  "surface-container-lowest": "#ffffff",
+                  "on-primary": "#ffffff",
+                  "on-tertiary": "#ffffff",
+                  "outline": "#906f6e",
+                  "inverse-primary": "#ffb3b0",
+                  "on-secondary-container": "#5e656d",
+                  "surface": "#f9f9f9",
+                  "primary-fixed-dim": "#ffb3b0",
+                  "tertiary-fixed-dim": "#bdc7d5",
+                  "primary-container": "#d11e33",
+                  "on-secondary-fixed-variant": "#40474f",
+                  "inverse-on-surface": "#f1f1f1",
+                  "on-tertiary-fixed-variant": "#3e4853",
+                  "surface-bright": "#f9f9f9",
+                  "surface-dim": "#dadada"
+          },
+          "borderRadius": {
+                  "DEFAULT": "0.125rem",
+                  "lg": "0.25rem",
+                  "xl": "0.5rem",
+                  "full": "0.75rem"
+          },
+          "spacing": {
+                  "margin-mobile": "20px",
+                  "stack-sm": "8px",
+                  "section-padding": "100px",
+                  "margin-desktop": "80px",
+                  "stack-md": "16px",
+                  "stack-lg": "32px",
+                  "gutter": "24px"
+          },
+          "fontFamily": {
+                  "body-md": ["Rubik"],
+                  "body-lg": ["Rubik"],
+                  "headline-lg-mobile": ["Rubik"],
+                  "label-bold": ["Rubik"],
+                  "headline-md": ["Rubik"],
+                  "headline-lg": ["Rubik"],
+                  "display-lg": ["Rubik"]
+          },
+          "fontSize": {
+                  "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                  "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                  "headline-lg-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                  "label-bold": ["14px", {"lineHeight": "1.2", "letterSpacing": "0", "fontWeight": "600"}],
+                  "headline-md": ["28px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                  "headline-lg": ["40px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                  "display-lg": ["56px", {"lineHeight": "1.1", "letterSpacing": "0", "fontWeight": "700"}]
+          }
+        },
+      },
+    }
+</script>
+
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-x-hidden textile-overlay min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-surface/80 backdrop-blur-xl border-b border-outline-variant/30 shadow-2xl">
+<div class="max-w-[1200px] mx-auto px-gutter flex items-center justify-between h-20">
+<div class="font-label-mono text-lg md:text-headline-md font-bold text-primary flex items-center gap-2 md:gap-3">
+<img class="h-10 md:h-12 w-auto object-contain" src="logo.png" alt="Ishank Textile Logo"/>
+<span class="truncate">ISHANK TEXTILE</span>
+</div>
+<nav class="hidden md:flex items-center space-x-stack-lg">
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-label-bold text-label-bold" href="index.html">Home</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-label-bold text-label-bold" href="products-catalogue.html">Fabrics</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-label-bold text-label-bold" href="about.html">About Us</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-label-bold text-label-bold" href="contact.html">Support</a>
+</nav>
+<div class="flex items-center gap-stack-md">
+<a href="contact.html" class="hidden md:flex items-center gap-2 px-6 py-2 bg-primary text-on-primary font-label-bold text-label-bold hover:scale-[1.02] transition-transform duration-150 rounded-lg">Get Quote</a>
+<button onclick="toggleMobileMenu()" class="md:hidden text-on-surface p-2 focus:outline-none flex items-center justify-center" aria-label="Toggle Menu">
+<span class="material-symbols-outlined text-3xl align-middle">menu</span>
+</button>
+</div>
+</div>
+<!-- Mobile Navigation Menu Dropdown -->
+<div id="mobile-menu" class="hidden md:hidden fixed top-20 left-0 w-full bg-surface/95 backdrop-blur-xl border-b border-outline-variant/30 shadow-xl z-40 transition-all duration-300 transform -translate-y-4 opacity-0">
+<nav class="flex flex-col p-6 space-y-4">
+<a class="text-on-surface hover:text-primary transition-colors font-label-bold text-lg py-2 border-b border-outline-variant/10" href="index.html">Home</a>
+<a class="text-on-surface hover:text-primary transition-colors font-label-bold text-lg py-2 border-b border-outline-variant/10" href="products-catalogue.html">Fabrics</a>
+<a class="text-on-surface hover:text-primary transition-colors font-label-bold text-lg py-2 border-b border-outline-variant/10" href="about.html">About Us</a>
+<a class="text-on-surface hover:text-primary transition-colors font-label-bold text-lg py-2 border-b border-outline-variant/10" href="contact.html">Support</a>
+<a href="contact.html" class="flex items-center justify-center gap-2 px-6 py-3 bg-primary text-on-primary font-label-bold rounded-lg shadow-md">Get Quote</a>
+</nav>
+</div>
+</header>
+
+<main class="mt-28 max-w-[900px] mx-auto px-gutter pb-section-padding flex-grow w-full">
+    <!-- Policy Document Header -->
+    <header class="py-stack-lg border-b border-outline-variant/30 mb-8">
+        <h1 class="font-display-lg text-display-lg text-on-surface uppercase">Business Terms & Conditions</h1>
+        <div class="mt-4 flex flex-wrap gap-4 items-center justify-between text-sm text-on-surface-variant">
+            <p>Last Updated: <span id="policy-date" class="font-semibold text-on-surface">-</span></p>
+            <p id="policy-source" class="text-xs italic bg-surface-container px-3 py-1 rounded-full border border-outline-variant/30">Loading source...</p>
+        </div>
+    </header>
+
+    <!-- Policy Content Container -->
+    <article class="bg-surface-container-lowest border border-outline-variant/50 p-6 md:p-10 rounded-2xl shadow-xl">
+        <div id="policy-content" class="text-on-surface-variant font-body-md text-base leading-relaxed whitespace-pre-line break-words">
+            Loading business terms from Ishank Textile secure server...
+        </div>
+    </article>
+</main>
+
+<!-- Footer -->
+<footer class="bg-surface-container-lowest dark:bg-surface-container-lowest border-t border-white/5 w-full py-12">
+<div class="max-w-[1200px] mx-auto px-gutter flex flex-col md:flex-row flex-wrap md:justify-between items-start gap-8">
+<div class="w-full md:w-auto md:max-w-[280px]">
+<div class="font-label-mono text-headline-md text-on-surface font-bold mb-4 leading-none">ISHANK TEXTILE</div>
+<p class="text-on-surface-variant text-body-sm">
+                    Ishank Textile: Manufacturing precision fabrics since 2003. Leading the B2B textile revolution from Bhilwara, Rajasthan.
+                </p>
+<div class="mt-6 flex gap-4">
+<a class="text-primary hover:scale-110 transition-transform" href="tel:+919414112197">
+<span class="material-symbols-outlined">call</span>
+</a>
+<a class="text-primary hover:scale-110 transition-transform" href="mailto:sunilpandiya909@gmail.com">
+<span class="material-symbols-outlined">mail</span>
+</a>
+</div>
+</div>
+<div class="w-full md:w-auto">
+<h4 class="font-label-bold text-label-bold uppercase text-on-surface mb-4 leading-none">Quick Navigation</h4>
+<nav class="flex flex-col gap-2">
+<a class="text-on-surface-variant hover:text-primary transition-colors text-body-sm" href="index.html">Home</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-body-sm" href="products-catalogue.html">Fabrics</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-body-sm" href="about.html">About Us</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-body-sm" href="contact.html">Support</a>
+</nav>
+</div>
+<div class="w-full md:w-auto">
+<h4 class="font-label-bold text-label-bold uppercase text-on-surface mb-4 leading-none">Company</h4>
+<nav class="flex flex-col gap-2">
+<a class="text-on-surface-variant hover:text-primary transition-colors text-body-sm" href="terms-conditions.html">Website Terms & Condition</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors text-body-sm" href="privacy-policy.html">Privacy Policy</a>
+<a class="text-primary font-label-bold text-body-sm" href="business-terms.html">Business Terms & Condition</a>
+</nav>
+</div>
+<div class="w-full md:w-auto md:max-w-[240px]">
+<h4 class="font-label-bold text-label-bold uppercase text-on-surface mb-4 leading-none">Visit Us</h4>
+<p class="text-on-surface-variant text-body-sm mb-4">
+                    42, 1st Floor, Heera Panna Market<br/>
+                    Pur Road, Bhilwara, Rajasthan
+                </p>
+<a href="https://www.google.com/maps/place/25%C2%B020'41.4%22N+74%C2%B037'39.9%22E/@25.3448297,74.6251753,17z/data=!3m1!4b1!4m4!3m3!8m2!3d25.3448297!4d74.6277502?hl=en&amp;entry=ttu&amp;g_ep=EgoyMDI2MDUxMy4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer" class="block w-full h-24 bg-surface-container rounded-lg overflow-hidden grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all cursor-pointer">
+<img class="w-full h-full object-cover" data-alt="A stylized minimalist map of Bhilwara city center highlighting the textile district." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAqEMlLr46bM1xQY7JbpLXGpmZ5UBiqu-9UJ7_0pqlYzBO-wySIgRYK5VLPx6qN2epfHQSYChyrSyfZW4ogf_v7qpMNcz_HWmxUxNIMCUYCGuUhOAtOVTYllk63PIPfysOiV9xJ5p7fEuDLF9oX-ZXMEwO8-dg4STs_QfvcMk9yI03wfzSWpciRYtUx6_d4ib8eoNdp-pgOu7D2hcAmA7I4cFI3rR1X8esw_g-zeDbuSXxtvh69JOhxDBN1EHAC9NgIpqcpu_3WGM0"/>
+</a>
+</div>
+</div>
+<div class="max-w-[1200px] mx-auto px-gutter mt-12 pt-8 border-t border-outline/5 text-center">
+<p class="text-on-surface-variant text-body-sm font-body-sm">© 2024 Ishank Textile. All rights reserved.</p>
+</div>
+</footer>
+
+<script>
+  function toggleMobileMenu() {
+    const menu = document.getElementById('mobile-menu');
+    if (!menu) return;
+    if (menu.classList.contains('hidden')) {
+      menu.classList.remove('hidden');
+      setTimeout(() => {
+        menu.classList.remove('-translate-y-4', 'opacity-0');
+        menu.classList.add('translate-y-0', 'opacity-100');
+      }, 10);
+    } else {
+      menu.classList.remove('translate-y-0', 'opacity-100');
+      menu.classList.add('-translate-y-4', 'opacity-0');
+      setTimeout(() => {
+        menu.classList.add('hidden');
+      }, 300);
+    }
+  }
+
+  // Fallback default Business Terms if Firestore document is empty
+  const fallbackTerms = `Welcome to the Business Terms and Conditions for B2B Procurement at Ishank Textile.
+
+These terms and conditions govern all corporate sales, wholesale purchases, and manufacturing contract orders fulfilled by Ishank Textile, headquartered in Bhilwara, Rajasthan. Any client initiating a dynamic quote request via our catalog accepts these business provisions in full.
+
+1. B2B Quotations and Order Initiation
+All catalog pricing values (starting prices e.g., ₹180/m, ₹380/m) are initial baseline indicators. Final procurement pricing is determined dynamically based on:
+- Material Specifications: GSM requirements, special weave options (twill, ripstop, knitted, poly-viscose), and dye compliance (Vat-dyed or fiber-dyed).
+- Volume Inquiries: Total ordered fabric yardage/meters (Minimum Order Quantity is usually 500 meters per category, subject to administrative review by Sunil Pandiya).
+- Customized Branding: Defense uniform logos, corporate patterns, or security patches.
+
+2. Lead Times & Shipping Logistics
+All fabric production and automated loom scheduling are managed directly from our manufacturing hubs in Bhilwara.
+- Dispatch Timelines: General wholesale batches are scheduled for shipping within 15 to 30 days from formal deposit clearance, depending on the dynamic loom queue.
+- Delivery Jurisdiction: All wholesale goods are dispatched under Ex-Factory (Bhilwara) shipping parameters, unless customized shipping logistics are negotiated in support inquiries.
+
+3. Fabric Quality & Inspection
+Ishank Textile has maintained certified premium fabric manufacturing standards since 2003.
+- Sample Approvals: For high-volume Defense and Medical orders, physical woven lab dips and fabric swatches are shipped for buyer analysis prior to major batch setups.
+- Inspection: Buyers have the right to inspect fabrics at our Bhilwara trade location (42, 1st Floor, Heera Panna Market) or within 7 days of delivery receipt. Any claims regarding weave anomalies must be raised within this period.
+
+4. Arbitration & Legal Jurisdiction
+All transactions, purchase agreements, and quality audits are governed by industrial laws in force. Any business disputes, delivery claims, or contract issues will be subject to exclusive arbitration within the jurisdiction of the courts of Bhilwara, Rajasthan, India.
+
+If you have corporate questions or want to discuss custom contract orders, please submit a Support request or contact us directly:
+Ishank Textile
+42, 1st Floor, Heera Panna Market, Pur Road, Bhilwara, Rajasthan
+Email: sunilpandiya909@gmail.com
+Phone: +91 94141 12197`;
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    const db = window.firebaseServices && window.firebaseServices.db;
+    const policyKey = 'business_terms';
+
+    if (db) {
+      try {
+        const doc = await db.collection('settings').doc('policies').get();
+        if (doc.exists) {
+          const data = doc.data() || {};
+          const policy = data[policyKey];
+          if (policy && policy.text) {
+            document.getElementById('policy-content').textContent = policy.text;
+            if (policy.updatedAt) {
+              document.getElementById('policy-date').textContent = new Date(policy.updatedAt).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+              });
+            }
+            document.getElementById('policy-source').textContent = 'Secure Firestore Database';
+            return;
+          }
+        }
+      } catch (e) {
+        console.warn('Failed to load business terms from Firestore, rendering fallback:', e);
+      }
+    }
+    
+    // Render Fallback if no database content
+    document.getElementById('policy-content').textContent = fallbackTerms;
+    document.getElementById('policy-date').textContent = 'May 31, 2026';
+    document.getElementById('policy-source').textContent = 'Verified Corporate Standards';
+  });
+</script>
+</body></html>
