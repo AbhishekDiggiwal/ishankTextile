@@ -571,7 +571,72 @@
       }, { threshold: 0.1 });
       observer.observe(stat21El);
     }
-    animateStat('stat-precision-card', 'count-precision', 100, '%', 1500);
+    // Specialized Matrix Cypher Shuffle for "100%" Industrial Precision
+    const statPrecisionEl = document.getElementById('stat-precision-card');
+    if (statPrecisionEl) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // 1. Reveal container
+            statPrecisionEl.classList.remove('opacity-0', 'translate-y-8');
+            statPrecisionEl.classList.add('opacity-100', 'translate-y-0');
+            
+            // 2. Trigger cypher shuffle
+            setTimeout(() => {
+              runCypherShuffle('count-precision', '100%', 1200);
+            }, 300);
+            
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1 });
+      observer.observe(statPrecisionEl);
+    }
+
+    function runCypherShuffle(elementId, targetStr, duration = 1200) {
+      const el = document.getElementById(elementId);
+      if (!el) return;
+      
+      const chars = "0123456789%@&#XYZ$?![]{}";
+      const totalSteps = Math.floor(duration / 40); // 30 steps
+      let currentStep = 0;
+      
+      // Apply Matrix Cypher Shuffle (Technical Blueprint) monospace and crimson styling during shuffling
+      el.classList.add('font-mono', 'text-primary', 'tracking-widest');
+      el.classList.remove('font-display-lg', 'text-white');
+      
+      const interval = setInterval(() => {
+        currentStep++;
+        const progress = currentStep / totalSteps;
+        
+        // Calculate how many characters are locked based on progress
+        const numLocked = Math.floor(progress * targetStr.length);
+        
+        let displayStr = "";
+        for (let i = 0; i < targetStr.length; i++) {
+          if (i < numLocked) {
+            displayStr += targetStr[i];
+          } else {
+            displayStr += chars[Math.floor(Math.random() * chars.length)];
+          }
+        }
+        
+        el.textContent = displayStr;
+        
+        if (currentStep >= totalSteps) {
+          clearInterval(interval);
+          el.textContent = targetStr;
+          
+          // Revert matrix styles and trigger premium completion pulse
+          el.classList.remove('font-mono', 'text-primary', 'tracking-widest');
+          el.classList.add('font-display-lg', 'text-white', 'scale-105', 'transition-all', 'duration-500');
+          
+          setTimeout(() => {
+            el.classList.remove('scale-105');
+          }, 500);
+        }
+      }, 40);
+    }
 
     // Staggered fade-slide-up reveal for Manufacturing Excellence cards
     const mfgCards = [
