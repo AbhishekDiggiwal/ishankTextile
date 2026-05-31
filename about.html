@@ -115,6 +115,25 @@
             box-shadow: 0 12px 24px -5px rgba(170, 0, 33, 0.22), 0 8px 16px -6px rgba(170, 0, 33, 0.22);
             border-color: #aa0021;
         }
+        /* Odometer/Rolling Slots Reveal */
+        .odometer-digit {
+            position: relative;
+            display: inline-block;
+            height: 1.15em;
+            overflow: hidden;
+            line-height: 1.15em;
+            vertical-align: top;
+        }
+        .odometer-strip {
+            display: flex;
+            flex-direction: column;
+            transform: translateY(0);
+        }
+        .odometer-strip span {
+            display: block;
+            height: 1.15em;
+            text-align: center;
+        }
     </style>
 
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -168,7 +187,19 @@
 </div>
 <div class="absolute bottom-0 right-0 p-margin-desktop hidden lg:block">
 <div class="text-right opacity-0 translate-y-8 transition-all duration-1000 ease-out transform" id="stat-21-years">
-<div class="font-display-lg text-primary text-[120px] leading-none font-bold select-none" id="count-21">0+</div>
+<div class="font-display-lg text-primary text-[120px] leading-none font-bold select-none inline-flex items-center align-middle overflow-visible" id="count-21">
+  <span class="odometer-digit w-[0.62em]">
+    <span class="odometer-strip transition-transform duration-[1.8s] cubic-bezier(0.16, 1, 0.3, 1)">
+      <span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span>
+    </span>
+  </span>
+  <span class="odometer-digit w-[0.62em]">
+    <span class="odometer-strip transition-transform duration-[2.2s] cubic-bezier(0.16, 1, 0.3, 1)">
+      <span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span>
+    </span>
+  </span>
+  <span>+</span>
+</div>
 <div class="font-label-bold text-white uppercase tracking-wider">Years of Excellence</div>
 </div>
 </div>
@@ -514,7 +545,32 @@
     }
 
     // Initialize both stat animations
-    animateStat('stat-21-years', 'count-21', 21, '+', 1200);
+    // Specialized Odometer Scroll Trigger for "21+" Years of Excellence
+    const stat21El = document.getElementById('stat-21-years');
+    if (stat21El) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // 1. Reveal container
+            stat21El.classList.remove('opacity-0', 'translate-y-8');
+            stat21El.classList.add('opacity-100', 'translate-y-0');
+            
+            // 2. Trigger odometer slots slide
+            setTimeout(() => {
+              const strips = stat21El.querySelectorAll('.odometer-strip');
+              const targetDigits = [2, 1];
+              strips.forEach((strip, idx) => {
+                const digit = targetDigits[idx];
+                strip.style.transform = `translateY(-${digit * 10}%)`;
+              });
+            }, 300);
+            
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1 });
+      observer.observe(stat21El);
+    }
     animateStat('stat-precision-card', 'count-precision', 100, '%', 1500);
 
     // Staggered fade-slide-up reveal for Manufacturing Excellence cards
