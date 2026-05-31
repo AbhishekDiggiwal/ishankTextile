@@ -14,6 +14,167 @@
         background-image: radial-gradient(circle at 2px 2px, rgba(0,0,0,0.03) 1px, transparent 0);
         background-size: 20px 20px;
     }
+    /* Dynamic Legal Documents Style Restorations (Bypassing Tailwind preflight resets) */
+    #policy-content {
+        color: #2d3748 !important;
+        line-height: 1.8 !important;
+        font-size: 15.5px !important;
+        counter-reset: doc-ol-counter;
+    }
+    #policy-content p {
+        margin-top: 0 !important;
+        margin-bottom: 1.25rem !important;
+    }
+    #policy-content h1 {
+        font-size: 26px !important;
+        font-weight: 700 !important;
+        color: #aa0021 !important;
+        margin-top: 2.25rem !important;
+        margin-bottom: 1.25rem !important;
+        line-height: 1.3 !important;
+        border-bottom: 1px solid rgba(170, 0, 33, 0.2) !important;
+        padding-bottom: 0.5rem !important;
+    }
+    #policy-content h2 {
+        font-size: 20px !important;
+        font-weight: 600 !important;
+        color: #1a1c1c !important;
+        margin-top: 1.75rem !important;
+        margin-bottom: 0.75rem !important;
+        line-height: 1.3 !important;
+    }
+    #policy-content h3 {
+        font-size: 17px !important;
+        font-weight: 600 !important;
+        color: #aa0021 !important;
+        margin-top: 1.5rem !important;
+        margin-bottom: 0.5rem !important;
+        line-height: 1.3 !important;
+    }
+    #policy-content h4, #policy-content h5, #policy-content h6 {
+        font-size: 16px !important;
+        font-weight: 600 !important;
+        color: #1a1c1c !important;
+        margin-top: 1.25rem !important;
+        margin-bottom: 0.5rem !important;
+        line-height: 1.3 !important;
+    }
+    
+    /* Consecutive Top-Level Ordered List Numbering Across Sibling Blocks */
+    #policy-content > ol {
+        list-style-type: none !important;
+        padding-left: 2rem !important;
+        margin-bottom: 1.25rem !important;
+        margin-top: 0.25rem !important;
+    }
+    #policy-content > ol > li {
+        position: relative !important;
+    }
+    #policy-content > ol > li::before {
+        counter-increment: doc-ol-counter;
+        content: counter(doc-ol-counter) ". ";
+        position: absolute;
+        left: -1.75rem;
+        font-weight: 700;
+        color: #aa0021;
+    }
+    
+    /* Nested Ordered List Styles */
+    #policy-content ol ol, #policy-content ul ol {
+        list-style-type: lower-alpha !important;
+        padding-left: 1.75rem !important;
+        margin-top: 0.25rem !important;
+        margin-bottom: 0.5rem !important;
+    }
+    #policy-content ol ol > li::before, #policy-content ul ol > li::before {
+        content: none !important;
+    }
+    #policy-content ol ol ol, #policy-content ul ol ol {
+        list-style-type: lower-roman !important;
+        padding-left: 1.75rem !important;
+    }
+    #policy-content ol ol ol > li::before, #policy-content ul ol ol > li::before {
+        content: none !important;
+    }
+    
+    /* Unordered Lists */
+    #policy-content ul {
+        list-style-type: disc !important;
+        padding-left: 2rem !important;
+        margin-bottom: 1.25rem !important;
+        margin-top: 0.25rem !important;
+    }
+    #policy-content ul ul {
+        list-style-type: circle !important;
+        padding-left: 1.75rem !important;
+        margin-bottom: 0.5rem !important;
+        margin-top: 0.25rem !important;
+    }
+    #policy-content ul ul ul {
+        list-style-type: square !important;
+        padding-left: 1.75rem !important;
+        margin-bottom: 0.5rem !important;
+        margin-top: 0.25rem !important;
+    }
+    
+    #policy-content li {
+        margin-bottom: 0.5rem !important;
+        padding-left: 0.25rem !important;
+    }
+    #policy-content li > p {
+        margin-bottom: 0.5rem !important;
+    }
+    #policy-content strong, #policy-content b {
+        color: #1a1c1c !important;
+        font-weight: 600 !important;
+    }
+    #policy-content em, #policy-content i {
+        font-style: italic !important;
+    }
+    #policy-content u {
+        text-decoration: underline !important;
+    }
+    #policy-content blockquote {
+        border-left: 3px solid #aa0021 !important;
+        padding-left: 1.25rem !important;
+        color: #4a5568 !important;
+        font-style: italic !important;
+        margin: 1.5rem 0 !important;
+    }
+    #policy-content a {
+        color: #aa0021 !important;
+        text-decoration: underline !important;
+        font-weight: 500 !important;
+        transition: color 0.15s ease !important;
+    }
+    #policy-content a:hover {
+        color: #be0728 !important;
+    }
+    #policy-content table {
+        width: 100% !important;
+        border-collapse: collapse !important;
+        margin-top: 1.5rem !important;
+        margin-bottom: 1.5rem !important;
+        font-size: 14.5px !important;
+        display: block !important;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+    #policy-content th, #policy-content td {
+        border: 1px solid #cbd5e1 !important;
+        padding: 0.75rem 1rem !important;
+        text-align: left !important;
+        min-width: 120px !important;
+    }
+    #policy-content th {
+        background-color: #f8fafc !important;
+        font-weight: 600 !important;
+        color: #1e293b !important;
+        border-bottom: 2px solid #cbd5e1 !important;
+    }
+    #policy-content tr:nth-child(even) td {
+        background-color: #f8fafc !important;
+    }
 </style>
 <script id="tailwind-config">
     tailwind.config = {
