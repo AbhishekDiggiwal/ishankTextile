@@ -345,11 +345,11 @@
                     </p>
 <div class="grid grid-cols-2 gap-stack-lg mb-stack-lg">
 <div>
-<div class="text-primary font-display-lg text-headline-lg">21+</div>
+<div class="text-primary font-display-lg text-headline-lg"><span id="heritage-years-count" class="inline-block transition-transform duration-300">0+</span></div>
 <div class="text-sm uppercase opacity-60">Years of Heritage</div>
 </div>
 <div>
-<div class="text-primary font-display-lg text-headline-lg">500+</div>
+<div class="text-primary font-display-lg text-headline-lg"><span id="heritage-client-count" class="inline-block transition-transform duration-300">0+</span></div>
 <div class="text-sm uppercase opacity-60">B2B Global Clients</div>
 </div>
 </div>
@@ -674,6 +674,52 @@
         productObserver.observe(card);
       });
     }
+  }
+
+  // Heritage Section counters scroll intersection trigger
+  const heritageSection = document.querySelector('.bg-inverse-surface');
+  if (heritageSection) {
+    const heritageCounterObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          // Trigger count-ups with professional deceleration curves
+          animateHeritageCounter('heritage-years-count', 21, 1400);
+          animateHeritageCounter('heritage-client-count', 500, 1800);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { root: null, rootMargin: '0px 0px -100px 0px', threshold: 0.15 });
+
+    heritageCounterObserver.observe(heritageSection);
+  }
+
+  function animateHeritageCounter(elementId, targetVal, durationTime) {
+    const element = document.getElementById(elementId);
+    if (!element) return;
+    const startValTime = performance.now();
+
+    function runCount(timestamp) {
+      const timeElapsed = timestamp - startValTime;
+      const animationProgress = Math.min(timeElapsed / durationTime, 1);
+      
+      // Easing out quadratic deceleration
+      const easedProgress = animationProgress * (2 - animationProgress);
+      const calculatedCount = Math.floor(easedProgress * targetVal);
+      
+      element.textContent = calculatedCount + '+';
+
+      if (animationProgress < 1) {
+        requestAnimationFrame(runCount);
+      } else {
+        element.textContent = targetVal + '+';
+        // Elegant pulse scale highlight on finish
+        element.classList.add('scale-110');
+        setTimeout(() => {
+          element.classList.remove('scale-110');
+        }, 300);
+      }
+    }
+    requestAnimationFrame(runCount);
   }
 </script>
 </body></html>
