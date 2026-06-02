@@ -354,7 +354,7 @@
 </div>
 </div>
 <div class="p-6 bg-white/5 border border-white/10 rounded-xl flex items-center gap-6">
-<img class="w-16 h-16 rounded-full border-2 border-primary" data-alt="A portrait of Sunil Pandiya, a distinguished industry leader in his 50s with a confident expression. He is wearing a sharp, dark business suit. The background is a sophisticated office with subtle textile references. High-contrast, prestigious lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBGwDXOzTC100PVaSnevRzASq7mmzUBNcDc7vVstVNQLg9Qme6gGaDn86uP5eUfHPu4rlvo-7P-e9FWpf5RrdGFEUppfBR2wf2I_WGV201u-VReNnHyajQoWnuwm-4nsGH3fDVJbKmUAj9R7HPT06pvMBK2IwtcvbLfLVY_SJO0MO81D26T1RAgHgtztZWXnu4X_ZXCupDnc3wynkeao7oyvhIeK9pbRJsTPJAWclBFpnOaSkMBN8dKjCnDbXcyaPHfYmtDiCMvVt8"/>
+<img id="founder-image" class="w-16 h-16 rounded-full border-2 border-primary" data-alt="A portrait of Sunil Pandiya, a distinguished industry leader in his 50s with a confident expression. He is wearing a sharp, dark business suit. The background is a sophisticated office with subtle textile references. High-contrast, prestigious lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBGwDXOzTC100PVaSnevRzASq7mmzUBNcDc7vVstVNQLg9Qme6gGaDn86uP5eUfHPu4rlvo-7P-e9FWpf5RrdGFEUppfBR2wf2I_WGV201u-VReNnHyajQoWnuwm-4nsGH3fDVJbKmUAj9R7HPT06pvMBK2IwtcvbLfLVY_SJO0MO81D26T1RAgHgtztZWXnu4X_ZXCupDnc3wynkeao7oyvhIeK9pbRJsTPJAWclBFpnOaSkMBN8dKjCnDbXcyaPHfYmtDiCMvVt8"/>
 <div>
 <div class="font-headline-md text-lg">Sunil Pandiya</div>
 <div class="text-primary text-sm font-label-bold uppercase">Founder &amp; Chief Visionary</div>
@@ -527,7 +527,28 @@
     window.location.href = 'contact.html?quote=' + encodeURIComponent(productId);
   };
 
+  async function loadFounderImage() {
+    try {
+      const db = window.firebaseServices && window.firebaseServices.db;
+      if (db) {
+        const doc = await db.collection('settings').doc('general').get();
+        if (doc.exists) {
+          const settings = doc.data();
+          if (settings && settings.aboutUserImage) {
+            const founderImg = document.getElementById('founder-image');
+            if (founderImg) {
+              founderImg.src = settings.aboutUserImage;
+            }
+          }
+        }
+      }
+    } catch (err) {
+      console.warn('Failed to load custom founder image:', err);
+    }
+  }
+
   document.addEventListener('DOMContentLoaded', async () => {
+    loadFounderImage();
     // Count-up animation for "500+" global partners
     const partnerCountEl = document.getElementById('hero-partner-count');
     if (partnerCountEl) {
