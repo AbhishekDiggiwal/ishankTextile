@@ -231,7 +231,7 @@
 </div>
 <div class="lg:col-span-7 grid grid-cols-2 gap-stack-md">
 <div class="rounded-xl overflow-hidden shadow-xl bg-white border border-surface-container-highest p-stack-lg flex flex-col justify-end min-h-[300px] relative">
-<img id="founder-image" class="absolute inset-0 w-full h-full object-cover" data-alt="A professional portrait of Sunil Pandiya, a distinguished industrial leader in his late 50s. He is standing in a brightly lit, modern textile design studio with high-end fabric swatches in the background. The lighting is soft and flattering, emphasizing a mood of authority, heritage, and visionary leadership. The color palette is composed of neutrals with subtle red accents in his attire." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMIv5Ytqq3xAtaDcgx3ujsoghX_n2IrEEAsIIrlwmEcZiKWXzbmUHfbGJLd6aC9ubXXjukl12xxSHiBoESASAqXpAbw_hNlqQ9b5oFDqDU-b_TXEuwuueGvn8Kt2wmdBmnjKd0SAA811axwo08XdoPIW2ZLjHyP4e1HNF382INf-1nY8mdPlXhPQKYHQ37aLntIRLjUD7l9FWFx96kJnln-uttxSQngp4IryWWLAWG_1-UeUuvJV-y7RpIUU1TxUHoOlYRAQjyIXI"/>
+<img id="founder-image" class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300" data-alt="A professional portrait of Sunil Pandiya, a distinguished industrial leader in his late 50s. He is standing in a brightly lit, modern textile design studio with high-end fabric swatches in the background. The lighting is soft and flattering, emphasizing a mood of authority, heritage, and visionary leadership. The color palette is composed of neutrals with subtle red accents in his attire." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMIv5Ytqq3xAtaDcgx3ujsoghX_n2IrEEAsIIrlwmEcZiKWXzbmUHfbGJLd6aC9ubXXjukl12xxSHiBoESASAqXpAbw_hNlqQ9b5oFDqDU-b_TXEuwuueGvn8Kt2wmdBmnjKd0SAA811axwo08XdoPIW2ZLjHyP4e1HNF382INf-1nY8mdPlXhPQKYHQ37aLntIRLjUD7l9FWFx96kJnln-uttxSQngp4IryWWLAWG_1-UeUuvJV-y7RpIUU1TxUHoOlYRAQjyIXI"/>
 <div class="absolute inset-0 bg-gradient-to-t from-on-surface to-transparent"></div>
 <div class="relative z-10">
 <h3 class="text-white font-headline-md">Sunil Pandiya</h3>
@@ -400,22 +400,40 @@
 <script>
   // Load dynamic Founder Image from general settings
   async function loadAboutSettings() {
+    const founderImg = document.getElementById('founder-image');
+    if (!founderImg) return;
+
+    const showImage = () => {
+      founderImg.classList.remove('opacity-0');
+      founderImg.classList.add('opacity-100');
+    };
+
     const db = window.firebaseServices && window.firebaseServices.db;
-    if (!db) return;
+    if (!db) {
+      showImage();
+      return;
+    }
+
     try {
-      const doc = await db.collection('settings').doc('general').get();
+      // Set a 3-second timeout on the firestore read to prevent hanging forever
+      const doc = await Promise.race([
+        db.collection('settings').doc('general').get(),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), 3000))
+      ]);
+
       if (doc.exists) {
         const settings = doc.data();
         if (settings && settings.aboutUserImage) {
-          const founderImg = document.getElementById('founder-image');
-          if (founderImg) {
-            founderImg.src = settings.aboutUserImage;
-          }
+          founderImg.onload = showImage;
+          founderImg.onerror = showImage;
+          founderImg.src = settings.aboutUserImage;
+          return;
         }
       }
     } catch (err) {
       console.error("Error loading settings/aboutUserImage:", err);
     }
+    showImage();
   }
 
   // Dynamic Certificate and Inline Viewer Logic
