@@ -383,15 +383,26 @@
     const applications = productApplications(product);
     const price = product.startingPrice || product.price || 0;
     const featured = index === 2 && currentViewMode !== 'list';
-    const cardClass = featured ? 'lg:col-span-2 group bg-surface-container border border-outline-variant/50 flex flex-col md:flex-row hover:shadow-2xl transition-all duration-300 relative overflow-hidden fabric-texture-overlay product-card rounded-xl' : 'group bg-surface-container-lowest border border-outline-variant/50 flex flex-col hover:shadow-2xl transition-all duration-300 relative overflow-hidden fabric-texture-overlay product-card rounded-xl';
-    const imageClass = featured ? 'w-full md:w-1/2 h-80 overflow-hidden relative' : 'h-64 overflow-hidden relative';
-    const contentClass = featured ? 'p-stack-lg flex flex-col justify-center w-full md:w-1/2' : 'p-stack-lg flex flex-col flex-grow';
+    
+    // Compact classes
+    const cardClass = featured 
+      ? 'lg:col-span-2 group bg-surface-container border border-outline-variant/50 flex flex-col md:flex-row hover:shadow-2xl transition-all duration-300 relative overflow-hidden fabric-texture-overlay product-card rounded-xl md:h-52' 
+      : 'group bg-surface-container-lowest border border-outline-variant/50 flex flex-col hover:shadow-2xl transition-all duration-300 relative overflow-hidden fabric-texture-overlay product-card rounded-xl';
+    
+    const imageClass = featured 
+      ? 'w-full md:w-[220px] h-48 md:h-full overflow-hidden relative flex-shrink-0' 
+      : 'h-48 overflow-hidden relative';
+      
+    const contentClass = featured 
+      ? 'p-4 flex flex-col justify-center flex-grow' 
+      : 'p-4 flex flex-col flex-grow';
+      
     return '<article onclick="recordFabricVisit(\'' + escapeHtml(product.id) + '\')" class="' + cardClass + '" data-category="' + escapeHtml(product.categoryId) + '" data-price="' + price + '" data-application="' + applications.join(' ').toLowerCase() + '">' +
-      '<div class="' + imageClass + '"><img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" src="' + escapeHtml(product.image || fallbackProducts[index % fallbackProducts.length].image) + '" alt="' + escapeHtml(product.name) + '"><div class="absolute top-4 right-4 bg-primary px-3 py-1 text-on-primary font-label-bold text-[12px] uppercase">' + escapeHtml(category ? category.name : 'Textile') + '</div></div>' +
-      '<div class="' + contentClass + '"><div class="flex justify-between items-start mb-stack-sm gap-stack-md"><div><h4 class="font-headline-md text-headline-md text-on-surface">' + escapeHtml(product.name) + '</h4><p class="text-on-surface-variant font-body-md">' + escapeHtml(product.code || (category ? category.name : 'Premium textile')) + '</p></div><span class="text-primary font-headline-md">₹' + price + '<span class="text-body-sm text-on-surface-variant font-normal">/m</span></span></div>' +
-      '<p class="text-on-surface-variant font-body-md mb-stack-md">' + escapeHtml(product.description) + '</p>' +
-      '<div class="grid grid-cols-2 gap-stack-sm my-stack-md border-y border-outline-variant/30 py-stack-md"><div class="flex flex-col"><span class="text-on-surface-variant text-[12px] uppercase font-label-bold">GSM</span><span class="font-body-md font-bold">' + escapeHtml(product.gsm || 'Custom') + '</span></div><div class="flex flex-col"><span class="text-on-surface-variant text-[12px] uppercase font-label-bold">Width</span><span class="font-body-md font-bold">' + escapeHtml(product.width || '150 CM') + '</span></div><div class="flex flex-col"><span class="text-on-surface-variant text-[12px] uppercase font-label-bold">Weave</span><span class="font-body-md font-bold">' + escapeHtml(product.weave || (category ? category.name : 'Industrial')) + '</span></div><div class="flex flex-col"><span class="text-on-surface-variant text-[12px] uppercase font-label-bold">Use</span><span class="font-body-md font-bold">' + escapeHtml(applications[0] || 'B2B') + '</span></div></div>' +
-      '<div class="mt-auto flex gap-stack-sm"><button type="button" onclick="requestQuote(\'' + escapeHtml(product.id) + '\')" class="w-full bg-secondary text-on-secondary py-3 font-label-bold uppercase text-[12px] hover:bg-on-surface-variant rounded-full transition-colors">Request Quote</button></div></div></article>';
+      '<div class="' + imageClass + '"><img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" src="' + escapeHtml(product.image || fallbackProducts[index % fallbackProducts.length].image) + '" alt="' + escapeHtml(product.name) + '"><div class="absolute top-3 right-3 bg-primary px-2.5 py-0.5 text-on-primary font-label-bold text-[10px] uppercase rounded-full">' + escapeHtml(category ? category.name : 'Textile') + '</div></div>' +
+      '<div class="' + contentClass + '"><div class="flex justify-between items-start mb-2 gap-stack-md"><div><h4 class="text-base font-bold text-on-surface leading-tight">' + escapeHtml(product.name) + '</h4><p class="text-on-surface-variant text-[11px] mt-0.5">' + escapeHtml(product.code || (category ? category.name : 'Premium textile')) + '</p></div><span class="text-primary font-bold text-base flex-shrink-0">₹' + price + '<span class="text-[10px] text-on-surface-variant font-normal">/m</span></span></div>' +
+      '<p class="text-on-surface-variant text-[12px] mb-2 line-clamp-2">' + escapeHtml(product.description) + '</p>' +
+      '<div class="grid grid-cols-4 gap-2 my-2 border-y border-outline-variant/20 py-1.5 text-[10px]"><div class="flex flex-col"><span class="text-on-surface-variant text-[9px] uppercase font-label-bold">GSM</span><span class="font-bold">' + escapeHtml(product.gsm || 'Custom') + '</span></div><div class="flex flex-col"><span class="text-on-surface-variant text-[9px] uppercase font-label-bold">Width</span><span class="font-bold">' + escapeHtml(product.width || '150 CM') + '</span></div><div class="flex flex-col"><span class="text-on-surface-variant text-[9px] uppercase font-label-bold">Weave</span><span class="font-bold">' + escapeHtml(product.weave || (category ? category.name : 'Industrial')) + '</span></div><div class="flex flex-col"><span class="text-on-surface-variant text-[9px] uppercase font-label-bold">Use</span><span class="font-bold">' + escapeHtml(applications[0] || 'B2B') + '</span></div></div>' +
+      '<div class="mt-auto flex gap-stack-sm"><button type="button" onclick="requestQuote(\'' + escapeHtml(product.id) + '\')" class="w-full bg-secondary text-on-secondary py-2 font-label-bold uppercase text-[10px] hover:bg-on-surface-variant rounded-full transition-colors">Request Quote</button></div></div></article>';
   }
 
   function productCardList(product, index) {
@@ -399,17 +410,17 @@
     const applications = productApplications(product);
     const price = product.startingPrice || product.price || 0;
     
-    const cardClass = 'group bg-surface-container border border-outline-variant/50 flex flex-col md:flex-row hover:shadow-2xl transition-all duration-300 relative overflow-hidden fabric-texture-overlay product-card h-auto md:h-64 rounded-xl';
-    const imageClass = 'w-full md:w-[280px] h-64 md:h-full overflow-hidden relative flex-shrink-0';
-    const contentClass = 'p-4 md:p-5 flex flex-col justify-between flex-grow';
+    const cardClass = 'group bg-surface-container border border-outline-variant/50 flex flex-col md:flex-row hover:shadow-2xl transition-all duration-300 relative overflow-hidden fabric-texture-overlay product-card h-auto md:h-48 rounded-xl';
+    const imageClass = 'w-full md:w-[200px] h-44 md:h-full overflow-hidden relative flex-shrink-0';
+    const contentClass = 'p-3 md:p-3.5 flex flex-col justify-between flex-grow';
     
     return '<article onclick="recordFabricVisit(\'' + escapeHtml(product.id) + '\')" class="' + cardClass + '" data-category="' + escapeHtml(product.categoryId) + '" data-price="' + price + '" data-application="' + applications.join(' ').toLowerCase() + '">' +
-      '<div class="' + imageClass + '"><img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="' + escapeHtml(product.image || fallbackProducts[index % fallbackProducts.length].image) + '" alt="' + escapeHtml(product.name) + '"><div class="absolute top-4 left-4 bg-primary text-on-primary px-3 py-1 text-[10px] uppercase font-label-bold rounded-full">' + escapeHtml(category ? category.name : 'Textile') + '</div></div>' +
+      '<div class="' + imageClass + '"><img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="' + escapeHtml(product.image || fallbackProducts[index % fallbackProducts.length].image) + '" alt="' + escapeHtml(product.name) + '"><div class="absolute top-3 left-3 bg-primary text-on-primary px-2.5 py-0.5 text-[9px] uppercase font-label-bold rounded-full">' + escapeHtml(category ? category.name : 'Textile') + '</div></div>' +
       '<div class="' + contentClass + '">' +
-      '  <div class="flex justify-between items-start gap-2"><div><h4 class="text-base md:text-[18px] font-bold text-on-surface leading-tight">' + escapeHtml(product.name) + '</h4><p class="text-[11px] md:text-xs text-on-surface-variant mt-0.5">' + escapeHtml(product.code || (category ? category.name : 'Premium textile')) + '</p></div><span class="text-primary font-bold text-base md:text-lg flex-shrink-0">₹' + price + '<span class="text-xs text-on-surface-variant font-normal">/m</span></span></div>' +
-      '  <p class="text-on-surface-variant text-xs md:text-[13px] my-1 line-clamp-2 md:line-clamp-1">' + escapeHtml(product.description) + '</p>' +
-      '  <div class="grid grid-cols-4 gap-2 my-1 border-y border-outline-variant/20 py-1"><div class="flex flex-col"><span class="text-on-surface-variant text-[9px] md:text-[10px] uppercase font-label-bold">GSM</span><span class="text-xs font-bold">' + escapeHtml(product.gsm || 'Custom') + '</span></div><div class="flex flex-col"><span class="text-on-surface-variant text-[9px] md:text-[10px] uppercase font-label-bold">Width</span><span class="text-xs font-bold">' + escapeHtml(product.width || '150 CM') + '</span></div><div class="flex flex-col"><span class="text-on-surface-variant text-[9px] md:text-[10px] uppercase font-label-bold">Weave</span><span class="text-xs font-bold">' + escapeHtml(product.weave || (category ? category.name : 'Industrial')) + '</span></div><div class="flex flex-col"><span class="text-on-surface-variant text-[9px] md:text-[10px] uppercase font-label-bold">Use</span><span class="text-xs font-bold">' + escapeHtml(applications[0] || 'B2B') + '</span></div></div>' +
-      '  <div class="mt-auto flex gap-2"><button type="button" onclick="requestQuote(\'' + escapeHtml(product.id) + '\')" class="w-full bg-secondary text-on-secondary py-2 font-label-bold uppercase text-[10px] md:text-[11px] hover:bg-on-surface-variant rounded-full transition-colors">Request Quote</button></div>' +
+      '  <div class="flex justify-between items-start gap-2"><div><h4 class="text-sm md:text-[16px] font-bold text-on-surface leading-tight">' + escapeHtml(product.name) + '</h4><p class="text-[10px] md:text-[11px] text-on-surface-variant mt-0.5">' + escapeHtml(product.code || (category ? category.name : 'Premium textile')) + '</p></div><span class="text-primary font-bold text-sm md:text-[16px] flex-shrink-0">₹' + price + '<span class="text-[10px] text-on-surface-variant font-normal">/m</span></span></div>' +
+      '  <p class="text-on-surface-variant text-[11px] md:text-xs my-1 line-clamp-1">' + escapeHtml(product.description) + '</p>' +
+      '  <div class="grid grid-cols-4 gap-2 my-1 border-y border-outline-variant/20 py-1 text-[10px]"><div class="flex flex-col"><span class="text-on-surface-variant text-[8px] md:text-[9px] uppercase font-label-bold">GSM</span><span class="font-bold">' + escapeHtml(product.gsm || 'Custom') + '</span></div><div class="flex flex-col"><span class="text-on-surface-variant text-[8px] md:text-[9px] uppercase font-label-bold">Width</span><span class="font-bold">' + escapeHtml(product.width || '150 CM') + '</span></div><div class="flex flex-col"><span class="text-on-surface-variant text-[8px] md:text-[9px] uppercase font-label-bold">Weave</span><span class="font-bold">' + escapeHtml(product.weave || (category ? category.name : 'Industrial')) + '</span></div><div class="flex flex-col"><span class="text-on-surface-variant text-[8px] md:text-[9px] uppercase font-label-bold">Use</span><span class="font-bold">' + escapeHtml(applications[0] || 'B2B') + '</span></div></div>' +
+      '  <div class="mt-auto flex gap-2"><button type="button" onclick="requestQuote(\'' + escapeHtml(product.id) + '\')" class="w-full bg-secondary text-on-secondary py-1.5 font-label-bold uppercase text-[9px] md:text-[10px] hover:bg-on-surface-variant rounded-full transition-colors">Request Quote</button></div>' +
       '</div></article>';
   }
 
@@ -678,17 +689,17 @@
       
       return `
         <div onclick="selectCategory('${escapeHtml(category.id)}')" class="group bg-surface-container border border-outline-variant/30 flex flex-col hover:shadow-2xl transition-all duration-300 rounded-xl overflow-hidden relative fabric-texture-overlay cursor-pointer product-card">
-          <div class="h-56 overflow-hidden relative">
+          <div class="h-44 overflow-hidden relative">
             <img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="${escapeHtml(cardImage)}" alt="${escapeHtml(category.name)}"/>
-            <div class="absolute top-4 right-4 bg-primary text-on-primary px-3 py-1 text-[10px] uppercase font-label-bold rounded-full">Collection</div>
+            <div class="absolute top-3 right-3 bg-primary text-on-primary px-2.5 py-0.5 text-[9px] uppercase font-label-bold rounded-full">Collection</div>
           </div>
-          <div class="p-stack-lg flex flex-col flex-grow">
-            <h3 class="font-headline-md text-headline-md text-on-surface mb-2 group-hover:text-primary transition-colors">${escapeHtml(category.name)}</h3>
-            <p class="text-on-surface-variant font-body-sm mb-6 flex-grow leading-relaxed line-clamp-3">${escapeHtml(category.description || 'Premium engineered fabric solution.')}</p>
-            <div class="mt-auto flex justify-between items-center pt-4 border-t border-outline-variant/20">
-              <span class="text-primary font-headline-md text-sm">Starting from <span class="text-lg font-bold">₹${minPrice}</span><span class="text-xs text-on-surface-variant font-normal">/m</span></span>
-              <span class="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-on-primary group-hover:translate-x-1 transition-transform">
-                <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 0, 'wght' 600, 'GRAD' 0, 'opsz' 18">arrow_forward</span>
+          <div class="p-4 flex flex-col flex-grow">
+            <h3 class="font-bold text-base text-on-surface mb-1 group-hover:text-primary transition-colors">${escapeHtml(category.name)}</h3>
+            <p class="text-on-surface-variant text-[12px] mb-3 flex-grow leading-relaxed line-clamp-3">${escapeHtml(category.description || 'Premium engineered fabric solution.')}</p>
+            <div class="mt-auto flex justify-between items-center pt-3 border-t border-outline-variant/20">
+              <span class="text-primary text-[12px]">Starting from <span class="text-base font-bold">₹${minPrice}</span><span class="text-[10px] text-on-surface-variant font-normal">/m</span></span>
+              <span class="flex items-center justify-center w-7 h-7 rounded-full bg-primary text-on-primary group-hover:translate-x-1 transition-transform">
+                <span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 0, 'wght' 600, 'GRAD' 0, 'opsz' 18">arrow_forward</span>
               </span>
             </div>
           </div>
