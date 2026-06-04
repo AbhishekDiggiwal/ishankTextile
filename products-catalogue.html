@@ -316,11 +316,11 @@
 
 <script>
   const fallbackCategories = [
-    { id: '1', name: 'Vat-Dyed Fabrics', description: 'Molecular-level color integrity with 24-hour freshness shield', startingPrice: 380, active: true },
-    { id: '2', name: 'Fiber-Dyed Fabrics', description: 'Advanced fiber-dyeing technology with superior color fastness', startingPrice: 420, active: true },
-    { id: '3', name: 'Wollen Fabrics', description: 'High-quality woolen fabric with excellent thermal properties', startingPrice: 320, active: true },
-    { id: '4', name: 'Hosiery Fabrics', description: 'Premium hosiery fabric with superior elasticity and comfort', startingPrice: 280, active: true },
-    { id: '5', name: 'Cotton Fabrics', description: 'Premium cotton fabric with natural breathability and comfort', startingPrice: 180, active: true }
+    { id: '1', name: 'Vat-Dyed Fabrics', description: 'Molecular-level color integrity with 24-hour freshness shield', startingPrice: 380, clothing: 'Suiting', active: true },
+    { id: '2', name: 'Fiber-Dyed Fabrics', description: 'Advanced fiber-dyeing technology with superior color fastness', startingPrice: 420, clothing: 'Suiting', active: true },
+    { id: '3', name: 'Wollen Fabrics', description: 'High-quality woolen fabric with excellent thermal properties', startingPrice: 320, clothing: 'Suiting', active: true },
+    { id: '4', name: 'Hosiery Fabrics', description: 'Premium hosiery fabric with superior elasticity and comfort', startingPrice: 280, clothing: 'Shirting', active: true },
+    { id: '5', name: 'Cotton Fabrics', description: 'Premium cotton fabric with natural breathability and comfort', startingPrice: 180, clothing: 'Shirting', active: true }
   ];
   const fallbackProducts = [
     { id: '1', code: 'VD-001', name: 'Vat-Dyed Premium Fabric', categoryId: '1', description: 'Molecular-level color integrity with 24-hour freshness shield. Perfect for high-end uniform applications.', startingPrice: 380, image: 'https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=1000', applications: ['Defense', 'Medical', 'Corporate'], active: true, gsm: '240 - 280', weave: 'Twill / Ripstop', width: '150 CM' },
@@ -695,7 +695,12 @@
           </div>
           <div class="p-4 flex flex-col flex-grow">
             <h3 class="font-bold text-base text-on-surface mb-1 group-hover:text-primary transition-colors">${escapeHtml(category.name)}</h3>
-            <p class="text-on-surface-variant text-[12px] mb-3 flex-grow leading-relaxed line-clamp-3">${escapeHtml(category.description || 'Premium engineered fabric solution.')}</p>
+            <p class="text-on-surface-variant text-[12px] mb-2 leading-relaxed line-clamp-3">${escapeHtml(category.description || 'Premium engineered fabric solution.')}</p>
+            <div class="mb-3 flex-grow">
+              <span class="inline-flex items-center px-2.5 py-0.5 bg-primary/[0.08] backdrop-blur-md text-primary border border-primary/20 text-[9px] font-label-bold rounded-full uppercase tracking-wider shadow-sm">
+                ${escapeHtml(category.clothing || 'Suiting')}
+              </span>
+            </div>
             <div class="mt-auto flex justify-between items-center pt-3 border-t border-outline-variant/20">
               <span class="text-primary text-[12px]">Starting from <span class="text-base font-bold">₹${minPrice}</span><span class="text-[10px] text-on-surface-variant font-normal">/m</span></span>
               <span class="flex items-center justify-center w-7 h-7 rounded-full bg-primary text-on-primary group-hover:translate-x-1 transition-transform">

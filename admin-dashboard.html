@@ -759,6 +759,13 @@
                     <label class="block text-sm font-medium text-gray-700 mb-2">Starting Price (₹)</label>
                     <input type="number" id="category-starting-price" class="form-input w-full px-4 py-2 rounded-lg" placeholder="e.g., 180">
                 </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Clothing Type *</label>
+                    <select id="category-clothing" required class="form-input w-full px-4 py-2 rounded-lg">
+                        <option value="Suiting">Suiting</option>
+                        <option value="Shirting">Shirting</option>
+                    </select>
+                </div>
                 <!-- Image Upload Section -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Category Image</label>
@@ -1173,6 +1180,7 @@
                         name: 'Vat-Dyed Fabrics',
                         description: 'Molecular-level color integrity with 24-hour freshness shield',
                         startingPrice: 380,
+                        clothing: 'Suiting',
                         image: 'https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=800',
                         active: true,
                         createdAt: new Date().toISOString()
@@ -1182,6 +1190,7 @@
                         name: 'Fiber-Dyed Fabrics',
                         description: 'Advanced fiber-dyeing technology with superior color fastness',
                         startingPrice: 420,
+                        clothing: 'Suiting',
                         image: 'https://images.unsplash.com/photo-1528459801416-a9e53bbf4e17?w=800',
                         active: true,
                         createdAt: new Date().toISOString()
@@ -1191,6 +1200,7 @@
                         name: 'Wollen Fabrics',
                         description: 'High-quality woolen fabric with excellent thermal properties',
                         startingPrice: 320,
+                        clothing: 'Suiting',
                         image: 'https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=800',
                         active: true,
                         createdAt: new Date().toISOString()
@@ -1200,6 +1210,7 @@
                         name: 'Hosiery Fabrics',
                         description: 'Premium hosiery fabric with superior elasticity and comfort',
                         startingPrice: 280,
+                        clothing: 'Shirting',
                         image: 'https://images.unsplash.com/photo-1528459801416-a9e53bbf4e17?w=800',
                         active: true,
                         createdAt: new Date().toISOString()
@@ -1209,6 +1220,7 @@
                         name: 'Cotton Fabrics',
                         description: 'Premium cotton fabric with natural breathability and comfort',
                         startingPrice: 180,
+                        clothing: 'Shirting',
                         image: 'https://images.unsplash.com/photo-1528459801416-a9e53bbf4e17?w=800',
                         active: true,
                         createdAt: new Date().toISOString()
@@ -1649,12 +1661,14 @@
                     document.getElementById('category-name').value = category.name;
                     document.getElementById('category-description').value = category.description || '';
                     document.getElementById('category-starting-price').value = category.startingPrice || '';
+                    document.getElementById('category-clothing').value = category.clothing || 'Suiting';
                     document.getElementById('category-active').checked = category.active;
                 }
             } else {
                 title.textContent = 'Add Category';
                 form.reset();
                 document.getElementById('category-id').value = '';
+                document.getElementById('category-clothing').value = 'Suiting';
             }
 
             modal.classList.remove('hidden');
@@ -2924,6 +2938,7 @@
                 name: document.getElementById('category-name').value,
                 description: document.getElementById('category-description').value,
                 startingPrice: parseFloat(document.getElementById('category-starting-price').value) || 0,
+                clothing: document.getElementById('category-clothing').value || 'Suiting',
                 image: image,
                 active: document.getElementById('category-active').checked
             };
