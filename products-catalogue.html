@@ -413,14 +413,14 @@
     const rawTag = product.clothing || (category && category.clothing) || 'Suiting';
     const clothingTag = String(rawTag || '').trim();
     const clothingTagHtml = clothingTag 
-      ? '  <span class="inline-flex items-center px-1.5 py-0 bg-primary/[0.08] backdrop-blur-md text-primary border border-primary/20 text-[8px] font-label-bold rounded-full uppercase tracking-wider shadow-sm">' + escapeHtml(clothingTag) + '</span>'
+      ? '  <span class="inline-flex items-center px-2.5 py-0.5 bg-primary/[0.08] backdrop-blur-md text-primary border border-primary/20 text-[9px] font-label-bold rounded-full uppercase tracking-wider shadow-sm">' + escapeHtml(clothingTag) + '</span>'
       : '';
       
     return '<article onclick="recordFabricVisit(\'' + escapeHtml(product.id) + '\')" class="' + cardClass + '" data-category="' + escapeHtml(product.categoryId) + '" data-price="' + price + '" data-application="' + applications.join(' ').toLowerCase() + '">' +
       '<div class="' + imageClass + '"><img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" src="' + escapeHtml(product.image || fallbackProducts[index % fallbackProducts.length].image) + '" alt="' + escapeHtml(product.name) + '"><div class="absolute top-3 right-3 bg-primary px-2.5 py-0.5 text-on-primary font-label-bold text-[10px] uppercase rounded-full">' + escapeHtml(category ? category.name : 'Textile') + '</div></div>' +
       '<div class="' + contentClass + '"><div class="flex justify-between items-start mb-2 gap-stack-md"><div class="flex-grow min-w-0"><h4 class="text-base font-bold text-on-surface leading-tight">' + escapeHtml(product.name) + '</h4>' +
-      '  <div class="text-on-surface-variant text-[13px] mt-1.5 font-bold font-mono tracking-wider">' + escapeHtml(product.code || 'IT-FABRIC') + '</div>' +
-      '</div><div class="text-primary font-bold text-base flex-shrink-0 text-right flex flex-col justify-end items-end gap-1">' + formatProductPrice(product) + clothingTagHtml + '</div></div>' +
+      '  <div class="text-on-surface-variant text-[12px] mt-1.5 font-semibold font-mono tracking-wider">' + escapeHtml(product.code || 'IT-FABRIC') + '</div>' +
+      '</div><div class="text-primary font-bold text-base flex-shrink-0 text-right flex flex-col justify-end items-end gap-1.5">' + formatProductPrice(product) + clothingTagHtml + '</div></div>' +
       '<p class="text-on-surface-variant text-[12px] mb-2 line-clamp-2">' + escapeHtml(product.description) + '</p>' +
       '<div class="grid grid-cols-3 gap-2 my-2 border-y border-outline-variant/20 py-1.5 text-[11px]">' +
       '<div class="flex flex-col items-start"><span class="text-on-surface-variant text-[10px] uppercase font-label-bold">GSM</span><span class="font-bold">' + escapeHtml(product.gsm || 'Custom') + '</span></div>' +
@@ -441,15 +441,15 @@
     const rawTag = product.clothing || (category && category.clothing) || 'Suiting';
     const clothingTag = String(rawTag || '').trim();
     const clothingTagHtml = clothingTag 
-      ? '  <span class="inline-flex items-center px-1.5 py-0 bg-primary/[0.08] backdrop-blur-md text-primary border border-primary/20 text-[8px] font-label-bold rounded-full uppercase tracking-wider shadow-sm">' + escapeHtml(clothingTag) + '</span>'
+      ? '  <span class="inline-flex items-center px-2.5 py-0.5 bg-primary/[0.08] backdrop-blur-md text-primary border border-primary/20 text-[9px] font-label-bold rounded-full uppercase tracking-wider shadow-sm">' + escapeHtml(clothingTag) + '</span>'
       : '';
     
     return '<article onclick="recordFabricVisit(\'' + escapeHtml(product.id) + '\')" class="' + cardClass + '" data-category="' + escapeHtml(product.categoryId) + '" data-price="' + price + '" data-application="' + applications.join(' ').toLowerCase() + '">' +
       '<div class="' + imageClass + '"><img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="' + escapeHtml(product.image || fallbackProducts[index % fallbackProducts.length].image) + '" alt="' + escapeHtml(product.name) + '"><div class="absolute top-3 left-3 bg-primary text-on-primary px-2.5 py-0.5 text-[9px] uppercase font-label-bold rounded-full">' + escapeHtml(category ? category.name : 'Textile') + '</div></div>' +
       '<div class="' + contentClass + '">' +
       '  <div class="flex justify-between items-start gap-2"><div class="flex-grow min-w-0"><h4 class="text-sm md:text-[16px] font-bold text-on-surface leading-tight">' + escapeHtml(product.name) + '</h4>' +
-      '  <div class="text-on-surface-variant text-[13px] mt-1.5 font-bold font-mono tracking-wider">' + escapeHtml(product.code || 'IT-FABRIC') + '</div>' +
-      '</div><div class="text-primary font-bold text-sm md:text-[16px] flex-shrink-0 text-right flex flex-col justify-end items-end gap-1">' + formatProductPrice(product) + clothingTagHtml + '</div></div>' +
+      '  <div class="text-on-surface-variant text-[12px] mt-1.5 font-semibold font-mono tracking-wider">' + escapeHtml(product.code || 'IT-FABRIC') + '</div>' +
+      '</div><div class="text-primary font-bold text-sm md:text-[16px] flex-shrink-0 text-right flex flex-col justify-end items-end gap-1.5">' + formatProductPrice(product) + clothingTagHtml + '</div></div>' +
       '  <p class="text-on-surface-variant text-[11px] md:text-xs my-1 line-clamp-1">' + escapeHtml(product.description) + '</p>' +
       '  <div class="grid grid-cols-3 gap-2 my-1 border-y border-outline-variant/20 py-1 text-[11px]">' +
       '<div class="flex flex-col items-start"><span class="text-on-surface-variant text-[9px] md:text-[10px] uppercase font-label-bold">GSM</span><span class="font-bold">' + escapeHtml(product.gsm || 'Custom') + '</span></div>' +
