@@ -493,10 +493,10 @@
     const unit = product.priceUnit === 'kg' ? 'kg' : 'm';
     let priceHtml = '';
     if (product.priceType === 'Range') {
-      priceHtml = `₹${product.priceMin} - ₹${product.priceMax}<span class="text-sm font-normal text-on-surface-variant">/${unit}</span>`;
+      priceHtml = `<span class="whitespace-nowrap">₹${product.priceMin} - ₹${product.priceMax}<span class="text-sm font-normal text-on-surface-variant">/${unit}</span></span>`;
     } else {
       priceHtml = `<span class="text-[10px] text-on-surface-variant font-normal uppercase tracking-wider block text-right leading-none mb-0.5">Starting Price</span>` +
-                  `₹${price}<span class="text-sm font-normal text-on-surface-variant">/${unit}</span>`;
+                  `<span class="whitespace-nowrap">₹${price}<span class="text-sm font-normal text-on-surface-variant">/${unit}</span></span>`;
     }
 
     return `
