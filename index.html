@@ -441,8 +441,8 @@
     { id: '5', name: 'Cotton Fabrics', description: 'Premium cotton fabric with natural breathability and comfort', startingPrice: 180, clothing: 'Shirting', active: true }
   ];
   const fallbackProducts = [
-    { id: '1', code: 'VD-001', name: 'Vat-Dyed Premium Fabric', categoryId: '1', description: 'Molecular-level color integrity with 24-hour freshness shield. Perfect for high-end uniform applications.', startingPrice: 380, image: 'https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=1000', applications: ['Defense', 'Medical', 'Corporate'], active: true, gsm: '240 - 280', weave: 'Twill / Ripstop', width: '150 CM' },
-    { id: '2', code: 'FD-001', name: 'Fiber-Dyed Advanced Fabric', categoryId: '2', description: 'Advanced fiber-dyeing technology with superior color fastness and durability.', startingPrice: 420, image: 'https://images.unsplash.com/photo-1528459801416-a9e53bbf4e17?w=1000', applications: ['Army', 'Police', 'Security'], active: true, gsm: '220 - 300', weave: 'Poly-Viscose', width: '160 CM' }
+    { id: '1', code: 'VD-001', name: 'Vat-Dyed Premium Fabric', categoryId: '1', description: 'Molecular-level color integrity with 24-hour freshness shield. Perfect for high-end uniform applications.', priceType: 'Price', startingPrice: 380, priceMin: 0, priceMax: 0, priceUnit: 'm', clothing: 'Suiting', gsm: 240, blend: '65% Polyester, 35% Viscose', weave: 'Twill / Ripstop', premium: true, image: 'https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=1000', active: true },
+    { id: '2', code: 'FD-001', name: 'Fiber-Dyed Advanced Fabric', categoryId: '2', description: 'Advanced fiber-dyeing technology with superior color fastness and durability.', priceType: 'Range', startingPrice: 0, priceMin: 400, priceMax: 450, priceUnit: 'm', clothing: 'Suiting', gsm: 285, blend: '80% Polyester, 20% Viscose', weave: 'Poly-Viscose', premium: true, image: 'https://images.unsplash.com/photo-1528459801416-a9e53bbf4e17?w=1000', active: true }
   ];
   const DataManager = {
     async getCategories() {
@@ -487,13 +487,17 @@
       ? 'w-full py-4 bg-primary text-on-primary font-label-bold text-label-bold uppercase rounded-full hover:brightness-110 transition-all'
       : 'w-full py-4 border-2 border-primary text-primary font-label-bold text-label-bold uppercase rounded-full hover:bg-primary/5 transition-all';
     
-    const weaveLabel = product.weave ? 'Weave' : 'Composition';
-    const weaveValue = product.weave || product.composition || 'Premium Blend';
-    
-    const gsmLabel = product.gsm ? 'GSM' : 'Fastness';
-    const gsmValue = product.gsm || product.fastness || 'Standard';
-
     const revealClass = index % 2 === 0 ? 'product-card-reveal-left' : 'product-card-reveal-right';
+
+    // Format price range or starting price
+    const unit = product.priceUnit === 'kg' ? 'kg' : 'm';
+    let priceHtml = '';
+    if (product.priceType === 'Range') {
+      priceHtml = `₹${product.priceMin} - ₹${product.priceMax}<span class="text-sm font-normal text-on-surface-variant">/${unit}</span>`;
+    } else {
+      priceHtml = `<span class="text-[10px] text-on-surface-variant font-normal uppercase tracking-wider block text-right leading-none mb-0.5">Starting Price</span>` +
+                  `₹${price}<span class="text-sm font-normal text-on-surface-variant">/${unit}</span>`;
+    }
 
     return `
       <div class="bg-white border border-outline/10 rounded-xl overflow-hidden shadow-sm hover:shadow-2xl transition-all group ${revealClass}">
@@ -504,16 +508,20 @@
         <div class="p-stack-lg">
           <div class="flex justify-between items-start mb-4">
             <h3 class="font-headline-md text-headline-md text-on-surface">${escapeHtml(product.name)}</h3>
-            <span class="font-headline-md text-primary">₹${price}<span class="text-sm font-normal text-on-surface-variant">/m</span></span>
+            <span class="font-headline-md text-primary text-right flex flex-col justify-end">${priceHtml}</span>
           </div>
-          <div class="grid grid-cols-2 gap-4 mb-6">
+          <div class="grid grid-cols-3 gap-2 mb-6">
             <div class="bg-surface-container p-3 rounded">
-              <span class="text-[10px] uppercase block opacity-60">${weaveLabel}</span>
-              <span class="font-label-bold">${escapeHtml(weaveValue)}</span>
+              <span class="text-[10px] uppercase block opacity-60">Weave</span>
+              <span class="font-label-bold">${escapeHtml(product.weave || 'Premium')}</span>
             </div>
             <div class="bg-surface-container p-3 rounded">
-              <span class="text-[10px] uppercase block opacity-60">${gsmLabel}</span>
-              <span class="font-label-bold">${escapeHtml(gsmValue)}</span>
+              <span class="text-[10px] uppercase block opacity-60">GSM</span>
+              <span class="font-label-bold">${escapeHtml(product.gsm || 'Custom')}</span>
+            </div>
+            <div class="bg-surface-container p-3 rounded">
+              <span class="text-[10px] uppercase block opacity-60">Blend</span>
+              <span class="font-label-bold">${escapeHtml(product.blend || 'Premium Blend')}</span>
             </div>
           </div>
           <p class="text-on-surface-variant mb-6">${escapeHtml(product.description)}</p>
@@ -643,27 +651,16 @@
 
     // Dynamic Premium Clothing loader
     try {
-      const categories = await DataManager.getCategories();
-      const products = await DataManager.getProducts();
-
-      // Look for Category 'Premium Clothing' (case-insensitive)
-      const premiumCategory = categories.find(c => c.name && c.name.toLowerCase().includes('premium clothing'))
-        || categories.find(c => c.name && c.name.toLowerCase().includes('premium'))
-        || categories.find(c => c.name && c.name.toLowerCase().includes('clothing'));
-      
-      if (premiumCategory) {
-        const premiumProducts = products.filter(p => p.categoryId === premiumCategory.id && p.active !== false);
+      // Filter products marked as premium (and active)
+      const premiumProducts = products.filter(p => p.premium === true && p.active !== false);
+      const container = document.getElementById('premiumProductsContainer');
+      if (container) {
         if (premiumProducts.length >= 2) {
-          const container = document.getElementById('premiumProductsContainer');
-          if (container) {
-            container.innerHTML = premiumProducts.slice(0, 2).map((prod, idx) => renderPremiumProductCard(prod, idx)).join('');
-          }
-        } else if (products.length >= 2) {
-          // If less than 2 products in Premium Clothing, fallback to first 2 available active products
-          const container = document.getElementById('premiumProductsContainer');
-          if (container) {
-            container.innerHTML = products.slice(0, 2).map((prod, idx) => renderPremiumProductCard(prod, idx)).join('');
-          }
+          container.innerHTML = premiumProducts.slice(0, 2).map((prod, idx) => renderPremiumProductCard(prod, idx)).join('');
+        } else {
+          // Fallback to first 2 available active products if not enough marked as premium
+          const activeProducts = products.filter(p => p.active !== false);
+          container.innerHTML = activeProducts.slice(0, 2).map((prod, idx) => renderPremiumProductCard(prod, idx)).join('');
         }
       }
     } catch (err) {

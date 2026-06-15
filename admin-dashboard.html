@@ -845,9 +845,87 @@
                     <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
                     <textarea id="product-description" rows="3" class="form-input w-full px-4 py-2 rounded-lg" placeholder="Product description..."></textarea>
                 </div>
+                <!-- Clothing Type -->
                 <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Clothing Type *</label>
+                    <select id="product-clothing" required class="form-input w-full px-4 py-2 rounded-lg">
+                        <option value="Suiting">Suiting</option>
+                        <option value="Shirting">Shirting</option>
+                    </select>
+                </div>
+
+                <!-- Specs: GSM, Blend, Weave -->
+                <div class="grid grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">GSM</label>
+                        <input type="number" id="product-gsm" class="form-input w-full px-4 py-2 rounded-lg" placeholder="e.g., 240">
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Blend (Composition)</label>
+                        <input type="text" id="product-blend" class="form-input w-full px-4 py-2 rounded-lg" placeholder="e.g., 80% Poly, 20% Viscose">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Weave (Structure)</label>
+                    <input type="text" id="product-weave" class="form-input w-full px-4 py-2 rounded-lg" placeholder="e.g., Twill / Ripstop">
+                </div>
+
+                <!-- Price Type selector -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Price Type *</label>
+                    <div class="grid grid-cols-2 gap-4">
+                        <label class="cursor-pointer">
+                            <input type="radio" name="product-price-type" value="Price" checked class="hidden" onchange="togglePriceFields()">
+                            <div id="price-type-single-card" class="p-3 border-2 rounded-xl text-center font-medium border-brand-orange bg-brand-orange/5 text-brand-orange transition-colors">
+                                Single Price
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="product-price-type" value="Range" class="hidden" onchange="togglePriceFields()">
+                            <div id="price-type-range-card" class="p-3 border-2 rounded-xl text-center font-medium border-gray-200 text-gray-600 hover:border-gray-300 transition-colors">
+                                Price Range
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Single Price Input -->
+                <div id="product-single-price-container">
                     <label class="block text-sm font-medium text-gray-700 mb-2">Starting Price (₹) *</label>
                     <input type="number" id="product-price" required class="form-input w-full px-4 py-2 rounded-lg" placeholder="e.g., 380">
+                </div>
+
+                <!-- Price Range Inputs -->
+                <div id="product-range-price-container" class="hidden">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Min Price (₹) *</label>
+                            <input type="number" id="product-price-min" class="form-input w-full px-4 py-2 rounded-lg" placeholder="e.g., 380">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Max Price (₹) *</label>
+                            <input type="number" id="product-price-max" class="form-input w-full px-4 py-2 rounded-lg" placeholder="e.g., 450">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Price Unit selector -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Price Unit *</label>
+                    <div class="grid grid-cols-2 gap-4">
+                        <label class="cursor-pointer">
+                            <input type="radio" name="product-price-unit" value="m" checked class="hidden" onchange="togglePriceUnitFields()">
+                            <div id="price-unit-m-card" class="p-3 border-2 rounded-xl text-center font-medium border-brand-orange bg-brand-orange/5 text-brand-orange transition-colors">
+                                Per Metre (/m)
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="product-price-unit" value="kg" class="hidden" onchange="togglePriceUnitFields()">
+                            <div id="price-unit-kg-card" class="p-3 border-2 rounded-xl text-center font-medium border-gray-200 text-gray-600 hover:border-gray-300 transition-colors">
+                                Per Kg (/kg)
+                            </div>
+                        </label>
+                    </div>
                 </div>
 
                 <!-- Product Image Upload Section -->
@@ -884,13 +962,16 @@
 
                     <p class="text-xs text-gray-500 mt-1">Recommended: 800x600px, JPG or PNG</p>
                 </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Applications (comma separated)</label>
-                    <input type="text" id="product-applications" class="form-input w-full px-4 py-2 rounded-lg" placeholder="e.g., Defense, Medical, Corporate">
-                </div>
-                <div class="flex items-center space-x-2">
-                    <input type="checkbox" id="product-active" class="w-4 h-4 text-brand-orange rounded" checked>
-                    <label class="text-sm text-gray-700">Active</label>
+                
+                <div class="flex items-center space-x-6">
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="checkbox" id="product-premium" class="w-4 h-4 text-brand-orange rounded">
+                        <span class="text-sm font-medium text-gray-700">Premium Collection</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="checkbox" id="product-active" class="w-4 h-4 text-brand-orange rounded" checked>
+                        <span class="text-sm font-medium text-gray-700">Active</span>
+                    </label>
                 </div>
                 <div class="flex justify-end space-x-3 pt-4">
                     <button type="button" onclick="closeProductModal()" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
@@ -928,6 +1009,51 @@
                 alert(`Promise Error: ${msg}`);
             }
         });
+
+        // Helper toggles for price type
+        function togglePriceFields() {
+            const selectedType = document.querySelector('input[name="product-price-type"]:checked').value;
+            const singleCard = document.getElementById('price-type-single-card');
+            const rangeCard = document.getElementById('price-type-range-card');
+            const singleContainer = document.getElementById('product-single-price-container');
+            const rangeContainer = document.getElementById('product-range-price-container');
+            const priceInput = document.getElementById('product-price');
+            const minInput = document.getElementById('product-price-min');
+            const maxInput = document.getElementById('product-price-max');
+
+            if (selectedType === 'Price') {
+                singleCard.className = 'p-3 border-2 rounded-xl text-center font-medium border-brand-orange bg-brand-orange/5 text-brand-orange transition-colors';
+                rangeCard.className = 'p-3 border-2 rounded-xl text-center font-medium border-gray-200 text-gray-600 hover:border-gray-300 transition-colors';
+                singleContainer.classList.remove('hidden');
+                rangeContainer.classList.add('hidden');
+                priceInput.required = true;
+                minInput.required = false;
+                maxInput.required = false;
+            } else {
+                singleCard.className = 'p-3 border-2 rounded-xl text-center font-medium border-gray-200 text-gray-600 hover:border-gray-300 transition-colors';
+                rangeCard.className = 'p-3 border-2 rounded-xl text-center font-medium border-brand-orange bg-brand-orange/5 text-brand-orange transition-colors';
+                singleContainer.classList.add('hidden');
+                rangeContainer.classList.remove('hidden');
+                priceInput.required = false;
+                minInput.required = true;
+                maxInput.required = true;
+            }
+        }
+
+        // Helper toggles for price unit
+        function togglePriceUnitFields() {
+            const selectedUnit = document.querySelector('input[name="product-price-unit"]:checked').value;
+            const mCard = document.getElementById('price-unit-m-card');
+            const kgCard = document.getElementById('price-unit-kg-card');
+
+            if (selectedUnit === 'm') {
+                mCard.className = 'p-3 border-2 rounded-xl text-center font-medium border-brand-orange bg-brand-orange/5 text-brand-orange transition-colors';
+                kgCard.className = 'p-3 border-2 rounded-xl text-center font-medium border-gray-200 text-gray-600 hover:border-gray-300 transition-colors';
+            } else {
+                mCard.className = 'p-3 border-2 rounded-xl text-center font-medium border-gray-200 text-gray-600 hover:border-gray-300 transition-colors';
+                kgCard.className = 'p-3 border-2 rounded-xl text-center font-medium border-brand-orange bg-brand-orange/5 text-brand-orange transition-colors';
+            }
+        }
 
         // Firestore Data Management
         const DataManager = {
@@ -1236,9 +1362,17 @@
                         name: 'Vat-Dyed Premium Fabric',
                         categoryId: '1',
                         description: 'Molecular-level color integrity with 24-hour freshness shield. Perfect for high-end uniform applications.',
+                        priceType: 'Price',
                         startingPrice: 380,
+                        priceMin: 0,
+                        priceMax: 0,
+                        priceUnit: 'm',
+                        clothing: 'Suiting',
+                        gsm: 240,
+                        blend: '65% Polyester, 35% Viscose',
+                        weave: 'Twill / Ripstop',
+                        premium: true,
                         image: 'https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=800',
-                        applications: ['Defense', 'Medical', 'Corporate'],
                         active: true,
                         createdAt: new Date().toISOString()
                     },
@@ -1248,9 +1382,17 @@
                         name: 'Fiber-Dyed Advanced Fabric',
                         categoryId: '2',
                         description: 'Advanced fiber-dyeing technology with superior color fastness and durability.',
-                        startingPrice: 420,
+                        priceType: 'Range',
+                        startingPrice: 0,
+                        priceMin: 400,
+                        priceMax: 450,
+                        priceUnit: 'm',
+                        clothing: 'Suiting',
+                        gsm: 285,
+                        blend: '80% Polyester, 20% Viscose',
+                        weave: 'Poly-Viscose',
+                        premium: true,
                         image: 'https://images.unsplash.com/photo-1528459801416-a9e53bbf4e17?w=800',
-                        applications: ['Army', 'Police', 'Security'],
                         active: true,
                         createdAt: new Date().toISOString()
                     }
@@ -1734,7 +1876,15 @@
                         <td class="py-3 px-4 font-mono text-sm text-gray-600">${prod.code}</td>
                         <td class="py-3 px-4 font-medium text-dark-gray">${prod.name}</td>
                         <td class="py-3 px-4 text-gray-600">${category?.name || 'Uncategorized'}</td>
-                        <td class="py-3 px-4 text-brand-orange font-semibold">₹${prod.startingPrice}</td>
+                        <td class="py-3 px-4 text-brand-orange font-semibold">
+                            ${(() => {
+                                const unit = prod.priceUnit === 'kg' ? 'kg' : 'm';
+                                if (prod.priceType === 'Range') {
+                                    return `₹${prod.priceMin} - ${prod.priceMax}/${unit}`;
+                                }
+                                return `₹${prod.startingPrice || 0}/${unit}`;
+                            })()}
+                        </td>
                         <td class="py-3 px-4">
                             <div class="flex items-center space-x-2">
                                 <button onclick="toggleProductStatus('${prod.id}')" class="${prod.active ? 'text-green-500 hover:text-green-700' : 'text-gray-400 hover:text-gray-600'}" title="${prod.active ? 'Deactivate' : 'Activate'}">
@@ -1818,14 +1968,37 @@
                     document.getElementById('product-name').value = product.name;
                     document.getElementById('product-category').value = product.categoryId;
                     document.getElementById('product-description').value = product.description || '';
-                    document.getElementById('product-price').value = product.startingPrice;
-                    document.getElementById('product-applications').value = (product.applications || []).join(', ');
+                    document.getElementById('product-gsm').value = product.gsm || '';
+                    document.getElementById('product-blend').value = product.blend || '';
+                    document.getElementById('product-weave').value = product.weave || '';
+                    document.getElementById('product-clothing').value = product.clothing || 'Suiting';
+                    
+                    const priceType = product.priceType || 'Price';
+                    const priceUnit = product.priceUnit || 'm';
+                    
+                    document.querySelector(`input[name="product-price-type"][value="${priceType}"]`).checked = true;
+                    togglePriceFields();
+                    
+                    document.getElementById('product-price').value = product.startingPrice || '';
+                    document.getElementById('product-price-min').value = product.priceMin || '';
+                    document.getElementById('product-price-max').value = product.priceMax || '';
+                    
+                    document.querySelector(`input[name="product-price-unit"][value="${priceUnit}"]`).checked = true;
+                    togglePriceUnitFields();
+                    
+                    document.getElementById('product-premium').checked = !!product.premium;
                     document.getElementById('product-active').checked = product.active;
                 }
             } else {
                 title.textContent = 'Add Product';
                 form.reset();
                 document.getElementById('product-id').value = '';
+                document.getElementById('product-clothing').value = 'Suiting';
+                document.querySelector('input[name="product-price-type"][value="Price"]').checked = true;
+                document.querySelector('input[name="product-price-unit"][value="m"]').checked = true;
+                togglePriceFields();
+                togglePriceUnitFields();
+                document.getElementById('product-premium').checked = false;
             }
 
             modal.classList.remove('hidden');
@@ -2970,14 +3143,24 @@
                 image = 'https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=800';
             }
 
+            const selectedPriceType = document.querySelector('input[name="product-price-type"]:checked').value;
+            const selectedPriceUnit = document.querySelector('input[name="product-price-unit"]:checked').value;
             const product = {
                 code: document.getElementById('product-code').value,
                 name: document.getElementById('product-name').value,
                 categoryId: document.getElementById('product-category').value,
                 description: document.getElementById('product-description').value,
-                startingPrice: parseFloat(document.getElementById('product-price').value) || 0,
+                priceType: selectedPriceType,
+                startingPrice: selectedPriceType === 'Price' ? (parseFloat(document.getElementById('product-price').value) || 0) : 0,
+                priceMin: selectedPriceType === 'Range' ? (parseFloat(document.getElementById('product-price-min').value) || 0) : 0,
+                priceMax: selectedPriceType === 'Range' ? (parseFloat(document.getElementById('product-price-max').value) || 0) : 0,
+                priceUnit: selectedPriceUnit,
+                clothing: document.getElementById('product-clothing').value || 'Suiting',
+                gsm: parseInt(document.getElementById('product-gsm').value) || 0,
+                blend: document.getElementById('product-blend').value || '',
+                weave: document.getElementById('product-weave').value || '',
+                premium: document.getElementById('product-premium').checked,
                 image: image,
-                applications: document.getElementById('product-applications').value.split(',').map(s => s.trim()).filter(s => s),
                 active: document.getElementById('product-active').checked
             };
 
