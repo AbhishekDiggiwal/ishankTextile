@@ -413,7 +413,7 @@
     const rawTag = product.clothing || (category && category.clothing) || 'Suiting';
     const clothingTag = String(rawTag || '').trim();
     const clothingTagHtml = clothingTag 
-      ? '  <span class="inline-flex items-center px-2.5 py-0.5 bg-primary/[0.08] backdrop-blur-md text-primary border border-primary/20 text-[9px] font-label-bold rounded-full uppercase tracking-wider shadow-sm">\n                ' + escapeHtml(clothingTag) + '\n              </span>'
+      ? '  <span class="inline-flex items-center px-2.5 py-0.5 bg-primary/[0.08] backdrop-blur-md text-primary border border-primary/20 text-[9px] font-label-bold font-normal rounded-full uppercase tracking-wider shadow-sm">\n                ' + escapeHtml(clothingTag) + '\n              </span>'
       : '';
       
     return '<article onclick="recordFabricVisit(\'' + escapeHtml(product.id) + '\')" class="' + cardClass + '" data-category="' + escapeHtml(product.categoryId) + '" data-price="' + price + '" data-application="' + applications.join(' ').toLowerCase() + '">' +
@@ -441,7 +441,7 @@
     const rawTag = product.clothing || (category && category.clothing) || 'Suiting';
     const clothingTag = String(rawTag || '').trim();
     const clothingTagHtml = clothingTag 
-      ? '  <span class="inline-flex items-center px-2.5 py-0.5 bg-primary/[0.08] backdrop-blur-md text-primary border border-primary/20 text-[9px] font-label-bold rounded-full uppercase tracking-wider shadow-sm">\n                ' + escapeHtml(clothingTag) + '\n              </span>'
+      ? '  <span class="inline-flex items-center px-2.5 py-0.5 bg-primary/[0.08] backdrop-blur-md text-primary border border-primary/20 text-[9px] font-label-bold font-normal rounded-full uppercase tracking-wider shadow-sm">\n                ' + escapeHtml(clothingTag) + '\n              </span>'
       : '';
     
     return '<article onclick="recordFabricVisit(\'' + escapeHtml(product.id) + '\')" class="' + cardClass + '" data-category="' + escapeHtml(product.categoryId) + '" data-price="' + price + '" data-application="' + applications.join(' ').toLowerCase() + '">' +
@@ -733,7 +733,7 @@
             <h3 class="font-bold text-base text-on-surface mb-1 group-hover:text-primary transition-colors">${escapeHtml(category.name)}</h3>
             <p class="text-on-surface-variant text-[12px] mb-2 leading-relaxed line-clamp-3">${escapeHtml(category.description || 'Premium engineered fabric solution.')}</p>
             <div class="mb-3 flex-grow">
-              <span class="inline-flex items-center px-2.5 py-0.5 bg-primary/[0.08] backdrop-blur-md text-primary border border-primary/20 text-[9px] font-label-bold rounded-full uppercase tracking-wider shadow-sm">
+              <span class="inline-flex items-center px-2.5 py-0.5 bg-primary/[0.08] backdrop-blur-md text-primary border border-primary/20 text-[9px] font-label-bold font-normal rounded-full uppercase tracking-wider shadow-sm">
                 ${escapeHtml(category.clothing || 'Suiting')}
               </span>
             </div>
