@@ -171,6 +171,16 @@
   </div>
 </aside>
 <main class="ml-20 md:ml-64 p-gutter md:p-margin-desktop transition-all duration-300">
+  <!-- Notice Banner for offline / uninitialized Firebase -->
+  <div id="offline-banner" class="hidden bg-amber-500 text-white px-6 py-3 rounded-lg mb-6 flex items-center justify-between shadow-md">
+    <div class="flex items-center gap-3">
+      <span class="material-symbols-outlined">warning</span>
+      <span class="font-medium text-sm">Firebase is not configured or offline. Running in local preview mode. Changes are saved to browser local storage.</span>
+    </div>
+    <button onclick="document.getElementById('offline-banner').classList.add('hidden')" class="text-white hover:opacity-85 flex items-center">
+      <span class="material-symbols-outlined text-base">close</span>
+    </button>
+  </div>
   <header class="flex flex-col xl:flex-row xl:items-center justify-between gap-gutter mb-section-padding">
     <div>
       <h1 id="page-title" class="font-headline-lg text-headline-lg text-on-surface">Operations Overview</h1>
@@ -1059,6 +1069,26 @@
         const DataManager = {
             // Initialize with default data if collections are empty
             async init() {
+                if (!db) {
+                    // Seed localStorage if empty
+                    if (!localStorage.getItem('categories')) {
+                        localStorage.setItem('categories', JSON.stringify(this.getDefaultCategories()));
+                    }
+                    if (!localStorage.getItem('products')) {
+                        localStorage.setItem('products', JSON.stringify(this.getDefaultProducts()));
+                    }
+                    if (!localStorage.getItem('quotes')) {
+                        localStorage.setItem('quotes', JSON.stringify(this.getDefaultQuotes()));
+                    }
+                    if (!localStorage.getItem('settings')) {
+                        localStorage.setItem('settings', JSON.stringify({
+                            companyName: 'Ishank Textile',
+                            contactEmail: 'sunilpandiya909@gmail.com',
+                            contactPhone: '+91 94141 12197'
+                        }));
+                    }
+                    return;
+                }
                 // Check if categories exist
                 const categoriesSnapshot = await db.collection('categories').get();
                 if (categoriesSnapshot.empty) {
@@ -1099,6 +1129,9 @@
 
             // Categories
             async getCategories() {
+                if (!db) {
+                    return JSON.parse(localStorage.getItem('categories') || JSON.stringify(this.getDefaultCategories()));
+                }
                 const snapshot = await db.collection('categories').get();
                 return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
             },
@@ -1106,20 +1139,45 @@
                 const id = Date.now().toString();
                 category.id = id;
                 category.createdAt = new Date().toISOString();
+                if (!db) {
+                    const categories = await this.getCategories();
+                    categories.push(category);
+                    localStorage.setItem('categories', JSON.stringify(categories));
+                    return category;
+                }
                 await db.collection('categories').doc(id).set(category);
                 return category;
             },
             async updateCategory(id, updates) {
+                if (!db) {
+                    const categories = await this.getCategories();
+                    const index = categories.findIndex(c => c.id === id);
+                    if (index !== -1) {
+                        categories[index] = { ...categories[index], ...updates };
+                        localStorage.setItem('categories', JSON.stringify(categories));
+                        return categories[index];
+                    }
+                    return null;
+                }
                 await db.collection('categories').doc(id).update(updates);
                 const doc = await db.collection('categories').doc(id).get();
                 return { id: doc.id, ...doc.data() };
             },
             async deleteCategory(id) {
+                if (!db) {
+                    const categories = await this.getCategories();
+                    const updated = categories.filter(c => c.id !== id);
+                    localStorage.setItem('categories', JSON.stringify(updated));
+                    return;
+                }
                 await db.collection('categories').doc(id).delete();
             },
 
             // Products
             async getProducts() {
+                if (!db) {
+                    return JSON.parse(localStorage.getItem('products') || JSON.stringify(this.getDefaultProducts()));
+                }
                 const snapshot = await db.collection('products').get();
                 return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
             },
@@ -1127,25 +1185,58 @@
                 const id = Date.now().toString();
                 product.id = id;
                 product.createdAt = new Date().toISOString();
+                if (!db) {
+                    const products = await this.getProducts();
+                    products.push(product);
+                    localStorage.setItem('products', JSON.stringify(products));
+                    return product;
+                }
                 await db.collection('products').doc(id).set(product);
                 return product;
             },
             async updateProduct(id, updates) {
+                if (!db) {
+                    const products = await this.getProducts();
+                    const index = products.findIndex(p => p.id === id);
+                    if (index !== -1) {
+                        products[index] = { ...products[index], ...updates };
+                        localStorage.setItem('products', JSON.stringify(products));
+                        return products[index];
+                    }
+                    return null;
+                }
                 await db.collection('products').doc(id).update(updates);
                 const doc = await db.collection('products').doc(id).get();
                 return { id: doc.id, ...doc.data() };
             },
             async deleteProduct(id) {
+                if (!db) {
+                    const products = await this.getProducts();
+                    const updated = products.filter(p => p.id !== id);
+                    localStorage.setItem('products', JSON.stringify(updated));
+                    return;
+                }
                 await db.collection('products').doc(id).delete();
             },
 
             // Quotes
             async getQuotes() {
+                if (!db) {
+                    const quotes = JSON.parse(localStorage.getItem('quotes') || JSON.stringify(this.getDefaultQuotes()));
+                    return quotes.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                }
                 const snapshot = await db.collection('quotes').orderBy('createdAt', 'desc').get();
                 return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
             },
             async addQuote(quote) {
                 quote.createdAt = new Date().toISOString();
+                if (!db) {
+                    const quotes = await this.getQuotes();
+                    quote.id = Date.now().toString();
+                    quotes.unshift(quote);
+                    localStorage.setItem('quotes', JSON.stringify(quotes));
+                    return quote;
+                }
                 const docRef = await db.collection('quotes').add(quote);
                 return { id: docRef.id, ...quote };
             },
@@ -1182,30 +1273,45 @@
 
             // Settings
             async getSettings() {
+                if (!db) {
+                    return JSON.parse(localStorage.getItem('settings') || JSON.stringify({
+                        companyName: 'Ishank Textile',
+                        contactEmail: 'sunilpandiya909@gmail.com',
+                        contactPhone: '+91 94141 12197'
+                    }));
+                }
                 const doc = await db.collection('settings').doc('general').get();
                 return doc.exists ? doc.data() : {};
             },
             async setSettings(settings) {
+                if (!db) {
+                    localStorage.setItem('settings', JSON.stringify(settings));
+                    return;
+                }
                 await db.collection('settings').doc('general').set(settings, { merge: true });
             },
 
             // Image Upload to Firebase Storage
             async uploadImage(file) {
+                if (!storage) {
+                    return await new Promise((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.onload = (e) => resolve(e.target.result);
+                        reader.onerror = (err) => reject(err);
+                        reader.readAsDataURL(file);
+                    });
+                }
                 try {
-                    if (storage) {
-                        const filename = `images/${Date.now()}_${file.name}`;
-                        const ref = storage.ref(filename);
-                        
-                        // Set a timeout of 30 seconds on the upload to allow larger files to upload
-                        await Promise.race([
-                            ref.put(file),
-                            new Promise((_, reject) => setTimeout(() => reject(new Error('Storage upload timed out')), 30000))
-                        ]);
-                        
-                        return await ref.getDownloadURL();
-                    } else {
-                        throw new Error('Storage service is not available');
-                    }
+                    const filename = `images/${Date.now()}_${file.name}`;
+                    const ref = storage.ref(filename);
+                    
+                    // Set a timeout of 30 seconds on the upload to allow larger files to upload
+                    await Promise.race([
+                        ref.put(file),
+                        new Promise((_, reject) => setTimeout(() => reject(new Error('Storage upload timed out')), 30000))
+                    ]);
+                    
+                    return await ref.getDownloadURL();
                 } catch (storageError) {
                     console.warn('Firebase Storage upload failed, trying Base64 fallback...', storageError);
                     // Base64 fallback
@@ -1220,13 +1326,28 @@
 
             // Certificates
             async getCertificates() {
+                if (!db) {
+                    return JSON.parse(localStorage.getItem('certificates') || JSON.stringify([
+                        { id: 'cert_1', name: 'Export License', icon: 'verified', url: '', filename: 'default', uploadedAt: new Date().toISOString() },
+                        { id: 'cert_2', name: 'GST Compliance', icon: 'account_balance', url: '', filename: 'default', uploadedAt: new Date().toISOString() },
+                        { id: 'cert_3', name: 'Import-Export License', icon: 'public', url: '', filename: 'default', uploadedAt: new Date().toISOString() },
+                        { id: 'cert_4', name: 'Environmental', icon: 'eco', url: '', filename: 'default', uploadedAt: new Date().toISOString() }
+                    ]));
+                }
                 const snapshot = await db.collection('certificates').get();
                 return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
             },
             async uploadCertificate(file, name, icon) {
                 let url = '';
-                try {
-                    if (storage) {
+                if (!storage) {
+                    url = await new Promise((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.onload = (e) => resolve(e.target.result);
+                        reader.onerror = (err) => reject(err);
+                        reader.readAsDataURL(file);
+                    });
+                } else {
+                    try {
                         const filename = `certificates/${name.replace(/[^a-zA-Z0-9]/g, '_')}_${Date.now()}_${file.name}`;
                         const ref = storage.ref(filename);
                         
@@ -1237,18 +1358,16 @@
                         ]);
                         
                         url = await ref.getDownloadURL();
-                    } else {
-                        throw new Error('Storage service is not available');
+                    } catch (storageError) {
+                        console.warn('Firebase Storage upload failed, trying Base64 fallback...', storageError);
+                        // Base64 fallback
+                        url = await new Promise((resolve, reject) => {
+                            const reader = new FileReader();
+                            reader.onload = (e) => resolve(e.target.result);
+                            reader.onerror = (err) => reject(err);
+                            reader.readAsDataURL(file);
+                        });
                     }
-                } catch (storageError) {
-                    console.warn('Firebase Storage upload failed, trying Base64 fallback...', storageError);
-                    // Base64 fallback
-                    url = await new Promise((resolve, reject) => {
-                        const reader = new FileReader();
-                        reader.onload = (e) => resolve(e.target.result);
-                        reader.onerror = (err) => reject(err);
-                        reader.readAsDataURL(file);
-                    });
                 }
 
                 // Save to Firestore
@@ -1259,6 +1378,20 @@
                     filename: file.name,
                     uploadedAt: new Date().toISOString()
                 };
+
+                if (!db) {
+                    const certificates = await this.getCertificates();
+                    const existingIndex = certificates.findIndex(c => c.name === name);
+                    if (existingIndex !== -1) {
+                        certData.id = certificates[existingIndex].id;
+                        certificates[existingIndex] = certData;
+                    } else {
+                        certData.id = Date.now().toString();
+                        certificates.push(certData);
+                    }
+                    localStorage.setItem('certificates', JSON.stringify(certificates));
+                    return certData;
+                }
 
                 // Check if certificate of this name already exists
                 const existing = await db.collection('certificates').where('name', '==', name).get();
@@ -1274,6 +1407,12 @@
                 }
             },
             async deleteCertificate(id) {
+                if (!db) {
+                    const certificates = await this.getCertificates();
+                    const updated = certificates.filter(c => c.id !== id);
+                    localStorage.setItem('certificates', JSON.stringify(updated));
+                    return;
+                }
                 try {
                     // Fetch document first to get the Storage URL
                     const doc = await db.collection('certificates').doc(id).get();
@@ -1414,12 +1553,10 @@
                     { id: '2', name: 'Fiber-Dyed Advanced Fabric', code: 'FD-001' }
                 ];
 
-                // Generate quotes across the last 30 days
                 for (let i = 0; i < 15; i++) {
                     const customer = customers[i % customers.length];
                     const product = products[i % products.length];
                     const date = new Date();
-                    // spread quotes randomly over last 20 days
                     date.setDate(date.getDate() - Math.floor(Math.random() * 20));
                     date.setHours(Math.floor(Math.random() * 12) + 9, Math.floor(Math.random() * 60));
                     
@@ -1446,7 +1583,6 @@
                     date.setDate(date.getDate() - i);
                     const productsVisits = Math.floor(Math.random() * 25) + 10;
                     
-                    // Distribute productsVisits randomly between product '1', '2' and sometimes others
                     const v1 = Math.floor(productsVisits * (Math.random() * 0.6 + 0.2));
                     const v2 = productsVisits - v1;
                     
@@ -1468,7 +1604,7 @@
                 return visitors;
             }
         };
-
+        window.DataManager = DataManager;
         // Toast Notifications
         function showToast(message, type = 'success') {
             const container = document.getElementById('toast-container');
@@ -2673,40 +2809,38 @@
         }
 
         async function loadSettings() {
-            if (db) {
-                try {
-                    const settings = await DataManager.getSettings();
-                    if (settings && Object.keys(settings).length > 0) {
-                        originalSettings = {
-                            companyName: settings.companyName || '',
-                            contactEmail: settings.contactEmail || '',
-                            contactPhone: settings.contactPhone || '',
-                            aboutUserImage: settings.aboutUserImage || '',
-                            homeUserImage: settings.homeUserImage || ''
-                        };
-                        document.getElementById('setting-company-name').value = originalSettings.companyName;
-                        document.getElementById('setting-contact-email').value = originalSettings.contactEmail;
-                        document.getElementById('setting-contact-phone').value = originalSettings.contactPhone;
-                        document.getElementById('setting-user-image-url').value = originalSettings.aboutUserImage;
-                        document.getElementById('setting-home-image-url').value = originalSettings.homeUserImage;
+            try {
+                const settings = await DataManager.getSettings();
+                if (settings && Object.keys(settings).length > 0) {
+                    originalSettings = {
+                        companyName: settings.companyName || '',
+                        contactEmail: settings.contactEmail || '',
+                        contactPhone: settings.contactPhone || '',
+                        aboutUserImage: settings.aboutUserImage || '',
+                        homeUserImage: settings.homeUserImage || ''
+                    };
+                    document.getElementById('setting-company-name').value = originalSettings.companyName;
+                    document.getElementById('setting-contact-email').value = originalSettings.contactEmail;
+                    document.getElementById('setting-contact-phone').value = originalSettings.contactPhone;
+                    document.getElementById('setting-user-image-url').value = originalSettings.aboutUserImage;
+                    document.getElementById('setting-home-image-url').value = originalSettings.homeUserImage;
 
-                        const previewAbout = document.getElementById('setting-user-image-preview');
-                        if (originalSettings.aboutUserImage) {
-                            previewAbout.src = originalSettings.aboutUserImage;
-                        } else {
-                            previewAbout.src = 'https://lh3.googleusercontent.com/aida-public/AB6AXuAMIv5Ytqq3xAtaDcgx3ujsoghX_n2IrEEAsIIrlwmEcZiKWXzbmUHfbGJLd6aC9ubXXjukl12xxSHiBoESASAqXpAbw_hNlqQ9b5oFDqDU-b_TXEuwuueGvn8Kt2wmdBmnjKd0SAA811axwo08XdoPIW2ZLjHyP4e1HNF382INf-1nY8mdPlXhPQKYHQ37aLntIRLjUD7l9FWFx96kJnln-uttxSQngp4IryWWLAWG_1-UeUuvJV-y7RpIUU1TxUHoOlYRAQjyIXI';
-                        }
-
-                        const previewHome = document.getElementById('setting-home-image-preview');
-                        if (originalSettings.homeUserImage) {
-                            previewHome.src = originalSettings.homeUserImage;
-                        } else {
-                            previewHome.src = 'https://lh3.googleusercontent.com/aida-public/AB6AXuBGwDXOzTC100PVaSnevRzASq7mmzUBNcDc7vVstVNQLg9Qme6gGaDn86uP5eUfHPu4rlvo-7P-e9FWpf5RrdGFEUppfBR2wf2I_WGV201u-VReNnHyajQoWnuwm-4nsGH3fDVJbKmUAj9R7HPT06pvMBK2IwtcvbLfLVY_SJO0MO81D26T1RAgHgtztZWXnu4X_ZXCupDnc3wynkeao7oyvhIeK9pbRJsTPJAWclBFpnOaSkMBN8dKjCnDbXcyaPHfYmtDiCMvVt8';
-                        }
+                    const previewAbout = document.getElementById('setting-user-image-preview');
+                    if (originalSettings.aboutUserImage) {
+                        previewAbout.src = originalSettings.aboutUserImage;
+                    } else {
+                        previewAbout.src = 'https://lh3.googleusercontent.com/aida-public/AB6AXuAMIv5Ytqq3xAtaDcgx3ujsoghX_n2IrEEAsIIrlwmEcZiKWXzbmUHfbGJLd6aC9ubXXjukl12xxSHiBoESASAqXpAbw_hNlqQ9b5oFDqDU-b_TXEuwuueGvn8Kt2wmdBmnjKd0SAA811axwo08XdoPIW2ZLjHyP4e1HNF382INf-1nY8mdPlXhPQKYHQ37aLntIRLjUD7l9FWFx96kJnln-uttxSQngp4IryWWLAWG_1-UeUuvJV-y7RpIUU1TxUHoOlYRAQjyIXI';
                     }
-                } catch (err) {
-                    console.error("Error loading settings:", err);
+
+                    const previewHome = document.getElementById('setting-home-image-preview');
+                    if (originalSettings.homeUserImage) {
+                        previewHome.src = originalSettings.homeUserImage;
+                    } else {
+                        previewHome.src = 'https://lh3.googleusercontent.com/aida-public/AB6AXuBGwDXOzTC100PVaSnevRzASq7mmzUBNcDc7vVstVNQLg9Qme6gGaDn86uP5eUfHPu4rlvo-7P-e9FWpf5RrdGFEUppfBR2wf2I_WGV201u-VReNnHyajQoWnuwm-4nsGH3fDVJbKmUAj9R7HPT06pvMBK2IwtcvbLfLVY_SJO0MO81D26T1RAgHgtztZWXnu4X_ZXCupDnc3wynkeao7oyvhIeK9pbRJsTPJAWclBFpnOaSkMBN8dKjCnDbXcyaPHfYmtDiCMvVt8';
+                    }
                 }
+            } catch (err) {
+                console.error("Error loading settings:", err);
             }
         }
 
@@ -3271,9 +3405,15 @@
                     window.location.href = 'admin-login.html';
                 }
             });
+        } else {
+            const localUser = sessionStorage.getItem('adminLoggedIn') === 'true';
+            if (!localUser) {
+                window.location.href = 'admin-login.html';
+            }
         }
 
         function logout() {
+            sessionStorage.removeItem('adminLoggedIn');
             if (auth) {
                 auth.signOut().then(() => {
                     window.location.href = 'admin-login.html';
@@ -3318,15 +3458,16 @@
 
         // Initialize
         document.addEventListener('DOMContentLoaded', async () => {
-            // Initialize Firestore data only when db is available (Firebase configured)
-            if (db) {
-                try {
-                    await DataManager.init();
-                } catch (err) {
-                    console.warn('DataManager.init skipped:', err);
-                }
-                await loadSettings();
+            if (!auth || !db) {
+                const banner = document.getElementById('offline-banner');
+                if (banner) banner.classList.remove('hidden');
             }
+            try {
+                await DataManager.init();
+            } catch (err) {
+                console.warn('DataManager.init skipped:', err);
+            }
+            await loadSettings();
             await updateKPIs();
             await updateCharts();
             await renderCategories();

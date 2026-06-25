@@ -444,7 +444,10 @@ Phone: +91 94141 12197`;
 
     if (db) {
       try {
-        const doc = await db.collection('settings').doc('policies').get();
+        const doc = await Promise.race([
+          db.collection('settings').doc('policies').get(),
+          new Promise((_, reject) => setTimeout(() => reject(new Error('Firestore read timeout')), 3000))
+        ]);
         if (doc.exists) {
           const data = doc.data() || {};
           const policy = data[policyKey];

@@ -13,7 +13,7 @@ module.exports = {
         'brand-light': '#f8fafc', // Light background
       },
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
+        sans: ['var(--font-inter)', 'sans-serif'],
       },
     },
   },

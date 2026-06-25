@@ -110,6 +110,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 <script src="firebase-config.js"></script>
+<script src="data-manager.js"></script>
 </head>
 <body class="bg-background text-on-surface font-body-md overflow-x-hidden">
 <!-- TopNavBar -->
@@ -172,6 +173,11 @@
     <div class="flex flex-col md:flex-row gap-gutter">
         <!-- Sidebar Filter -->
         <aside class="w-full md:w-64 flex-shrink-0 space-y-4 md:sticky md:top-24">
+            <!-- Mobile Search Box inside filters section -->
+            <div class="block lg:hidden relative">
+                <span class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">search</span>
+                <input class="w-full bg-surface-container border border-outline-variant/30 rounded-full py-2 pl-9 pr-3 text-sm focus:ring-2 focus:ring-primary" id="mobile-catalog-search" placeholder="Search fabrics..." type="text"/>
+            </div>
             <section>
             <h3 class="font-label-bold text-label-bold uppercase text-primary mb-2 border-l-4 border-primary pl-3">Specifications</h3>
             <div id="categoryFilters" class="space-y-stack-sm">
@@ -315,50 +321,6 @@
 </footer>
 
 <script>
-  const fallbackCategories = [
-    { id: '1', name: 'Vat-Dyed Fabrics', description: 'Molecular-level color integrity with 24-hour freshness shield', startingPrice: 380, clothing: 'Suiting', active: true },
-    { id: '2', name: 'Fiber-Dyed Fabrics', description: 'Advanced fiber-dyeing technology with superior color fastness', startingPrice: 420, clothing: 'Suiting', active: true },
-    { id: '3', name: 'Wollen Fabrics', description: 'High-quality woolen fabric with excellent thermal properties', startingPrice: 320, clothing: 'Suiting', active: true },
-    { id: '4', name: 'Hosiery Fabrics', description: 'Premium hosiery fabric with superior elasticity and comfort', startingPrice: 280, clothing: 'Shirting', active: true },
-    { id: '5', name: 'Cotton Fabrics', description: 'Premium cotton fabric with natural breathability and comfort', startingPrice: 180, clothing: 'Shirting', active: true }
-  ];
-  const fallbackProducts = [
-    { id: '1', code: 'VD-001', name: 'Vat-Dyed Premium Fabric', categoryId: '1', description: 'Molecular-level color integrity with 24-hour freshness shield. Perfect for high-end uniform applications.', priceType: 'Price', startingPrice: 380, priceMin: 0, priceMax: 0, priceUnit: 'm', clothing: 'Suiting', gsm: 240, blend: '65% Polyester, 35% Viscose', weave: 'Twill / Ripstop', premium: true, image: 'https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=1000', active: true },
-    { id: '2', code: 'FD-001', name: 'Fiber-Dyed Advanced Fabric', categoryId: '2', description: 'Advanced fiber-dyeing technology with superior color fastness and durability.', priceType: 'Price', startingPrice: 420, priceMin: 0, priceMax: 0, priceUnit: 'm', clothing: 'Suiting', gsm: 285, blend: '80% Polyester, 20% Viscose', weave: 'Poly-Viscose', premium: true, image: 'https://images.unsplash.com/photo-1528459801416-a9e53bbf4e17?w=1000', active: true },
-    { id: '3', code: 'WL-001', name: 'Premium Wollen Fabric', categoryId: '3', description: 'Thermal comfort and formal finish for winter uniforms and corporate wear.', priceType: 'Range', startingPrice: 0, priceMin: 320, priceMax: 360, priceUnit: 'm', clothing: 'Suiting', gsm: 320, blend: '70% Wool, 30% Polyester', weave: 'Wool Blend', premium: false, image: 'https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=1000', active: true },
-    { id: '4', code: 'HS-001', name: 'Premium Hosiery Fabric', categoryId: '4', description: 'Elastic, breathable hosiery fabric suited for medical and hospitality applications.', priceType: 'Price', startingPrice: 280, priceMin: 0, priceMax: 0, priceUnit: 'm', clothing: 'Shirting', gsm: 210, blend: '95% Cotton, 5% Spandex', weave: 'Knitted', premium: false, image: 'https://images.unsplash.com/photo-1528459801416-a9e53bbf4e17?w=1000', active: true },
-    { id: '5', code: 'CT-001', name: 'Premium Cotton Fabric', categoryId: '5', description: 'Natural breathability and soft hand-feel for daily uniforms and casual workwear.', priceType: 'Range', startingPrice: 0, priceMin: 180, priceMax: 220, priceUnit: 'm', clothing: 'Shirting', gsm: 180, blend: '100% Cotton', weave: 'Cotton Twill', premium: false, image: 'https://images.unsplash.com/photo-1528459801416-a9e53bbf4e17?w=1000', active: true }
-  ];
-  const DataManager = {
-    async getCategories() {
-      try {
-        const db = window.firebaseServices && window.firebaseServices.db;
-        if (db) {
-          const snapshot = await Promise.race([
-            db.collection('categories').get(),
-            new Promise((_, reject) => setTimeout(() => reject(new Error('Firestore read timeout')), 3000))
-          ]);
-          const categories = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-          if (categories.length) return categories;
-        }
-      } catch (error) { console.warn('Using fallback categories (Firestore failed or timed out):', error); }
-      return JSON.parse(localStorage.getItem('categories') || JSON.stringify(fallbackCategories));
-    },
-    async getProducts() {
-      try {
-        const db = window.firebaseServices && window.firebaseServices.db;
-        if (db) {
-          const snapshot = await Promise.race([
-            db.collection('products').get(),
-            new Promise((_, reject) => setTimeout(() => reject(new Error('Firestore read timeout')), 3000))
-          ]);
-          const products = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-          if (products.length) return products;
-        }
-      } catch (error) { console.warn('Using fallback products (Firestore failed or timed out):', error); }
-      return JSON.parse(localStorage.getItem('products') || JSON.stringify(fallbackProducts));
-    }
-  };
   let allProducts = [];
   let allCategories = [];
   let currentViewMode = 'grid'; // 'grid' or 'list'
@@ -468,7 +430,7 @@
     const selectedCategories = Array.from(document.querySelectorAll('[data-filter="category"]:checked')).map((input) => input.value);
     const selectedApplications = Array.from(document.querySelectorAll('[data-filter="application"]:checked')).map((input) => input.value.toLowerCase());
     const maxPrice = Number(document.getElementById('priceRange')?.value || 500);
-    const search = (document.getElementById('catalog-search')?.value || '').toLowerCase();
+    const search = (document.getElementById('catalog-search')?.value || document.getElementById('mobile-catalog-search')?.value || '').toLowerCase();
     currentFilteredProducts = allProducts.filter((product) => {
       const apps = productApplications(product).join(' ').toLowerCase();
       const categoryMatch = !selectedCategories.length || selectedCategories.includes(product.categoryId);
@@ -773,12 +735,22 @@
     document.querySelectorAll('[data-filter]').forEach((input) => input.addEventListener('change', applyFilters));
     document.getElementById('priceRange')?.addEventListener('input', applyFilters);
     document.getElementById('catalog-search')?.addEventListener('input', applyFilters);
+    document.getElementById('mobile-catalog-search')?.addEventListener('input', applyFilters);
     document.getElementById('resetFilters')?.addEventListener('click', () => {
       document.querySelectorAll('[data-filter]').forEach((input) => { input.checked = false; });
       const priceRange = document.getElementById('priceRange');
       if (priceRange) priceRange.value = 500;
       const search = document.getElementById('catalog-search');
       if (search) search.value = '';
+      const searchM = document.getElementById('mobile-catalog-search');
+      if (searchM) searchM.value = '';
+      
+      // Reset category header title and description back to defaults
+      const titleEl = document.getElementById('catalogTitle');
+      const descEl = document.getElementById('catalogDesc');
+      if (titleEl) titleEl.textContent = 'All Fabric Collections';
+      if (descEl) descEl.textContent = 'Explore our premium range of school uniform, industrial, medical, defense, and high-performance textiles engineered since 2003.';
+      
       currentFilteredProducts = allProducts;
       currentPage = 1;
       renderProductsPage();

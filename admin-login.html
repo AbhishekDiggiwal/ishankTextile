@@ -160,17 +160,24 @@
     </div>
 
     <script>
-        // Firebase Auth instance
-        const auth = firebase.auth();
+        // Firebase Auth instance safely loaded
+        const auth = (window.firebaseServices && window.firebaseServices.auth) ? window.firebaseServices.auth : null;
         
         // Check if already logged in
         function checkAuth() {
-            auth.onAuthStateChanged((user) => {
-                if (user) {
-                    // User is signed in, redirect to dashboard
-                    window.location.href = 'admin-dashboard.html';
-                }
-            });
+            const localUser = sessionStorage.getItem('adminLoggedIn') === 'true';
+            if (localUser) {
+                window.location.href = 'admin-dashboard.html';
+                return;
+            }
+            if (auth) {
+                auth.onAuthStateChanged((user) => {
+                    if (user) {
+                        // User is signed in, redirect to dashboard
+                        window.location.href = 'admin-dashboard.html';
+                    }
+                });
+            }
         }
         
         // Toggle password visibility
@@ -220,6 +227,18 @@
             // Validate inputs
             if (!email || !password) {
                 showError('Please enter both email and password');
+                return;
+            }
+            
+            // Offline/Local preview mode fallback
+            if (!auth) {
+                if (email === 'admin@ishanktextile.com' && password === 'admin123') {
+                    sessionStorage.setItem('adminLoggedIn', 'true');
+                    window.location.href = 'admin-dashboard.html';
+                } else {
+                    showError('Invalid local credentials (try admin@ishanktextile.com / admin123)');
+                    document.getElementById('password').value = '';
+                }
                 return;
             }
             

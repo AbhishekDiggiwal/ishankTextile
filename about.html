@@ -139,6 +139,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 <script src="firebase-config.js"></script>
+<script src="data-manager.js"></script>
 </head>
 <body class="bg-background text-on-surface font-body-md textile-overlay">
 <!-- TopNavBar -->
@@ -439,96 +440,106 @@
 
   // Dynamic Certificate and Inline Viewer Logic
   async function loadCertificates() {
+    const defaultCertificates = [
+      {
+        name: "Export License",
+        icon: "verified",
+        description: "Authorized global trade and logistics compliance."
+      },
+      {
+        name: "GST Compliance",
+        icon: "account_balance",
+        description: "Validated industrial and tax transparency."
+      },
+      {
+        name: "Import-Export License",
+        icon: "public",
+        description: "Global Trade and export authorization."
+      },
+      {
+        name: "Environmental",
+        icon: "eco",
+        description: "Sustainable sourcing and green logistics standard."
+      }
+    ];
+
+    let certificates = [];
     const db = window.firebaseServices && window.firebaseServices.db;
-    if (!db) return;
-    try {
-      const snapshot = await db.collection('certificates').get();
-      const certificates = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    if (db) {
+      try {
+        const snapshot = await db.collection('certificates').get();
+        certificates = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      } catch (error) {
+        console.error('Error loading certificates from Firestore:', error);
+      }
+    }
+
+    if (!certificates.length) {
+      try {
+        certificates = JSON.parse(localStorage.getItem('certificates')) || [];
+      } catch (e) {
+        certificates = [];
+      }
+    }
+
+    const container = document.getElementById('certificates-container');
+    if (!container) return;
+    container.innerHTML = '';
+
+    let certsToRender = [...certificates];
+    if (certsToRender.length < 4) {
+      const paddingCount = 4 - certsToRender.length;
+      const paddingCerts = defaultCertificates.slice(-paddingCount);
+      certsToRender = certsToRender.concat(paddingCerts);
+    }
+
+    certsToRender.forEach((cert) => {
+      const card = document.createElement('div');
+      card.className = 'cert-card-reveal p-stack-lg bg-white border border-surface-container-highest rounded-xl text-center group flex flex-col justify-between items-center h-full transition-all duration-700 ease-out opacity-0 translate-y-6 transform';
       
-      const container = document.getElementById('certificates-container');
-      if (!container) return;
-      container.innerHTML = '';
-
-      const defaultCertificates = [
-        {
-          name: "Export License",
-          icon: "verified",
-          description: "Authorized global trade and logistics compliance."
-        },
-        {
-          name: "GST Compliance",
-          icon: "account_balance",
-          description: "Validated industrial and tax transparency."
-        },
-        {
-          name: "Import-Export License",
-          icon: "public",
-          description: "Global Trade and export authorization."
-        },
-        {
-          name: "Environmental",
-          icon: "eco",
-          description: "Sustainable sourcing and green logistics standard."
-        }
-      ];
-
-      let certsToRender = [...certificates];
-      if (certsToRender.length < 4) {
-        const paddingCount = 4 - certsToRender.length;
-        const paddingCerts = defaultCertificates.slice(-paddingCount);
-        certsToRender = certsToRender.concat(paddingCerts);
+      let actionHtml = '';
+      if (cert.url) {
+        actionHtml = `<button onclick="viewDocument('${cert.url}', '${cert.name}')" class="mt-4 text-primary font-label-bold text-xs uppercase hover:underline flex items-center justify-center gap-1">` +
+          `<span class="material-symbols-outlined text-[14px]">visibility</span>` +
+          `<span>View Certificate</span>` +
+          `</button>`;
+      } else {
+        actionHtml = `<span class="mt-4 text-on-surface-variant font-label-bold text-xs uppercase opacity-60">Verified Active</span>`;
       }
 
-      certsToRender.forEach((cert) => {
-        const card = document.createElement('div');
-        card.className = 'cert-card-reveal p-stack-lg bg-white border border-surface-container-highest rounded-xl text-center group flex flex-col justify-between items-center h-full transition-all duration-700 ease-out opacity-0 translate-y-6 transform';
+      card.innerHTML = 
+        `<div class="flex flex-col items-center">` +
+        `<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary text-[40px] mb-stack-sm" style="font-variation-settings: 'FILL' 1;">${cert.icon || 'workspace_premium'}</span>` +
+        `<h4 class="font-label-bold text-on-surface text-base leading-snug">${cert.name}</h4>` +
+        `<p class="text-[12px] text-on-surface-variant uppercase mt-1 leading-tight">${cert.description || 'Verified Certification'}</p>` +
+        `</div>` +
+        actionHtml;
         
-        let actionHtml = '';
-        if (cert.url) {
-          actionHtml = `<button onclick="viewDocument('${cert.url}', '${cert.name}')" class="mt-4 text-primary font-label-bold text-xs uppercase hover:underline flex items-center justify-center gap-1">` +
-            `<span class="material-symbols-outlined text-[14px]">visibility</span>` +
-            `<span>View Certificate</span>` +
-            `</button>`;
-        } else {
-          actionHtml = `<span class="mt-4 text-on-surface-variant font-label-bold text-xs uppercase opacity-60">Verified Active</span>`;
+      container.appendChild(card);
+      // Force browser layout reflow to ensure the transition from initial opacity-0 state triggers correctly
+      void card.offsetHeight;
+    });
+
+    // Staggered fade-slide-up reveal for certificate cards
+    const certObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const card = entry.target;
+          const index = Array.from(container.children).indexOf(card);
+          // Stagger each card by 150ms, matching the Manufacturing Excellence cards
+          setTimeout(() => {
+            card.classList.remove('opacity-0', 'translate-y-6');
+            card.classList.add('opacity-100', 'translate-y-0');
+            card.classList.add('active');
+          }, index * 150);
+          certObserver.unobserve(card);
         }
-
-        card.innerHTML = 
-          `<div class="flex flex-col items-center">` +
-          `<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary text-[40px] mb-stack-sm" style="font-variation-settings: 'FILL' 1;">${cert.icon || 'workspace_premium'}</span>` +
-          `<h4 class="font-label-bold text-on-surface text-base leading-snug">${cert.name}</h4>` +
-          `<p class="text-[12px] text-on-surface-variant uppercase mt-1 leading-tight">${cert.description || 'Verified Certification'}</p>` +
-          `</div>` +
-          actionHtml;
-          
-        container.appendChild(card);
-        // Force browser layout reflow to ensure the transition from initial opacity-0 state triggers correctly
-        void card.offsetHeight;
       });
+    }, { threshold: 0.15 });
 
-      // Staggered fade-slide-up reveal for certificate cards
-      const certObserver = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const card = entry.target;
-            const index = Array.from(container.children).indexOf(card);
-            // Stagger each card by 150ms, matching the Manufacturing Excellence cards
-            setTimeout(() => {
-              card.classList.remove('opacity-0', 'translate-y-6');
-              card.classList.add('opacity-100', 'translate-y-0');
-              card.classList.add('active');
-            }, index * 150);
-            certObserver.unobserve(card);
-          }
-        });
-      }, { threshold: 0.15 });
-
-      container.querySelectorAll('.cert-card-reveal').forEach((card) => {
-        certObserver.observe(card);
-      });
-    } catch (error) {
-      console.error('Error loading certificates:', error);
-    }
+    container.querySelectorAll('.cert-card-reveal').forEach((card) => {
+      certObserver.observe(card);
+    });
   }
 
   // Inline Document Viewer Popup

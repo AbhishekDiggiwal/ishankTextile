@@ -11,7 +11,21 @@
     "ignore": [
       "firebase.json",
       "**/.*",
-      "**/node_modules/**"
+      "**/node_modules/**",
+      "src/**",
+      "tests/**",
+      "package.json",
+      "package-lock.json",
+      "tsconfig.json",
+      "next.config.js",
+      "postcss.config.js",
+      "tailwind.config.js",
+      ".eslintrc.json",
+      "jest.config.js",
+      "TEST_READY.md",
+      "ORIGINAL_REQUEST.md",
+      "FIREBASE_MIGRATION.md",
+      "next-env.d.ts"
     ]
   },
   "storage": {
