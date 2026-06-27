@@ -173,50 +173,78 @@
     <div class="flex flex-col md:flex-row gap-gutter">
         <!-- Sidebar Filter -->
         <aside class="w-full md:w-64 flex-shrink-0 space-y-4 md:sticky md:top-24">
-            <!-- Mobile Search Box inside filters section -->
-            <div class="block lg:hidden relative">
-                <span class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">search</span>
-                <input class="w-full bg-surface-container border border-outline-variant/30 rounded-full py-2 pl-9 pr-3 text-sm focus:ring-2 focus:ring-primary" id="mobile-catalog-search" placeholder="Search fabrics..." type="text"/>
-            </div>
-            <section>
-            <h3 class="font-label-bold text-label-bold uppercase text-primary mb-2 border-l-4 border-primary pl-3">Specifications</h3>
-            <div id="categoryFilters" class="space-y-stack-sm">
-                <div class="text-body-sm opacity-60 animate-pulse pl-1">Loading categories...</div>
-            </div>
-            </section>
-            <section>
-            <h3 class="font-label-bold text-label-bold uppercase text-primary mb-2 border-l-4 border-primary pl-3">Applications</h3>
-            <div class="space-y-stack-sm">
-            <label class="flex items-center gap-2 cursor-pointer group">
-            <input class="rounded-none border-outline text-primary focus:ring-primary" type="checkbox" data-filter="application" value="defense"/>
-            <span class="text-sm group-hover:text-primary transition-colors">Defense &amp; Security</span>
-            </label>
-            <label class="flex items-center gap-2 cursor-pointer group">
-            <input class="rounded-none border-outline text-primary focus:ring-primary" type="checkbox" data-filter="application" value="medical"/>
-            <span class="text-sm group-hover:text-primary transition-colors">Medical Grade</span>
-            </label>
-            <label class="flex items-center gap-2 cursor-pointer group">
-            <input class="rounded-none border-outline text-primary focus:ring-primary" type="checkbox" data-filter="application" value="corporate"/>
-            <span class="text-sm group-hover:text-primary transition-colors">Corporate Apparel</span>
-            </label>
-            <label class="flex items-center gap-2 cursor-pointer group">
-            <input class="rounded-none border-outline text-primary focus:ring-primary" type="checkbox" data-filter="application" value="hospitality"/>
-            <span class="text-sm group-hover:text-primary transition-colors">Hospitality</span>
-            </label>
-            </div>
-            </section>
-            <section>
-            <h3 class="font-label-bold text-label-bold uppercase text-primary mb-2 border-l-4 border-primary pl-3">GSM Range</h3>
-            <div class="px-2">
-            <input id="priceRange" class="w-full h-1 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-primary" min="100" max="500" value="500" type="range"/>
-            <div class="flex justify-between mt-2 text-body-sm text-on-surface-variant">
-            <span>100 GSM</span>
-            <span>500 GSM</span>
-            </div>
-            </div>
-            </section>
-            <div class="pt-2">
-            <button id="resetFilters" class="w-full py-stack-sm border-2 border-secondary text-secondary font-label-bold hover:bg-secondary hover:text-on-secondary transition-all active:scale-95 rounded-full uppercase text-[12px]">Reset Filters</button>
+            <!-- Mobile Toggle Filters Button -->
+            <button onclick="toggleMobileFilters()" class="md:hidden w-full flex items-center justify-between px-4 py-3 bg-surface-container border border-outline-variant/30 rounded-xl hover:bg-surface-container-high transition-colors focus:outline-none">
+                <span class="flex items-center gap-2 font-label-bold text-sm uppercase text-primary">
+                    <span class="material-symbols-outlined text-[18px]">filter_list</span>
+                    <span id="mobileFilterBtnText">Show Filters</span>
+                </span>
+                <span id="mobileFilterArrow" class="material-symbols-outlined transition-transform duration-200">keyboard_arrow_down</span>
+            </button>
+
+            <!-- Collapsible Filters Content Container -->
+            <div id="mobileFiltersContainer" class="hidden md:block space-y-4 bg-surface-container-lowest md:bg-transparent border border-outline-variant/30 md:border-none p-4 md:p-0 rounded-xl md:rounded-none">
+                <!-- Mobile Search Box inside filters section -->
+                <div class="block lg:hidden relative">
+                    <span class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">search</span>
+                    <input class="w-full bg-surface-container border border-outline-variant/30 rounded-full py-2 pl-9 pr-3 text-sm focus:ring-2 focus:ring-primary" id="mobile-catalog-search" placeholder="Search fabrics..." type="text"/>
+                </div>
+                <section>
+                <h3 class="font-label-bold text-label-bold uppercase text-primary mb-2 border-l-4 border-primary pl-3">Category</h3>
+                <div id="categoryFilters" class="space-y-stack-sm">
+                    <div class="text-body-sm opacity-60 animate-pulse pl-1">Loading categories...</div>
+                </div>
+                </section>
+                <div class="h-[2px] bg-gradient-to-r from-primary to-transparent w-full my-4" style="clip-path: polygon(0 0, 100% 40%, 100% 60%, 0 100%);"></div>
+                <section class="relative">
+                <h3 class="font-label-bold text-label-bold uppercase text-primary mb-2 border-l-4 border-primary pl-3">GSM Range</h3>
+                
+                <div class="px-2 relative pt-6 mb-4 group/slider">
+                <div class="text-[10px] text-on-surface-variant mb-1 font-label-bold uppercase">Min GSM</div>
+                <!-- Min GSM Tooltip -->
+                <div id="gsmMinTooltip" class="absolute top-0 left-0 -translate-x-1/2 bg-primary/15 backdrop-blur-md border border-primary/30 text-primary text-[10px] font-bold px-1.5 py-0.5 rounded shadow pointer-events-none opacity-0 scale-90 group-hover/slider:opacity-100 group-hover/slider:scale-100 group-focus-within/slider:opacity-100 group-focus-within/slider:scale-100 transition-all duration-150">100 GSM</div>
+                <input id="gsmMinRange" class="w-full h-1 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-primary" min="100" max="500" value="100" type="range"/>
+                <div class="flex justify-between mt-1 text-[10px] text-on-surface-variant">
+                <span>100 GSM</span>
+                <span>500 GSM</span>
+                </div>
+                </div>
+
+                <div class="px-2 relative pt-6 group/slider">
+                <div class="text-[10px] text-on-surface-variant mb-1 font-label-bold uppercase">Max GSM</div>
+                <!-- Max GSM Tooltip -->
+                <div id="gsmMaxTooltip" class="absolute top-0 left-0 -translate-x-1/2 bg-primary/15 backdrop-blur-md border border-primary/30 text-primary text-[10px] font-bold px-1.5 py-0.5 rounded shadow pointer-events-none opacity-0 scale-90 group-hover/slider:opacity-100 group-hover/slider:scale-100 group-focus-within/slider:opacity-100 group-focus-within/slider:scale-100 transition-all duration-150">500 GSM</div>
+                <input id="gsmMaxRange" class="w-full h-1 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-primary" min="100" max="500" value="500" type="range"/>
+                <div class="flex justify-between mt-1 text-[10px] text-on-surface-variant">
+                <span>100 GSM</span>
+                <span>500 GSM</span>
+                </div>
+                </div>
+                </section>
+                <div class="h-[2px] bg-gradient-to-r from-primary to-transparent w-full my-4" style="clip-path: polygon(0 0, 100% 40%, 100% 60%, 0 100%);"></div>
+                <section class="relative">
+                <h3 class="font-label-bold text-label-bold uppercase text-primary mb-2 border-l-4 border-primary pl-3">Price Range</h3>
+                <div class="px-2 relative pt-6 group/slider">
+                <!-- Price Tooltip -->
+                <div id="priceTooltip" class="absolute top-0 left-0 -translate-x-1/2 bg-primary/15 backdrop-blur-md border border-primary/30 text-primary text-[10px] font-bold px-1.5 py-0.5 rounded shadow pointer-events-none opacity-0 scale-90 group-hover/slider:opacity-100 group-hover/slider:scale-100 group-focus-within/slider:opacity-100 group-focus-within/slider:scale-100 transition-all duration-150">₹500</div>
+                <input id="priceRange" class="w-full h-1 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-primary" min="100" max="500" value="500" type="range"/>
+                <div class="flex justify-between mt-2 text-body-sm text-on-surface-variant">
+                <span>₹100</span>
+                <span>₹500</span>
+                </div>
+                </div>
+                </section>
+                <div class="h-[2px] bg-gradient-to-r from-primary to-transparent w-full my-4" style="clip-path: polygon(0 0, 100% 40%, 100% 60%, 0 100%);"></div>
+                <div class="pt-2">
+                <button id="resetFilters" class="w-full py-stack-sm border-2 border-secondary text-secondary font-label-bold hover:bg-secondary hover:text-on-secondary transition-all active:scale-95 rounded-full uppercase text-[12px]">Reset Filters</button>
+                </div>
+                <!-- Close button for mobile view -->
+                <div class="block md:hidden pt-2 border-t border-outline-variant/20">
+                    <button onclick="toggleMobileFilters()" class="w-full py-2.5 bg-surface-container border border-outline-variant/30 text-on-surface-variant font-label-bold hover:bg-surface-container-high transition-all rounded-full uppercase text-[11px] flex items-center justify-center gap-1.5">
+                        <span class="material-symbols-outlined text-[16px]">close</span>
+                        Hide Filters
+                    </button>
+                </div>
             </div>
         </aside>
 
@@ -426,18 +454,100 @@
   let currentPage = 1;
   let currentFilteredProducts = [];
 
+  function updatePriceTooltip() {
+    const slider = document.getElementById('priceRange');
+    const tooltip = document.getElementById('priceTooltip');
+    if (!slider || !tooltip) return;
+    
+    const val = Number(slider.value);
+    const min = Number(slider.min || 100);
+    const max = Number(slider.max || 500);
+    const percent = ((val - min) / (max - min)) * 100;
+    
+    tooltip.textContent = '₹' + val;
+    tooltip.style.left = `calc(${percent}% + (${10 - percent * 0.2}px))`;
+  }
+
+  function updateGsmMinTooltip() {
+    const slider = document.getElementById('gsmMinRange');
+    const tooltip = document.getElementById('gsmMinTooltip');
+    if (!slider || !tooltip) return;
+    
+    const val = Number(slider.value);
+    const min = Number(slider.min || 100);
+    const max = Number(slider.max || 500);
+    const percent = ((val - min) / (max - min)) * 100;
+    
+    tooltip.textContent = val + ' GSM';
+    tooltip.style.left = `calc(${percent}% + (${10 - percent * 0.2}px))`;
+  }
+
+  function updateGsmMaxTooltip() {
+    const slider = document.getElementById('gsmMaxRange');
+    const tooltip = document.getElementById('gsmMaxTooltip');
+    if (!slider || !tooltip) return;
+    
+    const val = Number(slider.value);
+    const min = Number(slider.min || 100);
+    const max = Number(slider.max || 500);
+    const percent = ((val - min) / (max - min)) * 100;
+    
+    tooltip.textContent = val + ' GSM';
+    tooltip.style.left = `calc(${percent}% + (${10 - percent * 0.2}px))`;
+  }
+
   function applyFilters() {
     const selectedCategories = Array.from(document.querySelectorAll('[data-filter="category"]:checked')).map((input) => input.value);
-    const selectedApplications = Array.from(document.querySelectorAll('[data-filter="application"]:checked')).map((input) => input.value.toLowerCase());
     const maxPrice = Number(document.getElementById('priceRange')?.value || 500);
+    const minGsm = Number(document.getElementById('gsmMinRange')?.value || 100);
+    const maxGsm = Number(document.getElementById('gsmMaxRange')?.value || 500);
     const search = (document.getElementById('catalog-search')?.value || document.getElementById('mobile-catalog-search')?.value || '').toLowerCase();
+    
+    // Dynamically update title and description if not in landing view
+    const categoriesView = document.getElementById('categoriesView');
+    if (categoriesView && categoriesView.classList.contains('hidden')) {
+      const titleEl = document.getElementById('catalogTitle');
+      const descEl = document.getElementById('catalogDesc');
+      if (titleEl && descEl) {
+        if (selectedCategories.length === 1) {
+          const category = allCategories.find((c) => c.id === selectedCategories[0]);
+          if (category) {
+            titleEl.textContent = category.name;
+            descEl.textContent = category.description || 'Premium textile solutions engineered for School, Defense, Medical, Corporate, Hospitality, Army, Police, and high-performance uniform sectors.';
+          }
+        } else if (selectedCategories.length === 0) {
+          titleEl.textContent = 'All Fabric Collections';
+          descEl.textContent = 'Explore our premium range of school uniform, industrial, medical, defense, and high-performance textiles engineered since 2003.';
+        } else {
+          titleEl.textContent = 'Fabric Collections';
+          descEl.textContent = 'Explore our premium range of school uniform, industrial, medical, defense, and high-performance textiles engineered since 2003.';
+        }
+      }
+    }
+
+    // Update URL query parameter without page reload
+    const params = new URLSearchParams(window.location.search);
+    if (selectedCategories.length === 1) {
+      if (params.get('category') !== selectedCategories[0]) {
+        window.history.replaceState({ categoryId: selectedCategories[0] }, '', '?category=' + encodeURIComponent(selectedCategories[0]));
+      }
+    } else {
+      if (params.has('category')) {
+        window.history.replaceState(null, '', window.location.pathname);
+      }
+    }
+
     currentFilteredProducts = allProducts.filter((product) => {
       const apps = productApplications(product).join(' ').toLowerCase();
       const categoryMatch = !selectedCategories.length || selectedCategories.includes(product.categoryId);
-      const appMatch = !selectedApplications.length || selectedApplications.some((item) => apps.includes(item));
-      const priceMatch = Number(product.startingPrice || product.price || 0) <= maxPrice;
+      const productPrice = product.priceType === 'Range' ? (product.priceMin || 0) : (product.startingPrice || product.price || 0);
+      const priceMatch = Number(productPrice) <= maxPrice;
+      
+      const productGsm = parseFloat(product.gsm);
+      const gsmMatch = isNaN(productGsm) || (productGsm >= minGsm && productGsm <= maxGsm);
+      
       const searchMatch = !search || [product.name, product.code, product.description, apps].join(' ').toLowerCase().includes(search);
-      return product.active !== false && categoryMatch && appMatch && priceMatch && searchMatch;
+      return product.active !== false && categoryMatch && priceMatch && gsmMatch && searchMatch;
     });
     currentPage = 1;
     renderProductsPage();
@@ -732,18 +842,68 @@
     renderCategoryFilters();
     checkUrlAndRender();
     recordVisit();
-    document.querySelectorAll('[data-filter]').forEach((input) => input.addEventListener('change', applyFilters));
-    document.getElementById('priceRange')?.addEventListener('input', applyFilters);
+
+    // Initialize moving tooltips
+    updatePriceTooltip();
+    updateGsmMinTooltip();
+    updateGsmMaxTooltip();
+
+    // Event listeners
+    document.getElementById('priceRange')?.addEventListener('input', () => {
+      updatePriceTooltip();
+      applyFilters();
+    });
+
+    document.getElementById('gsmMinRange')?.addEventListener('input', (e) => {
+      const minVal = Number(e.target.value);
+      const maxSlider = document.getElementById('gsmMaxRange');
+      const maxVal = Number(maxSlider.value);
+      if (minVal > maxVal) {
+        maxSlider.value = minVal;
+        updateGsmMaxTooltip();
+      }
+      updateGsmMinTooltip();
+      applyFilters();
+    });
+
+    document.getElementById('gsmMaxRange')?.addEventListener('input', (e) => {
+      const maxVal = Number(e.target.value);
+      const minSlider = document.getElementById('gsmMinRange');
+      const minVal = Number(minSlider.value);
+      if (maxVal < minVal) {
+        minSlider.value = maxVal;
+        updateGsmMinTooltip();
+      }
+      updateGsmMaxTooltip();
+      applyFilters();
+    });
+
     document.getElementById('catalog-search')?.addEventListener('input', applyFilters);
     document.getElementById('mobile-catalog-search')?.addEventListener('input', applyFilters);
     document.getElementById('resetFilters')?.addEventListener('click', () => {
       document.querySelectorAll('[data-filter]').forEach((input) => { input.checked = false; });
       const priceRange = document.getElementById('priceRange');
       if (priceRange) priceRange.value = 500;
+      
+      const gsmMin = document.getElementById('gsmMinRange');
+      if (gsmMin) gsmMin.value = 100;
+      const gsmMax = document.getElementById('gsmMaxRange');
+      if (gsmMax) gsmMax.value = 500;
+
       const search = document.getElementById('catalog-search');
       if (search) search.value = '';
       const searchM = document.getElementById('mobile-catalog-search');
       if (searchM) searchM.value = '';
+      
+      // Update tooltips on reset
+      updatePriceTooltip();
+      updateGsmMinTooltip();
+      updateGsmMaxTooltip();
+      
+      // Clear URL parameter on reset
+      if (window.history.replaceState) {
+        window.history.replaceState(null, '', window.location.pathname);
+      }
       
       // Reset category header title and description back to defaults
       const titleEl = document.getElementById('catalogTitle');
@@ -779,5 +939,24 @@
       }, 300);
     }
   }
+
+  function toggleMobileFilters() {
+    const container = document.getElementById('mobileFiltersContainer');
+    const textEl = document.getElementById('mobileFilterBtnText');
+    const arrow = document.getElementById('mobileFilterArrow');
+    if (!container || !textEl || !arrow) return;
+    
+    const isHidden = container.classList.contains('hidden');
+    if (isHidden) {
+      container.classList.remove('hidden');
+      textEl.textContent = 'Hide Filters';
+      arrow.classList.add('rotate-180');
+    } else {
+      container.classList.add('hidden');
+      textEl.textContent = 'Show Filters';
+      arrow.classList.remove('rotate-180');
+    }
+  }
+  window.toggleMobileFilters = toggleMobileFilters;
 </script>
 </body></html>
