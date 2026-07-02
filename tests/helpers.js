@@ -10,7 +10,7 @@ const { JSDOM, VirtualConsole } = require('jsdom');
 
 
 function loadPage(htmlFileName, options = {}) {
-  const { initialProducts = [], initialCategories = [], initialSettings = null, offlineMode = false, adminLoggedIn = false } = options;
+  const { initialProducts = [], initialCategories = [], initialSettings = null, offlineMode = false, adminLoggedIn = false, disableSettingsMethod = false } = options;
 
   const filePath = path.resolve(__dirname, '..', htmlFileName);
   let html = fs.readFileSync(filePath, 'utf8');
@@ -235,7 +235,7 @@ function loadPage(htmlFileName, options = {}) {
 
   // Replace local script sources with inline contents
   html = html.replace(/<script[^>]*src="firebase-config\.js"[^>]*><\/script>/gi, '<!-- config mocked -->');
-  html = html.replace(/<script[^>]*src="data-manager\.js"[^>]*><\/script>/gi, `<script>${dataManagerCode}\nwindow.DataManager = DataManager;</script>`);
+  html = html.replace(/<script[^>]*src="data-manager\.js(?:\?[^"]*)?"[^>]*><\/script>/gi, `<script>${dataManagerCode}\nwindow.DataManager = DataManager;\nif (${disableSettingsMethod}) { DataManager.getSettings = undefined; window.DataManager.getSettings = undefined; }</script>`);
 
   const virtualConsole = new VirtualConsole();
   virtualConsole.sendTo(console);

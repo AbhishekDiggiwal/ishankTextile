@@ -111,7 +111,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 <script src="firebase-config.js"></script>
-<script src="data-manager.js"></script>
+<script src="data-manager.js?v=20260703-catalogue-fetch"></script>
 </head>
 <body class="bg-background text-on-surface font-body-md overflow-x-hidden">
 <!-- TopNavBar -->
@@ -354,7 +354,8 @@
   let allCategories = [];
   let currentViewMode = 'grid'; // 'grid' or 'list'
   let currentActiveCategory = null;
-  let priceDisplaySettings = { showCategoryPrices: true, showProductPrices: true };
+  const defaultPriceDisplaySettings = { showCategoryPrices: true, showProductPrices: true };
+  let priceDisplaySettings = Object.assign({}, defaultPriceDisplaySettings);
 
   function escapeHtml(value) {
     return String(value || '').replace(/[&<>"]/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[char]));
@@ -374,6 +375,52 @@
     if (hasNumberValue(product.startingPrice)) return Number(product.startingPrice);
     if (hasNumberValue(product.price)) return Number(product.price);
     return null;
+  }
+
+  function getCatalogueDataManager() {
+    if (typeof DataManager !== 'undefined') return DataManager;
+    return window.DataManager || null;
+  }
+
+  function rejectAfter(ms, message) {
+    return new Promise((_, reject) => {
+      setTimeout(() => reject(new Error(message)), ms);
+    });
+  }
+
+  async function loadPriceDisplaySettings() {
+    const defaults = Object.assign({}, defaultPriceDisplaySettings);
+    try {
+      const manager = getCatalogueDataManager();
+      if (!manager || typeof manager.getSettings !== 'function') {
+        return defaults;
+      }
+      const settings = await Promise.race([
+        manager.getSettings(),
+        rejectAfter(2500, 'Settings read timed out')
+      ]);
+      return Object.assign(defaults, settings || {});
+    } catch (error) {
+      console.warn('Using default catalogue price display settings:', error);
+      return defaults;
+    }
+  }
+
+  async function loadCatalogueData() {
+    const manager = getCatalogueDataManager();
+    if (!manager || typeof manager.getCategories !== 'function' || typeof manager.getProducts !== 'function') {
+      throw new Error('Catalogue data manager is unavailable');
+    }
+
+    const [settings, categories, products] = await Promise.all([
+      loadPriceDisplaySettings(),
+      manager.getCategories(),
+      manager.getProducts()
+    ]);
+
+    priceDisplaySettings = settings;
+    allCategories = (Array.isArray(categories) ? categories : []).filter((category) => category.active !== false);
+    allProducts = (Array.isArray(products) ? products : []).filter((product) => product.active !== false);
   }
 
   function formatProductPrice(product) {
@@ -858,9 +905,14 @@
   });
 
   document.addEventListener('DOMContentLoaded', async () => {
-    priceDisplaySettings = await DataManager.getSettings();
-    allCategories = (await DataManager.getCategories()).filter((category) => category.active !== false);
-    allProducts = (await DataManager.getProducts()).filter((product) => product.active !== false);
+    try {
+      await loadCatalogueData();
+    } catch (error) {
+      console.error('Unable to load fabric catalogue data:', error);
+      allCategories = [];
+      allProducts = [];
+    }
+
     renderCategoryFilters();
     checkUrlAndRender();
     recordVisit();

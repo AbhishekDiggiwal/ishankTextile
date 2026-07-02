@@ -87,3 +87,7 @@ const DataManager = {
     return Object.assign({}, defaults, JSON.parse(localStorage.getItem('settings') || '{}'));
   }
 };
+
+if (typeof window !== 'undefined') {
+  window.DataManager = DataManager;
+}

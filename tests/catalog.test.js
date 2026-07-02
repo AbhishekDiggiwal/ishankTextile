@@ -250,4 +250,24 @@ describe('Feature 3: Catalog Search & Filters', () => {
     expect(productsGridText).not.toContain('₹0');
     expect(productsGridText).toContain('No Price Fabric');
   });
+
+  test('Tier 2: Missing settings fetch does not block catalogue cards', async () => {
+    window.close();
+    dom = loadPage('products-catalogue.html', {
+      initialProducts: testProducts,
+      initialCategories: testCategories,
+      disableSettingsMethod: true
+    });
+    window = dom.window;
+    document = dom.window.document;
+
+    await new Promise(resolve => setTimeout(resolve, 100));
+
+    const categoriesViewText = document.getElementById('categoriesView').textContent;
+    expect(categoriesViewText).toContain('Vat-Dyed');
+    expect(categoriesViewText).not.toContain('Loading Collections');
+
+    window.selectCategory('cat1');
+    expect(document.getElementById('productsGrid').textContent).toContain('Premium Twill Fabric');
+  });
 });
