@@ -354,6 +354,7 @@
   let allCategories = [];
   let currentViewMode = 'grid'; // 'grid' or 'list'
   let currentActiveCategory = null;
+  let priceDisplaySettings = { showCategoryPrices: true, showProductPrices: true };
 
   function escapeHtml(value) {
     return String(value || '').replace(/[&<>"]/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[char]));
@@ -362,16 +363,30 @@
     return Array.isArray(product.applications) ? product.applications : String(product.applications || '').split(',').map((item) => item.trim()).filter(Boolean);
   }
 
+  function hasNumberValue(value) {
+    return value !== null && value !== undefined && value !== '' && Number.isFinite(Number(value));
+  }
+
+  function getProductPrimaryPrice(product) {
+    if (product.priceType === 'Range') {
+      return hasNumberValue(product.priceMin) ? Number(product.priceMin) : null;
+    }
+    if (hasNumberValue(product.startingPrice)) return Number(product.startingPrice);
+    if (hasNumberValue(product.price)) return Number(product.price);
+    return null;
+  }
+
   function formatProductPrice(product) {
+    if (priceDisplaySettings.showProductPrices === false) return '';
     const unit = product.priceUnit === 'kg' ? 'kg' : 'm';
     if (product.priceType === 'Range') {
-      const min = product.priceMin || 0;
-      const max = product.priceMax || 0;
-      return '<span class="whitespace-nowrap">₹' + min + ' - ₹' + max + '<span class="text-[10px] text-on-surface-variant font-normal">/' + unit + '</span></span>';
+      if (!hasNumberValue(product.priceMin) || !hasNumberValue(product.priceMax)) return '';
+      return '<span class="whitespace-nowrap">&#8377;' + Number(product.priceMin) + ' - &#8377;' + Number(product.priceMax) + '<span class="text-[10px] text-on-surface-variant font-normal">/' + unit + '</span></span>';
     } else {
-      const price = product.startingPrice || product.price || 0;
+      const price = getProductPrimaryPrice(product);
+      if (price === null) return '';
       return '<span class="text-[9px] text-on-surface-variant font-normal uppercase tracking-wider block text-right leading-none mb-0.5 whitespace-nowrap">Starting Price</span>' +
-             '<span class="whitespace-nowrap">₹' + price + '<span class="text-[10px] text-on-surface-variant font-normal">/' + unit + '</span></span>';
+             '<span class="whitespace-nowrap">&#8377;' + price + '<span class="text-[10px] text-on-surface-variant font-normal">/' + unit + '</span></span>';
     }
   }
 
@@ -385,7 +400,7 @@
   function productCardGrid(product, index) {
     const category = allCategories.find((item) => item.id === product.categoryId);
     const applications = productApplications(product);
-    const price = product.startingPrice || product.price || 0;
+    const price = getProductPrimaryPrice(product);
     const featured = index === 2 && currentViewMode !== 'list';
     
     // Compact classes
@@ -406,12 +421,16 @@
     const clothingTagHtml = clothingTag 
       ? '  <span class="inline-flex items-center px-2.5 py-0.5 bg-primary/[0.08] backdrop-blur-md text-primary border border-primary/20 text-[9px] font-label-bold font-normal rounded-full uppercase tracking-wider shadow-sm leading-none">\n                ' + escapeHtml(clothingTag) + '\n              </span>'
       : '';
+    const productPriceHtml = formatProductPrice(product);
+    const productMetaHtml = (productPriceHtml || clothingTagHtml)
+      ? '<div class="text-primary font-bold text-base flex-shrink-0 text-right flex flex-col justify-end items-end gap-1.5">' + productPriceHtml + clothingTagHtml + '</div>'
+      : '';
       
-    return '<article onclick="recordFabricVisit(\'' + escapeHtml(product.id) + '\')" class="' + cardClass + '" data-category="' + escapeHtml(product.categoryId) + '" data-price="' + price + '" data-application="' + applications.join(' ').toLowerCase() + '">' +
+    return '<article onclick="recordFabricVisit(\'' + escapeHtml(product.id) + '\')" class="' + cardClass + '" data-category="' + escapeHtml(product.categoryId) + '" data-price="' + (price === null ? '' : price) + '" data-application="' + applications.join(' ').toLowerCase() + '">' +
       '<div class="' + imageClass + '"><img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" src="' + escapeHtml(product.image || fallbackProducts[index % fallbackProducts.length].image) + '" alt="' + escapeHtml(product.name) + '"><div class="absolute top-3 right-3 bg-primary px-2.5 py-0.5 text-on-primary font-label-bold text-[10px] uppercase rounded-full">' + escapeHtml(category ? category.name : 'Textile') + '</div></div>' +
       '<div class="' + contentClass + '"><div class="flex justify-between items-start mb-2 gap-stack-md"><div class="flex-grow min-w-0"><h4 class="text-base font-bold text-on-surface leading-tight">' + escapeHtml(product.name) + '</h4>' +
       '  <div class="text-on-surface-variant text-[14px] mt-1.5 font-semibold font-mono tracking-wider">' + escapeHtml(product.code || 'IT-FABRIC') + '</div>' +
-      '</div><div class="text-primary font-bold text-base flex-shrink-0 text-right flex flex-col justify-end items-end gap-1.5">' + formatProductPrice(product) + clothingTagHtml + '</div></div>' +
+      '</div>' + productMetaHtml + '</div>' +
       '<p class="text-on-surface-variant text-[12px] mb-2 line-clamp-2">' + escapeHtml(product.description) + '</p>' +
       '<div class="grid grid-cols-3 gap-2 my-2 border-y border-outline-variant/20 py-1.5 text-[11px]">' +
       '<div class="flex flex-col items-start"><span class="text-on-surface-variant text-[10px] uppercase font-label-bold">GSM</span><span class="font-bold">' + escapeHtml(product.gsm || 'Custom') + '</span></div>' +
@@ -424,7 +443,7 @@
   function productCardList(product, index) {
     const category = allCategories.find((item) => item.id === product.categoryId);
     const applications = productApplications(product);
-    const price = product.startingPrice || product.price || 0;
+    const price = getProductPrimaryPrice(product);
     
     const cardClass = 'group bg-surface-container border border-outline-variant/50 flex flex-col md:flex-row hover:shadow-2xl transition-all duration-300 relative overflow-hidden fabric-texture-overlay product-card h-auto md:h-48 rounded-xl';
     const imageClass = 'w-full md:w-[200px] h-44 md:h-full overflow-hidden relative flex-shrink-0';
@@ -434,13 +453,17 @@
     const clothingTagHtml = clothingTag 
       ? '  <span class="inline-flex items-center px-2.5 py-0.5 bg-primary/[0.08] backdrop-blur-md text-primary border border-primary/20 text-[9px] font-label-bold font-normal rounded-full uppercase tracking-wider shadow-sm leading-none">\n                ' + escapeHtml(clothingTag) + '\n              </span>'
       : '';
+    const productPriceHtml = formatProductPrice(product);
+    const productMetaHtml = (productPriceHtml || clothingTagHtml)
+      ? '<div class="text-primary font-bold text-sm md:text-[16px] flex-shrink-0 text-right flex flex-col justify-end items-end gap-1.5">' + productPriceHtml + clothingTagHtml + '</div>'
+      : '';
     
-    return '<article onclick="recordFabricVisit(\'' + escapeHtml(product.id) + '\')" class="' + cardClass + '" data-category="' + escapeHtml(product.categoryId) + '" data-price="' + price + '" data-application="' + applications.join(' ').toLowerCase() + '">' +
+    return '<article onclick="recordFabricVisit(\'' + escapeHtml(product.id) + '\')" class="' + cardClass + '" data-category="' + escapeHtml(product.categoryId) + '" data-price="' + (price === null ? '' : price) + '" data-application="' + applications.join(' ').toLowerCase() + '">' +
       '<div class="' + imageClass + '"><img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="' + escapeHtml(product.image || fallbackProducts[index % fallbackProducts.length].image) + '" alt="' + escapeHtml(product.name) + '"><div class="absolute top-3 left-3 bg-primary text-on-primary px-2.5 py-0.5 text-[9px] uppercase font-label-bold rounded-full">' + escapeHtml(category ? category.name : 'Textile') + '</div></div>' +
       '<div class="' + contentClass + '">' +
       '  <div class="flex justify-between items-start gap-2"><div class="flex-grow min-w-0"><h4 class="text-sm md:text-[16px] font-bold text-on-surface leading-tight">' + escapeHtml(product.name) + '</h4>' +
       '  <div class="text-on-surface-variant text-[14px] mt-1.5 font-semibold font-mono tracking-wider">' + escapeHtml(product.code || 'IT-FABRIC') + '</div>' +
-      '</div><div class="text-primary font-bold text-sm md:text-[16px] flex-shrink-0 text-right flex flex-col justify-end items-end gap-1.5">' + formatProductPrice(product) + clothingTagHtml + '</div></div>' +
+      '</div>' + productMetaHtml + '</div>' +
       '  <p class="text-on-surface-variant text-[11px] md:text-xs my-1 line-clamp-1">' + escapeHtml(product.description) + '</p>' +
       '  <div class="grid grid-cols-3 gap-2 my-1 border-y border-outline-variant/20 py-1 text-[11px]">' +
       '<div class="flex flex-col items-start"><span class="text-on-surface-variant text-[9px] md:text-[10px] uppercase font-label-bold">GSM</span><span class="font-bold">' + escapeHtml(product.gsm || 'Custom') + '</span></div>' +
@@ -541,8 +564,8 @@
     currentFilteredProducts = allProducts.filter((product) => {
       const apps = productApplications(product).join(' ').toLowerCase();
       const categoryMatch = !selectedCategories.length || selectedCategories.includes(product.categoryId);
-      const productPrice = product.priceType === 'Range' ? (product.priceMin || 0) : (product.startingPrice || product.price || 0);
-      const priceMatch = Number(productPrice) <= maxPrice;
+      const productPrice = getProductPrimaryPrice(product);
+      const priceMatch = productPrice === null || Number(productPrice) <= maxPrice;
       
       const productGsm = parseFloat(product.gsm);
       const gsmMatch = isNaN(productGsm) || (productGsm >= minGsm && productGsm <= maxGsm);
@@ -787,13 +810,15 @@
     }
     
     container.innerHTML = allCategories.map((category, index) => {
-      // Find minimum starting price for products in this category
       const catProducts = allProducts.filter(p => p.categoryId === category.id && p.active !== false);
-      const minPrice = catProducts.reduce((min, p) => {
-        const price = parseFloat(p.startingPrice || p.price || 0);
-        return price > 0 && (min === 0 || price < min) ? price : min;
-      }, 0) || parseFloat(category.startingPrice || 180);
-      
+      const showCategoryPrice = priceDisplaySettings.showCategoryPrices !== false && hasNumberValue(category.startingPrice);
+      const categoryFooterHtml = showCategoryPrice ? `
+            <div class="mt-auto flex justify-between items-center pt-3 border-t border-outline-variant/20">
+              <span class="text-primary text-[12px]">Starting from <span class="text-base font-bold">&#8377;${Number(category.startingPrice)}</span><span class="text-[10px] text-on-surface-variant font-normal">/m</span></span>
+              <span class="flex items-center justify-center w-7 h-7 rounded-full bg-primary text-on-primary group-hover:translate-x-1 transition-transform">
+                <span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 0, 'wght' 600, 'GRAD' 0, 'opsz' 18">arrow_forward</span>
+              </span>
+            </div>` : '';
       const cardImage = category.image || (catProducts[0] ? catProducts[0].image : 'https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=800');
       
       return `
@@ -810,12 +835,7 @@
                 ${escapeHtml(category.clothing || 'Suiting')}
               </span>
             </div>
-            <div class="mt-auto flex justify-between items-center pt-3 border-t border-outline-variant/20">
-              <span class="text-primary text-[12px]">Starting from <span class="text-base font-bold">₹${minPrice}</span><span class="text-[10px] text-on-surface-variant font-normal">/m</span></span>
-              <span class="flex items-center justify-center w-7 h-7 rounded-full bg-primary text-on-primary group-hover:translate-x-1 transition-transform">
-                <span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 0, 'wght' 600, 'GRAD' 0, 'opsz' 18">arrow_forward</span>
-              </span>
-            </div>
+            ${categoryFooterHtml}
           </div>
         </div>
       `;
@@ -838,6 +858,7 @@
   });
 
   document.addEventListener('DOMContentLoaded', async () => {
+    priceDisplaySettings = await DataManager.getSettings();
     allCategories = (await DataManager.getCategories()).filter((category) => category.active !== false);
     allProducts = (await DataManager.getProducts()).filter((product) => product.active !== false);
     renderCategoryFilters();

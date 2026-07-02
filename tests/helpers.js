@@ -10,7 +10,7 @@ const { JSDOM, VirtualConsole } = require('jsdom');
 
 
 function loadPage(htmlFileName, options = {}) {
-  const { initialProducts = [], initialCategories = [], offlineMode = false, adminLoggedIn = false } = options;
+  const { initialProducts = [], initialCategories = [], initialSettings = null, offlineMode = false, adminLoggedIn = false } = options;
 
   const filePath = path.resolve(__dirname, '..', htmlFileName);
   let html = fs.readFileSync(filePath, 'utf8');
@@ -121,7 +121,7 @@ function loadPage(htmlFileName, options = {}) {
             products: new MockFirestoreCollection('products', ${JSON.stringify(initialProducts)}),
             categories: new MockFirestoreCollection('categories', ${JSON.stringify(initialCategories)}),
             quotes: new MockFirestoreCollection('quotes'),
-            settings: new MockFirestoreCollection('settings'),
+            settings: new MockFirestoreCollection('settings', ${JSON.stringify(initialSettings ? { general: initialSettings } : {})}),
             certificates: new MockFirestoreCollection('certificates')
           };
         }
@@ -178,8 +178,11 @@ function loadPage(htmlFileName, options = {}) {
         storage: null
       };
 
-      if (${adminLoggedIn}) {
-        window.sessionStorage.setItem('adminLoggedIn', 'true');
+      if (${adminLoggedIn} && window.firebaseServices.auth) {
+        window.firebaseServices.auth.currentUser = {
+          email: 'admin@ishanktextile.com',
+          uid: 'admin_uid'
+        };
       }
 
       window.scrollTo = () => {};

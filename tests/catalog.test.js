@@ -198,4 +198,56 @@ describe('Feature 3: Catalog Search & Filters', () => {
     expect(document.getElementById('resultCount').textContent).toBe('1');
     expect(document.getElementById('productsGrid').textContent).toContain('Cotton Shirting Fabric');
   });
+
+  test('Tier 2: Admin price visibility settings hide category and fabric card prices', async () => {
+    window.close();
+    dom = loadPage('products-catalogue.html', {
+      initialProducts: testProducts,
+      initialCategories: testCategories,
+      initialSettings: {
+        showCategoryPrices: false,
+        showProductPrices: false
+      }
+    });
+    window = dom.window;
+    document = window.document;
+
+    await new Promise(resolve => setTimeout(resolve, 100));
+
+    const categoriesView = document.getElementById('categoriesView');
+    expect(categoriesView.textContent).not.toContain('Starting from');
+    expect(categoriesView.textContent).not.toContain('arrow_forward');
+
+    window.selectCategory('cat1');
+    const productsGridText = document.getElementById('productsGrid').textContent;
+    expect(productsGridText).not.toContain('Starting Price');
+    expect(productsGridText).not.toContain('₹380');
+    expect(productsGridText).toContain('Premium Twill Fabric');
+  });
+
+  test('Tier 2: Null DB prices do not render default category or product prices', async () => {
+    window.close();
+    dom = loadPage('products-catalogue.html', {
+      initialProducts: {
+        p1: { id: 'p1', name: 'No Price Fabric', code: 'NP-001', categoryId: 'cat1', startingPrice: null, price: null, priceUnit: 'm', active: true, gsm: 240, applications: 'defense', description: 'Price pending' }
+      },
+      initialCategories: {
+        cat1: { id: 'cat1', name: 'No Price Category', clothing: 'Suiting', active: true, description: 'No DB price yet', startingPrice: null }
+      }
+    });
+    window = dom.window;
+    document = dom.window.document;
+
+    await new Promise(resolve => setTimeout(resolve, 100));
+
+    const categoriesViewText = document.getElementById('categoriesView').textContent;
+    expect(categoriesViewText).not.toContain('Starting from');
+    expect(categoriesViewText).not.toContain('₹180');
+
+    window.selectCategory('cat1');
+    const productsGridText = document.getElementById('productsGrid').textContent;
+    expect(productsGridText).not.toContain('Starting Price');
+    expect(productsGridText).not.toContain('₹0');
+    expect(productsGridText).toContain('No Price Fabric');
+  });
 });

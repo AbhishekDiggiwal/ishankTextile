@@ -463,7 +463,11 @@ Send Inquiry
       sessionStorage.removeItem('quoteProduct');
     }
   }
+  let contactPageInitialized = false;
   document.addEventListener('DOMContentLoaded', async () => {
+    if (contactPageInitialized) return;
+    contactPageInitialized = true;
+
     await loadProducts();
     checkPreselectedProduct();
     document.getElementById('subject').addEventListener('change', toggleProductSelection);

@@ -61,9 +61,9 @@ describe('Tier 3: Cross-Feature Combinations', () => {
     expect(document.getElementById('productsGrid').textContent).toContain('Woolen Winter Suit');
   });
 
-  // Combination 2: User auth login (offline fallback) + Redirect to Dashboard + Session storage validation
+  // Combination 2: Firebase Auth login + Redirect to Dashboard + authenticated dashboard access
   test('Combination 2: User login flow transitions state and credentials validate correctly', async () => {
-    dom = loadPage('admin-login.html', { offlineMode: true });
+    dom = loadPage('admin-login.html');
     window = dom.window;
     document = window.document;
 
@@ -71,7 +71,7 @@ describe('Tier 3: Cross-Feature Combinations', () => {
     delete window.location;
     window.location = { href: 'http://localhost/admin-login.html' };
 
-    // Fill in correct fallback login details
+    // Fill in valid Firebase Auth credentials
     document.getElementById('email').value = 'admin@ishanktextile.com';
     document.getElementById('password').value = 'admin123';
     
@@ -80,18 +80,19 @@ describe('Tier 3: Cross-Feature Combinations', () => {
     const event = new window.Event('submit', { bubbles: true, cancelable: true });
     form.dispatchEvent(event);
 
-    expect(window.sessionStorage.getItem('adminLoggedIn')).toBe('true');
+    await new Promise(resolve => setTimeout(resolve, 50));
+
+    expect(window.firebaseServices.auth.currentUser).not.toBeNull();
     expect(window.location.href).toBe('admin-dashboard.html');
 
-    // Load admin dashboard to verify it respects the authentication state
-    const dashDom = loadPage('admin-dashboard.html', { offlineMode: true });
-    dashDom.window.sessionStorage.setItem('adminLoggedIn', 'true');
+    // Load admin dashboard to verify it respects Firebase authentication state
+    const dashDom = loadPage('admin-dashboard.html', { adminLoggedIn: true });
     
     // Wait for auth initialization checks on DOMContentLoaded
     await new Promise(resolve => setTimeout(resolve, 50));
     
-    // The dash page should not redirect to login page (i.e. location.href shouldn't change)
-    expect(dashDom.window.sessionStorage.getItem('adminLoggedIn')).toBe('true');
+    // The dash page should not redirect to login page.
+    expect(dashDom.window.location.href).toBe('http://localhost/admin-dashboard.html');
     dashDom.window.close();
   });
 
@@ -100,12 +101,11 @@ describe('Tier 3: Cross-Feature Combinations', () => {
     // Load admin dashboard directly with session authenticated
     dom = loadPage('admin-dashboard.html', {
       initialCategories: testCategories,
-      initialProducts: testProducts
+      initialProducts: testProducts,
+      adminLoggedIn: true
     });
     window = dom.window;
     document = window.document;
-
-    window.sessionStorage.setItem('adminLoggedIn', 'true');
 
     // Wait for dashboard init
     await new Promise(resolve => setTimeout(resolve, 100));
@@ -135,8 +135,32 @@ describe('Tier 3: Cross-Feature Combinations', () => {
     expect(newCategory.data().startingPrice).toBe(600);
   });
 
-  // Combination 4: Quote form URL pre-population + Form Submit + Firestore saving
-  test('Combination 4: URL pre-population combined with submission writes correctly to Firestore', async () => {
+  test('Combination 4: Dashboard price visibility toggles persist display settings', async () => {
+    dom = loadPage('admin-dashboard.html', {
+      initialCategories: testCategories,
+      initialProducts: testProducts,
+      adminLoggedIn: true
+    });
+    window = dom.window;
+    document = window.document;
+
+    await new Promise(resolve => setTimeout(resolve, 100));
+
+    expect(document.getElementById('category-price-toggle').textContent).toContain('Hide Prices');
+    expect(document.getElementById('product-price-toggle').textContent).toContain('Hide Prices');
+
+    await window.toggleCategoryPriceVisibility();
+    await window.toggleProductPriceVisibility();
+
+    const settingsDoc = await window.firebaseServices.db.collection('settings').doc('general').get();
+    expect(settingsDoc.data().showCategoryPrices).toBe(false);
+    expect(settingsDoc.data().showProductPrices).toBe(false);
+    expect(document.getElementById('category-price-toggle').textContent).toContain('Show Prices');
+    expect(document.getElementById('product-price-toggle').textContent).toContain('Show Prices');
+  });
+
+  // Combination 5: Quote form URL pre-population + Form Submit + Firestore saving
+  test('Combination 5: URL pre-population combined with submission writes correctly to Firestore', async () => {
     // Open contact.html with pre-selected product query parameter
     dom = loadPage('contact.html', {
       initialProducts: testProducts,

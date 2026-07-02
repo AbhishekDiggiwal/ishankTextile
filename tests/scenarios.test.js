@@ -89,7 +89,7 @@ describe('Tier 4: Real-World Application Scenarios', () => {
   // Scenario 2: Administrative Login -> Dashboard Review -> Category Deletion Flow
   test('Scenario 2: Admin login, dashboard review, and category deletion flow', async () => {
     // 1. Admin logs in via admin-login.html
-    dom = loadPage('admin-login.html', { offlineMode: true });
+    dom = loadPage('admin-login.html');
     window = dom.window;
     document = window.document;
 
@@ -102,14 +102,15 @@ describe('Tier 4: Real-World Application Scenarios', () => {
     const form = document.getElementById('loginForm');
     form.dispatchEvent(new window.Event('submit'));
 
-    expect(window.sessionStorage.getItem('adminLoggedIn')).toBe('true');
+    await new Promise(resolve => setTimeout(resolve, 50));
+
+    expect(window.firebaseServices.auth.currentUser).not.toBeNull();
     window.close();
 
     // 2. Admin views dashboard.html
     const dashDom = loadPage('admin-dashboard.html', {
       initialCategories: testCategories,
       initialProducts: testProducts,
-      offlineMode: true,
       adminLoggedIn: true
     });
     const dashDoc = dashDom.window.document;
@@ -182,7 +183,6 @@ describe('Tier 4: Real-World Application Scenarios', () => {
     dom = loadPage('admin-dashboard.html', {
       initialCategories: testCategories,
       initialProducts: testProducts,
-      offlineMode: true,
       adminLoggedIn: true
     });
     window = dom.window;
@@ -218,7 +218,6 @@ describe('Tier 4: Real-World Application Scenarios', () => {
     dom = loadPage('admin-dashboard.html', {
       initialCategories: testCategories,
       initialProducts: testProducts,
-      offlineMode: true,
       adminLoggedIn: true
     });
     window = dom.window;

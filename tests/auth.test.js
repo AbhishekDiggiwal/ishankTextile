@@ -38,16 +38,26 @@ describe('Feature 2: Admin Authentication', () => {
   test('Tier 1: Toggle password visibility changes input type to text', () => {
     const password = document.getElementById('password');
     const toggleBtn = document.querySelector('button[type="button"]'); // password toggle button
+
+    expect(document.getElementById('togglePasswordLabel')).toBeNull();
+    expect(toggleBtn.textContent.trim()).toBe('');
+    expect(toggleBtn.classList.contains('right-3')).toBe(true);
+    expect(toggleBtn.getAttribute('aria-label')).toBe('Show password');
+    expect(toggleBtn.getAttribute('aria-pressed')).toBe('false');
     
     // Trigger password toggle function directly or via click
     window.togglePassword();
     expect(password.type).toBe('text');
+    expect(toggleBtn.getAttribute('aria-label')).toBe('Hide password');
+    expect(toggleBtn.getAttribute('aria-pressed')).toBe('true');
 
     window.togglePassword();
     expect(password.type).toBe('password');
+    expect(toggleBtn.getAttribute('aria-label')).toBe('Show password');
+    expect(toggleBtn.getAttribute('aria-pressed')).toBe('false');
   });
 
-  test('Tier 1: Offline mode fallback credentials succeed', () => {
+  test('Tier 1: Login is blocked when Firebase Auth is unavailable', () => {
     window.close();
     dom = loadPage('admin-login.html', { offlineMode: true });
     window = dom.window;
@@ -62,8 +72,9 @@ describe('Feature 2: Admin Authentication', () => {
     const event = new window.Event('submit', { bubbles: true, cancelable: true });
     form.dispatchEvent(event);
 
-    expect(window.sessionStorage.getItem('adminLoggedIn')).toBe('true');
-    expect(window.location.href).toBe('admin-dashboard.html');
+    expect(window.sessionStorage.getItem('adminLoggedIn')).toBeNull();
+    expect(window.location.href).toBe('http://localhost/admin-login.html');
+    expect(document.getElementById('errorText').textContent).toContain('authentication is unavailable');
   });
 
   test('Tier 1: Online Firebase Auth login succeeds with correct credentials', async () => {
@@ -87,7 +98,7 @@ describe('Feature 2: Admin Authentication', () => {
   });
 
   // TIER 2: Boundary & Corner Cases (>= 5 assertions/cases)
-  test('Tier 2: Invalid offline fallback credentials show correct error message and clear password', () => {
+  test('Tier 2: Unavailable Firebase Auth never accepts local credentials', () => {
     window.close();
     dom = loadPage('admin-login.html', { offlineMode: true });
     window = dom.window;
@@ -106,8 +117,9 @@ describe('Feature 2: Admin Authentication', () => {
     const errorText = document.getElementById('errorText');
     
     expect(errorDiv.classList.contains('hidden')).toBe(false);
-    expect(errorText.textContent).toContain('Invalid local credentials');
+    expect(errorText.textContent).toContain('authentication is unavailable');
     expect(document.getElementById('password').value).toBe('');
+    expect(window.sessionStorage.getItem('adminLoggedIn')).toBeNull();
   });
 
   test('Tier 2: Missing email or password shows local input validation error', () => {

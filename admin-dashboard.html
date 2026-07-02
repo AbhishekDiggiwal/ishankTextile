@@ -288,10 +288,16 @@
                             <h3 class="text-lg font-bold text-dark-gray">Product Categories</h3>
                             <p class="text-sm text-gray-500">Manage product categories and their details</p>
                         </div>
-                        <button onclick="openCategoryModal()" class="bg-brand-orange hover:bg-brand-orange-dark text-white px-6 py-2 rounded-lg font-medium transition-all flex items-center space-x-2">
-                            <i class="fas fa-plus"></i>
-                            <span>Add Category</span>
-                        </button>
+                        <div class="flex flex-wrap items-center justify-end gap-3">
+                            <button id="category-price-toggle" type="button" onclick="toggleCategoryPriceVisibility()" class="border border-outline-variant text-on-surface px-4 py-2 rounded-lg font-medium transition-all flex items-center gap-2 hover:border-primary hover:text-primary">
+                                <span class="material-symbols-outlined text-base">visibility</span>
+                                <span>Show Prices</span>
+                            </button>
+                            <button onclick="openCategoryModal()" class="bg-brand-orange hover:bg-brand-orange-dark text-white px-6 py-2 rounded-lg font-medium transition-all flex items-center space-x-2">
+                                <i class="fas fa-plus"></i>
+                                <span>Add Category</span>
+                            </button>
+                        </div>
                     </div>
 
                     <!-- Filter Bar -->
@@ -333,10 +339,16 @@
                             <h3 class="text-lg font-bold text-dark-gray">Products</h3>
                             <p class="text-sm text-gray-500">Manage products within categories</p>
                         </div>
-                        <button onclick="openProductModal()" class="bg-brand-orange hover:bg-brand-orange-dark text-white px-6 py-2 rounded-lg font-medium transition-all flex items-center space-x-2">
-                            <i class="fas fa-plus"></i>
-                            <span>Add Product</span>
-                        </button>
+                        <div class="flex flex-wrap items-center justify-end gap-3">
+                            <button id="product-price-toggle" type="button" onclick="toggleProductPriceVisibility()" class="border border-outline-variant text-on-surface px-4 py-2 rounded-lg font-medium transition-all flex items-center gap-2 hover:border-primary hover:text-primary">
+                                <span class="material-symbols-outlined text-base">visibility</span>
+                                <span>Show Prices</span>
+                            </button>
+                            <button onclick="openProductModal()" class="bg-brand-orange hover:bg-brand-orange-dark text-white px-6 py-2 rounded-lg font-medium transition-all flex items-center space-x-2">
+                                <i class="fas fa-plus"></i>
+                                <span>Add Product</span>
+                            </button>
+                        </div>
                     </div>
 
                     <!-- Filter Bar -->
@@ -902,19 +914,19 @@
 
                 <!-- Single Price Input -->
                 <div id="product-single-price-container">
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Starting Price (₹) *</label>
-                    <input type="number" id="product-price" required class="form-input w-full px-4 py-2 rounded-lg" placeholder="e.g., 380">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Starting Price (₹)</label>
+                    <input type="number" id="product-price" class="form-input w-full px-4 py-2 rounded-lg" placeholder="e.g., 380">
                 </div>
 
                 <!-- Price Range Inputs -->
                 <div id="product-range-price-container" class="hidden">
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Min Price (₹) *</label>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Min Price (₹)</label>
                             <input type="number" id="product-price-min" class="form-input w-full px-4 py-2 rounded-lg" placeholder="e.g., 380">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Max Price (₹) *</label>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Max Price (₹)</label>
                             <input type="number" id="product-price-max" class="form-input w-full px-4 py-2 rounded-lg" placeholder="e.g., 450">
                         </div>
                     </div>
@@ -1037,7 +1049,7 @@
                 rangeCard.className = 'p-3 border-2 rounded-xl text-center font-medium border-gray-200 text-gray-600 hover:border-gray-300 transition-colors';
                 singleContainer.classList.remove('hidden');
                 rangeContainer.classList.add('hidden');
-                priceInput.required = true;
+                priceInput.required = false;
                 minInput.required = false;
                 maxInput.required = false;
             } else {
@@ -1046,8 +1058,8 @@
                 singleContainer.classList.add('hidden');
                 rangeContainer.classList.remove('hidden');
                 priceInput.required = false;
-                minInput.required = true;
-                maxInput.required = true;
+                minInput.required = false;
+                maxInput.required = false;
             }
         }
 
@@ -1071,6 +1083,7 @@
             // Initialize with default data if collections are empty
             async init() {
                 if (!db) {
+                    const defaultSettings = this.getDefaultSettings();
                     // Seed localStorage if empty
                     if (!localStorage.getItem('categories')) {
                         localStorage.setItem('categories', JSON.stringify(this.getDefaultCategories()));
@@ -1082,11 +1095,9 @@
                         localStorage.setItem('quotes', JSON.stringify(this.getDefaultQuotes()));
                     }
                     if (!localStorage.getItem('settings')) {
-                        localStorage.setItem('settings', JSON.stringify({
-                            companyName: 'Ishank Textile',
-                            contactEmail: 'sunilpandiya909@gmail.com',
-                            contactPhone: '+91 94141 12197'
-                        }));
+                        localStorage.setItem('settings', JSON.stringify(defaultSettings));
+                    } else {
+                        localStorage.setItem('settings', JSON.stringify({ ...defaultSettings, ...JSON.parse(localStorage.getItem('settings') || '{}') }));
                     }
                     return;
                 }
@@ -1120,11 +1131,16 @@
                 // Check if settings exist
                 const settingsDoc = await db.collection('settings').doc('general').get();
                 if (!settingsDoc.exists) {
-                    await db.collection('settings').doc('general').set({
-                        companyName: 'Ishank Textile',
-                        contactEmail: 'sunilpandiya909@gmail.com',
-                        contactPhone: '+91 94141 12197'
-                    });
+                    await db.collection('settings').doc('general').set(this.getDefaultSettings());
+                } else {
+                    const existingSettings = settingsDoc.data() || {};
+                    const missingSettings = Object.entries(this.getDefaultSettings()).reduce((missing, [key, value]) => {
+                        if (!(key in existingSettings)) missing[key] = value;
+                        return missing;
+                    }, {});
+                    if (Object.keys(missingSettings).length) {
+                        await db.collection('settings').doc('general').set(missingSettings, { merge: true });
+                    }
                 }
             },
 
@@ -1273,23 +1289,35 @@
             },
 
             // Settings
+            getDefaultSettings() {
+                return {
+                    companyName: 'Ishank Textile',
+                    contactEmail: 'sunilpandiya909@gmail.com',
+                    contactPhone: '+91 94141 12197',
+                    showCategoryPrices: true,
+                    showProductPrices: true
+                };
+            },
             async getSettings() {
+                const defaults = this.getDefaultSettings();
                 if (!db) {
-                    return JSON.parse(localStorage.getItem('settings') || JSON.stringify({
-                        companyName: 'Ishank Textile',
-                        contactEmail: 'sunilpandiya909@gmail.com',
-                        contactPhone: '+91 94141 12197'
-                    }));
+                    return { ...defaults, ...JSON.parse(localStorage.getItem('settings') || '{}') };
                 }
                 const doc = await db.collection('settings').doc('general').get();
-                return doc.exists ? doc.data() : {};
+                return doc.exists ? { ...defaults, ...doc.data() } : defaults;
             },
             async setSettings(settings) {
+                const defaults = this.getDefaultSettings();
                 if (!db) {
-                    localStorage.setItem('settings', JSON.stringify(settings));
+                    const currentSettings = JSON.parse(localStorage.getItem('settings') || '{}');
+                    const mergedSettings = { ...defaults, ...currentSettings, ...settings };
+                    localStorage.setItem('settings', JSON.stringify(mergedSettings));
                     return;
                 }
-                await db.collection('settings').doc('general').set(settings, { merge: true });
+                const currentDoc = await db.collection('settings').doc('general').get();
+                const currentSettings = currentDoc.exists ? currentDoc.data() : {};
+                const mergedSettings = { ...defaults, ...currentSettings, ...settings };
+                await db.collection('settings').doc('general').set(mergedSettings, { merge: true });
             },
 
             // Image Upload to Firebase Storage
@@ -1445,7 +1473,7 @@
                         id: '1',
                         name: 'Vat-Dyed Fabrics',
                         description: 'Molecular-level color integrity with 24-hour freshness shield',
-                        startingPrice: 380,
+                        startingPrice: null,
                         clothing: 'Suiting',
                         image: 'https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=800',
                         active: true,
@@ -1455,7 +1483,7 @@
                         id: '2',
                         name: 'Fiber-Dyed Fabrics',
                         description: 'Advanced fiber-dyeing technology with superior color fastness',
-                        startingPrice: 420,
+                        startingPrice: null,
                         clothing: 'Suiting',
                         image: 'https://images.unsplash.com/photo-1528459801416-a9e53bbf4e17?w=800',
                         active: true,
@@ -1465,7 +1493,7 @@
                         id: '3',
                         name: 'Wollen Fabrics',
                         description: 'High-quality woolen fabric with excellent thermal properties',
-                        startingPrice: 320,
+                        startingPrice: null,
                         clothing: 'Suiting',
                         image: 'https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=800',
                         active: true,
@@ -1475,7 +1503,7 @@
                         id: '4',
                         name: 'Hosiery Fabrics',
                         description: 'Premium hosiery fabric with superior elasticity and comfort',
-                        startingPrice: 280,
+                        startingPrice: null,
                         clothing: 'Shirting',
                         image: 'https://images.unsplash.com/photo-1528459801416-a9e53bbf4e17?w=800',
                         active: true,
@@ -1485,7 +1513,7 @@
                         id: '5',
                         name: 'Cotton Fabrics',
                         description: 'Premium cotton fabric with natural breathability and comfort',
-                        startingPrice: 180,
+                        startingPrice: null,
                         clothing: 'Shirting',
                         image: 'https://images.unsplash.com/photo-1528459801416-a9e53bbf4e17?w=800',
                         active: true,
@@ -1503,9 +1531,9 @@
                         categoryId: '1',
                         description: 'Molecular-level color integrity with 24-hour freshness shield. Perfect for high-end uniform applications.',
                         priceType: 'Price',
-                        startingPrice: 380,
-                        priceMin: 0,
-                        priceMax: 0,
+                        startingPrice: null,
+                        priceMin: null,
+                        priceMax: null,
                         priceUnit: 'm',
                         clothing: 'Suiting',
                         gsm: 240,
@@ -1523,9 +1551,9 @@
                         categoryId: '2',
                         description: 'Advanced fiber-dyeing technology with superior color fastness and durability.',
                         priceType: 'Range',
-                        startingPrice: 0,
-                        priceMin: 400,
-                        priceMax: 450,
+                        startingPrice: null,
+                        priceMin: null,
+                        priceMax: null,
                         priceUnit: 'm',
                         clothing: 'Suiting',
                         gsm: 285,
@@ -1625,6 +1653,42 @@
                 toast.style.transform = 'translateX(100%)';
                 setTimeout(() => toast.remove(), 300);
             }, 3000);
+        }
+
+        function updatePriceToggleButton(buttonId, showPrices) {
+            const button = document.getElementById(buttonId);
+            if (!button) return;
+
+            const icon = button.querySelector('.material-symbols-outlined');
+            const label = button.querySelector('span:last-child');
+            if (icon) icon.textContent = showPrices ? 'visibility_off' : 'visibility';
+            if (label) label.textContent = showPrices ? 'Hide Prices' : 'Show Prices';
+
+            button.className = showPrices
+                ? 'border border-primary bg-primary/10 text-primary px-4 py-2 rounded-lg font-medium transition-all flex items-center gap-2 hover:bg-primary/15'
+                : 'border border-outline-variant text-on-surface px-4 py-2 rounded-lg font-medium transition-all flex items-center gap-2 hover:border-primary hover:text-primary';
+        }
+
+        async function updatePriceVisibilityToggles() {
+            const settings = await DataManager.getSettings();
+            updatePriceToggleButton('category-price-toggle', settings.showCategoryPrices !== false);
+            updatePriceToggleButton('product-price-toggle', settings.showProductPrices !== false);
+        }
+
+        async function toggleCategoryPriceVisibility() {
+            const settings = await DataManager.getSettings();
+            const showCategoryPrices = settings.showCategoryPrices === false;
+            await DataManager.setSettings({ ...settings, showCategoryPrices });
+            await updatePriceVisibilityToggles();
+            showToast(`Category card prices ${showCategoryPrices ? 'shown' : 'hidden'}`);
+        }
+
+        async function toggleProductPriceVisibility() {
+            const settings = await DataManager.getSettings();
+            const showProductPrices = settings.showProductPrices === false;
+            await DataManager.setSettings({ ...settings, showProductPrices });
+            await updatePriceVisibilityToggles();
+            showToast(`Fabric card prices ${showProductPrices ? 'shown' : 'hidden'}`);
         }
 
         // Section Navigation
@@ -1891,6 +1955,35 @@
             });
         }
 
+        function readNumberOrNull(inputId) {
+            const value = document.getElementById(inputId).value;
+            if (value === null || value === undefined || String(value).trim() === '') return null;
+            const parsed = parseFloat(value);
+            return Number.isFinite(parsed) ? parsed : null;
+        }
+
+        function hasNumberValue(value) {
+            return value !== null && value !== undefined && value !== '' && Number.isFinite(Number(value));
+        }
+
+        function formatMoney(value) {
+            return hasNumberValue(value) ? '&#8377;' + Number(value) : '-';
+        }
+
+        function formatCategoryAdminPrice(category) {
+            return formatMoney(category.startingPrice);
+        }
+
+        function formatProductAdminPrice(product) {
+            const unit = product.priceUnit === 'kg' ? 'kg' : 'm';
+            if (product.priceType === 'Range') {
+                if (!hasNumberValue(product.priceMin) || !hasNumberValue(product.priceMax)) return '-';
+                return '&#8377;' + Number(product.priceMin) + ' - &#8377;' + Number(product.priceMax) + '/' + unit;
+            }
+            const price = hasNumberValue(product.startingPrice) ? product.startingPrice : product.price;
+            return hasNumberValue(price) ? '&#8377;' + Number(price) + '/' + unit : '-';
+        }
+
         // Categories Management
         async function renderCategories(filteredCategories = null) {
             const categories = filteredCategories || await DataManager.getCategories();
@@ -1906,7 +1999,7 @@
                         </td>
                         <td class="py-3 px-4 font-medium text-dark-gray">${cat.name}</td>
                         <td class="py-3 px-4 text-gray-600 text-sm max-w-xs truncate">${cat.description || '-'}</td>
-                        <td class="py-3 px-4 text-brand-orange font-semibold">₹${cat.startingPrice || '-'}</td>
+                        <td class="py-3 px-4 text-brand-orange font-semibold">${formatCategoryAdminPrice(cat)}</td>
                         <td class="py-3 px-4">${productCount}</td>
                         <td class="py-3 px-4">
                             <div class="flex items-center space-x-2">
@@ -1939,7 +2032,7 @@
                     document.getElementById('category-id').value = category.id;
                     document.getElementById('category-name').value = category.name;
                     document.getElementById('category-description').value = category.description || '';
-                    document.getElementById('category-starting-price').value = category.startingPrice || '';
+                    document.getElementById('category-starting-price').value = category.startingPrice ?? '';
                     document.getElementById('category-clothing').value = category.clothing || 'Suiting';
                     document.getElementById('category-active').checked = category.active;
                 }
@@ -2013,15 +2106,7 @@
                         <td class="py-3 px-4 font-mono text-sm text-gray-600">${prod.code}</td>
                         <td class="py-3 px-4 font-medium text-dark-gray">${prod.name}</td>
                         <td class="py-3 px-4 text-gray-600">${category?.name || 'Uncategorized'}</td>
-                        <td class="py-3 px-4 text-brand-orange font-semibold">
-                            ${(() => {
-                                const unit = prod.priceUnit === 'kg' ? 'kg' : 'm';
-                                if (prod.priceType === 'Range') {
-                                    return `₹${prod.priceMin} - ${prod.priceMax}/${unit}`;
-                                }
-                                return `₹${prod.startingPrice || 0}/${unit}`;
-                            })()}
-                        </td>
+                        <td class="py-3 px-4 text-brand-orange font-semibold">${formatProductAdminPrice(prod)}</td>
                         <td class="py-3 px-4">
                             <div class="flex items-center space-x-2">
                                 <button onclick="toggleProductStatus('${prod.id}')" class="${prod.active ? 'text-green-500 hover:text-green-700' : 'text-gray-400 hover:text-gray-600'}" title="${prod.active ? 'Deactivate' : 'Activate'}">
@@ -2116,9 +2201,9 @@
                     document.querySelector(`input[name="product-price-type"][value="${priceType}"]`).checked = true;
                     togglePriceFields();
                     
-                    document.getElementById('product-price').value = product.startingPrice || '';
-                    document.getElementById('product-price-min').value = product.priceMin || '';
-                    document.getElementById('product-price-max').value = product.priceMax || '';
+                    document.getElementById('product-price').value = product.startingPrice ?? '';
+                    document.getElementById('product-price-min').value = product.priceMin ?? '';
+                    document.getElementById('product-price-max').value = product.priceMax ?? '';
                     
                     document.querySelector(`input[name="product-price-unit"][value="${priceUnit}"]`).checked = true;
                     togglePriceUnitFields();
@@ -2685,6 +2770,11 @@
             if (!confirm('WARNING: This will delete ALL database records and reset to defaults. This action cannot be undone. Are you sure?')) {
                 return;
             }
+            if (!auth || !auth.currentUser) {
+                alert('Please sign in again before resetting data.');
+                window.location.href = 'admin-login.html';
+                return;
+            }
             
             const password = prompt('Please enter your Admin Password to authorize database reset:');
             if (password === null) return; // User cancelled
@@ -2694,12 +2784,8 @@
             }
             
             try {
-                if (auth && auth.currentUser) {
-                    const credential = firebase.auth.EmailAuthProvider.credential(auth.currentUser.email, password);
-                    await auth.currentUser.reauthenticateWithCredential(credential);
-                } else {
-                    if (password !== 'admin123') throw new Error('Incorrect password');
-                }
+                const credential = firebase.auth.EmailAuthProvider.credential(auth.currentUser.email, password);
+                await auth.currentUser.reauthenticateWithCredential(credential);
                 
                 showToast('Resetting database...');
                 const collections = ['categories', 'products', 'quotes', 'certificates'];
@@ -2839,6 +2925,9 @@
                     } else {
                         previewHome.src = 'https://lh3.googleusercontent.com/aida-public/AB6AXuBGwDXOzTC100PVaSnevRzASq7mmzUBNcDc7vVstVNQLg9Qme6gGaDn86uP5eUfHPu4rlvo-7P-e9FWpf5RrdGFEUppfBR2wf2I_WGV201u-VReNnHyajQoWnuwm-4nsGH3fDVJbKmUAj9R7HPT06pvMBK2IwtcvbLfLVY_SJO0MO81D26T1RAgHgtztZWXnu4X_ZXCupDnc3wynkeao7oyvhIeK9pbRJsTPJAWclBFpnOaSkMBN8dKjCnDbXcyaPHfYmtDiCMvVt8';
                     }
+
+                    updatePriceToggleButton('category-price-toggle', settings.showCategoryPrices !== false);
+                    updatePriceToggleButton('product-price-toggle', settings.showProductPrices !== false);
                 }
             } catch (err) {
                 console.error("Error loading settings:", err);
@@ -3245,7 +3334,7 @@
             const category = {
                 name: document.getElementById('category-name').value,
                 description: document.getElementById('category-description').value,
-                startingPrice: parseFloat(document.getElementById('category-starting-price').value) || 0,
+                startingPrice: readNumberOrNull('category-starting-price'),
                 clothing: document.getElementById('category-clothing').value || 'Suiting',
                 image: image,
                 active: document.getElementById('category-active').checked
@@ -3286,9 +3375,9 @@
                 categoryId: document.getElementById('product-category').value,
                 description: document.getElementById('product-description').value,
                 priceType: selectedPriceType,
-                startingPrice: selectedPriceType === 'Price' ? (parseFloat(document.getElementById('product-price').value) || 0) : 0,
-                priceMin: selectedPriceType === 'Range' ? (parseFloat(document.getElementById('product-price-min').value) || 0) : 0,
-                priceMax: selectedPriceType === 'Range' ? (parseFloat(document.getElementById('product-price-max').value) || 0) : 0,
+                startingPrice: selectedPriceType === 'Price' ? readNumberOrNull('product-price') : null,
+                priceMin: selectedPriceType === 'Range' ? readNumberOrNull('product-price-min') : null,
+                priceMax: selectedPriceType === 'Range' ? readNumberOrNull('product-price-max') : null,
                 priceUnit: selectedPriceUnit,
                 clothing: document.getElementById('product-clothing').value || 'Suiting',
                 gsm: parseInt(document.getElementById('product-gsm').value) || 0,
@@ -3407,14 +3496,10 @@
                 }
             });
         } else {
-            const localUser = sessionStorage.getItem('adminLoggedIn') === 'true';
-            if (!localUser) {
-                window.location.href = 'admin-login.html';
-            }
+            window.location.href = 'admin-login.html';
         }
 
         function logout() {
-            sessionStorage.removeItem('adminLoggedIn');
             if (auth) {
                 auth.signOut().then(() => {
                     window.location.href = 'admin-login.html';
