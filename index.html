@@ -462,8 +462,8 @@
 
     return `
       <div class="bg-white border border-outline/10 rounded-xl overflow-hidden shadow-sm hover:shadow-2xl transition-all group ${revealClass}">
-        <div class="h-64 overflow-hidden relative">
-          <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" src="${escapeHtml(product.image)}" alt="${escapeHtml(product.name)}"/>
+        <div class="h-64 overflow-hidden relative bg-surface-variant animate-pulse">
+          <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy" onload="this.parentElement.classList.remove('animate-pulse', 'bg-surface-variant')" src="${escapeHtml(product.image)}" alt="${escapeHtml(product.name)}"/>
           <div class="absolute top-4 right-4 ${badgeClass} px-3 py-1 rounded text-xs font-bold">${badgeText}</div>
         </div>
         <div class="p-stack-lg">

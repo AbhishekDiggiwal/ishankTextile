@@ -223,6 +223,9 @@ describe('Feature 3: Catalog Search & Filters', () => {
     expect(productsGridText).not.toContain('Starting Price');
     expect(productsGridText).not.toContain('₹380');
     expect(productsGridText).toContain('Premium Twill Fabric');
+
+    const priceFilterContainer = document.getElementById('priceFilterContainer');
+    expect(priceFilterContainer.style.display).toBe('none');
   });
 
   test('Tier 2: Null DB prices do not render default category or product prices', async () => {

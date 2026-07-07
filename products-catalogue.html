@@ -223,6 +223,7 @@
                 </div>
                 </section>
                 <div class="h-[2px] bg-gradient-to-r from-primary to-transparent w-full my-4" style="clip-path: polygon(0 0, 100% 40%, 100% 60%, 0 100%);"></div>
+                <div id="priceFilterContainer">
                 <section class="relative">
                 <h3 class="font-label-bold text-label-bold uppercase text-primary mb-2 border-l-4 border-primary pl-3">Price Range</h3>
                 <div class="px-2 relative pt-6 group/slider">
@@ -236,6 +237,7 @@
                 </div>
                 </section>
                 <div class="h-[2px] bg-gradient-to-r from-primary to-transparent w-full my-4" style="clip-path: polygon(0 0, 100% 40%, 100% 60%, 0 100%);"></div>
+                </div>
                 <div class="pt-2">
                 <button id="resetFilters" class="w-full py-stack-sm border-2 border-secondary text-secondary font-label-bold hover:bg-secondary hover:text-on-secondary transition-all active:scale-95 rounded-full uppercase text-[12px]">Reset Filters</button>
                 </div>
@@ -421,6 +423,13 @@
     priceDisplaySettings = settings;
     allCategories = (Array.isArray(categories) ? categories : []).filter((category) => category.active !== false);
     allProducts = (Array.isArray(products) ? products : []).filter((product) => product.active !== false);
+
+    if (priceDisplaySettings.showProductPrices === false) {
+      const priceFilterContainer = document.getElementById('priceFilterContainer');
+      if (priceFilterContainer) {
+        priceFilterContainer.style.display = 'none';
+      }
+    }
   }
 
   function formatProductPrice(product) {
@@ -455,9 +464,9 @@
       ? 'lg:col-span-2 group bg-surface-container border border-outline-variant/50 flex flex-col md:flex-row hover:shadow-2xl transition-all duration-300 relative overflow-hidden fabric-texture-overlay product-card rounded-xl md:h-52' 
       : 'group bg-surface-container-lowest border border-outline-variant/50 flex flex-col hover:shadow-2xl transition-all duration-300 relative overflow-hidden fabric-texture-overlay product-card rounded-xl';
     
-    const imageClass = featured 
+    const imageClass = (featured 
       ? 'w-full md:w-[220px] h-48 md:h-full overflow-hidden relative flex-shrink-0' 
-      : 'h-48 overflow-hidden relative';
+      : 'h-48 overflow-hidden relative') + ' bg-surface-variant animate-pulse';
       
     const contentClass = featured 
       ? 'p-4 flex flex-col justify-center flex-grow' 
@@ -474,7 +483,7 @@
       : '';
       
     return '<article onclick="recordFabricVisit(\'' + escapeHtml(product.id) + '\')" class="' + cardClass + '" data-category="' + escapeHtml(product.categoryId) + '" data-price="' + (price === null ? '' : price) + '" data-application="' + applications.join(' ').toLowerCase() + '">' +
-      '<div class="' + imageClass + '"><img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" src="' + escapeHtml(product.image || fallbackProducts[index % fallbackProducts.length].image) + '" alt="' + escapeHtml(product.name) + '"><div class="absolute top-3 right-3 bg-primary px-2.5 py-0.5 text-on-primary font-label-bold text-[10px] uppercase rounded-full">' + escapeHtml(category ? category.name : 'Textile') + '</div></div>' +
+      '<div class="' + imageClass + '"><img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy" onload="this.parentElement.classList.remove(\'animate-pulse\', \'bg-surface-variant\')" src="' + escapeHtml(product.image || fallbackProducts[index % fallbackProducts.length].image) + '" alt="' + escapeHtml(product.name) + '"><div class="absolute top-3 right-3 bg-primary px-2.5 py-0.5 text-on-primary font-label-bold text-[10px] uppercase rounded-full">' + escapeHtml(category ? category.name : 'Textile') + '</div></div>' +
       '<div class="' + contentClass + '"><div class="flex justify-between items-start mb-2 gap-stack-md"><div class="flex-grow min-w-0"><h4 class="text-base font-bold text-on-surface leading-tight">' + escapeHtml(product.name) + '</h4>' +
       '  <div class="text-on-surface-variant text-[14px] mt-1.5 font-semibold font-mono tracking-wider">' + escapeHtml(product.code || 'IT-FABRIC') + '</div>' +
       '</div>' + productMetaHtml + '</div>' +
@@ -493,7 +502,7 @@
     const price = getProductPrimaryPrice(product);
     
     const cardClass = 'group bg-surface-container border border-outline-variant/50 flex flex-col md:flex-row hover:shadow-2xl transition-all duration-300 relative overflow-hidden fabric-texture-overlay product-card h-auto md:h-48 rounded-xl';
-    const imageClass = 'w-full md:w-[200px] h-44 md:h-full overflow-hidden relative flex-shrink-0';
+    const imageClass = 'w-full md:w-[200px] h-44 md:h-full overflow-hidden relative flex-shrink-0 bg-surface-variant animate-pulse';
     const contentClass = 'p-3 md:p-3.5 flex flex-col justify-between flex-grow';
     const rawTag = product.clothing || (category && category.clothing) || 'Suiting';
     const clothingTag = String(rawTag || '').trim();
@@ -506,7 +515,7 @@
       : '';
     
     return '<article onclick="recordFabricVisit(\'' + escapeHtml(product.id) + '\')" class="' + cardClass + '" data-category="' + escapeHtml(product.categoryId) + '" data-price="' + (price === null ? '' : price) + '" data-application="' + applications.join(' ').toLowerCase() + '">' +
-      '<div class="' + imageClass + '"><img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="' + escapeHtml(product.image || fallbackProducts[index % fallbackProducts.length].image) + '" alt="' + escapeHtml(product.name) + '"><div class="absolute top-3 left-3 bg-primary text-on-primary px-2.5 py-0.5 text-[9px] uppercase font-label-bold rounded-full">' + escapeHtml(category ? category.name : 'Textile') + '</div></div>' +
+      '<div class="' + imageClass + '"><img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" onload="this.parentElement.classList.remove(\'animate-pulse\', \'bg-surface-variant\')" src="' + escapeHtml(product.image || fallbackProducts[index % fallbackProducts.length].image) + '" alt="' + escapeHtml(product.name) + '"><div class="absolute top-3 left-3 bg-primary text-on-primary px-2.5 py-0.5 text-[9px] uppercase font-label-bold rounded-full">' + escapeHtml(category ? category.name : 'Textile') + '</div></div>' +
       '<div class="' + contentClass + '">' +
       '  <div class="flex justify-between items-start gap-2"><div class="flex-grow min-w-0"><h4 class="text-sm md:text-[16px] font-bold text-on-surface leading-tight">' + escapeHtml(product.name) + '</h4>' +
       '  <div class="text-on-surface-variant text-[14px] mt-1.5 font-semibold font-mono tracking-wider">' + escapeHtml(product.code || 'IT-FABRIC') + '</div>' +
@@ -612,7 +621,7 @@
       const apps = productApplications(product).join(' ').toLowerCase();
       const categoryMatch = !selectedCategories.length || selectedCategories.includes(product.categoryId);
       const productPrice = getProductPrimaryPrice(product);
-      const priceMatch = productPrice === null || Number(productPrice) <= maxPrice;
+      const priceMatch = priceDisplaySettings.showProductPrices === false || productPrice === null || Number(productPrice) <= maxPrice;
       
       const productGsm = parseFloat(product.gsm);
       const gsmMatch = isNaN(productGsm) || (productGsm >= minGsm && productGsm <= maxGsm);
@@ -870,8 +879,8 @@
       
       return `
         <div onclick="selectCategory('${escapeHtml(category.id)}')" class="group bg-surface-container border border-outline-variant/30 flex flex-col hover:shadow-2xl transition-all duration-300 rounded-xl overflow-hidden relative fabric-texture-overlay cursor-pointer product-card">
-          <div class="h-44 overflow-hidden relative">
-            <img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="${escapeHtml(cardImage)}" alt="${escapeHtml(category.name)}"/>
+          <div class="h-44 overflow-hidden relative bg-surface-variant animate-pulse">
+            <img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" onload="this.parentElement.classList.remove('animate-pulse', 'bg-surface-variant')" src="${escapeHtml(cardImage)}" alt="${escapeHtml(category.name)}"/>
             <div class="absolute top-3 right-3 bg-primary text-on-primary px-2.5 py-0.5 text-[9px] uppercase font-label-bold rounded-full">Collection</div>
           </div>
           <div class="p-4 flex flex-col flex-grow">

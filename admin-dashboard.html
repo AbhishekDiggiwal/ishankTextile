@@ -3147,7 +3147,7 @@
         }
 
         // Image Upload Handling
-        async function handleCategoryImageUpload(input) {
+                async function handleCategoryImageUpload(input) {
             const file = input.files[0];
             if (!file) return;
 
@@ -3157,15 +3157,18 @@
                 return;
             }
 
-            // Validate file size (max 5MB)
-            if (file.size > 5 * 1024 * 1024) {
-                showToast('Image size should be less than 5MB', 'error');
-                return;
-            }
-
             try {
-                showToast('Uploading image...', 'info');
-                const imageUrl = await DataManager.uploadImage(file);
+                showToast('Processing image...', 'info');
+                const webpFile = await convertImageToWebP(file);
+
+                // Validate file size (max 5MB)
+                if (webpFile.size > 5 * 1024 * 1024) {
+                    showToast('Image size should be less than 5MB', 'error');
+                    return;
+                }
+
+                showToast('Uploading optimized WebP image...', 'info');
+                const imageUrl = await DataManager.uploadImage(webpFile);
 
                 // Store in hidden field
                 document.getElementById('category-image-data').value = imageUrl;
@@ -3183,7 +3186,7 @@
             }
         }
 
-        async function handleProductImageUpload(input) {
+                async function handleProductImageUpload(input) {
             const file = input.files[0];
             if (!file) return;
 
@@ -3193,15 +3196,18 @@
                 return;
             }
 
-            // Validate file size (max 5MB)
-            if (file.size > 5 * 1024 * 1024) {
-                showToast('Image size should be less than 5MB', 'error');
-                return;
-            }
-
             try {
-                showToast('Uploading image...', 'info');
-                const imageUrl = await DataManager.uploadImage(file);
+                showToast('Processing image...', 'info');
+                const webpFile = await convertImageToWebP(file);
+
+                // Validate file size (max 5MB)
+                if (webpFile.size > 5 * 1024 * 1024) {
+                    showToast('Image size should be less than 5MB', 'error');
+                    return;
+                }
+
+                showToast('Uploading optimized WebP image...', 'info');
+                const imageUrl = await DataManager.uploadImage(webpFile);
 
                 // Store in hidden field
                 document.getElementById('product-image-data').value = imageUrl;
