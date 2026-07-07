@@ -203,10 +203,10 @@
                 <div class="px-2 relative pt-6 mb-4 group/slider">
                 <div class="text-[10px] text-on-surface-variant mb-1 font-label-bold uppercase">Min GSM</div>
                 <!-- Min GSM Tooltip -->
-                <div id="gsmMinTooltip" class="absolute top-0 left-0 -translate-x-1/2 bg-primary/15 backdrop-blur-md border border-primary/30 text-primary text-[10px] font-bold px-1.5 py-0.5 rounded shadow pointer-events-none opacity-0 scale-90 group-hover/slider:opacity-100 group-hover/slider:scale-100 group-focus-within/slider:opacity-100 group-focus-within/slider:scale-100 transition-all duration-150">100 GSM</div>
-                <input id="gsmMinRange" class="w-full h-1 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-primary" min="100" max="500" value="100" type="range"/>
+                <div id="gsmMinTooltip" class="absolute top-0 left-0 -translate-x-1/2 bg-primary/15 backdrop-blur-md border border-primary/30 text-primary text-[10px] font-bold px-1.5 py-0.5 rounded shadow pointer-events-none opacity-0 scale-90 group-hover/slider:opacity-100 group-hover/slider:scale-100 group-focus-within/slider:opacity-100 group-focus-within/slider:scale-100 transition-all duration-150">40 GSM</div>
+                <input id="gsmMinRange" class="w-full h-1 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-primary" min="40" max="500" value="40" type="range"/>
                 <div class="flex justify-between mt-1 text-[10px] text-on-surface-variant">
-                <span>100 GSM</span>
+                <span>40 GSM</span>
                 <span>500 GSM</span>
                 </div>
                 </div>
@@ -215,9 +215,9 @@
                 <div class="text-[10px] text-on-surface-variant mb-1 font-label-bold uppercase">Max GSM</div>
                 <!-- Max GSM Tooltip -->
                 <div id="gsmMaxTooltip" class="absolute top-0 left-0 -translate-x-1/2 bg-primary/15 backdrop-blur-md border border-primary/30 text-primary text-[10px] font-bold px-1.5 py-0.5 rounded shadow pointer-events-none opacity-0 scale-90 group-hover/slider:opacity-100 group-hover/slider:scale-100 group-focus-within/slider:opacity-100 group-focus-within/slider:scale-100 transition-all duration-150">500 GSM</div>
-                <input id="gsmMaxRange" class="w-full h-1 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-primary" min="100" max="500" value="500" type="range"/>
+                <input id="gsmMaxRange" class="w-full h-1 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-primary" min="40" max="500" value="500" type="range"/>
                 <div class="flex justify-between mt-1 text-[10px] text-on-surface-variant">
-                <span>100 GSM</span>
+                <span>40 GSM</span>
                 <span>500 GSM</span>
                 </div>
                 </div>
@@ -579,7 +579,7 @@
   function applyFilters() {
     const selectedCategories = Array.from(document.querySelectorAll('[data-filter="category"]:checked')).map((input) => input.value);
     const maxPrice = Number(document.getElementById('priceRange')?.value || 500);
-    const minGsm = Number(document.getElementById('gsmMinRange')?.value || 100);
+    const minGsm = Number(document.getElementById('gsmMinRange')?.value || 40);
     const maxGsm = Number(document.getElementById('gsmMaxRange')?.value || 500);
     const search = (document.getElementById('catalog-search')?.value || document.getElementById('mobile-catalog-search')?.value || '').toLowerCase();
     
@@ -969,7 +969,7 @@
       if (priceRange) priceRange.value = 500;
       
       const gsmMin = document.getElementById('gsmMinRange');
-      if (gsmMin) gsmMin.value = 100;
+      if (gsmMin) gsmMin.value = 40;
       const gsmMax = document.getElementById('gsmMaxRange');
       if (gsmMax) gsmMax.value = 500;
 
