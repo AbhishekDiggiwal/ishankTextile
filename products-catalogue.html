@@ -358,6 +358,8 @@
   let currentActiveCategory = null;
   const defaultPriceDisplaySettings = { showCategoryPrices: true, showProductPrices: true };
   let priceDisplaySettings = Object.assign({}, defaultPriceDisplaySettings);
+  let isPriceFilterActive = false;
+  let isGsmFilterActive = false;
 
   function escapeHtml(value) {
     return String(value || '').replace(/[&<>"]/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[char]));
@@ -621,10 +623,10 @@
       const apps = productApplications(product).join(' ').toLowerCase();
       const categoryMatch = !selectedCategories.length || selectedCategories.includes(product.categoryId);
       const productPrice = getProductPrimaryPrice(product);
-      const priceMatch = priceDisplaySettings.showProductPrices === false || productPrice === null || Number(productPrice) <= maxPrice;
+      const priceMatch = !isPriceFilterActive || priceDisplaySettings.showProductPrices === false || productPrice === null || Number(productPrice) <= maxPrice;
       
       const productGsm = parseFloat(product.gsm);
-      const gsmMatch = isNaN(productGsm) || productGsm <= 0 || (productGsm >= minGsm && productGsm <= maxGsm);
+      const gsmMatch = !isGsmFilterActive || isNaN(productGsm) || productGsm <= 0 || (productGsm >= minGsm && productGsm <= maxGsm);
       
       const searchMatch = !search || [product.name, product.code, product.description, apps].join(' ').toLowerCase().includes(search);
       return product.active !== false && categoryMatch && priceMatch && gsmMatch && searchMatch;
@@ -933,11 +935,13 @@
 
     // Event listeners
     document.getElementById('priceRange')?.addEventListener('input', () => {
+      isPriceFilterActive = true;
       updatePriceTooltip();
       applyFilters();
     });
 
     document.getElementById('gsmMinRange')?.addEventListener('input', (e) => {
+      isGsmFilterActive = true;
       const minVal = Number(e.target.value);
       const maxSlider = document.getElementById('gsmMaxRange');
       const maxVal = Number(maxSlider.value);
@@ -950,6 +954,7 @@
     });
 
     document.getElementById('gsmMaxRange')?.addEventListener('input', (e) => {
+      isGsmFilterActive = true;
       const maxVal = Number(e.target.value);
       const minSlider = document.getElementById('gsmMinRange');
       const minVal = Number(minSlider.value);
@@ -964,6 +969,8 @@
     document.getElementById('catalog-search')?.addEventListener('input', applyFilters);
     document.getElementById('mobile-catalog-search')?.addEventListener('input', applyFilters);
     document.getElementById('resetFilters')?.addEventListener('click', () => {
+      isPriceFilterActive = false;
+      isGsmFilterActive = false;
       document.querySelectorAll('[data-filter]').forEach((input) => { input.checked = false; });
       const priceRange = document.getElementById('priceRange');
       if (priceRange) priceRange.value = 500;

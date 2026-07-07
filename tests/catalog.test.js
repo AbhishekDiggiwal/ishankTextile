@@ -294,4 +294,55 @@ describe('Feature 3: Catalog Search & Filters', () => {
     expect(productsGrid.textContent).toContain('Zero GSM Fabric');
     expect(productsGrid.textContent).toContain('Custom');
   });
+
+  test('Tier 2: Price and GSM filters are inactive by default on page load and become active upon user interaction', async () => {
+    window.close();
+    dom = loadPage('products-catalogue.html', {
+      initialProducts: {
+        p_highPrice: { id: 'p_highPrice', name: 'Expensive Fabric', code: 'EF-001', categoryId: 'cat1', active: true, gsm: 200, price: 600, applications: 'corporate', description: 'Expensive fabric' },
+        p_highGsm: { id: 'p_highGsm', name: 'Heavy GSM Fabric', code: 'HG-001', categoryId: 'cat1', active: true, gsm: 600, price: 200, applications: 'corporate', description: 'Heavy fabric' }
+      },
+      initialCategories: {
+        cat1: { id: 'cat1', name: 'Test Category', clothing: 'Suiting', active: true }
+      }
+    });
+    window = dom.window;
+    document = dom.window.document;
+
+    await new Promise(resolve => setTimeout(resolve, 100));
+
+    window.selectCategory('cat1');
+    let productsGrid = document.getElementById('productsGrid');
+    expect(productsGrid.textContent).toContain('Expensive Fabric');
+    expect(productsGrid.textContent).toContain('Heavy GSM Fabric');
+
+    // Trigger price slider input
+    const priceRange = document.getElementById('priceRange');
+    priceRange.value = 500;
+    const priceInputEvent = new window.Event('input');
+    priceRange.dispatchEvent(priceInputEvent);
+
+    productsGrid = document.getElementById('productsGrid');
+    expect(productsGrid.textContent).not.toContain('Expensive Fabric');
+    expect(productsGrid.textContent).toContain('Heavy GSM Fabric');
+
+    // Trigger GSM slider input
+    const gsmMaxRange = document.getElementById('gsmMaxRange');
+    gsmMaxRange.value = 500;
+    const gsmInputEvent = new window.Event('input');
+    gsmMaxRange.dispatchEvent(gsmInputEvent);
+
+    productsGrid = document.getElementById('productsGrid');
+    expect(productsGrid.textContent).not.toContain('Expensive Fabric');
+    expect(productsGrid.textContent).not.toContain('Heavy GSM Fabric');
+
+    // Reset filters
+    const resetBtn = document.getElementById('resetFilters');
+    const clickEvent = new window.Event('click');
+    resetBtn.dispatchEvent(clickEvent);
+
+    productsGrid = document.getElementById('productsGrid');
+    expect(productsGrid.textContent).toContain('Expensive Fabric');
+    expect(productsGrid.textContent).toContain('Heavy GSM Fabric');
+  });
 });
