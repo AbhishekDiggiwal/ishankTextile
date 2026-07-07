@@ -478,7 +478,7 @@
             </div>
             <div class="bg-surface-container p-3 rounded">
               <span class="text-[10px] uppercase block opacity-60">GSM</span>
-              <span class="font-label-bold">${escapeHtml(product.gsm || 'Custom')}</span>
+              <span class="font-label-bold">${escapeHtml(!product.gsm || Number(product.gsm) <= 0 ? 'Custom' : product.gsm)}</span>
             </div>
             <div class="bg-surface-container p-3 rounded">
               <span class="text-[10px] uppercase block opacity-60">Blend</span>

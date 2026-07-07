@@ -273,4 +273,25 @@ describe('Feature 3: Catalog Search & Filters', () => {
     window.selectCategory('cat1');
     expect(document.getElementById('productsGrid').textContent).toContain('Premium Twill Fabric');
   });
+
+  test('Tier 2: Products with GSM 0 are not filtered out by default and display as Custom', async () => {
+    window.close();
+    dom = loadPage('products-catalogue.html', {
+      initialProducts: {
+        p_gsm0: { id: 'p_gsm0', name: 'Zero GSM Fabric', code: 'ZG-001', categoryId: 'cat1', active: true, gsm: 0, applications: 'corporate', description: 'Zero GSM test product' }
+      },
+      initialCategories: {
+        cat1: { id: 'cat1', name: 'Test Category', clothing: 'Suiting', active: true }
+      }
+    });
+    window = dom.window;
+    document = dom.window.document;
+
+    await new Promise(resolve => setTimeout(resolve, 100));
+
+    window.selectCategory('cat1');
+    const productsGrid = document.getElementById('productsGrid');
+    expect(productsGrid.textContent).toContain('Zero GSM Fabric');
+    expect(productsGrid.textContent).toContain('Custom');
+  });
 });
