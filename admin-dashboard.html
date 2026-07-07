@@ -321,6 +321,7 @@
                                         <th class="text-left py-3 px-4">Description</th>
                                         <th class="text-left py-3 px-4">Starting Price</th>
                                         <th class="text-left py-3 px-4">Products Count</th>
+                                        <th class="text-left py-3 px-4">Clothing Type</th>
                                         <th class="text-left py-3 px-4">Actions</th>
                                     </tr>
                                 </thead>
@@ -375,6 +376,9 @@
                                         <th class="text-left py-3 px-4">Product Name</th>
                                         <th class="text-left py-3 px-4">Category</th>
                                         <th class="text-left py-3 px-4">Starting Price</th>
+                                        <th class="text-left py-3 px-4">GSM</th>
+                                        <th class="text-left py-3 px-4">Blend</th>
+                                        <th class="text-left py-3 px-4">Clothing Type</th>
                                         <th class="text-left py-3 px-4">Actions</th>
                                     </tr>
                                 </thead>
@@ -2001,6 +2005,7 @@
                         <td class="py-3 px-4 text-gray-600 text-sm max-w-xs truncate">${cat.description || '-'}</td>
                         <td class="py-3 px-4 text-brand-orange font-semibold">${formatCategoryAdminPrice(cat)}</td>
                         <td class="py-3 px-4">${productCount}</td>
+                        <td class="py-3 px-4">${cat.clothing || '-'}</td>
                         <td class="py-3 px-4">
                             <div class="flex items-center space-x-2">
                                 <button onclick="toggleCategoryStatus('${cat.id}')" class="${cat.active ? 'text-green-500 hover:text-green-700' : 'text-gray-400 hover:text-gray-600'}" title="${cat.active ? 'Deactivate' : 'Activate'}">
@@ -2107,6 +2112,9 @@
                         <td class="py-3 px-4 font-medium text-dark-gray">${prod.name}</td>
                         <td class="py-3 px-4 text-gray-600">${category?.name || 'Uncategorized'}</td>
                         <td class="py-3 px-4 text-brand-orange font-semibold">${formatProductAdminPrice(prod)}</td>
+                        <td class="py-3 px-4 text-gray-600">${!prod.gsm || Number(prod.gsm) <= 0 ? '-' : prod.gsm}</td>
+                        <td class="py-3 px-4 text-gray-600">${prod.blend || '-'}</td>
+                        <td class="py-3 px-4 text-gray-600">${prod.clothing || '-'}</td>
                         <td class="py-3 px-4">
                             <div class="flex items-center space-x-2">
                                 <button onclick="toggleProductStatus('${prod.id}')" class="${prod.active ? 'text-green-500 hover:text-green-700' : 'text-gray-400 hover:text-gray-600'}" title="${prod.active ? 'Deactivate' : 'Activate'}">
