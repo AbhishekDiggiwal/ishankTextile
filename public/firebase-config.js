@@ -26,9 +26,15 @@
         ? appOptions.recaptchaSiteKey.trim()
         : '');
 
-    if (global.firebase.appCheck && appCheckSiteKey) {
+    const EnterpriseProvider = global.firebase.appCheck &&
+      global.firebase.appCheck.ReCaptchaEnterpriseProvider;
+
+    if (global.firebase.appCheck && appCheckSiteKey &&
+        typeof EnterpriseProvider === 'function') {
       appCheck = global.firebase.appCheck();
-      appCheck.activate(appCheckSiteKey, true);
+      appCheck.activate(new EnterpriseProvider(appCheckSiteKey), true);
+    } else if (appCheckSiteKey) {
+      console.warn('Firebase App Check Enterprise provider is unavailable.');
     }
 
     global.firebaseServices = {

@@ -107,11 +107,14 @@ describe('Security hardening', () => {
       url: 'https://example.test/'
     });
     const activate = jest.fn();
+    const ReCaptchaEnterpriseProvider = jest.fn(function Provider(siteKey) {
+      this.siteKey = siteKey;
+    });
     const app = { options: { recaptchaSiteKey: 'hosted-public-site-key' } };
     dom.window.firebase = {
       apps: [app],
       app: () => app,
-      appCheck: Object.assign(() => ({ activate }), {}),
+      appCheck: Object.assign(() => ({ activate }), { ReCaptchaEnterpriseProvider }),
       auth: () => ({ service: 'auth' }),
       firestore: () => ({ service: 'firestore' }),
       storage: () => ({ service: 'storage' })
@@ -119,7 +122,11 @@ describe('Security hardening', () => {
 
     dom.window.eval(bootstrap);
 
-    expect(activate).toHaveBeenCalledWith('hosted-public-site-key', true);
+    expect(ReCaptchaEnterpriseProvider).toHaveBeenCalledWith('hosted-public-site-key');
+    expect(activate).toHaveBeenCalledWith(
+      expect.objectContaining({ siteKey: 'hosted-public-site-key' }),
+      true
+    );
     expect(dom.window.firebaseServices.appCheck).not.toBeNull();
   });
 

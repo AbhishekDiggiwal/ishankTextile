@@ -18,7 +18,11 @@
    compatibility fallback requires Firebase's signed `email_verified` claim.
 2. Enable Firebase Authentication email-enumeration protection, enforce a strong
    password policy, remove unused sign-in providers, and review authorized domains.
-3. Register the web app with Firebase App Check using reCAPTCHA Enterprise and
+3. Register the web app with Firebase App Check using reCAPTCHA Enterprise.
+   Supply its public site key at deployment time through the
+   `firebase-app-check-site-key` meta value (or an equivalent hosted runtime
+   injection); do not commit the project-specific value. Deploy the client
+   first, verify valid App Check traffic in Firebase metrics, and only then
    enable enforcement for the Firebase products used by the site.
 4. Restrict the Firebase browser API key in Google Cloud to the production
    domains and only the required Firebase APIs. The browser key is public by
