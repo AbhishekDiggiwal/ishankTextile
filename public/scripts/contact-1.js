@@ -26,6 +26,10 @@
     const services = window.firebaseServices || {};
     if (services.appCheckConfigured !== true) return;
 
+    if (!services.appCheck && typeof services.initializeAppCheck === 'function') {
+      services.initializeAppCheck();
+    }
+
     if (!services.appCheck || typeof services.appCheck.getToken !== 'function') {
       throw appCheckVerificationError();
     }

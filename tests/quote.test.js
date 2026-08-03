@@ -124,7 +124,10 @@ describe('Feature 4: Quote Form Submission', () => {
   test('Tier 1: Configured App Check verifies with a reusable token before saving', async () => {
     const getToken = jest.fn().mockResolvedValue({ token: 'verified-test-token' });
     window.firebaseServices.appCheckConfigured = true;
-    window.firebaseServices.appCheck = { getToken };
+    window.firebaseServices.appCheck = null;
+    window.firebaseServices.initializeAppCheck = jest.fn(() => {
+      window.firebaseServices.appCheck = { getToken };
+    });
     window.DataManager.saveQuote = jest.fn().mockResolvedValue({ id: 'quote-1' });
     fillValidGeneralInquiry();
 
@@ -133,6 +136,7 @@ describe('Feature 4: Quote Form Submission', () => {
     );
     await new Promise(resolve => setTimeout(resolve, 50));
 
+    expect(window.firebaseServices.initializeAppCheck).toHaveBeenCalledTimes(1);
     expect(getToken).toHaveBeenCalledWith(false);
     expect(window.DataManager.saveQuote).toHaveBeenCalledTimes(1);
     expect(getToken.mock.invocationCallOrder[0])

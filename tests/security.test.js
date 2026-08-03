@@ -97,7 +97,7 @@ describe('Security hardening', () => {
     }
   });
 
-  test('Firebase bootstrap activates App Check from hosted runtime options', () => {
+  test('Firebase bootstrap exposes on-demand App Check from hosted runtime options', () => {
     const bootstrap = fs.readFileSync(
       path.resolve(__dirname, '../public/firebase-config.js'),
       'utf8'
@@ -125,6 +125,13 @@ describe('Security hardening', () => {
     };
 
     dom.window.eval(bootstrap);
+
+    expect(ReCaptchaEnterpriseProvider).not.toHaveBeenCalled();
+    expect(activate).not.toHaveBeenCalled();
+    expect(dom.window.firebaseServices.appCheck).toBeNull();
+    expect(dom.window.firebaseServices.appCheckConfigured).toBe(true);
+
+    dom.window.firebaseServices.initializeAppCheck();
 
     expect(ReCaptchaEnterpriseProvider).toHaveBeenCalledWith('hosted-public-site-key');
     expect(activate).toHaveBeenCalledWith(
@@ -174,7 +181,7 @@ describe('Security hardening', () => {
     }));
   });
 
-  test('Firebase bootstrap waits for document.body before activating App Check', () => {
+  test('Firebase bootstrap leaves App Check idle until an inquiry requests it', () => {
     const bootstrap = fs.readFileSync(
       path.resolve(__dirname, '../public/firebase-config.js'),
       'utf8'
@@ -210,6 +217,9 @@ describe('Security hardening', () => {
     const body = dom.window.document.createElement('body');
     dom.window.document.documentElement.appendChild(body);
     dom.window.document.dispatchEvent(new dom.window.Event('DOMContentLoaded'));
+
+    expect(activate).not.toHaveBeenCalled();
+    dom.window.firebaseServices.initializeAppCheck();
 
     expect(activate).toHaveBeenCalledTimes(1);
     expect(dom.window.firebaseServices.appCheck).not.toBeNull();
@@ -248,6 +258,7 @@ describe('Security hardening', () => {
     };
 
     dom.window.eval(bootstrap);
+    dom.window.firebaseServices.initializeAppCheck();
 
     expect(dom.window.firebaseServices).toEqual(expect.objectContaining({
       auth,
