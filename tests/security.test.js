@@ -131,6 +131,43 @@ describe('Security hardening', () => {
     expect(dom.window.firebaseServices.appCheckConfigured).toBe(true);
   });
 
+  test('Firebase bootstrap waits for document.body before activating App Check', () => {
+    const bootstrap = fs.readFileSync(
+      path.resolve(__dirname, '../public/firebase-config.js'),
+      'utf8'
+    );
+    dom = new JSDOM('<!doctype html><html><head></head><body></body></html>', {
+      runScripts: 'outside-only',
+      url: 'https://example.test/'
+    });
+    dom.window.document.body.remove();
+    const activate = jest.fn(() => {
+      if (!dom.window.document.body) throw new Error('document.body is missing');
+    });
+    const ReCaptchaEnterpriseProvider = jest.fn(function Provider(siteKey) {
+      this.siteKey = siteKey;
+    });
+    const app = { options: { recaptchaSiteKey: 'hosted-public-site-key' } };
+    dom.window.firebase = {
+      apps: [app],
+      app: () => app,
+      appCheck: Object.assign(() => ({ activate }), { ReCaptchaEnterpriseProvider }),
+      auth: () => ({ service: 'auth' }),
+      firestore: () => ({ service: 'firestore' }),
+      storage: () => ({ service: 'storage' })
+    };
+
+    dom.window.eval(bootstrap);
+
+    expect(activate).not.toHaveBeenCalled();
+    const body = dom.window.document.createElement('body');
+    dom.window.document.documentElement.appendChild(body);
+    dom.window.document.dispatchEvent(new dom.window.Event('DOMContentLoaded'));
+
+    expect(activate).toHaveBeenCalledTimes(1);
+    expect(dom.window.firebaseServices.appCheck).not.toBeNull();
+  });
+
   test('App Check failure does not disable the other Firebase services', () => {
     const bootstrap = fs.readFileSync(
       path.resolve(__dirname, '../public/firebase-config.js'),
