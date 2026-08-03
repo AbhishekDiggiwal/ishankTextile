@@ -13,7 +13,7 @@
   const services = {
     auth: null,
     appCheck: null,
-    appCheckConfigured: Boolean(runtimeSiteKey),
+    appCheckConfigured: false,
     db: null,
     storage: null
   };
@@ -34,6 +34,10 @@
 
   function initializeAppCheck() {
     try {
+      const appCheckEnabledMeta = global.document &&
+        global.document.querySelector('meta[name="firebase-app-check-enabled"]');
+      const appCheckEnabled = Boolean(appCheckEnabledMeta &&
+        appCheckEnabledMeta.content.trim().toLowerCase() === 'true');
       const appCheckMeta = global.document &&
         global.document.querySelector('meta[name="firebase-app-check-site-key"]');
       const appOptions = global.firebase.app && global.firebase.app().options
@@ -45,8 +49,8 @@
           ? appOptions.recaptchaSiteKey.trim()
           : '');
 
-      services.appCheckConfigured = Boolean(appCheckSiteKey);
-      if (!appCheckSiteKey) return;
+      services.appCheckConfigured = Boolean(appCheckEnabled && appCheckSiteKey);
+      if (!appCheckEnabled || !appCheckSiteKey) return;
 
       const EnterpriseProvider = global.firebase.appCheck &&
         global.firebase.appCheck.ReCaptchaEnterpriseProvider;
