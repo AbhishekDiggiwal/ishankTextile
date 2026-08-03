@@ -137,9 +137,9 @@
       '</div>' + productMetaHtml + '</div>' +
       '<p class="text-on-surface-variant text-[12px] mb-2 line-clamp-2">' + escapeHtml(product.description) + '</p>' +
       '<div class="grid grid-cols-3 gap-2 my-2 border-y border-outline-variant/20 py-1.5 text-[11px]">' +
-      '<div class="flex flex-col items-start"><span class="text-on-surface-variant text-[10px] uppercase font-label-bold">GSM</span><span class="font-bold">' + escapeHtml(!product.gsm || Number(product.gsm) <= 0 ? 'Custom' : product.gsm) + '</span></div>' +
-      '<div class="flex flex-col items-center"><span class="text-on-surface-variant text-[10px] uppercase font-label-bold">Blend</span><span class="font-bold text-center">' + escapeHtml(product.blend || 'Custom') + '</span></div>' +
-      '<div class="flex flex-col items-end"><span class="text-on-surface-variant text-[10px] uppercase font-label-bold">Weave</span><span class="font-bold text-right">' + escapeHtml(product.weave || 'Custom') + '</span></div>' +
+      '<div class="flex min-w-0 flex-col items-start"><span class="text-on-surface-variant text-[10px] uppercase font-label-bold">GSM</span><span class="w-full max-w-full break-words [overflow-wrap:anywhere] font-bold leading-snug text-left">' + escapeHtml(!product.gsm || Number(product.gsm) <= 0 ? 'Custom' : product.gsm) + '</span></div>' +
+      '<div class="flex min-w-0 flex-col items-center"><span class="text-on-surface-variant text-[10px] uppercase font-label-bold">Blend</span><span class="w-full max-w-full break-words [overflow-wrap:anywhere] font-bold leading-snug text-center">' + escapeHtml(product.blend || 'Custom') + '</span></div>' +
+      '<div class="flex min-w-0 flex-col items-end"><span class="text-on-surface-variant text-[10px] uppercase font-label-bold">Weave</span><span class="w-full max-w-full break-words [overflow-wrap:anywhere] font-bold leading-snug text-right">' + escapeHtml(product.weave || 'Custom') + '</span></div>' +
       '</div>' +
       '<div class="mt-auto flex gap-stack-sm"><button type="button" data-product-id="' + escapeHtml(product.id) + '" data-action="requestQuote" data-stop-propagation="true" class="w-full bg-secondary text-on-secondary py-2 font-label-bold uppercase text-[10px] hover:bg-on-surface-variant rounded-full transition-colors">Request Quote</button></div></div></article>';
   }
@@ -170,9 +170,9 @@
       '</div>' + productMetaHtml + '</div>' +
       '  <p class="text-on-surface-variant text-[11px] md:text-xs my-1 line-clamp-1">' + escapeHtml(product.description) + '</p>' +
       '  <div class="grid grid-cols-3 gap-2 my-1 border-y border-outline-variant/20 py-1 text-[11px]">' +
-      '<div class="flex flex-col items-start"><span class="text-on-surface-variant text-[9px] md:text-[10px] uppercase font-label-bold">GSM</span><span class="font-bold">' + escapeHtml(!product.gsm || Number(product.gsm) <= 0 ? 'Custom' : product.gsm) + '</span></div>' +
-      '<div class="flex flex-col items-center"><span class="text-on-surface-variant text-[9px] md:text-[10px] uppercase font-label-bold">Blend</span><span class="font-bold text-center">' + escapeHtml(product.blend || 'Custom') + '</span></div>' +
-      '<div class="flex flex-col items-end"><span class="text-on-surface-variant text-[9px] md:text-[10px] uppercase font-label-bold">Weave</span><span class="font-bold text-right">' + escapeHtml(product.weave || 'Custom') + '</span></div>' +
+      '<div class="flex min-w-0 flex-col items-start"><span class="text-on-surface-variant text-[9px] md:text-[10px] uppercase font-label-bold">GSM</span><span class="w-full max-w-full break-words [overflow-wrap:anywhere] font-bold leading-snug text-left">' + escapeHtml(!product.gsm || Number(product.gsm) <= 0 ? 'Custom' : product.gsm) + '</span></div>' +
+      '<div class="flex min-w-0 flex-col items-center"><span class="text-on-surface-variant text-[9px] md:text-[10px] uppercase font-label-bold">Blend</span><span class="w-full max-w-full break-words [overflow-wrap:anywhere] font-bold leading-snug text-center">' + escapeHtml(product.blend || 'Custom') + '</span></div>' +
+      '<div class="flex min-w-0 flex-col items-end"><span class="text-on-surface-variant text-[9px] md:text-[10px] uppercase font-label-bold">Weave</span><span class="w-full max-w-full break-words [overflow-wrap:anywhere] font-bold leading-snug text-right">' + escapeHtml(product.weave || 'Custom') + '</span></div>' +
       '</div>' +
       '  <div class="mt-auto flex gap-2"><button type="button" data-product-id="' + escapeHtml(product.id) + '" data-action="requestQuote" data-stop-propagation="true" class="w-full bg-secondary text-on-secondary py-1.5 font-label-bold uppercase text-[9px] md:text-[10px] hover:bg-on-surface-variant rounded-full transition-colors">Request Quote</button></div>' +
       '</div></article>';

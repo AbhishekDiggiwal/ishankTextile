@@ -7,7 +7,17 @@
 (function initializeFirebaseServices(global) {
   'use strict';
 
-  global.firebaseServices = { auth: null, appCheck: null, db: null, storage: null };
+  const runtimeSiteKey = typeof global.FIREBASE_APP_CHECK_SITE_KEY === 'string'
+    ? global.FIREBASE_APP_CHECK_SITE_KEY.trim()
+    : '';
+  const services = {
+    auth: null,
+    appCheck: null,
+    appCheckConfigured: Boolean(runtimeSiteKey),
+    db: null,
+    storage: null
+  };
+  global.firebaseServices = services;
 
   if (!global.firebase || !Array.isArray(global.firebase.apps) || !global.firebase.apps.length) {
     console.warn('Firebase auto-initialization is unavailable. Running in offline/local mode.');
@@ -15,35 +25,41 @@
   }
 
   try {
-    let appCheck = null;
+    services.auth = global.firebase.auth ? global.firebase.auth() : null;
+    services.db = global.firebase.firestore ? global.firebase.firestore() : null;
+    services.storage = global.firebase.storage ? global.firebase.storage() : null;
+  } catch (error) {
+    console.warn('Firebase service initialization failed. Running in offline/local mode.', error);
+  }
+
+  try {
     const appCheckMeta = global.document &&
       global.document.querySelector('meta[name="firebase-app-check-site-key"]');
     const appOptions = global.firebase.app && global.firebase.app().options
       ? global.firebase.app().options
       : {};
     const appCheckSiteKey = (appCheckMeta && appCheckMeta.content.trim()) ||
+      runtimeSiteKey ||
       (typeof appOptions.recaptchaSiteKey === 'string'
         ? appOptions.recaptchaSiteKey.trim()
         : '');
 
+    services.appCheckConfigured = Boolean(appCheckSiteKey);
+    if (!appCheckSiteKey) return;
+
     const EnterpriseProvider = global.firebase.appCheck &&
       global.firebase.appCheck.ReCaptchaEnterpriseProvider;
 
-    if (global.firebase.appCheck && appCheckSiteKey &&
-        typeof EnterpriseProvider === 'function') {
-      appCheck = global.firebase.appCheck();
-      appCheck.activate(new EnterpriseProvider(appCheckSiteKey), true);
-    } else if (appCheckSiteKey) {
+    if (!global.firebase.appCheck || typeof EnterpriseProvider !== 'function') {
       console.warn('Firebase App Check Enterprise provider is unavailable.');
+      return;
     }
 
-    global.firebaseServices = {
-      auth: global.firebase.auth ? global.firebase.auth() : null,
-      appCheck,
-      db: global.firebase.firestore ? global.firebase.firestore() : null,
-      storage: global.firebase.storage ? global.firebase.storage() : null
-    };
+    const appCheck = global.firebase.appCheck();
+    appCheck.activate(new EnterpriseProvider(appCheckSiteKey), true);
+    services.appCheck = appCheck;
   } catch (error) {
-    console.warn('Firebase service initialization failed. Running in offline/local mode.', error);
+    services.appCheck = null;
+    console.warn('Firebase App Check initialization failed.', error);
   }
 }(window));

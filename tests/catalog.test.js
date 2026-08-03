@@ -6,7 +6,7 @@ describe('Feature 3: Catalog Search & Filters', () => {
   let document;
 
   const testProducts = {
-    'p1': { id: 'p1', name: 'Premium Twill Fabric', code: 'VD-001', categoryId: 'cat1', startingPrice: 380, price: 380, priceUnit: 'm', active: true, gsm: 240, applications: 'defense,medical', description: 'Strong twill weave' },
+    'p1': { id: 'p1', name: 'Premium Twill Fabric', code: 'VD-001', categoryId: 'cat1', startingPrice: 380, price: 380, priceUnit: 'm', active: true, gsm: 240, blend: '70% poly, 30%viscose', applications: 'defense,medical', description: 'Strong twill weave' },
     'p2': { id: 'p2', name: 'Cotton Shirting Fabric', code: 'CT-001', categoryId: 'cat2', startingPrice: 180, price: 180, priceUnit: 'm', active: true, gsm: 180, applications: 'corporate', description: 'Soft cotton blend' },
     'p3': { id: 'p3', name: 'Woolen Winter Suit', code: 'WL-001', categoryId: 'cat1', startingPrice: 320, price: 320, priceUnit: 'm', active: true, gsm: 320, applications: 'defense', description: 'Warm and heavy' }
   };
@@ -81,6 +81,19 @@ describe('Feature 3: Catalog Search & Filters', () => {
     // Switch back to grid
     viewGridBtn.click();
     expect(productsGrid.classList.contains('lg:grid-cols-2')).toBe(true);
+  });
+
+  test('Tier 1: Long mobile specification values wrap inside their grid cell', () => {
+    window.selectCategory('cat1');
+
+    const blendValue = Array.from(document.querySelectorAll('#productsGrid span'))
+      .find((element) => element.textContent === '70% poly, 30%viscose');
+
+    expect(blendValue).toBeTruthy();
+    expect(blendValue.parentElement.classList.contains('min-w-0')).toBe(true);
+    expect(blendValue.classList.contains('max-w-full')).toBe(true);
+    expect(blendValue.classList.contains('break-words')).toBe(true);
+    expect(blendValue.classList.contains('[overflow-wrap:anywhere]')).toBe(true);
   });
 
   test('Tier 1: Desktop search input filters the products list correctly', () => {

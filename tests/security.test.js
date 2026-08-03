@@ -128,6 +128,46 @@ describe('Security hardening', () => {
       true
     );
     expect(dom.window.firebaseServices.appCheck).not.toBeNull();
+    expect(dom.window.firebaseServices.appCheckConfigured).toBe(true);
+  });
+
+  test('App Check failure does not disable the other Firebase services', () => {
+    const bootstrap = fs.readFileSync(
+      path.resolve(__dirname, '../public/firebase-config.js'),
+      'utf8'
+    );
+    dom = new JSDOM('<!doctype html><html><head></head><body></body></html>', {
+      runScripts: 'outside-only',
+      url: 'https://example.test/'
+    });
+    const auth = { service: 'auth' };
+    const firestore = { service: 'firestore' };
+    const storage = { service: 'storage' };
+    const ReCaptchaEnterpriseProvider = jest.fn(function Provider(siteKey) {
+      this.siteKey = siteKey;
+    });
+    const app = { options: {} };
+    dom.window.FIREBASE_APP_CHECK_SITE_KEY = 'runtime-public-site-key';
+    dom.window.firebase = {
+      apps: [app],
+      app: () => app,
+      appCheck: Object.assign(() => ({
+        activate: () => { throw new Error('activation failed'); }
+      }), { ReCaptchaEnterpriseProvider }),
+      auth: () => auth,
+      firestore: () => firestore,
+      storage: () => storage
+    };
+
+    dom.window.eval(bootstrap);
+
+    expect(dom.window.firebaseServices).toEqual(expect.objectContaining({
+      auth,
+      appCheck: null,
+      appCheckConfigured: true,
+      db: firestore,
+      storage
+    }));
   });
 
   test('site markup contains no executable event attributes and delegated controls work', () => {
@@ -153,6 +193,22 @@ describe('Security hardening', () => {
     expect(password.type).toBe('password');
     toggle.click();
     expect(password.type).toBe('text');
+  });
+
+  test('every public HTML page uses the dedicated logo favicon assets', () => {
+    const publicDirectory = path.resolve(__dirname, '../public');
+    const htmlFiles = fs.readdirSync(publicDirectory)
+      .filter((filename) => filename.endsWith('.html'));
+
+    expect(htmlFiles.length).toBeGreaterThan(0);
+    for (const filename of htmlFiles) {
+      const markup = fs.readFileSync(path.join(publicDirectory, filename), 'utf8');
+      expect(markup).toContain('href="favicon.png"');
+      expect(markup).toContain('href="apple-touch-icon.png"');
+    }
+    expect(fs.statSync(path.join(publicDirectory, 'favicon.png')).size).toBeGreaterThan(0);
+    expect(fs.statSync(path.join(publicDirectory, 'apple-touch-icon.png')).size)
+      .toBeGreaterThan(0);
   });
 
   test('login signs out authenticated users without administrator authorization', async () => {

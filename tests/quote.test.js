@@ -33,6 +33,14 @@ describe('Feature 4: Quote Form Submission', () => {
     jest.useRealTimers();
   });
 
+  function fillValidGeneralInquiry() {
+    document.getElementById('firstName').value = 'Jane';
+    document.getElementById('lastName').value = 'Doe';
+    document.getElementById('email').value = 'jane@example.com';
+    document.getElementById('subject').value = 'general';
+    document.getElementById('message').value = 'Fabric request test';
+  }
+
   // TIER 1: Feature Coverage (>= 5 assertions/cases)
   test('Tier 1: Quote form has required fields and structure', () => {
     expect(document.getElementById('firstName')).toBeTruthy();
@@ -111,6 +119,45 @@ describe('Feature 4: Quote Form Submission', () => {
 
     expect(window.DataManager.saveQuote).toHaveBeenCalled();
     expect(document.getElementById('successModal').classList.contains('hidden')).toBe(false);
+  });
+
+  test('Tier 1: Configured App Check verifies with a reusable token before saving', async () => {
+    const getToken = jest.fn().mockResolvedValue({ token: 'verified-test-token' });
+    window.firebaseServices.appCheckConfigured = true;
+    window.firebaseServices.appCheck = { getToken };
+    window.DataManager.saveQuote = jest.fn().mockResolvedValue({ id: 'quote-1' });
+    fillValidGeneralInquiry();
+
+    document.getElementById('contactForm').dispatchEvent(
+      new window.Event('submit', { bubbles: true, cancelable: true })
+    );
+    await new Promise(resolve => setTimeout(resolve, 50));
+
+    expect(getToken).toHaveBeenCalledWith(false);
+    expect(window.DataManager.saveQuote).toHaveBeenCalledTimes(1);
+    expect(getToken.mock.invocationCallOrder[0])
+      .toBeLessThan(window.DataManager.saveQuote.mock.invocationCallOrder[0]);
+  });
+
+  test('Tier 1: Failed App Check verification blocks the public write', async () => {
+    window.alert = jest.fn();
+    window.firebaseServices.appCheckConfigured = true;
+    window.firebaseServices.appCheck = {
+      getToken: jest.fn().mockRejectedValue(new Error('verification unavailable'))
+    };
+    window.DataManager.saveQuote = jest.fn();
+    fillValidGeneralInquiry();
+
+    document.getElementById('contactForm').dispatchEvent(
+      new window.Event('submit', { bubbles: true, cancelable: true })
+    );
+    await new Promise(resolve => setTimeout(resolve, 50));
+
+    expect(window.DataManager.saveQuote).not.toHaveBeenCalled();
+    expect(window.alert).toHaveBeenCalledWith(
+      'We could not verify this request. Please refresh the page and try again.'
+    );
+    expect(document.getElementById('successModal').classList.contains('hidden')).toBe(true);
   });
 
   // TIER 2: Boundary & Corner Cases (>= 5 assertions/cases)

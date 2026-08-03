@@ -17,6 +17,30 @@
       toggleProductSelection();
     }
   }
+  function appCheckVerificationError() {
+    const error = new Error('Firebase App Check could not verify this request.');
+    error.code = 'app-check/verification-failed';
+    return error;
+  }
+  async function verifyPublicRequest() {
+    const services = window.firebaseServices || {};
+    if (services.appCheckConfigured !== true) return;
+
+    if (!services.appCheck || typeof services.appCheck.getToken !== 'function') {
+      throw appCheckVerificationError();
+    }
+
+    try {
+      // Reuse a valid short-lived token instead of spending quota on a forced
+      // assessment for every form submission.
+      const result = await services.appCheck.getToken(false);
+      if (!result || typeof result.token !== 'string' || !result.token) {
+        throw appCheckVerificationError();
+      }
+    } catch (_error) {
+      throw appCheckVerificationError();
+    }
+  }
   async function loadProducts() {
     const products = (await DataManager.getProducts()).filter((product) => product.active !== false);
     const categories = await DataManager.getCategories();
@@ -122,9 +146,15 @@
 
       // Show loading state and disable button
       submitBtn.disabled = true;
-      submitBtn.innerHTML = 'Sending... <span class="animate-spin h-5 w-5 border-2 border-current border-t-transparent rounded-full ml-2 inline-block"></span>';
+      const loadingSpinner = '<span class="animate-spin h-5 w-5 border-2 border-current border-t-transparent rounded-full ml-2 inline-block"></span>';
+      const appCheckConfigured = window.firebaseServices &&
+        window.firebaseServices.appCheckConfigured === true;
+      submitBtn.innerHTML = (appCheckConfigured ? 'Verifying request... ' : 'Sending... ') + loadingSpinner;
 
       try {
+        await verifyPublicRequest();
+        submitBtn.innerHTML = 'Sending... ' + loadingSpinner;
+
         let selectedProduct = null;
         if (data.interestedProduct) {
           const products = await DataManager.getProducts();
@@ -151,7 +181,11 @@
         showSuccessModal();
       } catch (err) {
         console.error('Error submitting inquiry:', err);
-        alert('An unexpected error occurred. Please try again.');
+        if (err && err.code === 'app-check/verification-failed') {
+          alert('We could not verify this request. Please refresh the page and try again.');
+        } else {
+          alert('An unexpected error occurred. Please try again.');
+        }
       } finally {
         // Restore button state
         submitBtn.disabled = false;
