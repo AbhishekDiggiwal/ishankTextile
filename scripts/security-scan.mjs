@@ -11,7 +11,6 @@ const ignoredDirectories = new Set([
   'vendor'
 ]);
 const ignoredFiles = new Set([
-  'firebase-app-check-config.js',
   'site.css'
 ]);
 const textExtensions = new Set([

@@ -167,7 +167,6 @@
       frame.className = 'w-full h-full border-0 rounded-lg bg-white';
       frame.style.minHeight = '65vh';
       frame.title = String(name || 'Document');
-      frame.setAttribute('sandbox', '');
       frame.referrerPolicy = 'no-referrer';
       contentEl.appendChild(frame);
     } else {

@@ -97,52 +97,7 @@ describe('Security hardening', () => {
     }
   });
 
-  test('Firebase bootstrap exposes on-demand App Check from hosted runtime options', () => {
-    const bootstrap = fs.readFileSync(
-      path.resolve(__dirname, '../public/firebase-config.js'),
-      'utf8'
-    );
-    dom = new JSDOM(
-      '<!doctype html><html><head>' +
-      '<meta name="firebase-app-check-enabled" content="true">' +
-      '</head><body></body></html>', {
-      runScripts: 'outside-only',
-      url: 'https://example.test/'
-      }
-    );
-    const activate = jest.fn();
-    const ReCaptchaEnterpriseProvider = jest.fn(function Provider(siteKey) {
-      this.siteKey = siteKey;
-    });
-    const app = { options: { recaptchaSiteKey: 'hosted-public-site-key' } };
-    dom.window.firebase = {
-      apps: [app],
-      app: () => app,
-      appCheck: Object.assign(() => ({ activate }), { ReCaptchaEnterpriseProvider }),
-      auth: () => ({ service: 'auth' }),
-      firestore: () => ({ service: 'firestore' }),
-      storage: () => ({ service: 'storage' })
-    };
-
-    dom.window.eval(bootstrap);
-
-    expect(ReCaptchaEnterpriseProvider).not.toHaveBeenCalled();
-    expect(activate).not.toHaveBeenCalled();
-    expect(dom.window.firebaseServices.appCheck).toBeNull();
-    expect(dom.window.firebaseServices.appCheckConfigured).toBe(true);
-
-    dom.window.firebaseServices.initializeAppCheck();
-
-    expect(ReCaptchaEnterpriseProvider).toHaveBeenCalledWith('hosted-public-site-key');
-    expect(activate).toHaveBeenCalledWith(
-      expect.objectContaining({ siteKey: 'hosted-public-site-key' }),
-      true
-    );
-    expect(dom.window.firebaseServices.appCheck).not.toBeNull();
-    expect(dom.window.firebaseServices.appCheckConfigured).toBe(true);
-  });
-
-  test('Firebase bootstrap skips App Check on pages that do not submit inquiries', () => {
+  test('Firebase bootstrap initializes only the core services used by the site', () => {
     const bootstrap = fs.readFileSync(
       path.resolve(__dirname, '../public/firebase-config.js'),
       'utf8'
@@ -151,123 +106,54 @@ describe('Security hardening', () => {
       runScripts: 'outside-only',
       url: 'https://example.test/'
     });
-    const activate = jest.fn();
-    const ReCaptchaEnterpriseProvider = jest.fn(function Provider(siteKey) {
-      this.siteKey = siteKey;
-    });
     const auth = { service: 'auth' };
     const firestore = { service: 'firestore' };
     const storage = { service: 'storage' };
-    const app = { options: { recaptchaSiteKey: 'hosted-public-site-key' } };
-    dom.window.firebase = {
-      apps: [app],
-      app: () => app,
-      appCheck: Object.assign(() => ({ activate }), { ReCaptchaEnterpriseProvider }),
-      auth: () => auth,
-      firestore: () => firestore,
-      storage: () => storage
-    };
-
-    dom.window.eval(bootstrap);
-
-    expect(ReCaptchaEnterpriseProvider).not.toHaveBeenCalled();
-    expect(activate).not.toHaveBeenCalled();
-    expect(dom.window.firebaseServices).toEqual(expect.objectContaining({
-      auth,
-      appCheck: null,
-      appCheckConfigured: false,
-      db: firestore,
-      storage
-    }));
-  });
-
-  test('Firebase bootstrap leaves App Check idle until an inquiry requests it', () => {
-    const bootstrap = fs.readFileSync(
-      path.resolve(__dirname, '../public/firebase-config.js'),
-      'utf8'
-    );
-    dom = new JSDOM(
-      '<!doctype html><html><head>' +
-      '<meta name="firebase-app-check-enabled" content="true">' +
-      '</head><body></body></html>', {
-      runScripts: 'outside-only',
-      url: 'https://example.test/'
-      }
-    );
-    dom.window.document.body.remove();
-    const activate = jest.fn(() => {
-      if (!dom.window.document.body) throw new Error('document.body is missing');
-    });
-    const ReCaptchaEnterpriseProvider = jest.fn(function Provider(siteKey) {
-      this.siteKey = siteKey;
-    });
-    const app = { options: { recaptchaSiteKey: 'hosted-public-site-key' } };
-    dom.window.firebase = {
-      apps: [app],
-      app: () => app,
-      appCheck: Object.assign(() => ({ activate }), { ReCaptchaEnterpriseProvider }),
-      auth: () => ({ service: 'auth' }),
-      firestore: () => ({ service: 'firestore' }),
-      storage: () => ({ service: 'storage' })
-    };
-
-    dom.window.eval(bootstrap);
-
-    expect(activate).not.toHaveBeenCalled();
-    const body = dom.window.document.createElement('body');
-    dom.window.document.documentElement.appendChild(body);
-    dom.window.document.dispatchEvent(new dom.window.Event('DOMContentLoaded'));
-
-    expect(activate).not.toHaveBeenCalled();
-    dom.window.firebaseServices.initializeAppCheck();
-
-    expect(activate).toHaveBeenCalledTimes(1);
-    expect(dom.window.firebaseServices.appCheck).not.toBeNull();
-  });
-
-  test('App Check failure does not disable the other Firebase services', () => {
-    const bootstrap = fs.readFileSync(
-      path.resolve(__dirname, '../public/firebase-config.js'),
-      'utf8'
-    );
-    dom = new JSDOM(
-      '<!doctype html><html><head>' +
-      '<meta name="firebase-app-check-enabled" content="true">' +
-      '</head><body></body></html>', {
-      runScripts: 'outside-only',
-      url: 'https://example.test/'
-      }
-    );
-    const auth = { service: 'auth' };
-    const firestore = { service: 'firestore' };
-    const storage = { service: 'storage' };
-    const ReCaptchaEnterpriseProvider = jest.fn(function Provider(siteKey) {
-      this.siteKey = siteKey;
-    });
     const app = { options: {} };
-    dom.window.FIREBASE_APP_CHECK_SITE_KEY = 'runtime-public-site-key';
     dom.window.firebase = {
       apps: [app],
       app: () => app,
-      appCheck: Object.assign(() => ({
-        activate: () => { throw new Error('activation failed'); }
-      }), { ReCaptchaEnterpriseProvider }),
       auth: () => auth,
       firestore: () => firestore,
       storage: () => storage
     };
 
     dom.window.eval(bootstrap);
-    dom.window.firebaseServices.initializeAppCheck();
 
-    expect(dom.window.firebaseServices).toEqual(expect.objectContaining({
+    expect(dom.window.firebaseServices).toEqual({
       auth,
-      appCheck: null,
-      appCheckConfigured: true,
       db: firestore,
       storage
-    }));
+    });
   });
+
+  test('public inquiry flow no longer loads or invokes App Check', () => {
+    const contactMarkup = fs.readFileSync(
+      path.resolve(__dirname, '../public/contact.html'),
+      'utf8'
+    );
+    const contactScript = fs.readFileSync(
+      path.resolve(__dirname, '../public/scripts/contact-1.js'),
+      'utf8'
+    );
+
+    expect(contactMarkup).not.toMatch(/app-check|recaptcha/i);
+    expect(contactScript).not.toMatch(/appCheck|verifyPublicRequest|Verifying request/i);
+  });
+
+  test.each(['about-2.js', 'admin-dashboard-2.js'])(
+    'PDF viewer in %s does not sandbox Chrome PDF rendering',
+    (filename) => {
+      const viewerScript = fs.readFileSync(
+        path.resolve(__dirname, '../public/scripts', filename),
+        'utf8'
+      );
+
+      expect(viewerScript).toContain("const frame = document.createElement('iframe')");
+      expect(viewerScript).toContain('frame.src = safeUrl');
+      expect(viewerScript).not.toMatch(/frame\.setAttribute\(['"]sandbox['"]/);
+    }
+  );
 
   test('site markup contains no executable event attributes and delegated controls work', () => {
     const publicDirectory = path.resolve(__dirname, '../public');

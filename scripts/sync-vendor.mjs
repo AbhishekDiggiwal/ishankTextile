@@ -3,7 +3,6 @@ import path from 'node:path';
 
 const copies = [
   ['firebase/firebase-app-compat.js', 'firebase/firebase-app-compat.js'],
-  ['firebase/firebase-app-check-compat.js', 'firebase/firebase-app-check-compat.js'],
   ['firebase/firebase-auth-compat.js', 'firebase/firebase-auth-compat.js'],
   ['firebase/firebase-firestore-compat.js', 'firebase/firebase-firestore-compat.js'],
   ['firebase/firebase-storage-compat.js', 'firebase/firebase-storage-compat.js'],

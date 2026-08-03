@@ -7,14 +7,8 @@
 (function initializeFirebaseServices(global) {
   'use strict';
 
-  const runtimeSiteKey = typeof global.FIREBASE_APP_CHECK_SITE_KEY === 'string'
-    ? global.FIREBASE_APP_CHECK_SITE_KEY.trim()
-    : '';
   const services = {
     auth: null,
-    appCheck: null,
-    appCheckConfigured: false,
-    initializeAppCheck: null,
     db: null,
     storage: null
   };
@@ -33,59 +27,4 @@
     console.warn('Firebase service initialization failed. Running in offline/local mode.', error);
   }
 
-  function getAppCheckSettings() {
-    const appCheckEnabledMeta = global.document &&
-      global.document.querySelector('meta[name="firebase-app-check-enabled"]');
-    const appCheckEnabled = Boolean(appCheckEnabledMeta &&
-      appCheckEnabledMeta.content.trim().toLowerCase() === 'true');
-    const appCheckMeta = global.document &&
-      global.document.querySelector('meta[name="firebase-app-check-site-key"]');
-    const appOptions = global.firebase.app && global.firebase.app().options
-      ? global.firebase.app().options
-      : {};
-    const appCheckSiteKey = (appCheckMeta && appCheckMeta.content.trim()) ||
-      runtimeSiteKey ||
-      (typeof appOptions.recaptchaSiteKey === 'string'
-        ? appOptions.recaptchaSiteKey.trim()
-        : '');
-
-    return { appCheckEnabled, appCheckSiteKey };
-  }
-
-  function initializeAppCheck() {
-    if (services.appCheck) return services.appCheck;
-
-    try {
-      const { appCheckEnabled, appCheckSiteKey } = getAppCheckSettings();
-      services.appCheckConfigured = Boolean(appCheckEnabled && appCheckSiteKey);
-      if (!services.appCheckConfigured) return null;
-
-      const EnterpriseProvider = global.firebase.appCheck &&
-        global.firebase.appCheck.ReCaptchaEnterpriseProvider;
-
-      if (!global.firebase.appCheck || typeof EnterpriseProvider !== 'function') {
-        console.warn('Firebase App Check Enterprise provider is unavailable.');
-        return;
-      }
-
-      const appCheck = global.firebase.appCheck();
-      appCheck.activate(new EnterpriseProvider(appCheckSiteKey), true);
-      services.appCheck = appCheck;
-      return appCheck;
-    } catch (error) {
-      services.appCheck = null;
-      console.warn('Firebase App Check initialization failed.', error);
-      return null;
-    }
-  }
-
-  const initialAppCheckSettings = getAppCheckSettings();
-  services.appCheckConfigured = Boolean(
-    initialAppCheckSettings.appCheckEnabled && initialAppCheckSettings.appCheckSiteKey
-  );
-  services.initializeAppCheck = initializeAppCheck;
-
-  // App Check is initialized on demand by the public inquiry form. This keeps
-  // ordinary Firestore and Storage reads independent of reCAPTCHA and avoids
-  // spending assessment quota until a visitor actually submits the form.
 }(window));

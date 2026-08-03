@@ -18,13 +18,11 @@
    compatibility fallback requires Firebase's signed `email_verified` claim.
 2. Enable Firebase Authentication email-enumeration protection, enforce a strong
    password policy, remove unused sign-in providers, and review authorized domains.
-3. Register the web app with Firebase App Check using an invisible, score-based
-   reCAPTCHA Enterprise key. Supply its public site key to `npm run build:site`
-   as `FIREBASE_APP_CHECK_SITE_KEY`; the build writes the ignored
-   `public/firebase-app-check-config.js` runtime file. The contact form obtains
-   a reusable App Check token before any public inquiry is written. Deploy the
-   client first, verify valid App Check traffic in Firebase metrics, and only
-   then enable Firestore enforcement so direct scripted writes are rejected.
+3. Keep the public inquiry schema tightly restricted in Firestore rules. The
+   form also uses a honeypot, field validation, bounded input sizes, and a short
+   browser cooldown. If stronger automated-abuse protection becomes necessary,
+   validate a challenge through a trusted backend before writing to Firestore;
+   do not make legitimate inquiries depend on an unverified browser-only token.
 4. Restrict the Firebase browser API key in Google Cloud to the production
    domains and only the required Firebase APIs. The browser key is public by
    design, but restrictions limit abuse.
@@ -46,9 +44,7 @@ npm run build:site
 npm test -- --runInBand
 npm run build
 firebase deploy --dry-run --only firestore:rules,storage,hosting
-$env:FIREBASE_APP_CHECK_SITE_KEY = '<public-recaptcha-enterprise-site-key>'
 firebase deploy --only firestore:rules,storage,hosting
-Remove-Item Env:FIREBASE_APP_CHECK_SITE_KEY
 ```
 
 Deploying these rules does not delete Firestore documents or Storage objects.
