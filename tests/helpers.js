@@ -261,7 +261,7 @@ function loadPage(htmlFileName, options = {}) {
   // Replace local script sources with inline contents
   html = html.replace(/<script[^>]*src="\/__\/firebase\/init\.js"[^>]*><\/script>/gi, '<!-- Firebase Hosting auto-init mocked -->');
   html = html.replace(/<script[^>]*src="firebase-app-check-config\.js"[^>]*><\/script>/gi, '<!-- App Check runtime config mocked -->');
-  html = html.replace(/<script[^>]*src="firebase-config\.js"[^>]*><\/script>/gi, '<!-- config mocked -->');
+  html = html.replace(/<script[^>]*src="firebase-config\.js(?:\?[^\"]*)?"[^>]*><\/script>/gi, '<!-- config mocked -->');
   html = html.replace(/<script[^>]*src="security-utils\.js"[^>]*><\/script>/gi, `<script>${securityUtilsCode}</script>`);
   html = html.replace(/<script[^>]*src="event-handlers\.js"[^>]*><\/script>/gi, `<script>${eventHandlersCode}</script>`);
   html = html.replace(/<script[^>]*src="data-manager\.js(?:\?[^"]*)?"[^>]*><\/script>/gi, `<script>${dataManagerCode}\nwindow.DataManager = DataManager;\nif (${disableSettingsMethod}) { DataManager.getSettings = undefined; window.DataManager.getSettings = undefined; }</script>`);
