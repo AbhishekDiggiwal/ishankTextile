@@ -2,14 +2,17 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     // The custom claim is the preferred long-term authorization mechanism.
-    // The exact-email fallback keeps the existing console-created admin account
-    // working while the claim is added. Both values come from signed Firebase
-    // ID-token claims and cannot be supplied by the browser request body.
+    // The verified exact-email fallback keeps the existing console-created admin
+    // account working while the claim is added. All values come from signed
+    // Firebase ID-token claims and cannot be supplied by the request body.
     function isAdmin() {
       return request.auth != null
         && (
           request.auth.token.admin == true
-          || request.auth.token.email == 'admin@ishanktextile.com'
+          || (
+            request.auth.token.email == 'admin@ishanktextile.com'
+            && request.auth.token.email_verified == true
+          )
         );
     }
 

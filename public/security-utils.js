@@ -207,16 +207,16 @@
   }
 
   async function isAdminUser(user, forceRefresh) {
-    if (!user) return false;
+    if (!user || typeof user.getIdTokenResult !== 'function') return false;
     try {
-      if (typeof user.getIdTokenResult === 'function') {
-        const result = await user.getIdTokenResult(Boolean(forceRefresh));
-        if (result && result.claims && result.claims.admin === true) return true;
-      }
+      const result = await user.getIdTokenResult(Boolean(forceRefresh));
+      const claims = result && result.claims ? result.claims : {};
+      if (claims.admin === true) return true;
+      return toString(claims.email).trim().toLowerCase() === ADMIN_EMAIL &&
+        claims.email_verified === true;
     } catch (_) {
       return false;
     }
-    return toString(user.email).trim().toLowerCase() === ADMIN_EMAIL;
   }
 
   function toDate(value) {

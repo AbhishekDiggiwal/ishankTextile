@@ -12,7 +12,10 @@
 
 ## Firebase production checklist
 
-1. Assign the `admin: true` custom claim only to approved administrator accounts.
+1. Confirm the existing administrator account has a verified email before
+   deployment. Assign the `admin: true` custom claim only to approved
+   administrator accounts. Until that claim is present, the exact-email
+   compatibility fallback requires Firebase's signed `email_verified` claim.
 2. Enable Firebase Authentication email-enumeration protection, enforce a strong
    password policy, remove unused sign-in providers, and review authorized domains.
 3. Register the web app with Firebase App Check using reCAPTCHA Enterprise and

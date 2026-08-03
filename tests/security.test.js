@@ -60,6 +60,43 @@ describe('Security hardening', () => {
     }, true)).resolves.toBe(false);
   });
 
+  test('email-based admin fallback requires the signed verified-email claim', async () => {
+    dom = loadPage('index.html');
+    const isAdminUser = dom.window.SecurityUtils.isAdminUser;
+
+    await expect(isAdminUser({
+      email: 'admin@ishanktextile.com',
+      getIdTokenResult: async () => ({
+        claims: { email: 'admin@ishanktextile.com', email_verified: true }
+      })
+    }, true)).resolves.toBe(true);
+    await expect(isAdminUser({
+      email: 'admin@ishanktextile.com',
+      getIdTokenResult: async () => ({
+        claims: { email: 'admin@ishanktextile.com', email_verified: false }
+      })
+    }, true)).resolves.toBe(false);
+    await expect(isAdminUser({
+      email: 'admin@ishanktextile.com'
+    }, true)).resolves.toBe(false);
+  });
+
+  test('Firebase rules require verified email for the temporary admin fallback', () => {
+    const firestoreRules = fs.readFileSync(
+      path.resolve(__dirname, '../firestore.rules'),
+      'utf8'
+    );
+    const storageRules = fs.readFileSync(
+      path.resolve(__dirname, '../storage.rules'),
+      'utf8'
+    );
+
+    for (const rules of [firestoreRules, storageRules]) {
+      expect(rules).toContain("request.auth.token.email == 'admin@ishanktextile.com'");
+      expect(rules).toContain('request.auth.token.email_verified == true');
+    }
+  });
+
   test('Firebase bootstrap activates App Check from hosted runtime options', () => {
     const bootstrap = fs.readFileSync(
       path.resolve(__dirname, '../public/firebase-config.js'),
