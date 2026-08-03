@@ -1,11 +1,64 @@
 rules_version = '2';
 service firebase.storage {
   match /b/{bucket}/o {
-    // Allow public reads of images (products/certificates)
-    // Only authenticated admin users can upload or delete them
-    match /{allPaths=**} {
+    function isAdmin() {
+      return request.auth != null
+        && (
+          request.auth.token.admin == true
+          || request.auth.token.email == 'admin@ishanktextile.com'
+        );
+    }
+
+    function isImage() {
+      return request.resource.contentType.matches(
+        'image/(png|jpeg|gif|webp)'
+      );
+    }
+
+    function isCertificate() {
+      return isImage()
+        || request.resource.contentType == 'application/pdf'
+        || request.resource.contentType == 'application/msword'
+        || request.resource.contentType
+          == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+    }
+
+    function isPolicyDocument() {
+      return request.resource.contentType.matches('text/(plain|markdown)')
+        || request.resource.contentType == 'application/msword'
+        || request.resource.contentType
+          == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+    }
+
+    match /images/{filename} {
       allow read: if true;
-      allow write: if request.auth != null;
+      allow create, update: if isAdmin()
+        && request.resource.size > 0
+        && request.resource.size <= 5 * 1024 * 1024
+        && isImage();
+      allow delete: if isAdmin();
+    }
+
+    match /certificates/{filename} {
+      allow read: if true;
+      allow create, update: if isAdmin()
+        && request.resource.size > 0
+        && request.resource.size <= 5 * 1024 * 1024
+        && isCertificate();
+      allow delete: if isAdmin();
+    }
+
+    match /policies/{filename} {
+      allow read: if true;
+      allow create, update: if isAdmin()
+        && request.resource.size > 0
+        && request.resource.size <= 5 * 1024 * 1024
+        && isPolicyDocument();
+      allow delete: if isAdmin();
+    }
+
+    match /{allPaths=**} {
+      allow read, write: if false;
     }
   }
 }

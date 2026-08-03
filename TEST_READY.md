@@ -12,8 +12,8 @@ This test suite provides comprehensive test coverage for the static front-end an
 
 2. **Feature 2: Admin Authentication (`admin-login.html`)**
    - Firebase Auth integration happy paths.
-   - Local/Offline credentials fallback handling (`admin@ishanktextile.com` / `admin123`).
-   - Detailed Firebase Auth error code translations (e.g., wrong password, user not found, invalid email).
+   - Firebase Auth fails closed when the service is offline; no local credential fallback exists.
+   - Generic authentication errors prevent account enumeration.
 
 3. **Feature 3: Catalog Search & Filters (`products-catalogue.html`)**
    - Category collections card list rendering.

@@ -6,8 +6,8 @@ Migrating from localStorage to Firebase (Auth + Firestore + Storage)
 ## Changes Made So Far
 
 ### 1. Firebase Configuration ✅
-- Created `firebase-config.js` with Firebase SDK initialization
-- Placeholder config - replace with your actual Firebase project credentials
+- Firebase Hosting supplies the web configuration at runtime through `/__/firebase/init.js`
+- No API key, project ID, app ID, bucket name, or client secret is committed
 
 ### 2. Admin Login Page ✅
 - Updated `admin-login.html` to use Firebase Auth
@@ -83,7 +83,7 @@ async uploadImage(file) {
 
 ### 3. Enable Services
 1. **Authentication**: Enable Email/Password sign-in
-2. **Firestore Database**: Create database (start in test mode)
+2. **Firestore Database**: Create the database and deploy the checked-in `firestore.rules`
 3. **Storage**: Enable and create bucket
 
 ### 4. Create Admin User
@@ -94,18 +94,8 @@ async uploadImage(file) {
 5. Click "Add User"
 
 ### 5. Security Rules
-Set Firestore security rules:
-```javascript
-rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-    match /{document=**} {
-      allow read: if true;
-      allow write: if request.auth != null;
-    }
-  }
-}
-```
+Deploy the checked-in `firestore.rules` and `storage.rules`. Never use test-mode
+rules or grant write access merely because a user is signed in.
 
 ## Cost
 - **Firebase Auth**: Free (10,000 users/month)

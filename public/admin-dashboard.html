@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link rel="icon" type="image/png" href="logo.png"/>
+<title>Admin Dashboard - Ishank Textile</title>
+<link rel="stylesheet" href="site.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .textile-texture {
+            background-image: radial-gradient(circle at 2px 2px, rgba(0,0,0,0.02) 1px, transparent 0);
+            background-size: 4px 4px;
+        }
+    </style>
+<link rel="stylesheet" href="vendor/fontawesome/css/all.min.css">
+<script src="vendor/chartjs/chart.umd.min.js"></script>
+<script src="vendor/firebase/firebase-app-compat.js"></script>
+<script src="vendor/firebase/firebase-app-check-compat.js"></script>
+<script src="vendor/firebase/firebase-auth-compat.js"></script>
+<script src="vendor/firebase/firebase-firestore-compat.js"></script>
+<script src="vendor/firebase/firebase-storage-compat.js"></script>
+<script src="/__/firebase/init.js"></script>
+<script src="security-utils.js"></script>
+<script src="firebase-config.js"></script>
+<!-- Firebase services exposed as module-level variables for use in DataManager -->
+<script src="scripts/admin-dashboard-1.js"></script>
+<style>
+  .sidebar-item.active { background: #d11e33; color: #ffe8e6; }
+  .sidebar-item.active .material-symbols-outlined, .sidebar-item.active i { color: #ffe8e6; }
+  .form-input { background: #ffffff; border: 1px solid #e5bdbb; border-radius: 0.5rem; outline: none; transition: border-color .15s ease, box-shadow .15s ease; }
+  .form-input:focus { border-color: #aa0021; box-shadow: 0 0 0 2px rgba(170, 0, 33, .15); }
+  .text-dark-gray { color: #1a1c1c; }
+  .text-brand-orange, .text-brand-orange-dark { color: #aa0021; }
+  .text-accent-blue { color: #4a545f; }
+  .text-accent-green { color: #15803d; }
+  .bg-brand-orange, .bg-brand-orange-dark, .hover\:bg-brand-orange-dark:hover { background-color: #aa0021; }
+  .bg-accent-blue { background-color: #4a545f; }
+  .bg-accent-green { background-color: #15803d; }
+  .border-brand-orange { border-color: #aa0021; }
+  .glass-card { background: rgba(255,255,255,.76); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(229,189,187,.55); box-shadow: 0 10px 30px rgba(26,28,28,.06); }
+  .toast { transition: opacity .3s ease, transform .3s ease; }
+  table { border-collapse: collapse; }
+</style>
+</head>
+<body class="bg-background text-on-surface font-body-md textile-texture min-h-screen">
+<aside class="fixed left-0 top-0 h-full w-20 md:w-64 bg-surface-container-lowest border-r border-outline-variant z-50 transition-all duration-300">
+  <div class="h-20 flex items-center gap-3 px-4 md:px-6 border-b border-outline-variant">
+    <img src="logo.png" alt="Ishank Textile Logo" class="h-10 w-10 object-contain rounded flex-shrink-0">
+    <span class="font-label-mono text-[18px] font-bold text-primary hidden md:block leading-none truncate">ISHANK TEXTILE</span>
+  </div>
+  <nav class="mt-stack-lg px-4 space-y-2">
+    <a href="#dashboard" data-action="showSection" data-section="dashboard" class="sidebar-item active flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group"><span class="material-symbols-outlined">dashboard</span><span class="hidden md:block font-label-bold">Dashboard</span></a>
+    <a href="#categories" data-action="showSection" data-section="categories" class="sidebar-item flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group"><span class="material-symbols-outlined">category</span><span class="hidden md:block font-label-bold">Product Category</span></a>
+    <a href="#products" data-action="showSection" data-section="products" class="sidebar-item flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group"><span class="material-symbols-outlined">inventory_2</span><span class="hidden md:block font-label-bold">Products</span></a>
+    <a href="#visitors" data-action="showSection" data-section="visitors" class="sidebar-item flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group"><span class="material-symbols-outlined">analytics</span><span class="hidden md:block font-label-bold">Visitors</span></a>
+    <a href="#quotes" data-action="showSection" data-section="quotes" class="sidebar-item flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group"><span class="material-symbols-outlined">request_quote</span><span class="hidden md:block font-label-bold">Quotes</span></a>
+    <a href="#certificates" data-action="showSection" data-section="certificates" class="sidebar-item flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group"><span class="material-symbols-outlined">description</span><span class="hidden md:block font-label-bold">Documents</span></a>
+    <a href="#settings" data-action="showSection" data-section="settings" class="sidebar-item flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group"><span class="material-symbols-outlined">settings</span><span class="hidden md:block font-label-bold">Settings</span></a>
+    <a href="index.html" class="flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group"><span class="material-symbols-outlined">open_in_new</span><span class="hidden md:block font-label-bold">View Site</span></a>
+  </nav>
+  <div class="absolute bottom-8 left-0 w-full px-4">
+    <button data-action="logout" class="w-full flex items-center gap-4 p-3 rounded-lg bg-surface-container hover:bg-error-container text-on-surface-variant hover:text-on-error-container transition-colors">
+      <span class="material-symbols-outlined">logout</span>
+      <span class="hidden md:block font-label-bold">Logout</span>
+    </button>
+  </div>
+</aside>
+<main class="ml-20 md:ml-64 p-gutter md:p-margin-desktop transition-all duration-300">
+  <!-- Notice Banner for offline / uninitialized Firebase -->
+  <div id="offline-banner" class="hidden bg-amber-500 text-white px-6 py-3 rounded-lg mb-6 flex items-center justify-between shadow-md">
+    <div class="flex items-center gap-3">
+      <span class="material-symbols-outlined">warning</span>
+      <span class="font-medium text-sm">Firebase is not configured or offline. Running in local preview mode. Changes are saved to browser local storage.</span>
+    </div>
+    <button data-action="hideElement" data-target-id="offline-banner" class="text-white hover:opacity-85 flex items-center">
+      <span class="material-symbols-outlined text-base">close</span>
+    </button>
+  </div>
+  <header class="flex flex-col xl:flex-row xl:items-center justify-between gap-gutter mb-section-padding">
+    <div>
+      <h1 id="page-title" class="font-headline-lg text-headline-lg text-on-surface">Operations Overview</h1>
+      <p class="text-on-surface-variant mt-2 font-body-md">Real-time visitors, products, documents, and quotation metrics for Ishank Textile.</p>
+    </div>
+    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-stack-md">
+      <button data-action="refreshData" class="border border-outline-variant text-on-surface px-4 py-2 rounded-lg font-label-bold hover:border-primary hover:text-primary transition-colors"><span class="material-symbols-outlined text-sm align-middle">refresh</span></button>
+    </div>
+  </header>
+  <div id="admin-sections" class="space-y-gutter">
+
+<section id="dashboard-section" class="space-y-gutter">
+  <section class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-gutter">
+    <div class="glass-card p-6 rounded-xl shadow-sm border-l-4 border-primary">
+      <div class="flex justify-between items-start mb-4">
+        <span class="material-symbols-outlined text-primary">groups</span>
+        <span class="text-xs font-mono text-green-600 bg-green-50 px-2 py-1 rounded"><span id="kpi-visitors-change">0%</span></span>
+      </div>
+      <h3 class="text-on-surface-variant font-label-bold">Visitors Today</h3>
+      <p id="kpi-visitors-today" class="font-mono text-display-lg text-on-surface mt-2">0</p>
+    </div>
+    <div class="glass-card p-6 rounded-xl shadow-sm border-l-4 border-tertiary">
+      <div class="flex justify-between items-start mb-4">
+        <span class="material-symbols-outlined text-tertiary">request_quote</span>
+        <span class="text-xs font-mono text-primary bg-primary-fixed px-2 py-1 rounded"><span id="kpi-quotes-change">0%</span></span>
+      </div>
+      <h3 class="text-on-surface-variant font-label-bold">Quote Requests</h3>
+      <p id="kpi-quotes-today" class="font-mono text-display-lg text-on-surface mt-2">0</p>
+    </div>
+    <div class="glass-card p-6 rounded-xl shadow-sm border-l-4 border-secondary">
+      <div class="flex justify-between items-start mb-4">
+        <span class="material-symbols-outlined text-secondary">category</span>
+        <span class="text-xs font-mono text-on-surface-variant bg-surface-container px-2 py-1 rounded">Active</span>
+      </div>
+      <h3 class="text-on-surface-variant font-label-bold">Categories</h3>
+      <p id="kpi-categories" class="font-mono text-display-lg text-on-surface mt-2">0</p>
+    </div>
+    <div class="glass-card p-6 rounded-xl shadow-sm border-l-4 border-primary-container">
+      <div class="flex justify-between items-start mb-4">
+        <span class="material-symbols-outlined text-primary-container">inventory_2</span>
+        <span class="text-xs font-mono text-green-600 bg-green-50 px-2 py-1 rounded">Stable</span>
+      </div>
+      <h3 class="text-on-surface-variant font-label-bold">Products</h3>
+      <p id="kpi-products" class="font-mono text-display-lg text-on-surface mt-2">0</p>
+    </div>
+  </section>
+  <div class="grid grid-cols-1 xl:grid-cols-3 gap-gutter">
+    <section class="xl:col-span-2 glass-card rounded-xl overflow-hidden shadow-2xl border border-white/10">
+      <div class="p-6 border-b border-outline-variant flex justify-between items-center bg-white/50">
+        <h2 class="font-headline-md text-on-surface">Visitor Analytics</h2>
+        <select id="visitor-chart-period" data-action="updateVisitorChart" data-action-event="change" class="form-input px-3 py-1 rounded-lg text-sm">
+          <option value="7">7 Days</option>
+          <option value="30">30 Days</option>
+        </select>
+      </div>
+      <div class="p-gutter h-[320px]"><canvas id="visitorsChart"></canvas></div>
+    </section>
+    <section class="glass-card rounded-xl p-6 shadow-sm flex flex-col justify-between overflow-hidden relative">
+      <div class="relative z-10">
+        <h2 class="font-headline-md text-on-surface mb-2">Quote Analytics</h2>
+        <p class="text-on-surface-variant font-body-md text-sm mb-stack-md">Inquiry volume and requested material mix.</p>
+        <select id="quote-chart-period" data-action="updateQuoteChart" data-action-event="change" class="form-input px-3 py-1 rounded-lg text-sm mb-stack-md w-full">
+          <option value="7">7 Days</option>
+          <option value="30">30 Days</option>
+        </select>
+        <div class="h-[180px]"><canvas id="quotesChart"></canvas></div>
+      </div>
+      <div class="mt-stack-lg pt-stack-lg border-t border-outline-variant/30 relative z-10">
+        <div class="flex items-center justify-between gap-3 mb-3">
+          <h3 class="font-label-bold text-on-surface uppercase text-xs">Most Requested</h3>
+          <select id="requested-chart-period" data-action="updateMostRequestedChart" data-action-event="change" class="form-input px-2 py-1 rounded-lg text-xs">
+            <option value="7">7 Days</option>
+            <option value="30">30 Days</option>
+          </select>
+        </div>
+        <div class="h-[150px]"><canvas id="mostRequestedChart"></canvas></div>
+      </div>
+    </section>
+  </div>
+  <section class="glass-card rounded-xl shadow-2xl overflow-hidden border border-white/10">
+    <div class="p-6 border-b border-outline-variant bg-white/50 flex justify-between items-center">
+      <h2 class="font-headline-md text-on-surface">Recent Quote Requests</h2>
+      <button data-action="showSection" data-section="quotes" class="text-primary hover:underline font-label-bold text-sm">View All</button>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-left">
+        <thead>
+          <tr class="bg-surface-container-low border-b border-outline-variant">
+            <th class="px-6 py-4 font-label-bold text-xs uppercase text-on-surface-variant">Customer</th>
+            <th class="px-6 py-4 font-label-bold text-xs uppercase text-on-surface-variant">Email</th>
+            <th class="px-6 py-4 font-label-bold text-xs uppercase text-on-surface-variant">Product</th>
+            <th class="px-6 py-4 font-label-bold text-xs uppercase text-on-surface-variant">Quantity</th>
+            <th class="px-6 py-4 font-label-bold text-xs uppercase text-on-surface-variant">Date</th>
+          </tr>
+        </thead>
+        <tbody id="recent-quotes-table" class="divide-y divide-outline-variant"></tbody>
+      </table>
+    </div>
+  </section>
+</section>
+    <section id="categories-section" class="hidden space-y-6">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h3 class="text-lg font-bold text-dark-gray">Product Categories</h3>
+                            <p class="text-sm text-gray-500">Manage product categories and their details</p>
+                        </div>
+                        <div class="flex flex-wrap items-center justify-end gap-3">
+                            <button id="category-price-toggle" type="button" data-action="toggleCategoryPriceVisibility" class="border border-outline-variant text-on-surface px-4 py-2 rounded-lg font-medium transition-all flex items-center gap-2 hover:border-primary hover:text-primary">
+                                <span class="material-symbols-outlined text-base">visibility</span>
+                                <span>Show Prices</span>
+                            </button>
+                            <button data-action="openCategoryModal" class="bg-brand-orange hover:bg-brand-orange-dark text-white px-6 py-2 rounded-lg font-medium transition-all flex items-center space-x-2">
+                                <i class="fas fa-plus"></i>
+                                <span>Add Category</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Filter Bar -->
+                    <div class="glass-card p-4 flex flex-wrap gap-4 items-center">
+                        <select id="category-filter-status" data-action="filterCategories" data-action-event="change" class="form-input px-4 py-2 rounded-lg">
+                            <option value="">All Status</option>
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                        </select>
+                        <div class="flex-1"></div>
+                        <input type="text" id="category-search" data-action="filterCategories" data-action-event="keyup" placeholder="Search categories..." class="form-input px-4 py-2 rounded-lg w-64">
+                    </div>
+
+                    <div class="glass-card p-6">
+                        <div class="overflow-x-auto">
+                            <table class="data-table w-full">
+                                <thead>
+                                    <tr class="border-b border-gray-200">
+                                        <th class="text-left py-3 px-4">Image</th>
+                                        <th class="text-left py-3 px-4">Category Name</th>
+                                        <th class="text-left py-3 px-4">Description</th>
+                                        <th class="text-left py-3 px-4">Starting Price</th>
+                                        <th class="text-left py-3 px-4">Products Count</th>
+                                        <th class="text-left py-3 px-4">Clothing Type</th>
+                                        <th class="text-left py-3 px-4">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="categories-table">
+                                    <!-- Dynamic content -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Products Section -->
+                <section id="products-section" class="hidden space-y-6">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h3 class="text-lg font-bold text-dark-gray">Products</h3>
+                            <p class="text-sm text-gray-500">Manage products within categories</p>
+                        </div>
+                        <div class="flex flex-wrap items-center justify-end gap-3">
+                            <button id="product-price-toggle" type="button" data-action="toggleProductPriceVisibility" class="border border-outline-variant text-on-surface px-4 py-2 rounded-lg font-medium transition-all flex items-center gap-2 hover:border-primary hover:text-primary">
+                                <span class="material-symbols-outlined text-base">visibility</span>
+                                <span>Show Prices</span>
+                            </button>
+                            <button data-action="openProductModal" class="bg-brand-orange hover:bg-brand-orange-dark text-white px-6 py-2 rounded-lg font-medium transition-all flex items-center space-x-2">
+                                <i class="fas fa-plus"></i>
+                                <span>Add Product</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Filter Bar -->
+                    <div class="glass-card p-4 flex flex-wrap gap-4 items-center">
+                        <select id="product-filter-category" data-action="filterProducts" data-action-event="change" class="form-input px-4 py-2 rounded-lg">
+                            <option value="">All Categories</option>
+                        </select>
+                        <select id="product-filter-status" data-action="filterProducts" data-action-event="change" class="form-input px-4 py-2 rounded-lg">
+                            <option value="">All Status</option>
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                        </select>
+                        <div class="flex-1"></div>
+                        <input type="text" id="product-search" data-action="searchProducts" data-action-event="keyup" placeholder="Search products..." class="form-input px-4 py-2 rounded-lg w-64">
+                    </div>
+
+                    <div class="glass-card p-6">
+                        <div class="overflow-x-auto">
+                            <table class="data-table w-full">
+                                <thead>
+                                    <tr class="border-b border-gray-200">
+                                        <th class="text-left py-3 px-4">Image</th>
+                                        <th class="text-left py-3 px-4">Design Code</th>
+                                        <th class="text-left py-3 px-4">Product Name</th>
+                                        <th class="text-left py-3 px-4">Category</th>
+                                        <th class="text-left py-3 px-4">Starting Price</th>
+                                        <th class="text-left py-3 px-4">GSM</th>
+                                        <th class="text-left py-3 px-4">Blend</th>
+                                        <th class="text-left py-3 px-4">Clothing Type</th>
+                                        <th class="text-left py-3 px-4">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="products-table">
+                                    <!-- Dynamic content -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Visitors Section -->
+                <section id="visitors-section" class="hidden space-y-6">
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <div class="glass-card p-6 lg:col-span-2">
+                            <h3 class="text-lg font-bold text-dark-gray mb-4">Visitor Statistics</h3>
+                            <div class="chart-container">
+                                <canvas id="visitorsDetailChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="glass-card p-6">
+                            <h3 class="text-lg font-bold text-dark-gray mb-4">Top Pages</h3>
+                            <div id="top-pages-list" class="space-y-3">
+                                <!-- Dynamic content -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Top Visited Fabrics Analytics Card & Graph -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <!-- Top Fabric KPI Card -->
+                        <div class="glass-card p-6 flex flex-col justify-between">
+                            <div>
+                                <div class="flex justify-between items-center mb-4">
+                                    <h3 class="text-lg font-bold text-dark-gray">Top Fabric KPI</h3>
+                                    <span class="px-2.5 py-1 text-xs font-semibold bg-brand-orange/10 text-brand-orange rounded-full">Top Product</span>
+                                </div>
+                                <div class="space-y-4">
+                                    <div>
+                                        <p class="text-xs text-gray-500 uppercase tracking-wider">Top Visited Product</p>
+                                        <h4 id="top-fabric-kpi-name" class="text-xl font-bold text-dark-gray mt-1">-</h4>
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <p class="text-xs text-gray-500 uppercase tracking-wider">Fabric Code</p>
+                                            <p id="top-fabric-kpi-code" class="text-sm font-semibold text-gray-700 mt-1">-</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-xs text-gray-500 uppercase tracking-wider">Total Views</p>
+                                            <p id="top-fabric-kpi-views" class="text-sm font-semibold text-brand-orange mt-1">0 views</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500">
+                                <span>Based on B2B catalog views and quote requests</span>
+                                <i class="fas fa-chart-line text-brand-orange text-base"></i>
+                            </div>
+                        </div>
+
+                        <!-- Top Fabrics Chart Card -->
+                        <div class="glass-card p-6 lg:col-span-2">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="text-lg font-bold text-dark-gray">Top Visited Fabrics</h3>
+                                <select id="fabric-visit-period" data-action="updateTopVisitedFabrics" data-action-event="change" class="form-input px-3 py-1 rounded-lg text-sm bg-white border border-gray-200">
+                                    <option value="7">Weekly (7 Days)</option>
+                                    <option value="30" selected>Monthly (30 Days)</option>
+                                    <option value="90">Quarterly (90 Days)</option>
+                                    <option value="180">Past 6 Months</option>
+                                </select>
+                            </div>
+                            <div class="chart-container" style="height: 220px; position: relative;">
+                                <canvas id="topFabricsChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Quotes Section -->
+                <section id="quotes-section" class="hidden space-y-6">
+                    <div class="glass-card p-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-lg font-bold text-dark-gray">Quote Requests</h3>
+                            <div class="flex gap-2">
+                                <button data-action="exportQuotes" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <i class="fas fa-download mr-2"></i>Export
+                                </button>
+                            </div>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="data-table w-full">
+                                <thead>
+                                    <tr class="border-b border-gray-200">
+                                        <th class="text-left py-3 px-4">ID</th>
+                                        <th class="text-left py-3 px-4">Customer</th>
+                                        <th class="text-left py-3 px-4">Email</th>
+                                        <th class="text-left py-3 px-4">Phone</th>
+                                        <th class="text-left py-3 px-4">Product</th>
+                                        <th class="text-left py-3 px-4">Quantity</th>
+                                        <th class="text-left py-3 px-4">Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="quotes-table">
+                                    <!-- Dynamic content -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Settings Section -->
+                <section id="settings-section" class="hidden space-y-6">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div class="glass-card p-6">
+                            <h3 class="text-lg font-bold text-dark-gray mb-4">General Settings</h3>
+                            <form id="general-settings-form" class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Company Name</label>
+                                    <input type="text" id="setting-company-name" maxlength="160" readonly class="form-input w-full px-4 py-2 rounded-lg bg-gray-50 text-gray-600 cursor-not-allowed" value="Ishank Textile">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Contact Email</label>
+                                    <input type="email" id="setting-contact-email" maxlength="254" readonly class="form-input w-full px-4 py-2 rounded-lg bg-gray-50 text-gray-600 cursor-not-allowed" value="sunilpandiya909@gmail.com">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Contact Phone</label>
+                                    <input type="tel" id="setting-contact-phone" maxlength="40" readonly class="form-input w-full px-4 py-2 rounded-lg bg-gray-50 text-gray-600 cursor-not-allowed" value="+91 94141 12197">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Founder Image (About Us Page)</label>
+                                    <div class="flex items-center gap-4">
+                                        <div class="relative w-16 h-16 rounded-full overflow-hidden border border-gray-200 bg-gray-50 flex-shrink-0">
+                                            <img id="setting-user-image-preview" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMIv5Ytqq3xAtaDcgx3ujsoghX_n2IrEEAsIIrlwmEcZiKWXzbmUHfbGJLd6aC9ubXXjukl12xxSHiBoESASAqXpAbw_hNlqQ9b5oFDqDU-b_TXEuwuueGvn8Kt2wmdBmnjKd0SAA811axwo08XdoPIW2ZLjHyP4e1HNF382INf-1nY8mdPlXhPQKYHQ37aLntIRLjUD7l9FWFx96kJnln-uttxSQngp4IryWWLAWG_1-UeUuvJV-y7RpIUU1TxUHoOlYRAQjyIXI" alt="Founder Image About Us" class="w-full h-full object-cover">
+                                        </div>
+                                        <div>
+                                            <input type="file" id="setting-user-image-file" accept="image/*" class="hidden" data-action="handleSettingsUserImageUpload" data-action-event="change" data-value="about">
+                                            <button type="button" id="setting-user-image-btn" disabled data-action="clickElement" data-target-id="setting-user-image-file" class="bg-gray-100 text-gray-400 px-4 py-2 rounded-lg font-medium cursor-not-allowed transition-all border border-gray-200 text-sm">
+                                                Choose Image
+                                            </button>
+                                            <p class="text-xs text-gray-400 mt-1">Accepts PNG, JPG, JPEG. Will be saved as optimized WebP.</p>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" id="setting-user-image-url" value="">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Founder Image (Homepage)</label>
+                                    <div class="flex items-center gap-4">
+                                        <div class="relative w-16 h-16 rounded-full overflow-hidden border border-gray-200 bg-gray-50 flex-shrink-0">
+                                            <img id="setting-home-image-preview" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBGwDXOzTC100PVaSnevRzASq7mmzUBNcDc7vVstVNQLg9Qme6gGaDn86uP5eUfHPu4rlvo-7P-e9FWpf5RrdGFEUppfBR2wf2I_WGV201u-VReNnHyajQoWnuwm-4nsGH3fDVJbKmUAj9R7HPT06pvMBK2IwtcvbLfLVY_SJO0MO81D26T1RAgHgtztZWXnu4X_ZXCupDnc3wynkeao7oyvhIeK9pbRJsTPJAWclBFpnOaSkMBN8dKjCnDbXcyaPHfYmtDiCMvVt8" alt="Founder Image Homepage" class="w-full h-full object-cover">
+                                        </div>
+                                        <div>
+                                            <input type="file" id="setting-home-image-file" accept="image/*" class="hidden" data-action="handleSettingsUserImageUpload" data-action-event="change" data-value="home">
+                                            <button type="button" id="setting-home-image-btn" disabled data-action="clickElement" data-target-id="setting-home-image-file" class="bg-gray-100 text-gray-400 px-4 py-2 rounded-lg font-medium cursor-not-allowed transition-all border border-gray-200 text-sm">
+                                                Choose Image
+                                            </button>
+                                            <p class="text-xs text-gray-400 mt-1">Accepts PNG, JPG, JPEG. Will be saved as optimized WebP.</p>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" id="setting-home-image-url" value="">
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <button type="button" id="edit-settings-btn" data-action="enterSettingsEditMode" class="bg-brand-orange hover:bg-brand-orange-dark text-white px-6 py-2 rounded-lg font-medium transition-all">
+                                        Edit
+                                    </button>
+                                    <button type="submit" id="save-settings-btn" disabled class="bg-brand-orange/50 text-white px-6 py-2 rounded-lg font-medium transition-all cursor-not-allowed hidden">
+                                        Save Changes
+                                    </button>
+                                    <button type="button" id="cancel-settings-btn" data-action="exitSettingsEditMode" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-2 rounded-lg font-medium transition-all hidden">
+                                        Cancel
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="glass-card p-6">
+                            <h3 class="text-lg font-bold text-dark-gray mb-4">Data Management</h3>
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                                    <div>
+                                        <p class="font-medium text-gray-700">Export All Data</p>
+                                        <p class="text-sm text-gray-500">Download backup of all data</p>
+                                    </div>
+                                    <button data-action="exportAllData" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+                                        <i class="fas fa-download mr-2"></i>Export
+                                    </button>
+                                </div>
+                                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                                    <div>
+                                        <p class="font-medium text-gray-700">Import Data</p>
+                                        <p class="text-sm text-gray-500">Import data from backup file</p>
+                                    </div>
+                                    <label class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">
+                                        <i class="fas fa-upload mr-2"></i>Import
+                                        <input type="file" id="import-file" class="hidden" data-action="importData" data-action-event="change" accept=".json">
+                                    </label>
+                                </div>
+                                <div class="flex items-center justify-between p-4 bg-red-50 rounded-lg">
+                                    <div>
+                                        <p class="font-medium text-red-700">Reset All Data</p>
+                                        <p class="text-sm text-red-500">Clear all data and reset to default</p>
+                                    </div>
+                                    <button data-action="resetAllData" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors">
+                                        <i class="fas fa-trash-alt mr-2"></i>Reset
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Documents & Certificates Section -->
+                <section id="certificates-section" class="hidden space-y-6">
+                    <div class="glass-card p-6">
+                        <div class="flex justify-between items-center mb-6">
+                            <div>
+                                <h3 class="text-lg font-bold text-dark-gray">Business Documents</h3>
+                                <p class="text-sm text-gray-500">Manage tax, quality, trade, and compliance certificates</p>
+                            </div>
+                            <button data-action="openCertificateModal" class="bg-brand-orange hover:bg-brand-orange-dark text-white px-4 py-2 rounded-lg transition-colors flex items-center gap-2">
+                                <span class="material-symbols-outlined text-sm">add</span>
+                                <span>Upload Certificate</span>
+                            </button>
+                        </div>
+
+                        <div id="certificates-list-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <!-- Dynamic Content Injected here -->
+                        </div>
+                    </div>
+
+                    <!-- Business Policies Card -->
+                    <div class="glass-card p-6">
+                        <div class="border-b border-gray-200 pb-4 mb-6">
+                            <h3 class="text-lg font-bold text-dark-gray">Business Policies</h3>
+                            <p class="text-sm text-gray-500">Upload corporate policy files (.txt, .md, .doc, or .docx format) to display dynamically on the website.</p>
+                        </div>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                            <!-- Policy 1: Website Terms & Conditions -->
+                            <div class="p-4 bg-gray-50 rounded-xl border border-gray-200 flex flex-col justify-between">
+                                <div>
+                                    <div class="flex justify-between items-start mb-3">
+                                        <div class="flex items-center gap-2">
+                                            <span class="material-symbols-outlined text-primary">gavel</span>
+                                            <h4 class="font-label-bold text-dark-gray">Website Terms & Conditions</h4>
+                                        </div>
+                                    </div>
+                                    <p class="text-xs text-gray-500 mb-4">Last Updated: <span id="policy-terms-date" class="font-semibold">-</span></p>
+                                    <div class="mb-4">
+                                        <label class="block text-xs font-semibold text-gray-700 mb-1">Active File:</label>
+                                        <p id="policy-terms-filename" class="text-xs text-gray-600 italic truncate">No file uploaded yet</p>
+                                    </div>
+                                </div>
+                                <div class="space-y-2 mt-4">
+                                    <label class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-primary text-on-primary hover:bg-primary/95 cursor-pointer text-xs font-label-bold transition-colors shadow-md rounded-lg">
+                                        <span class="material-symbols-outlined text-sm">upload_file</span>
+                                        <span>Upload Document</span>
+                                        <input type="file" accept=".txt,.md,.doc,.docx" class="hidden" data-action="uploadPolicyFile" data-action-event="change" data-value="website_terms">
+                                    </label>
+                                    <a id="policy-terms-download" target="_blank" class="w-full flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-xs font-label-bold transition-colors pointer-events-none opacity-40">
+                                        <span class="material-symbols-outlined text-sm">download</span>
+                                        <span>Download Current</span>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!-- Policy 2: Privacy Policy -->
+                            <div class="p-4 bg-gray-50 rounded-xl border border-gray-200 flex flex-col justify-between">
+                                <div>
+                                    <div class="flex justify-between items-start mb-3">
+                                        <div class="flex items-center gap-2">
+                                            <span class="material-symbols-outlined text-primary">shield</span>
+                                            <h4 class="font-label-bold text-dark-gray">Privacy Policy</h4>
+                                        </div>
+                                    </div>
+                                    <p class="text-xs text-gray-500 mb-4">Last Updated: <span id="policy-privacy-date" class="font-semibold">-</span></p>
+                                    <div class="mb-4">
+                                        <label class="block text-xs font-semibold text-gray-700 mb-1">Active File:</label>
+                                        <p id="policy-privacy-filename" class="text-xs text-gray-600 italic truncate">No file uploaded yet</p>
+                                    </div>
+                                </div>
+                                <div class="space-y-2 mt-4">
+                                    <label class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-primary text-on-primary hover:bg-primary/95 cursor-pointer text-xs font-label-bold transition-colors shadow-md rounded-lg">
+                                        <span class="material-symbols-outlined text-sm">upload_file</span>
+                                        <span>Upload Document</span>
+                                        <input type="file" accept=".txt,.md,.doc,.docx" class="hidden" data-action="uploadPolicyFile" data-action-event="change" data-value="privacy_policy">
+                                    </label>
+                                    <a id="policy-privacy-download" target="_blank" class="w-full flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-xs font-label-bold transition-colors pointer-events-none opacity-40">
+                                        <span class="material-symbols-outlined text-sm">download</span>
+                                        <span>Download Current</span>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!-- Policy 3: Business Terms & Conditions -->
+                            <div class="p-4 bg-gray-50 rounded-xl border border-gray-200 flex flex-col justify-between">
+                                <div>
+                                    <div class="flex justify-between items-start mb-3">
+                                        <div class="flex items-center gap-2">
+                                            <span class="material-symbols-outlined text-primary">policy</span>
+                                            <h4 class="font-label-bold text-dark-gray">Business Terms & Conditions</h4>
+                                        </div>
+                                    </div>
+                                    <p class="text-xs text-gray-500 mb-4">Last Updated: <span id="policy-business-date" class="font-semibold">-</span></p>
+                                    <div class="mb-4">
+                                        <label class="block text-xs font-semibold text-gray-700 mb-1">Active File:</label>
+                                        <p id="policy-business-filename" class="text-xs text-gray-600 italic truncate">No file uploaded yet</p>
+                                    </div>
+                                </div>
+                                <div class="space-y-2 mt-4">
+                                    <label class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-primary text-on-primary hover:bg-primary/95 cursor-pointer text-xs font-label-bold transition-colors shadow-md rounded-lg">
+                                        <span class="material-symbols-outlined text-sm">upload_file</span>
+                                        <span>Upload Document</span>
+                                        <input type="file" accept=".txt,.md,.doc,.docx" class="hidden" data-action="uploadPolicyFile" data-action-event="change" data-value="business_terms">
+                                    </label>
+                                    <a id="policy-business-download" target="_blank" class="w-full flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-xs font-label-bold transition-colors pointer-events-none opacity-40">
+                                        <span class="material-symbols-outlined text-sm">download</span>
+                                        <span>Download Current</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+    <!-- Certificate Modal -->
+    <div id="certificate-modal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+        <div class="glass-card w-full max-w-md rounded-2xl overflow-hidden">
+            <div class="p-6 border-b border-gray-100 flex justify-between items-center">
+                <h3 id="certificate-modal-title" class="text-xl font-bold text-dark-gray">Upload Certificate</h3>
+                <button data-action="closeCertificateModal" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <form id="certificate-form" class="p-6 space-y-4">
+                <input type="hidden" id="certificate-id">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Certificate Name</label>
+                    <input type="text" id="certificate-name" maxlength="160" required class="form-input w-full px-4 py-2 rounded-lg" placeholder="e.g., GST Registration, Export License, Trade License">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Display Icon</label>
+                    <select id="certificate-icon" class="form-input w-full px-4 py-2 rounded-lg">
+                        <option value="verified">⭐ Verified Badge (Export Compliance, standard audit)</option>
+                        <option value="account_balance">🏛️ Tax / GST Compliance</option>
+                        <option value="public">🌐 Global Trade / Import-Export</option>
+                        <option value="eco">🌱 Environmental / Sustainability</option>
+                        <option value="workspace_premium">🏅 Premium / Award Certificate</option>
+                        <option value="shield">🛡️ Security / Safety Badge</option>
+                        <option value="gavel">⚖️ Legal / Compliance License</option>
+                        <option value="policy">📜 Corporate Policy</option>
+                        <option value="description">📄 General Document</option>
+                        <option value="assignment_turned_in">✅ Quality Approval Badge</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Certificate File (PDF or Image)</label>
+                    <input type="file" id="certificate-file" accept=".pdf,image/*" required class="form-input w-full px-4 py-2 rounded-lg">
+                    <p class="text-xs text-gray-500 mt-1">Max file size: 5MB. Supported: PDF, JPG, PNG</p>
+
+                    <!-- Document Preview Container -->
+                    <div id="certificate-file-preview" class="hidden mt-3 p-3 bg-gray-50 rounded-lg border border-gray-200 flex items-center gap-3">
+                        <div id="cert-preview-thumbnail" class="w-12 h-12 rounded bg-gray-100 flex items-center justify-center flex-shrink-0 border border-gray-200 overflow-hidden">
+                            <!-- Injected thumbnail -->
+                        </div>
+                        <div class="flex-grow min-w-0">
+                            <p id="cert-preview-filename" class="text-xs font-bold text-gray-700 truncate">filename.pdf</p>
+                            <p id="cert-preview-filesize" class="text-[10px] text-gray-500">1.2 MB</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex gap-3 pt-4">
+                    <button type="button" data-action="closeCertificateModal" class="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+                        Cancel
+                    </button>
+                    <button type="submit" class="flex-1 bg-brand-orange hover:bg-brand-orange-dark text-white px-4 py-2 rounded-lg transition-colors">
+                        Upload
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Category Modal -->
+    <div id="category-modal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 overflow-y-auto">
+        <div class="glass-card w-full max-w-lg modal-enter my-8 max-h-[90vh] overflow-y-auto">
+            <div class="p-6 border-b border-gray-100 flex justify-between items-center">
+                <h3 id="category-modal-title" class="text-xl font-bold text-dark-gray">Add Category</h3>
+                <button data-action="closeCategoryModal" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <form id="category-form" class="p-6 space-y-4">
+                <input type="hidden" id="category-id">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Category Name *</label>
+                    <input type="text" id="category-name" maxlength="120" required class="form-input w-full px-4 py-2 rounded-lg" placeholder="e.g., Vat-Dyed Fabrics">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                    <textarea id="category-description" maxlength="2000" rows="3" class="form-input w-full px-4 py-2 rounded-lg" placeholder="Brief description of the category..."></textarea>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Starting Price (₹)</label>
+                    <input type="number" id="category-starting-price" min="0" max="100000000" class="form-input w-full px-4 py-2 rounded-lg" placeholder="e.g., 180">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Clothing Type *</label>
+                    <select id="category-clothing" required class="form-input w-full px-4 py-2 rounded-lg">
+                        <option value="Suiting">Suiting</option>
+                        <option value="Shirting">Shirting</option>
+                    </select>
+                </div>
+                <!-- Image Upload Section -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Category Image</label>
+
+                    <!-- Image Preview -->
+                    <div id="category-image-preview" class="hidden mb-3">
+                        <img src="" alt="Preview" class="w-full h-32 object-cover rounded-lg border border-gray-200">
+                    </div>
+
+                    <!-- Upload Option -->
+                    <div class="flex items-center space-x-3 mb-3">
+                        <label class="flex-1 cursor-pointer">
+                            <input type="file" id="category-image-file" accept="image/*" class="hidden" data-action="handleCategoryImageUpload" data-action-event="change">
+                            <div class="flex items-center justify-center px-4 py-2 border-2 border-dashed border-gray-300 rounded-lg hover:border-brand-orange hover:bg-brand-orange/5 transition-colors">
+                                <i class="fas fa-cloud-upload-alt text-gray-400 mr-2"></i>
+                                <span class="text-sm text-gray-600">Upload Image</span>
+                            </div>
+                        </label>
+                        <span class="text-sm text-gray-400">or</span>
+                        <button type="button" data-action="toggleCategoryImageInput" class="text-sm text-brand-orange hover:underline">
+                            Use URL
+                        </button>
+                    </div>
+
+                    <!-- URL Input (Hidden by default) -->
+                    <div id="category-image-url-container" class="hidden">
+                        <input type="url" id="category-image" maxlength="5000" class="form-input w-full px-4 py-2 rounded-lg" placeholder="https://example.com/image.jpg">
+                    </div>
+
+                    <!-- Hidden field to store final image data -->
+                    <input type="hidden" id="category-image-data">
+
+                    <p class="text-xs text-gray-500 mt-1">Recommended: 800x600px, JPG or PNG</p>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <input type="checkbox" id="category-active" class="w-4 h-4 text-brand-orange rounded" checked>
+                    <label class="text-sm text-gray-700">Active</label>
+                </div>
+                <div class="flex justify-end space-x-3 pt-4">
+                    <button type="button" data-action="closeCategoryModal" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+                        Cancel
+                    </button>
+                    <button type="submit" class="bg-brand-orange hover:bg-brand-orange-dark text-white px-6 py-2 rounded-lg font-medium transition-all">
+                        Save Category
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Product Modal -->
+    <div id="product-modal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 overflow-y-auto">
+        <div class="glass-card w-full max-w-lg modal-enter my-8 max-h-[90vh] overflow-y-auto">
+            <div class="p-6 border-b border-gray-100 flex justify-between items-center">
+                <h3 id="product-modal-title" class="text-xl font-bold text-dark-gray">Add Product</h3>
+                <button data-action="closeProductModal" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <form id="product-form" class="p-6 space-y-4">
+                <input type="hidden" id="product-id">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Design Code *</label>
+                    <input type="text" id="product-code" maxlength="80" required class="form-input w-full px-4 py-2 rounded-lg" placeholder="e.g., VD-001">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Product Name *</label>
+                    <input type="text" id="product-name" maxlength="160" required class="form-input w-full px-4 py-2 rounded-lg" placeholder="e.g., Premium Vat-Dyed Cotton">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Category *</label>
+                    <select id="product-category" required class="form-input w-full px-4 py-2 rounded-lg">
+                        <option value="">Select Category</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                    <textarea id="product-description" maxlength="4000" rows="3" class="form-input w-full px-4 py-2 rounded-lg" placeholder="Product description..."></textarea>
+                </div>
+                <!-- Clothing Type -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Clothing Type *</label>
+                    <select id="product-clothing" required class="form-input w-full px-4 py-2 rounded-lg">
+                        <option value="Suiting">Suiting</option>
+                        <option value="Shirting">Shirting</option>
+                    </select>
+                </div>
+
+                <!-- Specs: GSM, Blend, Weave -->
+                <div class="grid grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">GSM</label>
+                        <input type="number" id="product-gsm" min="0" max="100000" class="form-input w-full px-4 py-2 rounded-lg" placeholder="e.g., 240">
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Blend (Composition)</label>
+                        <input type="text" id="product-blend" maxlength="200" class="form-input w-full px-4 py-2 rounded-lg" placeholder="e.g., 80% Poly, 20% Viscose">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Weave (Structure)</label>
+                    <input type="text" id="product-weave" maxlength="200" class="form-input w-full px-4 py-2 rounded-lg" placeholder="e.g., Twill / Ripstop">
+                </div>
+
+                <!-- Price Type selector -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Price Type *</label>
+                    <div class="grid grid-cols-2 gap-4">
+                        <label class="cursor-pointer">
+                            <input type="radio" name="product-price-type" value="Price" checked class="hidden" data-action="togglePriceFields" data-action-event="change">
+                            <div id="price-type-single-card" class="p-3 border-2 rounded-xl text-center font-medium border-brand-orange bg-brand-orange/5 text-brand-orange transition-colors">
+                                Single Price
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="product-price-type" value="Range" class="hidden" data-action="togglePriceFields" data-action-event="change">
+                            <div id="price-type-range-card" class="p-3 border-2 rounded-xl text-center font-medium border-gray-200 text-gray-600 hover:border-gray-300 transition-colors">
+                                Price Range
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Single Price Input -->
+                <div id="product-single-price-container">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Starting Price (₹)</label>
+                    <input type="number" id="product-price" min="0" max="100000000" class="form-input w-full px-4 py-2 rounded-lg" placeholder="e.g., 380">
+                </div>
+
+                <!-- Price Range Inputs -->
+                <div id="product-range-price-container" class="hidden">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Min Price (₹)</label>
+                            <input type="number" id="product-price-min" min="0" max="100000000" class="form-input w-full px-4 py-2 rounded-lg" placeholder="e.g., 380">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Max Price (₹)</label>
+                            <input type="number" id="product-price-max" min="0" max="100000000" class="form-input w-full px-4 py-2 rounded-lg" placeholder="e.g., 450">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Price Unit selector -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Price Unit *</label>
+                    <div class="grid grid-cols-2 gap-4">
+                        <label class="cursor-pointer">
+                            <input type="radio" name="product-price-unit" value="m" checked class="hidden" data-action="togglePriceUnitFields" data-action-event="change">
+                            <div id="price-unit-m-card" class="p-3 border-2 rounded-xl text-center font-medium border-brand-orange bg-brand-orange/5 text-brand-orange transition-colors">
+                                Per Metre (/m)
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="product-price-unit" value="kg" class="hidden" data-action="togglePriceUnitFields" data-action-event="change">
+                            <div id="price-unit-kg-card" class="p-3 border-2 rounded-xl text-center font-medium border-gray-200 text-gray-600 hover:border-gray-300 transition-colors">
+                                Per Kg (/kg)
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Product Image Upload Section -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Product Image</label>
+
+                    <!-- Image Preview -->
+                    <div id="product-image-preview" class="hidden mb-3">
+                        <img src="" alt="Preview" class="w-full h-32 object-cover rounded-lg border border-gray-200">
+                    </div>
+
+                    <!-- Upload Option -->
+                    <div class="flex items-center space-x-3 mb-3">
+                        <label class="flex-1 cursor-pointer">
+                            <input type="file" id="product-image-file" accept="image/*" class="hidden" data-action="handleProductImageUpload" data-action-event="change">
+                            <div class="flex items-center justify-center px-4 py-2 border-2 border-dashed border-gray-300 rounded-lg hover:border-brand-orange hover:bg-brand-orange/5 transition-colors">
+                                <i class="fas fa-cloud-upload-alt text-gray-400 mr-2"></i>
+                                <span class="text-sm text-gray-600">Upload Image</span>
+                            </div>
+                        </label>
+                        <span class="text-sm text-gray-400">or</span>
+                        <button type="button" data-action="toggleProductImageInput" class="text-sm text-brand-orange hover:underline">
+                            Use URL
+                        </button>
+                    </div>
+
+                    <!-- URL Input (Hidden by default) -->
+                    <div id="product-image-url-container" class="hidden">
+                        <input type="url" id="product-image" maxlength="5000" class="form-input w-full px-4 py-2 rounded-lg" placeholder="https://example.com/image.jpg">
+                    </div>
+
+                    <!-- Hidden field to store final image data -->
+                    <input type="hidden" id="product-image-data">
+
+                    <p class="text-xs text-gray-500 mt-1">Recommended: 800x600px, JPG or PNG</p>
+                </div>
+
+                <div class="flex items-center space-x-6">
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="checkbox" id="product-premium" class="w-4 h-4 text-brand-orange rounded">
+                        <span class="text-sm font-medium text-gray-700">Premium Collection</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="checkbox" id="product-active" class="w-4 h-4 text-brand-orange rounded" checked>
+                        <span class="text-sm font-medium text-gray-700">Active</span>
+                    </label>
+                </div>
+                <div class="flex justify-end space-x-3 pt-4">
+                    <button type="button" data-action="closeProductModal" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+                        Cancel
+                    </button>
+                    <button type="submit" class="bg-brand-orange hover:bg-brand-orange-dark text-white px-6 py-2 rounded-lg font-medium transition-all">
+                        Save Product
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="fixed top-4 right-4 z-50 space-y-2"></div>
+
+    <!-- JavaScript -->
+    <script src="scripts/admin-dashboard-2.js"></script>
+
+    <!-- Document Viewer Modal -->
+    <div id="doc-viewer-modal" class="hidden fixed inset-0 bg-black/80 z-[100] flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl overflow-hidden w-full max-w-5xl h-[85vh] flex flex-col shadow-2xl relative">
+            <div class="p-4 border-b border-gray-200 flex justify-between items-center bg-gray-50">
+                <h3 id="doc-viewer-title" class="text-lg font-bold text-gray-800">Document Viewer</h3>
+                <button data-action="closeDocViewer" class="text-gray-500 hover:text-gray-700 p-2 rounded-lg hover:bg-gray-200 transition-colors flex items-center">
+                    <span class="material-symbols-outlined text-2xl align-middle">close</span>
+                </button>
+            </div>
+            <div id="doc-viewer-content" class="flex-grow p-4 flex items-center justify-center bg-gray-100 overflow-auto">
+                <!-- Injected dynamically -->
+            </div>
+        </div>
+    </div>
+<script src="event-handlers.js"></script>
+</body>
+</html>

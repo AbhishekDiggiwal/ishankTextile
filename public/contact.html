@@ -5,102 +5,9 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <link rel="icon" type="image/png" href="logo.png"/>
 <title>Contact - Ishank Textile | Premium Fabric Manufacturing</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link rel="stylesheet" href="site.css"/>
 <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    "colors": {
-                        "on-tertiary-fixed": "#121c26",
-                        "on-surface": "#1a1c1c",
-                        "surface-tint": "#be0728",
-                        "on-primary-fixed-variant": "#92001b",
-                        "on-primary-container": "#ffe8e6",
-                        "surface-container-low": "#f3f3f3",
-                        "on-surface-variant": "#5c403f",
-                        "tertiary-fixed": "#d9e3f1",
-                        "primary": "#aa0021",
-                        "secondary-fixed-dim": "#c0c7d0",
-                        "surface-container": "#eeeeee",
-                        "primary-fixed": "#ffdad8",
-                        "background": "#f9f9f9",
-                        "error-container": "#ffdad6",
-                        "on-error": "#ffffff",
-                        "surface-container-highest": "#e2e2e2",
-                        "surface-container-high": "#e8e8e8",
-                        "on-primary-fixed": "#410007",
-                        "tertiary-container": "#626c78",
-                        "surface-variant": "#e2e2e2",
-                        "secondary-container": "#dce3ed",
-                        "on-secondary": "#ffffff",
-                        "tertiary": "#4a545f",
-                        "secondary-fixed": "#dce3ed",
-                        "secondary": "#585f67",
-                        "on-tertiary-container": "#e3eefc",
-                        "error": "#ba1a1a",
-                        "on-secondary-fixed": "#151c23",
-                        "on-background": "#1a1c1c",
-                        "outline-variant": "#e5bdbb",
-                        "on-error-container": "#93000a",
-                        "inverse-surface": "#2f3131",
-                        "surface-container-lowest": "#ffffff",
-                        "on-primary": "#ffffff",
-                        "on-tertiary": "#ffffff",
-                        "outline": "#906f6e",
-                        "inverse-primary": "#ffb3b0",
-                        "on-secondary-container": "#5e656d",
-                        "surface": "#f9f9f9",
-                        "primary-fixed-dim": "#ffb3b0",
-                        "tertiary-fixed-dim": "#bdc7d5",
-                        "primary-container": "#d11e33",
-                        "on-secondary-fixed-variant": "#40474f",
-                        "inverse-on-surface": "#f1f1f1",
-                        "on-tertiary-fixed-variant": "#3e4853",
-                        "surface-bright": "#f9f9f9",
-                        "surface-dim": "#dadada"
-                    },
-                    "borderRadius": {
-                        "DEFAULT": "0.125rem",
-                        "lg": "0.25rem",
-                        "xl": "0.5rem",
-                        "full": "0.75rem"
-                    },
-                    "spacing": {
-                        "margin-mobile": "20px",
-                        "stack-sm": "8px",
-                        "section-padding": "100px",
-                        "margin-desktop": "80px",
-                        "stack-md": "16px",
-                        "stack-lg": "32px",
-                        "gutter": "24px",
-                        "container-max": "1200px"
-                    },
-                    "fontFamily": {
-                        "body-md": ["Rubik"],
-                        "body-lg": ["Rubik"],
-                        "headline-lg-mobile": ["Rubik"],
-                        "label-bold": ["Rubik"],
-                        "headline-md": ["Rubik"],
-                        "headline-lg": ["Rubik"],
-                        "display-lg": ["Rubik"]
-                    },
-                    "fontSize": {
-                        "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
-                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
-                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
-                        "headline-lg-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
-                        "label-bold": ["14px", {"lineHeight": "1.2", "letterSpacing": "0", "fontWeight": "600"}],
-                        "headline-md": ["28px", {"lineHeight": "1.3", "fontWeight": "600"}],
-                        "headline-lg": ["40px", {"lineHeight": "1.2", "fontWeight": "600"}],
-                        "display-lg": ["56px", {"lineHeight": "1.1", "letterSpacing": "0", "fontWeight": "700"}]
-                    }
-                },
-            },
-        }
-    </script>
 <style>.material-symbols-outlined {
     font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24
     }
@@ -109,8 +16,11 @@
     background-blend-mode: overlay
     }</style>
 
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<script src="vendor/firebase/firebase-app-compat.js"></script>
+<script src="vendor/firebase/firebase-app-check-compat.js"></script>
+<script src="vendor/firebase/firebase-firestore-compat.js"></script>
+<script src="/__/firebase/init.js"></script>
+<script src="security-utils.js"></script>
 <script src="firebase-config.js"></script>
 <script src="data-manager.js"></script>
 </head>
@@ -130,7 +40,7 @@
 </nav>
 <div class="flex items-center gap-stack-md">
 <a href="contact.html" class="hidden md:flex items-center gap-2 px-6 py-2 bg-primary text-on-primary font-label-bold text-label-bold hover:scale-[1.02] transition-transform duration-150 rounded-full">Get Quote</a>
-<button onclick="toggleMobileMenu()" class="md:hidden text-on-surface p-2 focus:outline-none flex items-center justify-center" aria-label="Toggle Menu">
+<button data-action="toggleMobileMenu" class="md:hidden text-on-surface p-2 focus:outline-none flex items-center justify-center" aria-label="Toggle Menu">
 <span class="material-symbols-outlined text-3xl align-middle">menu</span>
 </button>
 </div>
@@ -165,21 +75,21 @@
 <div class="grid grid-cols-1 md:grid-cols-2 gap-stack-md">
 <div class="flex flex-col gap-1">
 <label class="font-label-bold text-on-surface-variant uppercase text-xs" for="firstName">First Name</label>
-<input class="bg-surface border-surface-variant focus:border-primary focus:ring-1 focus:ring-primary rounded-lg p-3 outline-none transition-all" id="firstName" name="firstName" placeholder="First Name" required type="text"/>
+<input class="bg-surface border-surface-variant focus:border-primary focus:ring-1 focus:ring-primary rounded-lg p-3 outline-none transition-all" id="firstName" maxlength="75" name="firstName" placeholder="First Name" required type="text"/>
 </div>
 <div class="flex flex-col gap-1">
 <label class="font-label-bold text-on-surface-variant uppercase text-xs" for="lastName">Last Name / Company</label>
-<input class="bg-surface border-surface-variant focus:border-primary focus:ring-1 focus:ring-primary rounded-lg p-3 outline-none transition-all" id="lastName" name="lastName" placeholder="Last Name or Company Name" required type="text"/>
+<input class="bg-surface border-surface-variant focus:border-primary focus:ring-1 focus:ring-primary rounded-lg p-3 outline-none transition-all" id="lastName" maxlength="75" name="lastName" placeholder="Last Name or Company Name" required type="text"/>
 </div>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-stack-md">
 <div class="flex flex-col gap-1">
 <label class="font-label-bold text-on-surface-variant uppercase text-xs" for="email">Email</label>
-<input class="bg-surface border-surface-variant focus:border-primary focus:ring-1 focus:ring-primary rounded-lg p-3 outline-none transition-all" id="email" name="email" placeholder="buyer@company.com" required type="email"/>
+<input class="bg-surface border-surface-variant focus:border-primary focus:ring-1 focus:ring-primary rounded-lg p-3 outline-none transition-all" id="email" maxlength="254" name="email" placeholder="buyer@company.com" required type="email"/>
 </div>
 <div class="flex flex-col gap-1">
 <label class="font-label-bold text-on-surface-variant uppercase text-xs" for="phone">Phone</label>
-<input class="bg-surface border-surface-variant focus:border-primary focus:ring-1 focus:ring-primary rounded-lg p-3 outline-none transition-all" id="phone" name="phone" placeholder="+91XXXXXXXXXX" type="tel"/>
+<input class="bg-surface border-surface-variant focus:border-primary focus:ring-1 focus:ring-primary rounded-lg p-3 outline-none transition-all" id="phone" maxlength="40" name="phone" placeholder="+91XXXXXXXXXX" type="tel"/>
 </div>
 </div>
 <div class="flex flex-col gap-1">
@@ -202,13 +112,17 @@
 </div>
 <div class="flex flex-col gap-1">
 <label class="font-label-bold text-on-surface-variant uppercase text-xs" for="quantity">Estimated Quantity</label>
-<input class="bg-surface border-surface-variant focus:border-primary focus:ring-1 focus:ring-primary rounded-lg p-3 outline-none transition-all" id="quantity" name="quantity" placeholder="500 meters" type="text"/>
+<input class="bg-surface border-surface-variant focus:border-primary focus:ring-1 focus:ring-primary rounded-lg p-3 outline-none transition-all" id="quantity" maxlength="80" name="quantity" placeholder="500 meters" type="text"/>
 </div>
 </div>
 </div>
 <div class="flex flex-col gap-1">
 <label class="font-label-bold text-on-surface-variant uppercase text-xs" for="message">Detailed Requirements</label>
-<textarea class="bg-surface border-surface-variant focus:border-primary focus:ring-1 focus:ring-primary rounded-lg p-3 outline-none transition-all" id="message" name="message" placeholder="Fabric type, GSM, color, application, delivery timeline..." required rows="5"></textarea>
+<textarea class="bg-surface border-surface-variant focus:border-primary focus:ring-1 focus:ring-primary rounded-lg p-3 outline-none transition-all" id="message" maxlength="5000" name="message" placeholder="Fabric type, GSM, color, application, delivery timeline..." required rows="5"></textarea>
+<div aria-hidden="true" class="absolute -left-[10000px] h-px w-px overflow-hidden">
+<label for="website">Leave this field empty</label>
+<input autocomplete="off" id="website" name="website" tabindex="-1" type="text"/>
+</div>
 </div>
 
 <button class="w-full bg-primary-container text-on-primary-container py-4 font-headline-md rounded-full shadow-lg hover:scale-[1.01] transition-all active:scale-[0.99] flex items-center justify-center gap-3" type="submit">
@@ -372,7 +286,7 @@ Send Inquiry
     </div>
     <!-- Action -->
     <div class="mt-12 w-full">
-      <button class="group relative w-full bg-[#232A31] hover:bg-on-background text-white font-label-bold text-label-bold py-5 rounded-full transition-all duration-300 active:scale-95 flex items-center justify-center gap-2 overflow-hidden" onclick="closeSuccessModal()">
+      <button class="group relative w-full bg-[#232A31] hover:bg-on-background text-white font-label-bold text-label-bold py-5 rounded-full transition-all duration-300 active:scale-95 flex items-center justify-center gap-2 overflow-hidden" data-action="closeSuccessModal">
         <span>Close</span>
         <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
         <!-- Button Shine Effect -->
@@ -389,229 +303,6 @@ Send Inquiry
   </div>
 </div>
 
-<script>
-  function showSuccessModal() {
-    const modal = document.getElementById('successModal');
-    modal.classList.remove('hidden');
-    modal.classList.add('flex');
-    document.body.style.overflow = 'hidden';
-  }
-  function closeSuccessModal() {
-    const modal = document.getElementById('successModal');
-    modal.classList.add('hidden');
-    modal.classList.remove('flex');
-    document.body.style.overflow = 'auto';
-    
-    // Reset the inquiry section form and product dynamic visibility
-    const form = document.getElementById('contactForm');
-    if (form) {
-      form.reset();
-      toggleProductSelection();
-    }
-  }
-  async function loadProducts() {
-    const products = (await DataManager.getProducts()).filter((product) => product.active !== false);
-    const categories = await DataManager.getCategories();
-    const select = document.getElementById('interestedProduct');
-    while (select.options.length > 1) select.remove(1);
-    products.forEach((product) => {
-      const category = categories.find((item) => item.id === product.categoryId);
-      const option = document.createElement('option');
-      option.value = product.id;
-      
-      const unit = product.priceUnit === 'kg' ? 'kg' : 'm';
-      let priceStr = '';
-      if (product.priceType === 'Range') {
-        priceStr = '₹' + (product.priceMin || 0) + ' - ₹' + (product.priceMax || 0);
-      } else {
-        priceStr = '₹' + (product.startingPrice || product.price || 0);
-      }
-      
-      option.textContent = (product.code || 'IT') + ' - ' + product.name + ' ' + (category ? '(' + category.name + ')' : '') + ' - ' + priceStr + '/' + unit;
-      option.dataset.product = JSON.stringify(product);
-      select.appendChild(option);
-    });
-  }
-  function toggleProductSelection() {
-    const subject = document.getElementById('subject');
-    const container = document.getElementById('product-selection-container');
-    const productSelect = document.getElementById('interestedProduct');
-    if (subject.value === 'quote' || subject.value === 'bulk') {
-      container.classList.remove('hidden');
-      productSelect.required = true;
-    } else {
-      container.classList.add('hidden');
-      productSelect.required = false;
-      productSelect.value = '';
-    }
-  }
-  function selectProduct(productId) {
-    document.getElementById('subject').value = 'quote';
-    toggleProductSelection();
-    document.getElementById('interestedProduct').value = productId;
-  }
-  function checkPreselectedProduct() {
-    const productId = new URLSearchParams(window.location.search).get('quote');
-    if (productId) {
-      selectProduct(productId);
-      return;
-    }
-    const stored = sessionStorage.getItem('quoteProduct');
-    if (stored) {
-      const product = JSON.parse(stored);
-      selectProduct(product.id);
-      sessionStorage.removeItem('quoteProduct');
-    }
-  }
-  let contactPageInitialized = false;
-  document.addEventListener('DOMContentLoaded', async () => {
-    if (contactPageInitialized) return;
-    contactPageInitialized = true;
-
-    await loadProducts();
-    checkPreselectedProduct();
-    document.getElementById('subject').addEventListener('change', toggleProductSelection);
-    document.getElementById('successModal').addEventListener('click', (event) => {
-      if (event.target.id === 'successModal') closeSuccessModal();
-    });
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape') closeSuccessModal();
-    });
-    document.querySelectorAll('button').forEach((button) => {
-      const label = button.textContent.trim().toLowerCase();
-      if (label.includes('quote') && button.type !== 'submit') {
-        button.addEventListener('click', () => { window.location.href = 'contact.html'; });
-      }
-    });
-    document.getElementById('contactForm').addEventListener('submit', async function(event) {
-      event.preventDefault();
-      
-      const submitBtn = this.querySelector('button[type="submit"]');
-      const originalBtnHtml = submitBtn.innerHTML;
-      
-      const data = Object.fromEntries(new FormData(this));
-      if (!data.firstName || !data.lastName || !data.email || !data.subject || !data.message) {
-        alert('Please fill in all required fields.');
-        return;
-      }
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
-        alert('Please enter a valid email address.');
-        return;
-      }
-      if ((data.subject === 'quote' || data.subject === 'bulk') && !data.interestedProduct) {
-        alert('Please select a product for your quote/bulk order request.');
-        return;
-      }
-      
-      // Show loading state and disable button
-      submitBtn.disabled = true;
-      submitBtn.innerHTML = 'Sending... <span class="animate-spin h-5 w-5 border-2 border-current border-t-transparent rounded-full ml-2 inline-block"></span>';
-      
-      try {
-        let selectedProduct = null;
-        if (data.interestedProduct) {
-          const products = await DataManager.getProducts();
-          selectedProduct = products.find((product) => product.id === data.interestedProduct);
-        }
-        const quote = {
-          customerName: data.firstName + ' ' + data.lastName,
-          email: data.email,
-          phone: data.phone || '',
-          subject: data.subject,
-          productId: data.interestedProduct || null,
-          product: selectedProduct ? {
-            id: selectedProduct.id,
-            name: selectedProduct.name,
-            code: selectedProduct.code,
-            price: selectedProduct.startingPrice || selectedProduct.price
-          } : null,
-          quantity: data.quantity || '',
-          message: data.message,
-          whatsappUpdates: data.whatsappUpdates === 'on'
-        };
-        await DataManager.saveQuote(quote);
-        showSuccessModal();
-      } catch (err) {
-        console.error('Error submitting inquiry:', err);
-        alert('An unexpected error occurred. Please try again.');
-      } finally {
-        // Restore button state
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = originalBtnHtml;
-      }
-    });
-  });
-
-  function updateOperationalStatus() {
-    const statusTag = document.getElementById('operationalStatus');
-    if (!statusTag) return;
-    
-    // Get current time in Indian Standard Time (IST - UTC+5:30)
-    const now = new Date();
-    const istTime = new Date(now.getTime() + (5.5 * 3600000));
-    
-    const day = istTime.getUTCDay(); // 0: Sunday, 1: Monday, ..., 6: Saturday
-    const hours = istTime.getUTCHours();
-    const minutes = istTime.getUTCMinutes();
-    
-    if (day === 0) {
-      // Sunday: Emergency Only
-      statusTag.innerHTML = `
-        <span class="relative flex h-2 w-2">
-          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
-          <span class="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
-        </span>
-        <span>Emergency Only</span>
-      `;
-      statusTag.className = 'inline-flex items-center gap-1.5 bg-amber-500/10 text-amber-600 dark:text-amber-400 px-3 py-1 rounded-full text-xs font-bold uppercase border border-amber-500/20';
-    } else {
-      // Monday - Saturday: 11:00 - 20:00 IST
-      const currentMinutes = hours * 60 + minutes;
-      const startMinutes = 11 * 60; // 11:00 AM
-      const endMinutes = 20 * 60; // 8:00 PM
-      
-      if (currentMinutes >= startMinutes && currentMinutes < endMinutes) {
-        statusTag.innerHTML = `
-          <span class="relative flex h-2 w-2">
-            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-          </span>
-          <span>Active Now</span>
-        `;
-        statusTag.className = 'inline-flex items-center gap-1.5 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 px-3 py-1 rounded-full text-xs font-bold uppercase border border-emerald-500/20';
-      } else {
-        statusTag.innerHTML = `
-          <span class="h-2 w-2 rounded-full bg-on-surface-variant/40"></span>
-          <span>Closed</span>
-        `;
-        statusTag.className = 'inline-flex items-center gap-1.5 bg-surface-variant/20 text-on-surface-variant/85 px-3 py-1 rounded-full text-xs font-bold uppercase border border-surface-variant/30 opacity-75';
-      }
-    }
-  }
-
-  // Run immediately since script is at the bottom and elements are already parsed
-  updateOperationalStatus();
-
-  // Run on load to set dynamic business hours status
-  document.addEventListener('DOMContentLoaded', updateOperationalStatus);
-  window.addEventListener('load', updateOperationalStatus);
-
-  function toggleMobileMenu() {
-    const menu = document.getElementById('mobile-menu');
-    if (!menu) return;
-    if (menu.classList.contains('hidden')) {
-      menu.classList.remove('hidden');
-      setTimeout(() => {
-        menu.classList.remove('-translate-y-4', 'opacity-0');
-        menu.classList.add('translate-y-0', 'opacity-100');
-      }, 10);
-    } else {
-      menu.classList.remove('translate-y-0', 'opacity-100');
-      menu.classList.add('-translate-y-4', 'opacity-0');
-      setTimeout(() => {
-        menu.classList.add('hidden');
-      }, 300);
-    }
-  }
-</script>
+<script src="scripts/contact-1.js"></script>
+<script src="event-handlers.js"></script>
 </body></html>

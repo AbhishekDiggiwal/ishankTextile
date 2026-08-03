@@ -10,9 +10,6 @@ describe('Feature 2: Admin Authentication', () => {
     window = dom.window;
     document = window.document;
     
-    // Mock the location.href to prevent JSDOM navigation errors
-    delete window.location;
-    window.location = { href: 'http://localhost/admin-login.html' };
   });
 
   afterEach(() => {
@@ -62,18 +59,16 @@ describe('Feature 2: Admin Authentication', () => {
     dom = loadPage('admin-login.html', { offlineMode: true });
     window = dom.window;
     document = window.document;
-    delete window.location;
-    window.location = { href: 'http://localhost/admin-login.html' };
     
     document.getElementById('email').value = 'admin@ishanktextile.com';
-    document.getElementById('password').value = 'admin123';
+    document.getElementById('password').value = 'test-only-password';
     
     const form = document.getElementById('loginForm');
     const event = new window.Event('submit', { bubbles: true, cancelable: true });
     form.dispatchEvent(event);
 
     expect(window.sessionStorage.getItem('adminLoggedIn')).toBeNull();
-    expect(window.location.href).toBe('http://localhost/admin-login.html');
+    expect(window.__lastNavigation).toBeNull();
     expect(document.getElementById('errorText').textContent).toContain('authentication is unavailable');
   });
 
@@ -83,7 +78,7 @@ describe('Feature 2: Admin Authentication', () => {
     expect(auth).not.toBeNull();
 
     document.getElementById('email').value = 'admin@ishanktextile.com';
-    document.getElementById('password').value = 'admin123';
+    document.getElementById('password').value = 'test-only-password';
     
     const form = document.getElementById('loginForm');
     const event = new window.Event('submit', { bubbles: true, cancelable: true });
@@ -94,7 +89,7 @@ describe('Feature 2: Admin Authentication', () => {
 
     expect(auth.currentUser).not.toBeNull();
     expect(auth.currentUser.email).toBe('admin@ishanktextile.com');
-    expect(window.location.href).toBe('admin-dashboard.html');
+    expect(window.__lastNavigation).toBe('http://localhost/admin-dashboard.html');
   });
 
   // TIER 2: Boundary & Corner Cases (>= 5 assertions/cases)
@@ -103,8 +98,6 @@ describe('Feature 2: Admin Authentication', () => {
     dom = loadPage('admin-login.html', { offlineMode: true });
     window = dom.window;
     document = window.document;
-    delete window.location;
-    window.location = { href: 'http://localhost/admin-login.html' };
     
     document.getElementById('email').value = 'wrong@email.com';
     document.getElementById('password').value = 'wrongpassword';
@@ -124,7 +117,7 @@ describe('Feature 2: Admin Authentication', () => {
 
   test('Tier 2: Missing email or password shows local input validation error', () => {
     document.getElementById('email').value = '';
-    document.getElementById('password').value = 'admin123';
+    document.getElementById('password').value = 'test-only-password';
     
     const form = document.getElementById('loginForm');
     const event = new window.Event('submit', { bubbles: true, cancelable: true });
@@ -151,7 +144,7 @@ describe('Feature 2: Admin Authentication', () => {
     await new Promise(resolve => setTimeout(resolve, 50));
 
     const errorText = document.getElementById('errorText');
-    expect(errorText.textContent).toBe('No account found with this email');
+    expect(errorText.textContent).toBe('Invalid email or password');
     expect(document.getElementById('password').value).toBe('');
   });
 
@@ -171,7 +164,7 @@ describe('Feature 2: Admin Authentication', () => {
     await new Promise(resolve => setTimeout(resolve, 50));
 
     const errorText = document.getElementById('errorText');
-    expect(errorText.textContent).toBe('Incorrect password');
+    expect(errorText.textContent).toBe('Invalid email or password');
   });
 
   test('Tier 2: Online Firebase Auth handles auth/invalid-email error correctly', async () => {
@@ -181,7 +174,7 @@ describe('Feature 2: Admin Authentication', () => {
     });
 
     document.getElementById('email').value = 'invalidemail';
-    document.getElementById('password').value = 'admin123';
+    document.getElementById('password').value = 'test-only-password';
     
     const form = document.getElementById('loginForm');
     const event = new window.Event('submit', { bubbles: true, cancelable: true });
@@ -190,6 +183,6 @@ describe('Feature 2: Admin Authentication', () => {
     await new Promise(resolve => setTimeout(resolve, 50));
 
     const errorText = document.getElementById('errorText');
-    expect(errorText.textContent).toBe('Please enter a valid email address');
+    expect(errorText.textContent).toBe('Invalid email or password');
   });
 });

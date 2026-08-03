@@ -1,27 +1,176 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Secure B2B configuration: Public can read, only authenticated admin can write
+    // The custom claim is the preferred long-term authorization mechanism.
+    // The exact-email fallback keeps the existing console-created admin account
+    // working while the claim is added. Both values come from signed Firebase
+    // ID-token claims and cannot be supplied by the browser request body.
+    function isAdmin() {
+      return request.auth != null
+        && (
+          request.auth.token.admin == true
+          || request.auth.token.email == 'admin@ishanktextile.com'
+        );
+    }
+
+    function validRequiredText(data, field, maxLength) {
+      return data[field] is string
+        && data[field].size() > 0
+        && data[field].size() <= maxLength;
+    }
+
+    function validOptionalText(data, field, maxLength) {
+      return !(field in data)
+        || data[field] == null
+        || (data[field] is string && data[field].size() <= maxLength);
+    }
+
+    function validOptionalNumber(data, field) {
+      return !(field in data)
+        || data[field] == null
+        || data[field] is number;
+    }
+
+    function validCategory(data) {
+      return data.keys().hasOnly([
+          'id', 'name', 'description', 'startingPrice', 'clothing', 'image',
+          'active', 'createdAt'
+        ])
+        && validRequiredText(data, 'name', 120)
+        && validOptionalText(data, 'id', 128)
+        && validOptionalText(data, 'description', 2000)
+        && validOptionalText(data, 'clothing', 80)
+        && validOptionalText(data, 'image', 5000)
+        && validOptionalText(data, 'createdAt', 64)
+        && validOptionalNumber(data, 'startingPrice')
+        && data.active is bool;
+    }
+
+    function validProduct(data) {
+      return data.keys().hasOnly([
+          'id', 'code', 'name', 'categoryId', 'description', 'price',
+          'priceType', 'startingPrice', 'priceMin', 'priceMax', 'priceUnit',
+          'clothing', 'gsm', 'blend', 'weave', 'applications', 'premium',
+          'image', 'active', 'createdAt'
+        ])
+        && validRequiredText(data, 'code', 80)
+        && validRequiredText(data, 'name', 160)
+        && validRequiredText(data, 'categoryId', 128)
+        && validOptionalText(data, 'id', 128)
+        && validOptionalText(data, 'description', 4000)
+        && validOptionalText(data, 'priceType', 20)
+        && validOptionalText(data, 'priceUnit', 20)
+        && validOptionalText(data, 'clothing', 80)
+        && validOptionalText(data, 'blend', 200)
+        && validOptionalText(data, 'weave', 200)
+        && validOptionalText(data, 'image', 5000)
+        && validOptionalText(data, 'createdAt', 64)
+        && validOptionalNumber(data, 'price')
+        && validOptionalNumber(data, 'startingPrice')
+        && validOptionalNumber(data, 'priceMin')
+        && validOptionalNumber(data, 'priceMax')
+        && validOptionalNumber(data, 'gsm')
+        && (
+          !('applications' in data)
+          || data.applications == null
+          || (data.applications is list && data.applications.size() <= 20)
+        )
+        && data.premium is bool
+        && data.active is bool;
+    }
+
+    function validCertificate(data) {
+      return data.keys().hasOnly([
+          'name', 'icon', 'url', 'filename', 'uploadedAt'
+        ])
+        && validRequiredText(data, 'name', 160)
+        && validRequiredText(data, 'icon', 80)
+        && validRequiredText(data, 'url', 5000)
+        && validRequiredText(data, 'filename', 200)
+        && validRequiredText(data, 'uploadedAt', 64);
+    }
+
+    function validQuote(data) {
+      return data.keys().hasOnly([
+          'customerName', 'email', 'phone', 'subject', 'productId', 'product',
+          'quantity', 'message', 'whatsappUpdates', 'createdAt'
+        ])
+        && validRequiredText(data, 'customerName', 160)
+        && validRequiredText(data, 'email', 254)
+        && data.email.matches('^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$')
+        && validRequiredText(data, 'subject', 40)
+        && data.subject in ['quote', 'bulk', 'technical', 'general']
+        && validRequiredText(data, 'message', 5000)
+        && validRequiredText(data, 'createdAt', 64)
+        && validOptionalText(data, 'phone', 40)
+        && validOptionalText(data, 'productId', 128)
+        && validOptionalText(data, 'quantity', 80)
+        && data.whatsappUpdates is bool
+        && (
+          data.product == null
+          || (
+            data.product is map
+            && data.product.keys().hasOnly(['id', 'name', 'code', 'price'])
+            && validRequiredText(data.product, 'id', 128)
+            && validRequiredText(data.product, 'name', 160)
+            && validOptionalText(data.product, 'code', 80)
+            && validOptionalNumber(data.product, 'price')
+          )
+        );
+    }
+
     match /categories/{document} {
-      allow read: if true;
-      allow write: if request.auth != null;
+      allow read: if isAdmin() || resource.data.active == true;
+      allow create: if isAdmin() && validCategory(request.resource.data);
+      // affectedKeys validation preserves any legacy fields already stored
+      // while preventing the browser from adding arbitrary new fields.
+      allow update: if isAdmin()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+          'id', 'name', 'description', 'startingPrice', 'clothing', 'image',
+          'active', 'createdAt'
+        ]);
+      allow delete: if isAdmin();
     }
+
     match /products/{document} {
-      allow read: if true;
-      allow write: if request.auth != null;
+      allow read: if isAdmin() || resource.data.active == true;
+      allow create: if isAdmin() && validProduct(request.resource.data);
+      allow update: if isAdmin()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+          'id', 'code', 'name', 'categoryId', 'description', 'price',
+          'priceType', 'startingPrice', 'priceMin', 'priceMax', 'priceUnit',
+          'clothing', 'gsm', 'blend', 'weave', 'applications', 'premium',
+          'image', 'active', 'createdAt'
+        ]);
+      allow delete: if isAdmin();
     }
+
     match /certificates/{document} {
       allow read: if true;
-      allow write: if request.auth != null;
+      allow create: if isAdmin() && validCertificate(request.resource.data);
+      allow update: if isAdmin()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+          'name', 'icon', 'url', 'filename', 'uploadedAt'
+        ]);
+      allow delete: if isAdmin();
     }
+
     match /settings/{document} {
-      allow read: if true;
-      allow write: if request.auth != null;
+      allow read: if document in ['general', 'policies'];
+      allow create, update, delete: if isAdmin()
+        && document in ['general', 'policies'];
     }
-    // Guests can submit quotes, only authenticated admin can read/manage them
+
+    // Public visitors may submit only the exact, size-bounded quote schema.
+    // Reading or managing customer data always requires administrator status.
     match /quotes/{document} {
-      allow create: if true;
-      allow read, update, delete: if request.auth != null;
+      allow create: if validQuote(request.resource.data);
+      allow read, update, delete: if isAdmin();
+    }
+
+    // Explicitly deny every collection not declared above.
+    match /{document=**} {
+      allow read, write: if false;
     }
   }
 }

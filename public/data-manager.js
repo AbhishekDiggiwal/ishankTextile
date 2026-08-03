@@ -30,7 +30,7 @@ const DataManager = {
       const db = window.firebaseServices && window.firebaseServices.db;
       if (db) {
         const snapshot = await Promise.race([
-          db.collection('categories').get(),
+          db.collection('categories').where('active', '==', true).get(),
           new Promise((_, reject) => setTimeout(() => reject(new Error('Firestore read timeout')), 3000))
         ]);
         const categories = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
@@ -45,7 +45,7 @@ const DataManager = {
       const db = window.firebaseServices && window.firebaseServices.db;
       if (db) {
         const snapshot = await Promise.race([
-          db.collection('products').get(),
+          db.collection('products').where('active', '==', true).get(),
           new Promise((_, reject) => setTimeout(() => reject(new Error('Firestore read timeout')), 3000))
         ]);
         const products = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
@@ -57,19 +57,14 @@ const DataManager = {
 
   async saveQuote(quote) {
     quote.createdAt = new Date().toISOString();
-    try {
-      const db = window.firebaseServices && window.firebaseServices.db;
-      if (db) {
-        await Promise.race([
-          db.collection('quotes').add(quote),
-          new Promise((_, reject) => setTimeout(() => reject(new Error('Firestore write timeout')), 3000))
-        ]);
-        return;
-      }
-    } catch (error) { console.warn('Saving quote locally (Firestore failed or timed out):', error); }
-    const quotes = JSON.parse(localStorage.getItem('quotes') || '[]');
-    quotes.unshift(Object.assign({ id: Date.now().toString() }, quote));
-    localStorage.setItem('quotes', JSON.stringify(quotes));
+    const db = window.firebaseServices && window.firebaseServices.db;
+    if (!db) {
+      throw new Error('Inquiry service is unavailable. Please try again later.');
+    }
+    await Promise.race([
+      db.collection('quotes').add(quote),
+      new Promise((_, reject) => setTimeout(() => reject(new Error('Firestore write timeout')), 5000))
+    ]);
   },
 
   async getSettings() {

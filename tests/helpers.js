@@ -12,13 +12,18 @@ const { JSDOM, VirtualConsole } = require('jsdom');
 function loadPage(htmlFileName, options = {}) {
   const { initialProducts = [], initialCategories = [], initialSettings = null, offlineMode = false, adminLoggedIn = false, disableSettingsMethod = false } = options;
 
-  const filePath = path.resolve(__dirname, '..', htmlFileName);
+  const filePath = path.resolve(__dirname, '../public', htmlFileName);
   let html = fs.readFileSync(filePath, 'utf8');
 
   // Strip external script tags to avoid network calls
   html = html.replace(/<script[^>]*src="http[^"]*"[^>]*><\/script>/gi, '<!-- stripped external script -->');
+  html = html.replace(/<script[^>]*src="vendor\/[^"]*"[^>]*><\/script>/gi, '<!-- vendored library mocked -->');
+  html = html.replace(/<link[^>]*rel="stylesheet"[^>]*>/gi, '<!-- stylesheets are not needed in DOM tests -->');
+  html = html.replace(/(<iframe[^>]*\ssrc=")https?:\/\/[^"]*(")/gi, '$1about:blank$2');
 
-  const dataManagerCode = fs.readFileSync(path.resolve(__dirname, '../data-manager.js'), 'utf8');
+  const dataManagerCode = fs.readFileSync(path.resolve(__dirname, '../public/data-manager.js'), 'utf8');
+  const securityUtilsCode = fs.readFileSync(path.resolve(__dirname, '../public/security-utils.js'), 'utf8');
+  const eventHandlersCode = fs.readFileSync(path.resolve(__dirname, '../public/event-handlers.js'), 'utf8');
 
   // Let's create the mock script block to run before everything
   const mockScriptBlock = `
@@ -147,8 +152,12 @@ function loadPage(htmlFileName, options = {}) {
           };
         }
         async signInWithEmailAndPassword(email, password) {
-          if (email === 'admin@ishanktextile.com' && password === 'admin123') {
-            this.currentUser = { email, uid: 'admin_uid' };
+          if (email === 'admin@ishanktextile.com' && password === 'test-only-password') {
+            this.currentUser = {
+              email,
+              uid: 'admin_uid',
+              getIdTokenResult: async () => ({ claims: { admin: true } })
+            };
             this.listeners.forEach(l => l(this.currentUser));
             return { user: this.currentUser };
           } else {
@@ -161,6 +170,7 @@ function loadPage(htmlFileName, options = {}) {
           this.currentUser = null;
           this.listeners.forEach(l => l(null));
         }
+        async setPersistence() {}
       }
 
       window.firebase = {
@@ -170,6 +180,11 @@ function loadPage(htmlFileName, options = {}) {
         firestore: () => window.firebaseServices.db,
         auth: () => window.firebaseServices.auth,
         storage: () => window.firebaseServices.storage
+      };
+      window.firebase.auth.Auth = {
+        Persistence: {
+          SESSION: 'session'
+        }
       };
 
       window.firebaseServices = {
@@ -181,13 +196,18 @@ function loadPage(htmlFileName, options = {}) {
       if (${adminLoggedIn} && window.firebaseServices.auth) {
         window.firebaseServices.auth.currentUser = {
           email: 'admin@ishanktextile.com',
-          uid: 'admin_uid'
+          uid: 'admin_uid',
+          getIdTokenResult: async () => ({ claims: { admin: true } })
         };
       }
 
       window.scrollTo = () => {};
       window.alert = () => {};
       window.confirm = () => true;
+      window.__lastNavigation = null;
+      window.__securityNavigate = (destination) => {
+        window.__lastNavigation = destination;
+      };
       window.firestoreReadTimeout = false;
       window.firestoreFail = false;
       window.Chart = class {
@@ -227,6 +247,9 @@ function loadPage(htmlFileName, options = {}) {
       };
       window.requestAnimationFrame = (callback) => setTimeout(() => callback(Date.now()), 0);
       window.cancelAnimationFrame = (id) => clearTimeout(id);
+      if (window.HTMLCanvasElement) {
+        window.HTMLCanvasElement.prototype.getContext = () => ({});
+      }
     </script>
   `;
 
@@ -234,8 +257,15 @@ function loadPage(htmlFileName, options = {}) {
   html = html.replace('<head>', '<head>' + mockScriptBlock);
 
   // Replace local script sources with inline contents
+  html = html.replace(/<script[^>]*src="\/__\/firebase\/init\.js"[^>]*><\/script>/gi, '<!-- Firebase Hosting auto-init mocked -->');
   html = html.replace(/<script[^>]*src="firebase-config\.js"[^>]*><\/script>/gi, '<!-- config mocked -->');
+  html = html.replace(/<script[^>]*src="security-utils\.js"[^>]*><\/script>/gi, `<script>${securityUtilsCode}</script>`);
+  html = html.replace(/<script[^>]*src="event-handlers\.js"[^>]*><\/script>/gi, `<script>${eventHandlersCode}</script>`);
   html = html.replace(/<script[^>]*src="data-manager\.js(?:\?[^"]*)?"[^>]*><\/script>/gi, `<script>${dataManagerCode}\nwindow.DataManager = DataManager;\nif (${disableSettingsMethod}) { DataManager.getSettings = undefined; window.DataManager.getSettings = undefined; }</script>`);
+  html = html.replace(/<script[^>]*src="scripts\/([^"]+)"[^>]*><\/script>/gi, (_match, scriptFilename) => {
+    const scriptPath = path.resolve(__dirname, '../public/scripts', path.basename(scriptFilename));
+    return `<script>${fs.readFileSync(scriptPath, 'utf8')}</script>`;
+  });
 
   const virtualConsole = new VirtualConsole();
   virtualConsole.sendTo(console);

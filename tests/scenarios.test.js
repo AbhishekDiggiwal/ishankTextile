@@ -34,8 +34,6 @@ describe('Tier 4: Real-World Application Scenarios', () => {
     await new Promise(resolve => setTimeout(resolve, 50));
 
     // Mock redirect
-    delete window.location;
-    window.location = { href: 'http://localhost/products-catalogue.html' };
 
     // 2. Selects category 'cat1'
     window.selectCategory('cat1');
@@ -48,7 +46,7 @@ describe('Tier 4: Real-World Application Scenarios', () => {
     const cachedProduct = JSON.parse(window.sessionStorage.getItem('quoteProduct'));
     expect(cachedProduct).toBeTruthy();
     expect(cachedProduct.id).toBe('p3');
-    expect(window.location.href).toContain('contact.html?quote=p3');
+    expect(window.__lastNavigation).toContain('contact.html?quote=p3');
 
     // 4. Client navigates to contact.html (represented by loading contact.html in JSDOM)
     const contactDom = loadPage('contact.html', {
@@ -93,11 +91,9 @@ describe('Tier 4: Real-World Application Scenarios', () => {
     window = dom.window;
     document = window.document;
 
-    delete window.location;
-    window.location = { href: 'http://localhost/admin-login.html' };
 
     document.getElementById('email').value = 'admin@ishanktextile.com';
-    document.getElementById('password').value = 'admin123';
+    document.getElementById('password').value = 'test-only-password';
     
     const form = document.getElementById('loginForm');
     form.dispatchEvent(new window.Event('submit'));

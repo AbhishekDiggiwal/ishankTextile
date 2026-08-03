@@ -9,11 +9,11 @@ describe('Feature 1: DataManager (caching, timeouts, fallback)', () => {
     // Load a blank page or any page to get JSDOM with data-manager loaded
     dom = loadPage('index.html', {
       initialProducts: {
-        'p1': { name: 'Premium Twill', categoryId: 'cat1', startingPrice: 350 },
-        'p2': { name: 'Cotton blend', categoryId: 'cat2', startingPrice: 150 }
+        'p1': { name: 'Premium Twill', categoryId: 'cat1', startingPrice: 350, active: true },
+        'p2': { name: 'Cotton blend', categoryId: 'cat2', startingPrice: 150, active: true }
       },
       initialCategories: {
-        'cat1': { name: 'Twill Collection' }
+        'cat1': { name: 'Twill Collection', active: true }
       }
     });
     window = dom.window;
@@ -106,30 +106,25 @@ describe('Feature 1: DataManager (caching, timeouts, fallback)', () => {
     expect(categories[0].name).toBe('Timeout Cache');
   });
 
-  test('Tier 2: saveQuote saves locally in localStorage when db is offline/fails', async () => {
+  test('Tier 2: saveQuote rejects without retaining customer PII when db is offline', async () => {
     window.firebaseServices.db = null; // db offline
     
     const quote = { customerName: 'Offline User', email: 'offline@example.com', message: 'Offline quote request' };
-    await DataManager.saveQuote(quote);
-    
-    const localQuotes = JSON.parse(window.localStorage.getItem('quotes'));
-    expect(localQuotes).toBeDefined();
-    expect(localQuotes.length).toBe(1);
-    expect(localQuotes[0].customerName).toBe('Offline User');
-    expect(localQuotes[0].id).toBeDefined(); // generated local id
-    expect(localQuotes[0].createdAt).toBeDefined();
+    await expect(DataManager.saveQuote(quote)).rejects.toThrow('Inquiry service is unavailable');
+    expect(window.localStorage.getItem('quotes')).toBeNull();
   });
 
-  test('Tier 2: saveQuote local storage unshifts quotes to maintain reverse chronological order', async () => {
+  test('Tier 2: saveQuote does not append to an existing local quote cache', async () => {
     window.firebaseServices.db = null;
-    
-    await DataManager.saveQuote({ customerName: 'First Quote', email: 'first@example.com', message: 'Msg1' });
-    await DataManager.saveQuote({ customerName: 'Second Quote', email: 'second@example.com', message: 'Msg2' });
-    
+    window.localStorage.setItem('quotes', JSON.stringify([{ customerName: 'Existing Quote' }]));
+
+    await expect(DataManager.saveQuote({
+      customerName: 'Second Quote',
+      email: 'second@example.com',
+      message: 'Msg2'
+    })).rejects.toThrow();
+
     const localQuotes = JSON.parse(window.localStorage.getItem('quotes'));
-    expect(localQuotes.length).toBe(2);
-    // The second quote should be first in the array (unshifted)
-    expect(localQuotes[0].customerName).toBe('Second Quote');
-    expect(localQuotes[1].customerName).toBe('First Quote');
+    expect(localQuotes).toEqual([{ customerName: 'Existing Quote' }]);
   });
 });

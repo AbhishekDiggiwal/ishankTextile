@@ -67,13 +67,10 @@ describe('Tier 3: Cross-Feature Combinations', () => {
     window = dom.window;
     document = window.document;
 
-    // Redefine window.location.href to mock navigation
-    delete window.location;
-    window.location = { href: 'http://localhost/admin-login.html' };
 
     // Fill in valid Firebase Auth credentials
     document.getElementById('email').value = 'admin@ishanktextile.com';
-    document.getElementById('password').value = 'admin123';
+    document.getElementById('password').value = 'test-only-password';
     
     // Submit
     const form = document.getElementById('loginForm');
@@ -83,7 +80,7 @@ describe('Tier 3: Cross-Feature Combinations', () => {
     await new Promise(resolve => setTimeout(resolve, 50));
 
     expect(window.firebaseServices.auth.currentUser).not.toBeNull();
-    expect(window.location.href).toBe('admin-dashboard.html');
+    expect(window.__lastNavigation).toBe('http://localhost/admin-dashboard.html');
 
     // Load admin dashboard to verify it respects Firebase authentication state
     const dashDom = loadPage('admin-dashboard.html', { adminLoggedIn: true });

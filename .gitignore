@@ -7,15 +7,14 @@ yarn-error.log*
 firebase-debug.log*
 firebase-debug.*.log*
 
+# Local Codex task artifacts
+.agents/
+
 # Firebase cache
 .firebase/
 
-# Firebase config
-
-# Uncomment this if you'd like others to create their own Firebase project.
-# For a team working on the same Firebase project(s), it is recommended to leave
-# it commented so all members can deploy to the same project(s) in .firebaserc.
-# .firebaserc
+# Local Firebase project target. Keep this file on deployer machines, not in Git.
+.firebaserc
 
 # Runtime data
 pids
@@ -74,4 +73,3 @@ out/
 
 # local env files
 .env*.local
-

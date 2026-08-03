@@ -1,1022 +1,5 @@
-<!DOCTYPE html>
-<html class="light" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<link rel="icon" type="image/png" href="logo.png"/>
-<title>Admin Dashboard - Ishank Textile</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-        .glass-card {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        .textile-texture {
-            background-image: radial-gradient(circle at 2px 2px, rgba(0,0,0,0.02) 1px, transparent 0);
-            background-size: 4px 4px;
-        }
-    </style>
-<script id="tailwind-config">
-        tailwind.config = {
-          darkMode: "class",
-          theme: {
-            extend: {
-              "colors": {
-                      "on-tertiary-fixed": "#121c26",
-                      "on-surface": "#1a1c1c",
-                      "surface-tint": "#be0728",
-                      "on-primary-fixed-variant": "#92001b",
-                      "on-primary-container": "#ffe8e6",
-                      "surface-container-low": "#f3f3f3",
-                      "on-surface-variant": "#5c403f",
-                      "tertiary-fixed": "#d9e3f1",
-                      "primary": "#aa0021",
-                      "secondary-fixed-dim": "#c0c7d0",
-                      "surface-container": "#eeeeee",
-                      "primary-fixed": "#ffdad8",
-                      "background": "#f9f9f9",
-                      "error-container": "#ffdad6",
-                      "on-error": "#ffffff",
-                      "surface-container-highest": "#e2e2e2",
-                      "surface-container-high": "#e8e8e8",
-                      "on-primary-fixed": "#410007",
-                      "tertiary-container": "#626c78",
-                      "surface-variant": "#e2e2e2",
-                      "secondary-container": "#dce3ed",
-                      "on-secondary": "#ffffff",
-                      "tertiary": "#4a545f",
-                      "secondary-fixed": "#dce3ed",
-                      "secondary": "#585f67",
-                      "on-tertiary-container": "#e3eefc",
-                      "error": "#ba1a1a",
-                      "on-secondary-fixed": "#151c23",
-                      "on-background": "#1a1c1c",
-                      "outline-variant": "#e5bdbb",
-                      "on-error-container": "#93000a",
-                      "inverse-surface": "#2f3131",
-                      "surface-container-lowest": "#ffffff",
-                      "on-primary": "#ffffff",
-                      "on-tertiary": "#ffffff",
-                      "outline": "#906f6e",
-                      "inverse-primary": "#ffb3b0",
-                      "on-secondary-container": "#5e656d",
-                      "surface": "#f9f9f9",
-                      "primary-fixed-dim": "#ffb3b0",
-                      "tertiary-fixed-dim": "#bdc7d5",
-                      "primary-container": "#d11e33",
-                      "on-secondary-fixed-variant": "#40474f",
-                      "inverse-on-surface": "#f1f1f1",
-                      "on-tertiary-fixed-variant": "#3e4853",
-                      "surface-bright": "#f9f9f9",
-                      "surface-dim": "#dadada"
-              },
-              "borderRadius": {
-                      "DEFAULT": "0.125rem",
-                      "lg": "0.25rem",
-                      "xl": "0.5rem",
-                      "full": "0.75rem"
-              },
-              "spacing": {
-                      "margin-mobile": "20px",
-                      "stack-sm": "8px",
-                      "section-padding": "100px",
-                      "margin-desktop": "80px",
-                      "stack-md": "16px",
-                      "stack-lg": "32px",
-                      "gutter": "24px"
-              },
-              "fontFamily": {
-                      "body-md": ["Rubik"],
-                      "body-lg": ["Rubik"],
-                      "headline-lg-mobile": ["Rubik"],
-                      "label-bold": ["Rubik"],
-                      "headline-md": ["Rubik"],
-                      "headline-lg": ["Rubik"],
-                      "display-lg": ["Rubik"],
-                      "mono": ["ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "Liberation Mono", "Courier New", "monospace"]
-              },
-              "fontSize": {
-                      "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
-                      "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
-                      "headline-lg-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
-                      "label-bold": ["14px", {"lineHeight": "1.2", "letterSpacing": "0", "fontWeight": "600"}],
-                      "headline-md": ["28px", {"lineHeight": "1.3", "fontWeight": "600"}],
-                      "headline-lg": ["40px", {"lineHeight": "1.2", "fontWeight": "600"}],
-                      "display-lg": ["56px", {"lineHeight": "1.1", "letterSpacing": "0", "fontWeight": "700"}]
-              }
-            },
-          },
-        }
-      </script>
+        const escapeHtml = SecurityUtils.escapeHtml;
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
-<script src="firebase-config.js"></script>
-<!-- Firebase services exposed as module-level variables for use in DataManager -->
-<script>
-  // Safely expose Firebase services after firebase-config.js has run.
-  // Falls back to null if Firebase is not configured (placeholder credentials).
-  var db = (window.firebaseServices && window.firebaseServices.db) ? window.firebaseServices.db : null;
-  var auth = (window.firebaseServices && window.firebaseServices.auth) ? window.firebaseServices.auth : null;
-  var storage = (window.firebaseServices && window.firebaseServices.storage) ? window.firebaseServices.storage : null;
-</script>
-<style>
-  .sidebar-item.active { background: #d11e33; color: #ffe8e6; }
-  .sidebar-item.active .material-symbols-outlined, .sidebar-item.active i { color: #ffe8e6; }
-  .form-input { background: #ffffff; border: 1px solid #e5bdbb; border-radius: 0.5rem; outline: none; transition: border-color .15s ease, box-shadow .15s ease; }
-  .form-input:focus { border-color: #aa0021; box-shadow: 0 0 0 2px rgba(170, 0, 33, .15); }
-  .text-dark-gray { color: #1a1c1c; }
-  .text-brand-orange, .text-brand-orange-dark { color: #aa0021; }
-  .text-accent-blue { color: #4a545f; }
-  .text-accent-green { color: #15803d; }
-  .bg-brand-orange, .bg-brand-orange-dark, .hover\:bg-brand-orange-dark:hover { background-color: #aa0021; }
-  .bg-accent-blue { background-color: #4a545f; }
-  .bg-accent-green { background-color: #15803d; }
-  .border-brand-orange { border-color: #aa0021; }
-  .glass-card { background: rgba(255,255,255,.76); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(229,189,187,.55); box-shadow: 0 10px 30px rgba(26,28,28,.06); }
-  .toast { transition: opacity .3s ease, transform .3s ease; }
-  table { border-collapse: collapse; }
-</style>
-</head>
-<body class="bg-background text-on-surface font-body-md textile-texture min-h-screen">
-<aside class="fixed left-0 top-0 h-full w-20 md:w-64 bg-surface-container-lowest border-r border-outline-variant z-50 transition-all duration-300">
-  <div class="h-20 flex items-center gap-3 px-4 md:px-6 border-b border-outline-variant">
-    <img src="logo.png" alt="Ishank Textile Logo" class="h-10 w-10 object-contain rounded flex-shrink-0">
-    <span class="font-label-mono text-[18px] font-bold text-primary hidden md:block leading-none truncate">ISHANK TEXTILE</span>
-  </div>
-  <nav class="mt-stack-lg px-4 space-y-2">
-    <a href="#dashboard" onclick="showSection('dashboard', event)" class="sidebar-item active flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group"><span class="material-symbols-outlined">dashboard</span><span class="hidden md:block font-label-bold">Dashboard</span></a>
-    <a href="#categories" onclick="showSection('categories', event)" class="sidebar-item flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group"><span class="material-symbols-outlined">category</span><span class="hidden md:block font-label-bold">Product Category</span></a>
-    <a href="#products" onclick="showSection('products', event)" class="sidebar-item flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group"><span class="material-symbols-outlined">inventory_2</span><span class="hidden md:block font-label-bold">Products</span></a>
-    <a href="#visitors" onclick="showSection('visitors', event)" class="sidebar-item flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group"><span class="material-symbols-outlined">analytics</span><span class="hidden md:block font-label-bold">Visitors</span></a>
-    <a href="#quotes" onclick="showSection('quotes', event)" class="sidebar-item flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group"><span class="material-symbols-outlined">request_quote</span><span class="hidden md:block font-label-bold">Quotes</span></a>
-    <a href="#certificates" onclick="showSection('certificates', event)" class="sidebar-item flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group"><span class="material-symbols-outlined">description</span><span class="hidden md:block font-label-bold">Documents</span></a>
-    <a href="#settings" onclick="showSection('settings', event)" class="sidebar-item flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group"><span class="material-symbols-outlined">settings</span><span class="hidden md:block font-label-bold">Settings</span></a>
-    <a href="index.html" class="flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group"><span class="material-symbols-outlined">open_in_new</span><span class="hidden md:block font-label-bold">View Site</span></a>
-  </nav>
-  <div class="absolute bottom-8 left-0 w-full px-4">
-    <button onclick="logout()" class="w-full flex items-center gap-4 p-3 rounded-lg bg-surface-container hover:bg-error-container text-on-surface-variant hover:text-on-error-container transition-colors">
-      <span class="material-symbols-outlined">logout</span>
-      <span class="hidden md:block font-label-bold">Logout</span>
-    </button>
-  </div>
-</aside>
-<main class="ml-20 md:ml-64 p-gutter md:p-margin-desktop transition-all duration-300">
-  <!-- Notice Banner for offline / uninitialized Firebase -->
-  <div id="offline-banner" class="hidden bg-amber-500 text-white px-6 py-3 rounded-lg mb-6 flex items-center justify-between shadow-md">
-    <div class="flex items-center gap-3">
-      <span class="material-symbols-outlined">warning</span>
-      <span class="font-medium text-sm">Firebase is not configured or offline. Running in local preview mode. Changes are saved to browser local storage.</span>
-    </div>
-    <button onclick="document.getElementById('offline-banner').classList.add('hidden')" class="text-white hover:opacity-85 flex items-center">
-      <span class="material-symbols-outlined text-base">close</span>
-    </button>
-  </div>
-  <header class="flex flex-col xl:flex-row xl:items-center justify-between gap-gutter mb-section-padding">
-    <div>
-      <h1 id="page-title" class="font-headline-lg text-headline-lg text-on-surface">Operations Overview</h1>
-      <p class="text-on-surface-variant mt-2 font-body-md">Real-time visitors, products, documents, and quotation metrics for Ishank Textile.</p>
-    </div>
-    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-stack-md">
-      <button onclick="refreshData()" class="border border-outline-variant text-on-surface px-4 py-2 rounded-lg font-label-bold hover:border-primary hover:text-primary transition-colors"><span class="material-symbols-outlined text-sm align-middle">refresh</span></button>
-    </div>
-  </header>
-  <div id="admin-sections" class="space-y-gutter">
-
-<section id="dashboard-section" class="space-y-gutter">
-  <section class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-gutter">
-    <div class="glass-card p-6 rounded-xl shadow-sm border-l-4 border-primary">
-      <div class="flex justify-between items-start mb-4">
-        <span class="material-symbols-outlined text-primary">groups</span>
-        <span class="text-xs font-mono text-green-600 bg-green-50 px-2 py-1 rounded"><span id="kpi-visitors-change">0%</span></span>
-      </div>
-      <h3 class="text-on-surface-variant font-label-bold">Visitors Today</h3>
-      <p id="kpi-visitors-today" class="font-mono text-display-lg text-on-surface mt-2">0</p>
-    </div>
-    <div class="glass-card p-6 rounded-xl shadow-sm border-l-4 border-tertiary">
-      <div class="flex justify-between items-start mb-4">
-        <span class="material-symbols-outlined text-tertiary">request_quote</span>
-        <span class="text-xs font-mono text-primary bg-primary-fixed px-2 py-1 rounded"><span id="kpi-quotes-change">0%</span></span>
-      </div>
-      <h3 class="text-on-surface-variant font-label-bold">Quote Requests</h3>
-      <p id="kpi-quotes-today" class="font-mono text-display-lg text-on-surface mt-2">0</p>
-    </div>
-    <div class="glass-card p-6 rounded-xl shadow-sm border-l-4 border-secondary">
-      <div class="flex justify-between items-start mb-4">
-        <span class="material-symbols-outlined text-secondary">category</span>
-        <span class="text-xs font-mono text-on-surface-variant bg-surface-container px-2 py-1 rounded">Active</span>
-      </div>
-      <h3 class="text-on-surface-variant font-label-bold">Categories</h3>
-      <p id="kpi-categories" class="font-mono text-display-lg text-on-surface mt-2">0</p>
-    </div>
-    <div class="glass-card p-6 rounded-xl shadow-sm border-l-4 border-primary-container">
-      <div class="flex justify-between items-start mb-4">
-        <span class="material-symbols-outlined text-primary-container">inventory_2</span>
-        <span class="text-xs font-mono text-green-600 bg-green-50 px-2 py-1 rounded">Stable</span>
-      </div>
-      <h3 class="text-on-surface-variant font-label-bold">Products</h3>
-      <p id="kpi-products" class="font-mono text-display-lg text-on-surface mt-2">0</p>
-    </div>
-  </section>
-  <div class="grid grid-cols-1 xl:grid-cols-3 gap-gutter">
-    <section class="xl:col-span-2 glass-card rounded-xl overflow-hidden shadow-2xl border border-white/10">
-      <div class="p-6 border-b border-outline-variant flex justify-between items-center bg-white/50">
-        <h2 class="font-headline-md text-on-surface">Visitor Analytics</h2>
-        <select id="visitor-chart-period" onchange="updateVisitorChart()" class="form-input px-3 py-1 rounded-lg text-sm">
-          <option value="7">7 Days</option>
-          <option value="30">30 Days</option>
-        </select>
-      </div>
-      <div class="p-gutter h-[320px]"><canvas id="visitorsChart"></canvas></div>
-    </section>
-    <section class="glass-card rounded-xl p-6 shadow-sm flex flex-col justify-between overflow-hidden relative">
-      <div class="relative z-10">
-        <h2 class="font-headline-md text-on-surface mb-2">Quote Analytics</h2>
-        <p class="text-on-surface-variant font-body-md text-sm mb-stack-md">Inquiry volume and requested material mix.</p>
-        <select id="quote-chart-period" onchange="updateQuoteChart()" class="form-input px-3 py-1 rounded-lg text-sm mb-stack-md w-full">
-          <option value="7">7 Days</option>
-          <option value="30">30 Days</option>
-        </select>
-        <div class="h-[180px]"><canvas id="quotesChart"></canvas></div>
-      </div>
-      <div class="mt-stack-lg pt-stack-lg border-t border-outline-variant/30 relative z-10">
-        <div class="flex items-center justify-between gap-3 mb-3">
-          <h3 class="font-label-bold text-on-surface uppercase text-xs">Most Requested</h3>
-          <select id="requested-chart-period" onchange="updateMostRequestedChart()" class="form-input px-2 py-1 rounded-lg text-xs">
-            <option value="7">7 Days</option>
-            <option value="30">30 Days</option>
-          </select>
-        </div>
-        <div class="h-[150px]"><canvas id="mostRequestedChart"></canvas></div>
-      </div>
-    </section>
-  </div>
-  <section class="glass-card rounded-xl shadow-2xl overflow-hidden border border-white/10">
-    <div class="p-6 border-b border-outline-variant bg-white/50 flex justify-between items-center">
-      <h2 class="font-headline-md text-on-surface">Recent Quote Requests</h2>
-      <button onclick="showSection('quotes')" class="text-primary hover:underline font-label-bold text-sm">View All</button>
-    </div>
-    <div class="overflow-x-auto">
-      <table class="w-full text-left">
-        <thead>
-          <tr class="bg-surface-container-low border-b border-outline-variant">
-            <th class="px-6 py-4 font-label-bold text-xs uppercase text-on-surface-variant">Customer</th>
-            <th class="px-6 py-4 font-label-bold text-xs uppercase text-on-surface-variant">Email</th>
-            <th class="px-6 py-4 font-label-bold text-xs uppercase text-on-surface-variant">Product</th>
-            <th class="px-6 py-4 font-label-bold text-xs uppercase text-on-surface-variant">Quantity</th>
-            <th class="px-6 py-4 font-label-bold text-xs uppercase text-on-surface-variant">Date</th>
-          </tr>
-        </thead>
-        <tbody id="recent-quotes-table" class="divide-y divide-outline-variant"></tbody>
-      </table>
-    </div>
-  </section>
-</section>
-    <section id="categories-section" class="hidden space-y-6">
-                    <div class="flex justify-between items-center">
-                        <div>
-                            <h3 class="text-lg font-bold text-dark-gray">Product Categories</h3>
-                            <p class="text-sm text-gray-500">Manage product categories and their details</p>
-                        </div>
-                        <div class="flex flex-wrap items-center justify-end gap-3">
-                            <button id="category-price-toggle" type="button" onclick="toggleCategoryPriceVisibility()" class="border border-outline-variant text-on-surface px-4 py-2 rounded-lg font-medium transition-all flex items-center gap-2 hover:border-primary hover:text-primary">
-                                <span class="material-symbols-outlined text-base">visibility</span>
-                                <span>Show Prices</span>
-                            </button>
-                            <button onclick="openCategoryModal()" class="bg-brand-orange hover:bg-brand-orange-dark text-white px-6 py-2 rounded-lg font-medium transition-all flex items-center space-x-2">
-                                <i class="fas fa-plus"></i>
-                                <span>Add Category</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Filter Bar -->
-                    <div class="glass-card p-4 flex flex-wrap gap-4 items-center">
-                        <select id="category-filter-status" onchange="filterCategories()" class="form-input px-4 py-2 rounded-lg">
-                            <option value="">All Status</option>
-                            <option value="active">Active</option>
-                            <option value="inactive">Inactive</option>
-                        </select>
-                        <div class="flex-1"></div>
-                        <input type="text" id="category-search" onkeyup="filterCategories()" placeholder="Search categories..." class="form-input px-4 py-2 rounded-lg w-64">
-                    </div>
-
-                    <div class="glass-card p-6">
-                        <div class="overflow-x-auto">
-                            <table class="data-table w-full">
-                                <thead>
-                                    <tr class="border-b border-gray-200">
-                                        <th class="text-left py-3 px-4">Image</th>
-                                        <th class="text-left py-3 px-4">Category Name</th>
-                                        <th class="text-left py-3 px-4">Description</th>
-                                        <th class="text-left py-3 px-4">Starting Price</th>
-                                        <th class="text-left py-3 px-4">Products Count</th>
-                                        <th class="text-left py-3 px-4">Clothing Type</th>
-                                        <th class="text-left py-3 px-4">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="categories-table">
-                                    <!-- Dynamic content -->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Products Section -->
-                <section id="products-section" class="hidden space-y-6">
-                    <div class="flex justify-between items-center">
-                        <div>
-                            <h3 class="text-lg font-bold text-dark-gray">Products</h3>
-                            <p class="text-sm text-gray-500">Manage products within categories</p>
-                        </div>
-                        <div class="flex flex-wrap items-center justify-end gap-3">
-                            <button id="product-price-toggle" type="button" onclick="toggleProductPriceVisibility()" class="border border-outline-variant text-on-surface px-4 py-2 rounded-lg font-medium transition-all flex items-center gap-2 hover:border-primary hover:text-primary">
-                                <span class="material-symbols-outlined text-base">visibility</span>
-                                <span>Show Prices</span>
-                            </button>
-                            <button onclick="openProductModal()" class="bg-brand-orange hover:bg-brand-orange-dark text-white px-6 py-2 rounded-lg font-medium transition-all flex items-center space-x-2">
-                                <i class="fas fa-plus"></i>
-                                <span>Add Product</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Filter Bar -->
-                    <div class="glass-card p-4 flex flex-wrap gap-4 items-center">
-                        <select id="product-filter-category" onchange="filterProducts()" class="form-input px-4 py-2 rounded-lg">
-                            <option value="">All Categories</option>
-                        </select>
-                        <select id="product-filter-status" onchange="filterProducts()" class="form-input px-4 py-2 rounded-lg">
-                            <option value="">All Status</option>
-                            <option value="active">Active</option>
-                            <option value="inactive">Inactive</option>
-                        </select>
-                        <div class="flex-1"></div>
-                        <input type="text" id="product-search" onkeyup="searchProducts()" placeholder="Search products..." class="form-input px-4 py-2 rounded-lg w-64">
-                    </div>
-
-                    <div class="glass-card p-6">
-                        <div class="overflow-x-auto">
-                            <table class="data-table w-full">
-                                <thead>
-                                    <tr class="border-b border-gray-200">
-                                        <th class="text-left py-3 px-4">Image</th>
-                                        <th class="text-left py-3 px-4">Design Code</th>
-                                        <th class="text-left py-3 px-4">Product Name</th>
-                                        <th class="text-left py-3 px-4">Category</th>
-                                        <th class="text-left py-3 px-4">Starting Price</th>
-                                        <th class="text-left py-3 px-4">GSM</th>
-                                        <th class="text-left py-3 px-4">Blend</th>
-                                        <th class="text-left py-3 px-4">Clothing Type</th>
-                                        <th class="text-left py-3 px-4">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="products-table">
-                                    <!-- Dynamic content -->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Visitors Section -->
-                <section id="visitors-section" class="hidden space-y-6">
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                        <div class="glass-card p-6 lg:col-span-2">
-                            <h3 class="text-lg font-bold text-dark-gray mb-4">Visitor Statistics</h3>
-                            <div class="chart-container">
-                                <canvas id="visitorsDetailChart"></canvas>
-                            </div>
-                        </div>
-                        <div class="glass-card p-6">
-                            <h3 class="text-lg font-bold text-dark-gray mb-4">Top Pages</h3>
-                            <div id="top-pages-list" class="space-y-3">
-                                <!-- Dynamic content -->
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Top Visited Fabrics Analytics Card & Graph -->
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                        <!-- Top Fabric KPI Card -->
-                        <div class="glass-card p-6 flex flex-col justify-between">
-                            <div>
-                                <div class="flex justify-between items-center mb-4">
-                                    <h3 class="text-lg font-bold text-dark-gray">Top Fabric KPI</h3>
-                                    <span class="px-2.5 py-1 text-xs font-semibold bg-brand-orange/10 text-brand-orange rounded-full">Top Product</span>
-                                </div>
-                                <div class="space-y-4">
-                                    <div>
-                                        <p class="text-xs text-gray-500 uppercase tracking-wider">Top Visited Product</p>
-                                        <h4 id="top-fabric-kpi-name" class="text-xl font-bold text-dark-gray mt-1">-</h4>
-                                    </div>
-                                    <div class="grid grid-cols-2 gap-4">
-                                        <div>
-                                            <p class="text-xs text-gray-500 uppercase tracking-wider">Fabric Code</p>
-                                            <p id="top-fabric-kpi-code" class="text-sm font-semibold text-gray-700 mt-1">-</p>
-                                        </div>
-                                        <div>
-                                            <p class="text-xs text-gray-500 uppercase tracking-wider">Total Views</p>
-                                            <p id="top-fabric-kpi-views" class="text-sm font-semibold text-brand-orange mt-1">0 views</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500">
-                                <span>Based on B2B catalog views and quote requests</span>
-                                <i class="fas fa-chart-line text-brand-orange text-base"></i>
-                            </div>
-                        </div>
-
-                        <!-- Top Fabrics Chart Card -->
-                        <div class="glass-card p-6 lg:col-span-2">
-                            <div class="flex justify-between items-center mb-4">
-                                <h3 class="text-lg font-bold text-dark-gray">Top Visited Fabrics</h3>
-                                <select id="fabric-visit-period" onchange="updateTopVisitedFabrics()" class="form-input px-3 py-1 rounded-lg text-sm bg-white border border-gray-200">
-                                    <option value="7">Weekly (7 Days)</option>
-                                    <option value="30" selected>Monthly (30 Days)</option>
-                                    <option value="90">Quarterly (90 Days)</option>
-                                    <option value="180">Past 6 Months</option>
-                                </select>
-                            </div>
-                            <div class="chart-container" style="height: 220px; position: relative;">
-                                <canvas id="topFabricsChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Quotes Section -->
-                <section id="quotes-section" class="hidden space-y-6">
-                    <div class="glass-card p-6">
-                        <div class="flex justify-between items-center mb-4">
-                            <h3 class="text-lg font-bold text-dark-gray">Quote Requests</h3>
-                            <div class="flex gap-2">
-                                <button onclick="exportQuotes()" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
-                                    <i class="fas fa-download mr-2"></i>Export
-                                </button>
-                            </div>
-                        </div>
-                        <div class="overflow-x-auto">
-                            <table class="data-table w-full">
-                                <thead>
-                                    <tr class="border-b border-gray-200">
-                                        <th class="text-left py-3 px-4">ID</th>
-                                        <th class="text-left py-3 px-4">Customer</th>
-                                        <th class="text-left py-3 px-4">Email</th>
-                                        <th class="text-left py-3 px-4">Phone</th>
-                                        <th class="text-left py-3 px-4">Product</th>
-                                        <th class="text-left py-3 px-4">Quantity</th>
-                                        <th class="text-left py-3 px-4">Date</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="quotes-table">
-                                    <!-- Dynamic content -->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Settings Section -->
-                <section id="settings-section" class="hidden space-y-6">
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        <div class="glass-card p-6">
-                            <h3 class="text-lg font-bold text-dark-gray mb-4">General Settings</h3>
-                            <form id="general-settings-form" class="space-y-4">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Company Name</label>
-                                    <input type="text" id="setting-company-name" readonly class="form-input w-full px-4 py-2 rounded-lg bg-gray-50 text-gray-600 cursor-not-allowed" value="Ishank Textile">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Contact Email</label>
-                                    <input type="email" id="setting-contact-email" readonly class="form-input w-full px-4 py-2 rounded-lg bg-gray-50 text-gray-600 cursor-not-allowed" value="sunilpandiya909@gmail.com">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Contact Phone</label>
-                                    <input type="tel" id="setting-contact-phone" readonly class="form-input w-full px-4 py-2 rounded-lg bg-gray-50 text-gray-600 cursor-not-allowed" value="+91 94141 12197">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Founder Image (About Us Page)</label>
-                                    <div class="flex items-center gap-4">
-                                        <div class="relative w-16 h-16 rounded-full overflow-hidden border border-gray-200 bg-gray-50 flex-shrink-0">
-                                            <img id="setting-user-image-preview" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMIv5Ytqq3xAtaDcgx3ujsoghX_n2IrEEAsIIrlwmEcZiKWXzbmUHfbGJLd6aC9ubXXjukl12xxSHiBoESASAqXpAbw_hNlqQ9b5oFDqDU-b_TXEuwuueGvn8Kt2wmdBmnjKd0SAA811axwo08XdoPIW2ZLjHyP4e1HNF382INf-1nY8mdPlXhPQKYHQ37aLntIRLjUD7l9FWFx96kJnln-uttxSQngp4IryWWLAWG_1-UeUuvJV-y7RpIUU1TxUHoOlYRAQjyIXI" alt="Founder Image About Us" class="w-full h-full object-cover">
-                                        </div>
-                                        <div>
-                                            <input type="file" id="setting-user-image-file" accept="image/*" class="hidden" onchange="handleSettingsUserImageUpload(this, 'about')">
-                                            <button type="button" id="setting-user-image-btn" disabled onclick="document.getElementById('setting-user-image-file').click()" class="bg-gray-100 text-gray-400 px-4 py-2 rounded-lg font-medium cursor-not-allowed transition-all border border-gray-200 text-sm">
-                                                Choose Image
-                                            </button>
-                                            <p class="text-xs text-gray-400 mt-1">Accepts PNG, JPG, JPEG. Will be saved as optimized WebP.</p>
-                                        </div>
-                                    </div>
-                                    <input type="hidden" id="setting-user-image-url" value="">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Founder Image (Homepage)</label>
-                                    <div class="flex items-center gap-4">
-                                        <div class="relative w-16 h-16 rounded-full overflow-hidden border border-gray-200 bg-gray-50 flex-shrink-0">
-                                            <img id="setting-home-image-preview" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBGwDXOzTC100PVaSnevRzASq7mmzUBNcDc7vVstVNQLg9Qme6gGaDn86uP5eUfHPu4rlvo-7P-e9FWpf5RrdGFEUppfBR2wf2I_WGV201u-VReNnHyajQoWnuwm-4nsGH3fDVJbKmUAj9R7HPT06pvMBK2IwtcvbLfLVY_SJO0MO81D26T1RAgHgtztZWXnu4X_ZXCupDnc3wynkeao7oyvhIeK9pbRJsTPJAWclBFpnOaSkMBN8dKjCnDbXcyaPHfYmtDiCMvVt8" alt="Founder Image Homepage" class="w-full h-full object-cover">
-                                        </div>
-                                        <div>
-                                            <input type="file" id="setting-home-image-file" accept="image/*" class="hidden" onchange="handleSettingsUserImageUpload(this, 'home')">
-                                            <button type="button" id="setting-home-image-btn" disabled onclick="document.getElementById('setting-home-image-file').click()" class="bg-gray-100 text-gray-400 px-4 py-2 rounded-lg font-medium cursor-not-allowed transition-all border border-gray-200 text-sm">
-                                                Choose Image
-                                            </button>
-                                            <p class="text-xs text-gray-400 mt-1">Accepts PNG, JPG, JPEG. Will be saved as optimized WebP.</p>
-                                        </div>
-                                    </div>
-                                    <input type="hidden" id="setting-home-image-url" value="">
-                                </div>
-                                <div class="flex items-center gap-3">
-                                    <button type="button" id="edit-settings-btn" onclick="enterSettingsEditMode()" class="bg-brand-orange hover:bg-brand-orange-dark text-white px-6 py-2 rounded-lg font-medium transition-all">
-                                        Edit
-                                    </button>
-                                    <button type="submit" id="save-settings-btn" disabled class="bg-brand-orange/50 text-white px-6 py-2 rounded-lg font-medium transition-all cursor-not-allowed hidden">
-                                        Save Changes
-                                    </button>
-                                    <button type="button" id="cancel-settings-btn" onclick="exitSettingsEditMode(false)" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-2 rounded-lg font-medium transition-all hidden">
-                                        Cancel
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-
-                        <div class="glass-card p-6">
-                            <h3 class="text-lg font-bold text-dark-gray mb-4">Data Management</h3>
-                            <div class="space-y-4">
-                                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                                    <div>
-                                        <p class="font-medium text-gray-700">Export All Data</p>
-                                        <p class="text-sm text-gray-500">Download backup of all data</p>
-                                    </div>
-                                    <button onclick="exportAllData()" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
-                                        <i class="fas fa-download mr-2"></i>Export
-                                    </button>
-                                </div>
-                                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                                    <div>
-                                        <p class="font-medium text-gray-700">Import Data</p>
-                                        <p class="text-sm text-gray-500">Import data from backup file</p>
-                                    </div>
-                                    <label class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">
-                                        <i class="fas fa-upload mr-2"></i>Import
-                                        <input type="file" id="import-file" class="hidden" onchange="importData(this)" accept=".json">
-                                    </label>
-                                </div>
-                                <div class="flex items-center justify-between p-4 bg-red-50 rounded-lg">
-                                    <div>
-                                        <p class="font-medium text-red-700">Reset All Data</p>
-                                        <p class="text-sm text-red-500">Clear all data and reset to default</p>
-                                    </div>
-                                    <button onclick="resetAllData()" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors">
-                                        <i class="fas fa-trash-alt mr-2"></i>Reset
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Documents & Certificates Section -->
-                <section id="certificates-section" class="hidden space-y-6">
-                    <div class="glass-card p-6">
-                        <div class="flex justify-between items-center mb-6">
-                            <div>
-                                <h3 class="text-lg font-bold text-dark-gray">Business Documents</h3>
-                                <p class="text-sm text-gray-500">Manage tax, quality, trade, and compliance certificates</p>
-                            </div>
-                            <button onclick="openCertificateModal()" class="bg-brand-orange hover:bg-brand-orange-dark text-white px-4 py-2 rounded-lg transition-colors flex items-center gap-2">
-                                <span class="material-symbols-outlined text-sm">add</span>
-                                <span>Upload Certificate</span>
-                            </button>
-                        </div>
-
-                        <div id="certificates-list-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            <!-- Dynamic Content Injected here -->
-                        </div>
-                    </div>
-
-                    <!-- Business Policies Card -->
-                    <div class="glass-card p-6">
-                        <div class="border-b border-gray-200 pb-4 mb-6">
-                            <h3 class="text-lg font-bold text-dark-gray">Business Policies</h3>
-                            <p class="text-sm text-gray-500">Upload corporate policy files (.txt, .md, .doc, or .docx format) to display dynamically on the website.</p>
-                        </div>
-                        
-                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                            <!-- Policy 1: Website Terms & Conditions -->
-                            <div class="p-4 bg-gray-50 rounded-xl border border-gray-200 flex flex-col justify-between">
-                                <div>
-                                    <div class="flex justify-between items-start mb-3">
-                                        <div class="flex items-center gap-2">
-                                            <span class="material-symbols-outlined text-primary">gavel</span>
-                                            <h4 class="font-label-bold text-dark-gray">Website Terms & Conditions</h4>
-                                        </div>
-                                    </div>
-                                    <p class="text-xs text-gray-500 mb-4">Last Updated: <span id="policy-terms-date" class="font-semibold">-</span></p>
-                                    <div class="mb-4">
-                                        <label class="block text-xs font-semibold text-gray-700 mb-1">Active File:</label>
-                                        <p id="policy-terms-filename" class="text-xs text-gray-600 italic truncate">No file uploaded yet</p>
-                                    </div>
-                                </div>
-                                <div class="space-y-2 mt-4">
-                                    <label class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-primary text-on-primary hover:bg-primary/95 cursor-pointer text-xs font-label-bold transition-colors shadow-md rounded-lg">
-                                        <span class="material-symbols-outlined text-sm">upload_file</span>
-                                        <span>Upload Document</span>
-                                        <input type="file" accept=".txt,.md,.doc,.docx" class="hidden" onchange="uploadPolicyFile(this, 'website_terms')">
-                                    </label>
-                                    <a id="policy-terms-download" target="_blank" class="w-full flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-xs font-label-bold transition-colors pointer-events-none opacity-40">
-                                        <span class="material-symbols-outlined text-sm">download</span>
-                                        <span>Download Current</span>
-                                    </a>
-                                </div>
-                            </div>
-
-                            <!-- Policy 2: Privacy Policy -->
-                            <div class="p-4 bg-gray-50 rounded-xl border border-gray-200 flex flex-col justify-between">
-                                <div>
-                                    <div class="flex justify-between items-start mb-3">
-                                        <div class="flex items-center gap-2">
-                                            <span class="material-symbols-outlined text-primary">shield</span>
-                                            <h4 class="font-label-bold text-dark-gray">Privacy Policy</h4>
-                                        </div>
-                                    </div>
-                                    <p class="text-xs text-gray-500 mb-4">Last Updated: <span id="policy-privacy-date" class="font-semibold">-</span></p>
-                                    <div class="mb-4">
-                                        <label class="block text-xs font-semibold text-gray-700 mb-1">Active File:</label>
-                                        <p id="policy-privacy-filename" class="text-xs text-gray-600 italic truncate">No file uploaded yet</p>
-                                    </div>
-                                </div>
-                                <div class="space-y-2 mt-4">
-                                    <label class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-primary text-on-primary hover:bg-primary/95 cursor-pointer text-xs font-label-bold transition-colors shadow-md rounded-lg">
-                                        <span class="material-symbols-outlined text-sm">upload_file</span>
-                                        <span>Upload Document</span>
-                                        <input type="file" accept=".txt,.md,.doc,.docx" class="hidden" onchange="uploadPolicyFile(this, 'privacy_policy')">
-                                    </label>
-                                    <a id="policy-privacy-download" target="_blank" class="w-full flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-xs font-label-bold transition-colors pointer-events-none opacity-40">
-                                        <span class="material-symbols-outlined text-sm">download</span>
-                                        <span>Download Current</span>
-                                    </a>
-                                </div>
-                            </div>
-
-                            <!-- Policy 3: Business Terms & Conditions -->
-                            <div class="p-4 bg-gray-50 rounded-xl border border-gray-200 flex flex-col justify-between">
-                                <div>
-                                    <div class="flex justify-between items-start mb-3">
-                                        <div class="flex items-center gap-2">
-                                            <span class="material-symbols-outlined text-primary">policy</span>
-                                            <h4 class="font-label-bold text-dark-gray">Business Terms & Conditions</h4>
-                                        </div>
-                                    </div>
-                                    <p class="text-xs text-gray-500 mb-4">Last Updated: <span id="policy-business-date" class="font-semibold">-</span></p>
-                                    <div class="mb-4">
-                                        <label class="block text-xs font-semibold text-gray-700 mb-1">Active File:</label>
-                                        <p id="policy-business-filename" class="text-xs text-gray-600 italic truncate">No file uploaded yet</p>
-                                    </div>
-                                </div>
-                                <div class="space-y-2 mt-4">
-                                    <label class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-primary text-on-primary hover:bg-primary/95 cursor-pointer text-xs font-label-bold transition-colors shadow-md rounded-lg">
-                                        <span class="material-symbols-outlined text-sm">upload_file</span>
-                                        <span>Upload Document</span>
-                                        <input type="file" accept=".txt,.md,.doc,.docx" class="hidden" onchange="uploadPolicyFile(this, 'business_terms')">
-                                    </label>
-                                    <a id="policy-business-download" target="_blank" class="w-full flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-xs font-label-bold transition-colors pointer-events-none opacity-40">
-                                        <span class="material-symbols-outlined text-sm">download</span>
-                                        <span>Download Current</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </div>
-        </main>
-
-    <!-- Certificate Modal -->
-    <div id="certificate-modal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-        <div class="glass-card w-full max-w-md rounded-2xl overflow-hidden">
-            <div class="p-6 border-b border-gray-100 flex justify-between items-center">
-                <h3 id="certificate-modal-title" class="text-xl font-bold text-dark-gray">Upload Certificate</h3>
-                <button onclick="closeCertificateModal()" class="text-gray-400 hover:text-gray-600">
-                    <i class="fas fa-times text-xl"></i>
-                </button>
-            </div>
-            <form id="certificate-form" class="p-6 space-y-4">
-                <input type="hidden" id="certificate-id">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Certificate Name</label>
-                    <input type="text" id="certificate-name" required class="form-input w-full px-4 py-2 rounded-lg" placeholder="e.g., GST Registration, Export License, Trade License">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Display Icon</label>
-                    <select id="certificate-icon" class="form-input w-full px-4 py-2 rounded-lg">
-                        <option value="verified">⭐ Verified Badge (Export Compliance, standard audit)</option>
-                        <option value="account_balance">🏛️ Tax / GST Compliance</option>
-                        <option value="public">🌐 Global Trade / Import-Export</option>
-                        <option value="eco">🌱 Environmental / Sustainability</option>
-                        <option value="workspace_premium">🏅 Premium / Award Certificate</option>
-                        <option value="shield">🛡️ Security / Safety Badge</option>
-                        <option value="gavel">⚖️ Legal / Compliance License</option>
-                        <option value="policy">📜 Corporate Policy</option>
-                        <option value="description">📄 General Document</option>
-                        <option value="assignment_turned_in">✅ Quality Approval Badge</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Certificate File (PDF or Image)</label>
-                    <input type="file" id="certificate-file" accept=".pdf,image/*" required class="form-input w-full px-4 py-2 rounded-lg">
-                    <p class="text-xs text-gray-500 mt-1">Max file size: 5MB. Supported: PDF, JPG, PNG</p>
-                    
-                    <!-- Document Preview Container -->
-                    <div id="certificate-file-preview" class="hidden mt-3 p-3 bg-gray-50 rounded-lg border border-gray-200 flex items-center gap-3">
-                        <div id="cert-preview-thumbnail" class="w-12 h-12 rounded bg-gray-100 flex items-center justify-center flex-shrink-0 border border-gray-200 overflow-hidden">
-                            <!-- Injected thumbnail -->
-                        </div>
-                        <div class="flex-grow min-w-0">
-                            <p id="cert-preview-filename" class="text-xs font-bold text-gray-700 truncate">filename.pdf</p>
-                            <p id="cert-preview-filesize" class="text-[10px] text-gray-500">1.2 MB</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex gap-3 pt-4">
-                    <button type="button" onclick="closeCertificateModal()" class="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
-                        Cancel
-                    </button>
-                    <button type="submit" class="flex-1 bg-brand-orange hover:bg-brand-orange-dark text-white px-4 py-2 rounded-lg transition-colors">
-                        Upload
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Category Modal -->
-    <div id="category-modal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 overflow-y-auto">
-        <div class="glass-card w-full max-w-lg modal-enter my-8 max-h-[90vh] overflow-y-auto">
-            <div class="p-6 border-b border-gray-100 flex justify-between items-center">
-                <h3 id="category-modal-title" class="text-xl font-bold text-dark-gray">Add Category</h3>
-                <button onclick="closeCategoryModal()" class="text-gray-400 hover:text-gray-600">
-                    <i class="fas fa-times text-xl"></i>
-                </button>
-            </div>
-            <form id="category-form" class="p-6 space-y-4">
-                <input type="hidden" id="category-id">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Category Name *</label>
-                    <input type="text" id="category-name" required class="form-input w-full px-4 py-2 rounded-lg" placeholder="e.g., Vat-Dyed Fabrics">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
-                    <textarea id="category-description" rows="3" class="form-input w-full px-4 py-2 rounded-lg" placeholder="Brief description of the category..."></textarea>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Starting Price (₹)</label>
-                    <input type="number" id="category-starting-price" class="form-input w-full px-4 py-2 rounded-lg" placeholder="e.g., 180">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Clothing Type *</label>
-                    <select id="category-clothing" required class="form-input w-full px-4 py-2 rounded-lg">
-                        <option value="Suiting">Suiting</option>
-                        <option value="Shirting">Shirting</option>
-                    </select>
-                </div>
-                <!-- Image Upload Section -->
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Category Image</label>
-
-                    <!-- Image Preview -->
-                    <div id="category-image-preview" class="hidden mb-3">
-                        <img src="" alt="Preview" class="w-full h-32 object-cover rounded-lg border border-gray-200">
-                    </div>
-
-                    <!-- Upload Option -->
-                    <div class="flex items-center space-x-3 mb-3">
-                        <label class="flex-1 cursor-pointer">
-                            <input type="file" id="category-image-file" accept="image/*" class="hidden" onchange="handleCategoryImageUpload(this)">
-                            <div class="flex items-center justify-center px-4 py-2 border-2 border-dashed border-gray-300 rounded-lg hover:border-brand-orange hover:bg-brand-orange/5 transition-colors">
-                                <i class="fas fa-cloud-upload-alt text-gray-400 mr-2"></i>
-                                <span class="text-sm text-gray-600">Upload Image</span>
-                            </div>
-                        </label>
-                        <span class="text-sm text-gray-400">or</span>
-                        <button type="button" onclick="toggleCategoryImageInput()" class="text-sm text-brand-orange hover:underline">
-                            Use URL
-                        </button>
-                    </div>
-
-                    <!-- URL Input (Hidden by default) -->
-                    <div id="category-image-url-container" class="hidden">
-                        <input type="url" id="category-image" class="form-input w-full px-4 py-2 rounded-lg" placeholder="https://example.com/image.jpg">
-                    </div>
-
-                    <!-- Hidden field to store final image data -->
-                    <input type="hidden" id="category-image-data">
-
-                    <p class="text-xs text-gray-500 mt-1">Recommended: 800x600px, JPG or PNG</p>
-                </div>
-                <div class="flex items-center space-x-2">
-                    <input type="checkbox" id="category-active" class="w-4 h-4 text-brand-orange rounded" checked>
-                    <label class="text-sm text-gray-700">Active</label>
-                </div>
-                <div class="flex justify-end space-x-3 pt-4">
-                    <button type="button" onclick="closeCategoryModal()" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
-                        Cancel
-                    </button>
-                    <button type="submit" class="bg-brand-orange hover:bg-brand-orange-dark text-white px-6 py-2 rounded-lg font-medium transition-all">
-                        Save Category
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Product Modal -->
-    <div id="product-modal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 overflow-y-auto">
-        <div class="glass-card w-full max-w-lg modal-enter my-8 max-h-[90vh] overflow-y-auto">
-            <div class="p-6 border-b border-gray-100 flex justify-between items-center">
-                <h3 id="product-modal-title" class="text-xl font-bold text-dark-gray">Add Product</h3>
-                <button onclick="closeProductModal()" class="text-gray-400 hover:text-gray-600">
-                    <i class="fas fa-times text-xl"></i>
-                </button>
-            </div>
-            <form id="product-form" class="p-6 space-y-4">
-                <input type="hidden" id="product-id">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Design Code *</label>
-                    <input type="text" id="product-code" required class="form-input w-full px-4 py-2 rounded-lg" placeholder="e.g., VD-001">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Product Name *</label>
-                    <input type="text" id="product-name" required class="form-input w-full px-4 py-2 rounded-lg" placeholder="e.g., Premium Vat-Dyed Cotton">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Category *</label>
-                    <select id="product-category" required class="form-input w-full px-4 py-2 rounded-lg">
-                        <option value="">Select Category</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
-                    <textarea id="product-description" rows="3" class="form-input w-full px-4 py-2 rounded-lg" placeholder="Product description..."></textarea>
-                </div>
-                <!-- Clothing Type -->
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Clothing Type *</label>
-                    <select id="product-clothing" required class="form-input w-full px-4 py-2 rounded-lg">
-                        <option value="Suiting">Suiting</option>
-                        <option value="Shirting">Shirting</option>
-                    </select>
-                </div>
-
-                <!-- Specs: GSM, Blend, Weave -->
-                <div class="grid grid-cols-3 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">GSM</label>
-                        <input type="number" id="product-gsm" class="form-input w-full px-4 py-2 rounded-lg" placeholder="e.g., 240">
-                    </div>
-                    <div class="col-span-2">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Blend (Composition)</label>
-                        <input type="text" id="product-blend" class="form-input w-full px-4 py-2 rounded-lg" placeholder="e.g., 80% Poly, 20% Viscose">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Weave (Structure)</label>
-                    <input type="text" id="product-weave" class="form-input w-full px-4 py-2 rounded-lg" placeholder="e.g., Twill / Ripstop">
-                </div>
-
-                <!-- Price Type selector -->
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Price Type *</label>
-                    <div class="grid grid-cols-2 gap-4">
-                        <label class="cursor-pointer">
-                            <input type="radio" name="product-price-type" value="Price" checked class="hidden" onchange="togglePriceFields()">
-                            <div id="price-type-single-card" class="p-3 border-2 rounded-xl text-center font-medium border-brand-orange bg-brand-orange/5 text-brand-orange transition-colors">
-                                Single Price
-                            </div>
-                        </label>
-                        <label class="cursor-pointer">
-                            <input type="radio" name="product-price-type" value="Range" class="hidden" onchange="togglePriceFields()">
-                            <div id="price-type-range-card" class="p-3 border-2 rounded-xl text-center font-medium border-gray-200 text-gray-600 hover:border-gray-300 transition-colors">
-                                Price Range
-                            </div>
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Single Price Input -->
-                <div id="product-single-price-container">
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Starting Price (₹)</label>
-                    <input type="number" id="product-price" class="form-input w-full px-4 py-2 rounded-lg" placeholder="e.g., 380">
-                </div>
-
-                <!-- Price Range Inputs -->
-                <div id="product-range-price-container" class="hidden">
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Min Price (₹)</label>
-                            <input type="number" id="product-price-min" class="form-input w-full px-4 py-2 rounded-lg" placeholder="e.g., 380">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Max Price (₹)</label>
-                            <input type="number" id="product-price-max" class="form-input w-full px-4 py-2 rounded-lg" placeholder="e.g., 450">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Price Unit selector -->
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Price Unit *</label>
-                    <div class="grid grid-cols-2 gap-4">
-                        <label class="cursor-pointer">
-                            <input type="radio" name="product-price-unit" value="m" checked class="hidden" onchange="togglePriceUnitFields()">
-                            <div id="price-unit-m-card" class="p-3 border-2 rounded-xl text-center font-medium border-brand-orange bg-brand-orange/5 text-brand-orange transition-colors">
-                                Per Metre (/m)
-                            </div>
-                        </label>
-                        <label class="cursor-pointer">
-                            <input type="radio" name="product-price-unit" value="kg" class="hidden" onchange="togglePriceUnitFields()">
-                            <div id="price-unit-kg-card" class="p-3 border-2 rounded-xl text-center font-medium border-gray-200 text-gray-600 hover:border-gray-300 transition-colors">
-                                Per Kg (/kg)
-                            </div>
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Product Image Upload Section -->
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Product Image</label>
-
-                    <!-- Image Preview -->
-                    <div id="product-image-preview" class="hidden mb-3">
-                        <img src="" alt="Preview" class="w-full h-32 object-cover rounded-lg border border-gray-200">
-                    </div>
-
-                    <!-- Upload Option -->
-                    <div class="flex items-center space-x-3 mb-3">
-                        <label class="flex-1 cursor-pointer">
-                            <input type="file" id="product-image-file" accept="image/*" class="hidden" onchange="handleProductImageUpload(this)">
-                            <div class="flex items-center justify-center px-4 py-2 border-2 border-dashed border-gray-300 rounded-lg hover:border-brand-orange hover:bg-brand-orange/5 transition-colors">
-                                <i class="fas fa-cloud-upload-alt text-gray-400 mr-2"></i>
-                                <span class="text-sm text-gray-600">Upload Image</span>
-                            </div>
-                        </label>
-                        <span class="text-sm text-gray-400">or</span>
-                        <button type="button" onclick="toggleProductImageInput()" class="text-sm text-brand-orange hover:underline">
-                            Use URL
-                        </button>
-                    </div>
-
-                    <!-- URL Input (Hidden by default) -->
-                    <div id="product-image-url-container" class="hidden">
-                        <input type="url" id="product-image" class="form-input w-full px-4 py-2 rounded-lg" placeholder="https://example.com/image.jpg">
-                    </div>
-
-                    <!-- Hidden field to store final image data -->
-                    <input type="hidden" id="product-image-data">
-
-                    <p class="text-xs text-gray-500 mt-1">Recommended: 800x600px, JPG or PNG</p>
-                </div>
-                
-                <div class="flex items-center space-x-6">
-                    <label class="flex items-center space-x-2 cursor-pointer">
-                        <input type="checkbox" id="product-premium" class="w-4 h-4 text-brand-orange rounded">
-                        <span class="text-sm font-medium text-gray-700">Premium Collection</span>
-                    </label>
-                    <label class="flex items-center space-x-2 cursor-pointer">
-                        <input type="checkbox" id="product-active" class="w-4 h-4 text-brand-orange rounded" checked>
-                        <span class="text-sm font-medium text-gray-700">Active</span>
-                    </label>
-                </div>
-                <div class="flex justify-end space-x-3 pt-4">
-                    <button type="button" onclick="closeProductModal()" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
-                        Cancel
-                    </button>
-                    <button type="submit" class="bg-brand-orange hover:bg-brand-orange-dark text-white px-6 py-2 rounded-lg font-medium transition-all">
-                        Save Product
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Toast Container -->
-    <div id="toast-container" class="fixed top-4 right-4 z-50 space-y-2"></div>
-
-    <!-- JavaScript -->
-    <script>
         // Global Error and Promise Rejection Handlers for easy debugging
         window.addEventListener('error', function(event) {
             console.error('Global Error caught:', event.error);
@@ -1326,6 +309,11 @@
 
             // Image Upload to Firebase Storage
             async uploadImage(file) {
+                SecurityUtils.validateFile(file, {
+                    maxBytes: 5 * 1024 * 1024,
+                    allowedTypes: ['image/png', 'image/jpeg', 'image/gif', 'image/webp'],
+                    allowedExtensions: ['png', 'jpg', 'jpeg', 'gif', 'webp']
+                });
                 if (!storage) {
                     return await new Promise((resolve, reject) => {
                         const reader = new FileReader();
@@ -1335,25 +323,19 @@
                     });
                 }
                 try {
-                    const filename = `images/${Date.now()}_${file.name}`;
+                    const filename = `images/${Date.now()}_${SecurityUtils.safeFilename(file.name)}`;
                     const ref = storage.ref(filename);
-                    
+
                     // Set a timeout of 30 seconds on the upload to allow larger files to upload
                     await Promise.race([
                         ref.put(file),
                         new Promise((_, reject) => setTimeout(() => reject(new Error('Storage upload timed out')), 30000))
                     ]);
-                    
+
                     return await ref.getDownloadURL();
                 } catch (storageError) {
-                    console.warn('Firebase Storage upload failed, trying Base64 fallback...', storageError);
-                    // Base64 fallback
-                    return await new Promise((resolve, reject) => {
-                        const reader = new FileReader();
-                        reader.onload = (e) => resolve(e.target.result);
-                        reader.onerror = (err) => reject(err);
-                        reader.readAsDataURL(file);
-                    });
+                    console.error('Firebase Storage image upload failed:', storageError);
+                    throw new Error('Secure image upload failed. Please try again.');
                 }
             },
 
@@ -1371,6 +353,21 @@
                 return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
             },
             async uploadCertificate(file, name, icon) {
+                const certificateTypes = {
+                    pdf: 'application/pdf',
+                    png: 'image/png',
+                    jpg: 'image/jpeg',
+                    jpeg: 'image/jpeg',
+                    gif: 'image/gif',
+                    webp: 'image/webp',
+                    doc: 'application/msword',
+                    docx: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                };
+                const certificateExtension = SecurityUtils.safeFilename(file.name).split('.').pop().toLowerCase();
+                SecurityUtils.validateFile(file, {
+                    maxBytes: 5 * 1024 * 1024,
+                    allowedExtensions: Object.keys(certificateTypes)
+                });
                 let url = '';
                 if (!storage) {
                     url = await new Promise((resolve, reject) => {
@@ -1381,25 +378,19 @@
                     });
                 } else {
                     try {
-                        const filename = `certificates/${name.replace(/[^a-zA-Z0-9]/g, '_')}_${Date.now()}_${file.name}`;
+                        const filename = `certificates/${SecurityUtils.safeFilename(name)}_${Date.now()}_${SecurityUtils.safeFilename(file.name)}`;
                         const ref = storage.ref(filename);
-                        
+
                         // Set a timeout of 30 seconds on the upload to allow larger files to upload
                         await Promise.race([
-                            ref.put(file),
+                            ref.put(file, { contentType: certificateTypes[certificateExtension] }),
                             new Promise((_, reject) => setTimeout(() => reject(new Error('Storage upload timed out')), 30000))
                         ]);
-                        
+
                         url = await ref.getDownloadURL();
                     } catch (storageError) {
-                        console.warn('Firebase Storage upload failed, trying Base64 fallback...', storageError);
-                        // Base64 fallback
-                        url = await new Promise((resolve, reject) => {
-                            const reader = new FileReader();
-                            reader.onload = (e) => resolve(e.target.result);
-                            reader.onerror = (err) => reject(err);
-                            reader.readAsDataURL(file);
-                        });
+                        console.error('Firebase Storage certificate upload failed:', storageError);
+                        throw new Error('Secure certificate upload failed. Please try again.');
                     }
                 }
 
@@ -1408,7 +399,7 @@
                     name,
                     icon,
                     url,
-                    filename: file.name,
+                    filename: SecurityUtils.safeFilename(file.name),
                     uploadedAt: new Date().toISOString()
                 };
 
@@ -1452,8 +443,19 @@
                     if (doc.exists) {
                         const data = doc.data();
                         const url = data.url;
-                        // Check if it is a Firebase Storage URL (not a Base64 data URL fallback)
-                        if (url && (url.includes('firebasestorage.googleapis.com') || url.includes('ishanktextile.firebasestorage.app') || url.startsWith('gs://')) && storage) {
+                        let isFirebaseStorageUrl = typeof url === 'string' && url.startsWith('gs://');
+                        if (!isFirebaseStorageUrl && typeof url === 'string') {
+                            try {
+                                const parsedStorageUrl = new URL(url);
+                                isFirebaseStorageUrl = parsedStorageUrl.protocol === 'https:' &&
+                                    (parsedStorageUrl.hostname === 'firebasestorage.googleapis.com' ||
+                                     parsedStorageUrl.hostname.endsWith('.firebasestorage.app'));
+                            } catch (_) {
+                                isFirebaseStorageUrl = false;
+                            }
+                        }
+                        // Delete only Firebase Storage objects; embedded offline data is never sent to Storage.
+                        if (isFirebaseStorageUrl && storage) {
                             try {
                                 const ref = storage.refFromURL(url);
                                 await ref.delete();
@@ -1592,17 +594,17 @@
                     const date = new Date();
                     date.setDate(date.getDate() - Math.floor(Math.random() * 20));
                     date.setHours(Math.floor(Math.random() * 12) + 9, Math.floor(Math.random() * 60));
-                    
+
                     quotes.push({
                         customerName: customer.name,
                         email: customer.email,
                         phone: customer.phone,
+                        subject: 'quote',
                         productId: product.id,
-                        productName: product.name,
-                        productCode: product.code,
-                        product: product,
-                        quantity: Math.floor(Math.random() * 500) + 100,
-                        notes: `Interested in dynamic volume ordering. Code: ${product.code}`,
+                        product: { ...product, price: null },
+                        quantity: String(Math.floor(Math.random() * 500) + 100),
+                        message: `Interested in dynamic volume ordering. Code: ${product.code}`,
+                        whatsappUpdates: false,
                         createdAt: date.toISOString()
                     });
                 }
@@ -1615,10 +617,10 @@
                     const date = new Date();
                     date.setDate(date.getDate() - i);
                     const productsVisits = Math.floor(Math.random() * 25) + 10;
-                    
+
                     const v1 = Math.floor(productsVisits * (Math.random() * 0.6 + 0.2));
                     const v2 = productsVisits - v1;
-                    
+
                     visitors.push({
                         date: date.toISOString().split('T')[0],
                         count: Math.floor(Math.random() * 80) + 40,
@@ -1647,10 +649,15 @@
                 type === 'error' ? 'bg-red-500 text-white' :
                 'bg-blue-500 text-white'
             }`;
-            toast.innerHTML = `
-                <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i>
-                <span>${message}</span>
-            `;
+            const icon = document.createElement('i');
+            icon.className = `fas ${
+                type === 'success' ? 'fa-check-circle' :
+                type === 'error' ? 'fa-exclamation-circle' :
+                'fa-info-circle'
+            }`;
+            const text = document.createElement('span');
+            text.textContent = String(message || '');
+            toast.append(icon, text);
             container.appendChild(toast);
             setTimeout(() => {
                 toast.style.opacity = '0';
@@ -1699,6 +706,11 @@
         async function showSection(section, event) {
             // Prevent default anchor navigation
             if (event) event.preventDefault();
+            const allowedSections = new Set([
+                'dashboard', 'categories', 'products', 'visitors', 'quotes',
+                'certificates', 'settings'
+            ]);
+            if (!allowedSections.has(section)) return;
 
             // Hide all sections
             document.querySelectorAll('main > div > section').forEach(s => s.classList.add('hidden'));
@@ -1999,22 +1011,22 @@
                 return `
                     <tr class="border-b border-gray-100 hover:bg-gray-50/50 transition-colors">
                         <td class="py-3 px-4">
-                            <img src="${cat.image || 'https://via.placeholder.com/50'}" alt="${cat.name}" class="w-12 h-12 rounded-lg object-cover">
+                            <img src="${escapeHtml(SecurityUtils.safeImageUrl(cat.image, 'logo.png'))}" alt="${escapeHtml(cat.name)}" class="w-12 h-12 rounded-lg object-cover">
                         </td>
-                        <td class="py-3 px-4 font-medium text-dark-gray">${cat.name}</td>
-                        <td class="py-3 px-4 text-gray-600 text-sm max-w-xs truncate">${cat.description || '-'}</td>
+                        <td class="py-3 px-4 font-medium text-dark-gray">${escapeHtml(cat.name)}</td>
+                        <td class="py-3 px-4 text-gray-600 text-sm max-w-xs truncate">${escapeHtml(cat.description || '-')}</td>
                         <td class="py-3 px-4 text-brand-orange font-semibold">${formatCategoryAdminPrice(cat)}</td>
                         <td class="py-3 px-4">${productCount}</td>
-                        <td class="py-3 px-4">${cat.clothing || '-'}</td>
+                        <td class="py-3 px-4">${escapeHtml(cat.clothing || '-')}</td>
                         <td class="py-3 px-4">
                             <div class="flex items-center space-x-2">
-                                <button onclick="toggleCategoryStatus('${cat.id}')" class="${cat.active ? 'text-green-500 hover:text-green-700' : 'text-gray-400 hover:text-gray-600'}" title="${cat.active ? 'Deactivate' : 'Activate'}">
+                                <button data-record-id="${escapeHtml(cat.id)}" data-action="toggleCategoryStatus" class="${cat.active ? 'text-green-500 hover:text-green-700' : 'text-gray-400 hover:text-gray-600'}" title="${cat.active ? 'Deactivate' : 'Activate'}">
                                     <i class="fas ${cat.active ? 'fa-toggle-on text-xl' : 'fa-toggle-off text-xl'}"></i>
                                 </button>
-                                <button onclick="editCategory('${cat.id}')" class="text-blue-500 hover:text-blue-700" title="Edit">
+                                <button data-record-id="${escapeHtml(cat.id)}" data-action="editCategory" class="text-blue-500 hover:text-blue-700" title="Edit">
                                     <i class="fas fa-edit"></i>
                                 </button>
-                                <button onclick="deleteCategory('${cat.id}')" class="text-red-500 hover:text-red-700" title="Delete">
+                                <button data-record-id="${escapeHtml(cat.id)}" data-action="deleteCategory" class="text-red-500 hover:text-red-700" title="Delete">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
                             </div>
@@ -2082,7 +1094,7 @@
             const status = document.getElementById('category-filter-status').value;
             const search = document.getElementById('category-search').value.toLowerCase();
             let categories = await DataManager.getCategories();
-            
+
             if (status) {
                 categories = categories.filter(c => c.active === (status === 'active'));
             }
@@ -2106,24 +1118,24 @@
                 return `
                     <tr class="border-b border-gray-100 hover:bg-gray-50/50 transition-colors">
                         <td class="py-3 px-4">
-                            <img src="${prod.image || 'https://via.placeholder.com/50'}" alt="${prod.name}" class="w-12 h-12 rounded-lg object-cover">
+                            <img src="${escapeHtml(SecurityUtils.safeImageUrl(prod.image, 'logo.png'))}" alt="${escapeHtml(prod.name)}" class="w-12 h-12 rounded-lg object-cover">
                         </td>
-                        <td class="py-3 px-4 font-mono text-sm text-gray-600">${prod.code}</td>
-                        <td class="py-3 px-4 font-medium text-dark-gray">${prod.name}</td>
-                        <td class="py-3 px-4 text-gray-600">${category?.name || 'Uncategorized'}</td>
+                        <td class="py-3 px-4 font-mono text-sm text-gray-600">${escapeHtml(prod.code)}</td>
+                        <td class="py-3 px-4 font-medium text-dark-gray">${escapeHtml(prod.name)}</td>
+                        <td class="py-3 px-4 text-gray-600">${escapeHtml(category?.name || 'Uncategorized')}</td>
                         <td class="py-3 px-4 text-brand-orange font-semibold">${formatProductAdminPrice(prod)}</td>
-                        <td class="py-3 px-4 text-gray-600">${!prod.gsm || Number(prod.gsm) <= 0 ? '-' : prod.gsm}</td>
-                        <td class="py-3 px-4 text-gray-600">${prod.blend || '-'}</td>
-                        <td class="py-3 px-4 text-gray-600">${prod.clothing || '-'}</td>
+                        <td class="py-3 px-4 text-gray-600">${escapeHtml(!prod.gsm || Number(prod.gsm) <= 0 ? '-' : Number(prod.gsm))}</td>
+                        <td class="py-3 px-4 text-gray-600">${escapeHtml(prod.blend || '-')}</td>
+                        <td class="py-3 px-4 text-gray-600">${escapeHtml(prod.clothing || '-')}</td>
                         <td class="py-3 px-4">
                             <div class="flex items-center space-x-2">
-                                <button onclick="toggleProductStatus('${prod.id}')" class="${prod.active ? 'text-green-500 hover:text-green-700' : 'text-gray-400 hover:text-gray-600'}" title="${prod.active ? 'Deactivate' : 'Activate'}">
+                                <button data-record-id="${escapeHtml(prod.id)}" data-action="toggleProductStatus" class="${prod.active ? 'text-green-500 hover:text-green-700' : 'text-gray-400 hover:text-gray-600'}" title="${prod.active ? 'Deactivate' : 'Activate'}">
                                     <i class="fas ${prod.active ? 'fa-toggle-on text-xl' : 'fa-toggle-off text-xl'}"></i>
                                 </button>
-                                <button onclick="editProduct('${prod.id}')" class="text-blue-500 hover:text-blue-700" title="Edit">
+                                <button data-record-id="${escapeHtml(prod.id)}" data-action="editProduct" class="text-blue-500 hover:text-blue-700" title="Edit">
                                     <i class="fas fa-edit"></i>
                                 </button>
-                                <button onclick="deleteProduct('${prod.id}')" class="text-red-500 hover:text-red-700" title="Delete">
+                                <button data-record-id="${escapeHtml(prod.id)}" data-action="deleteProduct" class="text-red-500 hover:text-red-700" title="Delete">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
                             </div>
@@ -2146,7 +1158,10 @@
                     : '<option value="">Select Category</option>';
 
                 categories.forEach(cat => {
-                    select.innerHTML += `<option value="${cat.id}">${cat.name}</option>`;
+                    const option = document.createElement('option');
+                    option.value = String(cat.id || '');
+                    option.textContent = String(cat.name || '');
+                    select.appendChild(option);
                 });
 
                 select.value = currentValue;
@@ -2202,20 +1217,20 @@
                     document.getElementById('product-blend').value = product.blend || '';
                     document.getElementById('product-weave').value = product.weave || '';
                     document.getElementById('product-clothing').value = product.clothing || 'Suiting';
-                    
-                    const priceType = product.priceType || 'Price';
-                    const priceUnit = product.priceUnit || 'm';
-                    
+
+                    const priceType = product.priceType === 'Range' ? 'Range' : 'Price';
+                    const priceUnit = product.priceUnit === 'kg' ? 'kg' : 'm';
+
                     document.querySelector(`input[name="product-price-type"][value="${priceType}"]`).checked = true;
                     togglePriceFields();
-                    
+
                     document.getElementById('product-price').value = product.startingPrice ?? '';
                     document.getElementById('product-price-min').value = product.priceMin ?? '';
                     document.getElementById('product-price-max').value = product.priceMax ?? '';
-                    
+
                     document.querySelector(`input[name="product-price-unit"][value="${priceUnit}"]`).checked = true;
                     togglePriceUnitFields();
-                    
+
                     document.getElementById('product-premium').checked = !!product.premium;
                     document.getElementById('product-active').checked = product.active;
                 }
@@ -2271,43 +1286,43 @@
                 // Get product info - can be from quote.product object or legacy format
                 const productName = quote.product?.name || quote.productName || (quote.productId ? 'Unknown Product' : 'N/A');
                 const productCode = quote.product?.code || '';
-                const dateStr = quote.createdAt ? new Date(quote.createdAt).toLocaleDateString() : 'N/A';
+                const dateStr = quote.createdAt ? SecurityUtils.toDate(quote.createdAt).toLocaleDateString() : 'N/A';
                 const qtyStr = quote.quantity ? `${quote.quantity}m` : 'N/A';
 
                 if (isRecent) {
                     return `
                     <tr class="border-b border-gray-100 hover:bg-gray-50/50 transition-colors">
-                        <td class="px-6 py-4 font-medium text-dark-gray">${quote.customerName || 'N/A'}</td>
-                        <td class="px-6 py-4 text-gray-600">${quote.email || '-'}</td>
+                        <td class="px-6 py-4 font-medium text-dark-gray">${escapeHtml(quote.customerName || 'N/A')}</td>
+                        <td class="px-6 py-4 text-gray-600">${escapeHtml(quote.email || '-')}</td>
                         <td class="px-6 py-4 text-gray-600">
                             ${productName !== 'N/A' ? `
                                 <div class="flex items-center space-x-2">
-                                    <span class="text-xs bg-brand-orange/10 text-brand-orange px-2 py-1 rounded">${productCode || 'N/A'}</span>
-                                    <span>${productName}</span>
+                                    <span class="text-xs bg-brand-orange/10 text-brand-orange px-2 py-1 rounded">${escapeHtml(productCode || 'N/A')}</span>
+                                    <span>${escapeHtml(productName)}</span>
                                 </div>
                             ` : '<span class="text-gray-400">No product selected</span>'}
                         </td>
-                        <td class="px-6 py-4 text-gray-600 font-medium">${qtyStr}</td>
-                        <td class="px-6 py-4 text-gray-600">${dateStr}</td>
+                        <td class="px-6 py-4 text-gray-600 font-medium">${escapeHtml(qtyStr)}</td>
+                        <td class="px-6 py-4 text-gray-600">${escapeHtml(dateStr)}</td>
                     </tr>
                     `;
                 } else {
                     return `
                     <tr class="border-b border-gray-100 hover:bg-gray-50/50 transition-colors">
-                        <td class="py-3 px-4 font-mono text-sm">${quote.id ? quote.id.slice(-6).toUpperCase() : 'N/A'}</td>
-                        <td class="py-3 px-4 font-medium text-dark-gray">${quote.customerName || 'N/A'}</td>
-                        <td class="py-3 px-4 text-gray-600">${quote.email || '-'}</td>
-                        <td class="py-3 px-4 text-gray-600">${quote.phone || '-'}</td>
+                        <td class="py-3 px-4 font-mono text-sm">${escapeHtml(quote.id ? String(quote.id).slice(-6).toUpperCase() : 'N/A')}</td>
+                        <td class="py-3 px-4 font-medium text-dark-gray">${escapeHtml(quote.customerName || 'N/A')}</td>
+                        <td class="py-3 px-4 text-gray-600">${escapeHtml(quote.email || '-')}</td>
+                        <td class="py-3 px-4 text-gray-600">${escapeHtml(quote.phone || '-')}</td>
                         <td class="py-3 px-4 text-gray-600">
                             ${productName !== 'N/A' ? `
                                 <div class="flex items-center space-x-2">
-                                    <span class="text-xs bg-brand-orange/10 text-brand-orange px-2 py-1 rounded">${productCode || 'N/A'}</span>
-                                    <span>${productName}</span>
+                                    <span class="text-xs bg-brand-orange/10 text-brand-orange px-2 py-1 rounded">${escapeHtml(productCode || 'N/A')}</span>
+                                    <span>${escapeHtml(productName)}</span>
                                 </div>
                             ` : '<span class="text-gray-400">No product selected</span>'}
                         </td>
-                        <td class="py-3 px-4 text-gray-600 font-medium">${qtyStr}</td>
-                        <td class="py-3 px-4 text-gray-600">${dateStr}</td>
+                        <td class="py-3 px-4 text-gray-600 font-medium">${escapeHtml(qtyStr)}</td>
+                        <td class="py-3 px-4 text-gray-600">${escapeHtml(dateStr)}</td>
                     </tr>
                     `;
                 }
@@ -2377,9 +1392,9 @@
                         <span class="w-6 h-6 ${index < 3 ? 'bg-brand-orange text-white' : 'bg-gray-200 text-gray-600'} rounded-full flex items-center justify-center text-sm font-bold">
                             ${index + 1}
                         </span>
-                        <span class="font-medium capitalize">${page}</span>
+                        <span class="font-medium capitalize">${escapeHtml(page)}</span>
                     </div>
-                    <span class="text-gray-600">${count} visits</span>
+                    <span class="text-gray-600">${Number(count) || 0} visits</span>
                 </div>
             `).join('');
         }
@@ -2505,40 +1520,45 @@
 
             certificates.forEach(cert => {
                 // Map icon to badge background colors
+                const allowedIcons = ['verified', 'account_balance', 'public', 'eco', 'workspace_premium'];
+                const safeIcon = allowedIcons.includes(cert.icon) ? cert.icon : 'workspace_premium';
+                const safeDocumentUrl = SecurityUtils.safeDocumentUrl(cert.url);
+                const safeName = String(cert.name || 'Certificate');
+                const safeFilename = SecurityUtils.safeFilename(cert.filename || 'document');
                 let badgeColor = 'bg-primary/10 text-primary';
-                if (cert.icon === 'account_balance') badgeColor = 'bg-brand-orange/10 text-brand-orange';
-                else if (cert.icon === 'public') badgeColor = 'bg-accent-blue/10 text-accent-blue';
-                else if (cert.icon === 'eco') badgeColor = 'bg-accent-green/10 text-accent-green';
-                
+                if (safeIcon === 'account_balance') badgeColor = 'bg-brand-orange/10 text-brand-orange';
+                else if (safeIcon === 'public') badgeColor = 'bg-accent-blue/10 text-accent-blue';
+                else if (safeIcon === 'eco') badgeColor = 'bg-accent-green/10 text-accent-green';
+
                 const cardHtml = `
                     <div class="border border-gray-200 rounded-xl p-5 hover:shadow-md transition-shadow bg-white flex flex-col justify-between h-full">
                         <div>
                             <div class="flex items-start justify-between mb-4">
                                 <div class="flex items-center space-x-3 min-w-0 w-full">
                                     <div class="w-12 h-12 ${badgeColor} rounded-xl flex items-center justify-center flex-shrink-0">
-                                        <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">${cert.icon || 'workspace_premium'}</span>
+                                        <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">${safeIcon}</span>
                                     </div>
                                     <div class="min-w-0 flex-grow">
-                                        <h4 class="font-bold text-dark-gray text-base leading-tight truncate" title="${cert.name}">${cert.name}</h4>
-                                        <p class="text-xs text-gray-400 mt-1 truncate" title="${cert.filename}">${cert.filename}</p>
+                                        <h4 class="font-bold text-dark-gray text-base leading-tight truncate" title="${escapeHtml(safeName)}">${escapeHtml(safeName)}</h4>
+                                        <p class="text-xs text-gray-400 mt-1 truncate" title="${escapeHtml(safeFilename)}">${escapeHtml(safeFilename)}</p>
                                     </div>
                                 </div>
                             </div>
                             <div class="text-xs text-gray-500 mb-4 flex items-center gap-1">
                                 <span class="material-symbols-outlined text-sm">calendar_month</span>
-                                <span>Uploaded on: ${new Date(cert.uploadedAt).toLocaleDateString()}</span>
+                                <span>Uploaded on: ${escapeHtml(SecurityUtils.toDate(cert.uploadedAt).toLocaleDateString())}</span>
                             </div>
                         </div>
                         <div class="flex gap-2 pt-3 border-t border-gray-100">
-                            <button onclick="viewDocument('${cert.url}', '${cert.name}')" class="flex-1 bg-gray-100 hover:bg-gray-200 text-dark-gray font-semibold py-2 rounded-lg text-sm transition-colors flex items-center justify-center gap-1" title="View Document">
+                            <button data-document-url="${escapeHtml(safeDocumentUrl)}" data-document-name="${escapeHtml(safeName)}" data-action="viewDocument" ${safeDocumentUrl ? '' : 'disabled'} class="flex-1 bg-gray-100 hover:bg-gray-200 text-dark-gray font-semibold py-2 rounded-lg text-sm transition-colors flex items-center justify-center gap-1 disabled:opacity-40 disabled:pointer-events-none" title="View Document">
                                 <span class="material-symbols-outlined text-sm">visibility</span>
                                 <span>View</span>
                             </button>
-                            <a href="${cert.url}" target="_blank" download="${cert.filename || 'document'}" class="flex-1 bg-gray-100 hover:bg-gray-200 text-dark-gray font-semibold py-2 rounded-lg text-sm transition-colors flex items-center justify-center gap-1" title="Download Document">
+                            <a ${safeDocumentUrl ? `href="${escapeHtml(safeDocumentUrl)}"` : ''} target="_blank" rel="noopener noreferrer" download="${escapeHtml(safeFilename)}" class="flex-1 bg-gray-100 hover:bg-gray-200 text-dark-gray font-semibold py-2 rounded-lg text-sm transition-colors flex items-center justify-center gap-1 ${safeDocumentUrl ? '' : 'opacity-40 pointer-events-none'}" title="Download Document">
                                 <span class="material-symbols-outlined text-sm">download</span>
                                 <span>Download</span>
                             </a>
-                            <button onclick="deleteCertificate('${cert.id}')" class="bg-red-50 hover:bg-red-100 text-red-600 p-2 rounded-lg transition-colors flex items-center justify-center" title="Delete">
+                            <button data-record-id="${escapeHtml(cert.id)}" data-action="deleteCertificate" class="bg-red-50 hover:bg-red-100 text-red-600 p-2 rounded-lg transition-colors flex items-center justify-center" title="Delete">
                                 <span class="material-symbols-outlined text-sm">delete</span>
                             </button>
                         </div>
@@ -2605,14 +1625,16 @@
             keys.forEach(key => {
                 const policy = currentPolicies[key] || {};
                 const shortId = idMap[key];
-                
+
                 document.getElementById(`policy-${shortId}-date`).textContent = policy.updatedAt ? new Date(policy.updatedAt).toLocaleString() : 'Never';
                 document.getElementById(`policy-${shortId}-filename`).textContent = policy.filename || 'No file uploaded yet';
-                
+
                 const dlBtn = document.getElementById(`policy-${shortId}-download`);
                 if (dlBtn) {
-                    if (policy.url) {
-                        dlBtn.href = policy.url;
+                    const safePolicyUrl = SecurityUtils.safeDocumentUrl(policy.url);
+                    if (safePolicyUrl) {
+                        dlBtn.href = safePolicyUrl;
+                        dlBtn.rel = 'noopener noreferrer';
                         dlBtn.classList.remove('pointer-events-none', 'opacity-40');
                         dlBtn.classList.add('hover:bg-gray-100');
                     } else {
@@ -2634,19 +1656,38 @@
                 showToast('Only plain text (.txt, .md) or Word (.doc, .docx) files are supported.', 'error');
                 return;
             }
+            try {
+                SecurityUtils.validateFile(file, {
+                    maxBytes: 5 * 1024 * 1024,
+                    allowedExtensions: supportedExts
+                });
+            } catch (validationError) {
+                showToast(validationError.message, 'error');
+                input.value = '';
+                return;
+            }
 
             showToast('Reading and uploading policy file...', 'info');
 
             let fileUrl = '';
             try {
                 if (storage) {
-                    const filename = `policies/${policyKey}_${Date.now()}_${file.name}`;
+                    const policyTypes = {
+                        txt: 'text/plain',
+                        md: 'text/markdown',
+                        doc: 'application/msword',
+                        docx: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                    };
+                    const filename = `policies/${SecurityUtils.safeFilename(policyKey)}_${Date.now()}_${SecurityUtils.safeFilename(file.name)}`;
                     const ref = storage.ref(filename);
-                    await ref.put(file);
+                    await ref.put(file, { contentType: policyTypes[ext] });
                     fileUrl = await ref.getDownloadURL();
                 }
             } catch (storageError) {
-                console.warn('Storage upload failed, only using local text:', storageError);
+                console.error('Secure policy upload failed:', storageError);
+                showToast('Policy upload failed. Please try again.', 'error');
+                input.value = '';
+                return;
             }
 
             const reader = new FileReader();
@@ -2665,10 +1706,10 @@
                         if (typeof mammoth === 'undefined') {
                             await loadMammothScript();
                         }
-                        
+
                         const result = await mammoth.convertToHtml({ arrayBuffer: arrayBuffer });
-                        const fileHtml = result.value || '';
-                        
+                        const fileHtml = SecurityUtils.sanitizeHtml(result.value || '');
+
                         await savePolicyToDatabase(policyKey, file.name, fileUrl, fileHtml, false);
                     } catch (mammothError) {
                         console.error('Error parsing docx file with mammoth:', mammothError);
@@ -2686,7 +1727,7 @@
         function loadMammothScript() {
             return new Promise((resolve, reject) => {
                 const script = document.createElement('script');
-                script.src = 'https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js';
+                script.src = 'vendor/mammoth/mammoth.browser.min.js';
                 script.onload = () => resolve();
                 script.onerror = () => reject(new Error('Failed to load mammoth.js from CDN'));
                 document.head.appendChild(script);
@@ -2695,9 +1736,9 @@
 
         async function savePolicyToDatabase(policyKey, filename, fileUrl, text, isBinaryOnly) {
             const policyData = {
-                text: text,
-                filename: filename,
-                url: fileUrl,
+                text: SecurityUtils.sanitizeHtml(text),
+                filename: SecurityUtils.safeFilename(filename),
+                url: SecurityUtils.safeDocumentUrl(fileUrl),
                 isBinaryOnly: isBinaryOnly,
                 updatedAt: new Date().toISOString()
             };
@@ -2706,7 +1747,7 @@
                 await db.collection('settings').doc('policies').set({
                     [policyKey]: policyData
                 }, { merge: true });
-                
+
                 showToast('Policy updated successfully!');
                 await renderPolicies();
             } catch (firestoreError) {
@@ -2780,21 +1821,21 @@
             }
             if (!auth || !auth.currentUser) {
                 alert('Please sign in again before resetting data.');
-                window.location.href = 'admin-login.html';
+                SecurityUtils.navigate('admin-login.html');
                 return;
             }
-            
+
             const password = prompt('Please enter your Admin Password to authorize database reset:');
             if (password === null) return; // User cancelled
             if (!password) {
                 alert('Password is required.');
                 return;
             }
-            
+
             try {
                 const credential = firebase.auth.EmailAuthProvider.credential(auth.currentUser.email, password);
                 await auth.currentUser.reauthenticateWithCredential(credential);
-                
+
                 showToast('Resetting database...');
                 const collections = ['categories', 'products', 'quotes', 'certificates'];
                 for (const colName of collections) {
@@ -2803,7 +1844,7 @@
                     snapshot.docs.forEach(doc => batch.delete(doc.ref));
                     await batch.commit();
                 }
-                
+
                 await DataManager.init();
                 showToast('All database records reset to defaults');
                 await refreshData();
@@ -2868,10 +1909,10 @@
 
             try {
                 showToast('Processing image...', 'info');
-                
+
                 // Convert to WebP format
                 const webpFile = await convertImageToWebP(file);
-                
+
                 // Validate file size (max 5MB)
                 if (webpFile.size > 5 * 1024 * 1024) {
                     showToast('Image size should be less than 5MB', 'error');
@@ -2889,7 +1930,7 @@
                     document.getElementById('setting-user-image-url').value = imageUrl;
                     document.getElementById('setting-user-image-preview').src = imageUrl;
                 }
-                
+
                 // Clear the file input value so same file can be selected again
                 input.value = '';
 
@@ -2971,7 +2012,7 @@
             document.getElementById('edit-settings-btn').classList.add('hidden');
             document.getElementById('save-settings-btn').classList.remove('hidden');
             document.getElementById('cancel-settings-btn').classList.remove('hidden');
-            
+
             // Initially disable save changes until edit happens
             const saveBtn = document.getElementById('save-settings-btn');
             saveBtn.disabled = true;
@@ -2980,7 +2021,7 @@
 
         function exitSettingsEditMode(isSaved = false) {
             const inputs = ['setting-company-name', 'setting-contact-email', 'setting-contact-phone'];
-            
+
             if (!isSaved) {
                 // Restore original values
                 document.getElementById('setting-company-name').value = originalSettings.companyName;
@@ -3090,7 +2131,7 @@
 
             try {
                 showToast(`Refreshing ${activeSection === 'categories' ? 'Product Category' : activeSection} data...`);
-                
+
                 if (activeSection === 'dashboard') {
                     await updateKPIs();
                     await updateCharts();
@@ -3112,7 +2153,7 @@
                 } else if (activeSection === 'settings') {
                     await loadSettings();
                 }
-                
+
                 showToast('Data refreshed');
             } catch (err) {
                 console.error("Error refreshing data:", err);
@@ -3122,7 +2163,7 @@
 
         function logout() {
             if (confirm('Are you sure you want to logout?')) {
-                window.location.href = 'index.html';
+                SecurityUtils.navigate('index.html');
             }
         }
 
@@ -3281,11 +2322,11 @@
                         if (category.image.startsWith('data:image')) {
                             document.getElementById('category-image-data').value = category.image;
                             const preview = document.getElementById('category-image-preview');
-                            preview.querySelector('img').src = category.image;
+                            preview.querySelector('img').src = SecurityUtils.safeImageUrl(category.image, 'logo.png');
                             preview.classList.remove('hidden');
                         } else {
                             // It's a URL
-                            document.getElementById('category-image').value = category.image;
+                            document.getElementById('category-image').value = SecurityUtils.safeImageUrl(category.image);
                             document.getElementById('category-image-url-container').classList.remove('hidden');
                         }
                     }
@@ -3313,11 +2354,11 @@
                         if (product.image.startsWith('data:image')) {
                             document.getElementById('product-image-data').value = product.image;
                             const preview = document.getElementById('product-image-preview');
-                            preview.querySelector('img').src = product.image;
+                            preview.querySelector('img').src = SecurityUtils.safeImageUrl(product.image, 'logo.png');
                             preview.classList.remove('hidden');
                         } else {
                             // It's a URL
-                            document.getElementById('product-image').value = product.image;
+                            document.getElementById('product-image').value = SecurityUtils.safeImageUrl(product.image);
                             document.getElementById('product-image-url-container').classList.remove('hidden');
                         }
                     }
@@ -3341,9 +2382,10 @@
             if (!image) {
                 image = document.getElementById('category-image').value;
             }
-            if (!image) {
-                image = 'https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=800';
-            }
+            image = SecurityUtils.safeImageUrl(
+                image,
+                'https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=800'
+            );
 
             const category = {
                 name: document.getElementById('category-name').value,
@@ -3377,9 +2419,10 @@
             if (!image) {
                 image = document.getElementById('product-image').value;
             }
-            if (!image) {
-                image = 'https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=800';
-            }
+            image = SecurityUtils.safeImageUrl(
+                image,
+                'https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=800'
+            );
 
             const selectedPriceType = document.querySelector('input[name="product-price-type"]:checked').value;
             const selectedPriceUnit = document.querySelector('input[name="product-price-unit"]:checked').value;
@@ -3443,7 +2486,7 @@
             try {
                 showToast('Uploading certificate...', 'info');
                 const result = await DataManager.uploadCertificate(file, name, icon);
-                
+
                 // Explicit size safety check: if Base64 string is too large for Firestore (1MB limit)
                 if (result && result.url && result.url.startsWith('data:') && result.url.length > 1000000) {
                     throw new Error('File is too large for database storage. Please compress the file under 700KB, or ensure Firebase Storage is enabled in your console.');
@@ -3472,56 +2515,86 @@
             const thumbnailDiv = document.getElementById('cert-preview-thumbnail');
             const filenameP = document.getElementById('cert-preview-filename');
             const filesizeP = document.getElementById('cert-preview-filesize');
-            
+
             if (!file) {
                 if (previewContainer) previewContainer.classList.add('hidden');
                 return;
             }
-            
+
             if (filenameP) filenameP.textContent = file.name;
             if (filesizeP) filesizeP.textContent = (file.size / (1024 * 1024)).toFixed(2) + ' MB';
-            
-            if (file.type.startsWith('image/')) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    if (thumbnailDiv) {
-                        thumbnailDiv.innerHTML = `<img src="${e.target.result}" class="w-full h-full object-cover">`;
-                    }
-                };
-                reader.readAsDataURL(file);
-            } else if (file.type === 'application/pdf') {
-                if (thumbnailDiv) {
-                    thumbnailDiv.innerHTML = `<span class="material-symbols-outlined text-3xl text-red-500" style="font-variation-settings: 'FILL' 1;">picture_as_pdf</span>`;
-                }
-            } else {
-                if (thumbnailDiv) {
-                    thumbnailDiv.innerHTML = `<span class="material-symbols-outlined text-3xl text-gray-400">description</span>`;
+
+            if (thumbnailDiv) {
+                thumbnailDiv.replaceChildren();
+                const previewableImages = ['image/png', 'image/jpeg', 'image/gif', 'image/webp'];
+                if (previewableImages.includes(file.type)) {
+                    const image = document.createElement('img');
+                    const objectUrl = URL.createObjectURL(file);
+                    image.src = objectUrl;
+                    image.alt = 'Certificate preview';
+                    image.className = 'w-full h-full object-cover';
+                    image.addEventListener('load', () => URL.revokeObjectURL(objectUrl), { once: true });
+                    thumbnailDiv.appendChild(image);
+                } else {
+                    const icon = document.createElement('span');
+                    icon.className = file.type === 'application/pdf'
+                        ? 'material-symbols-outlined text-3xl text-red-500'
+                        : 'material-symbols-outlined text-3xl text-gray-400';
+                    icon.textContent = file.type === 'application/pdf' ? 'picture_as_pdf' : 'description';
+                    thumbnailDiv.appendChild(icon);
                 }
             }
-            
+
             if (previewContainer) previewContainer.classList.remove('hidden');
         });
 
         // Authentication Check — Redirect to login if not signed in
+        let dashboardDomReady = document.readyState !== 'loading';
+        let verifiedAdminUser = null;
+        let dashboardInitialized = false;
+
+        async function initializeDashboardWhenReady() {
+            if (!dashboardDomReady || !verifiedAdminUser || dashboardInitialized) return;
+            dashboardInitialized = true;
+            try {
+                await DataManager.init();
+                await loadSettings();
+                await updateKPIs();
+                await updateCharts();
+                await renderCategories();
+                await renderProducts();
+                await renderQuotes();
+            } catch (error) {
+                dashboardInitialized = false;
+                console.error('Dashboard initialization failed:', error);
+                showToast('Unable to load the dashboard. Please refresh and try again.', 'error');
+            }
+        }
+
         if (auth) {
-            auth.onAuthStateChanged((user) => {
-                if (!user) {
-                    window.location.href = 'admin-login.html';
+            auth.onAuthStateChanged(async (user) => {
+                const isAdmin = await SecurityUtils.isAdminUser(user, true);
+                if (!isAdmin) {
+                    if (user) await auth.signOut().catch(() => {});
+                    SecurityUtils.navigate('admin-login.html');
+                    return;
                 }
+                verifiedAdminUser = user;
+                await initializeDashboardWhenReady();
             });
         } else {
-            window.location.href = 'admin-login.html';
+            SecurityUtils.navigate('admin-login.html');
         }
 
         function logout() {
             if (auth) {
                 auth.signOut().then(() => {
-                    window.location.href = 'admin-login.html';
+                    SecurityUtils.navigate('admin-login.html');
                 }).catch(() => {
-                    window.location.href = 'admin-login.html';
+                    SecurityUtils.navigate('admin-login.html');
                 });
             } else {
-                window.location.href = 'admin-login.html';
+                SecurityUtils.navigate('admin-login.html');
             }
         }
 
@@ -3530,49 +2603,52 @@
             const modal = document.getElementById('doc-viewer-modal');
             const titleEl = document.getElementById('doc-viewer-title');
             const contentEl = document.getElementById('doc-viewer-content');
-            
+
             if (!modal || !contentEl) return;
-            
-            titleEl.textContent = name || 'Document Viewer';
-            
-            // Determine file type
-            const isPdf = url.startsWith('data:application/pdf') || 
-                          url.includes('.pdf') || 
-                          (url.startsWith('data:') && url.includes('base64') && url.includes('pdf'));
-            
-            if (isPdf) {
-                contentEl.innerHTML = `<iframe src="${url}" class="w-full h-full border-0 rounded-lg bg-white" style="min-height: 65vh;"></iframe>`;
-            } else {
-                contentEl.innerHTML = `<img src="${url}" class="max-w-full max-h-[65vh] object-contain rounded-lg shadow-md">`;
+
+            titleEl.textContent = String(name || 'Document Viewer');
+            const safeUrl = SecurityUtils.safeDocumentUrl(url);
+            contentEl.replaceChildren();
+            if (!safeUrl) {
+                showToast('This document URL is not allowed.', 'error');
+                return;
             }
-            
+
+            // Determine file type
+            const isPdf = safeUrl.startsWith('data:application/pdf') ||
+                          /\.pdf(?:$|[?#])/i.test(safeUrl);
+
+            if (isPdf) {
+                const frame = document.createElement('iframe');
+                frame.src = safeUrl;
+                frame.className = 'w-full h-full border-0 rounded-lg bg-white';
+                frame.style.minHeight = '65vh';
+                frame.title = String(name || 'Document');
+                frame.setAttribute('sandbox', '');
+                frame.referrerPolicy = 'no-referrer';
+                contentEl.appendChild(frame);
+            } else {
+                const image = document.createElement('img');
+                image.src = SecurityUtils.safeImageUrl(safeUrl, 'logo.png');
+                image.alt = String(name || 'Document');
+                image.className = 'max-w-full max-h-[65vh] object-contain rounded-lg shadow-md';
+                contentEl.appendChild(image);
+            }
+
             modal.classList.remove('hidden');
         }
 
         function closeDocViewer() {
             const modal = document.getElementById('doc-viewer-modal');
             const contentEl = document.getElementById('doc-viewer-content');
-            if (contentEl) contentEl.innerHTML = '';
+            if (contentEl) contentEl.replaceChildren();
             if (modal) modal.classList.add('hidden');
         }
 
-        // Initialize
+        // Initialize only after both DOM readiness and authorization.
         document.addEventListener('DOMContentLoaded', async () => {
-            if (!auth || !db) {
-                const banner = document.getElementById('offline-banner');
-                if (banner) banner.classList.remove('hidden');
-            }
-            try {
-                await DataManager.init();
-            } catch (err) {
-                console.warn('DataManager.init skipped:', err);
-            }
-            await loadSettings();
-            await updateKPIs();
-            await updateCharts();
-            await renderCategories();
-            await renderProducts();
-            await renderQuotes();
+            dashboardDomReady = true;
+            await initializeDashboardWhenReady();
         });
 
         // Close modals on outside click
@@ -3584,21 +2660,3 @@
                 }
             }
         };
-    </script>
-
-    <!-- Document Viewer Modal -->
-    <div id="doc-viewer-modal" class="hidden fixed inset-0 bg-black/80 z-[100] flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl overflow-hidden w-full max-w-5xl h-[85vh] flex flex-col shadow-2xl relative">
-            <div class="p-4 border-b border-gray-200 flex justify-between items-center bg-gray-50">
-                <h3 id="doc-viewer-title" class="text-lg font-bold text-gray-800">Document Viewer</h3>
-                <button onclick="closeDocViewer()" class="text-gray-500 hover:text-gray-700 p-2 rounded-lg hover:bg-gray-200 transition-colors flex items-center">
-                    <span class="material-symbols-outlined text-2xl align-middle">close</span>
-                </button>
-            </div>
-            <div id="doc-viewer-content" class="flex-grow p-4 flex items-center justify-center bg-gray-100 overflow-auto">
-                <!-- Injected dynamically -->
-            </div>
-        </div>
-    </div>
-</body>
-</html>
