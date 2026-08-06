@@ -239,6 +239,39 @@ describe('Security hardening', () => {
     expect(table.textContent).toContain('attacker@example.com<script>alert(2)</script>');
   });
 
+  test('clicking empty fixed sidebar space cannot hide navigation or alter dashboard data', async () => {
+    const initialCategories = [{ id: 'category-1', name: 'Cotton' }];
+    const initialProducts = [{ id: 'product-1', name: 'Poplin', categoryId: 'category-1' }];
+    dom = loadPage('admin-dashboard.html', {
+      adminLoggedIn: true,
+      initialCategories,
+      initialProducts
+    });
+    const { window } = dom;
+    await new Promise((resolve) => setTimeout(resolve, 50));
+
+    const sidebar = window.document.querySelector('aside');
+    const categoriesBefore = { ...window.firebaseServices.db.collection('categories').store };
+    const productsBefore = { ...window.firebaseServices.db.collection('products').store };
+    sidebar.dispatchEvent(new window.MouseEvent('click', { bubbles: true }));
+
+    expect(sidebar.classList.contains('hidden')).toBe(false);
+    expect(window.firebaseServices.db.collection('categories').store).toEqual(categoriesBefore);
+    expect(window.firebaseServices.db.collection('products').store).toEqual(productsBefore);
+  });
+
+  test('clicking an explicitly marked modal backdrop still closes that modal', async () => {
+    dom = loadPage('admin-dashboard.html', { adminLoggedIn: true });
+    const { window } = dom;
+    await new Promise((resolve) => setTimeout(resolve, 50));
+
+    const modal = window.document.getElementById('category-modal');
+    modal.classList.remove('hidden');
+    modal.dispatchEvent(new window.MouseEvent('click', { bubbles: true }));
+
+    expect(modal.classList.contains('hidden')).toBe(true);
+  });
+
   test('default recovery quotes match the bounded public quote schema', () => {
     dom = loadPage('admin-dashboard.html', { adminLoggedIn: true });
     const quote = dom.window.DataManager.getDefaultQuotes()[0];

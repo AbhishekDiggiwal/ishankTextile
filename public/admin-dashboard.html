@@ -610,7 +610,7 @@
         </main>
 
     <!-- Certificate Modal -->
-    <div id="certificate-modal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+    <div id="certificate-modal" data-modal-backdrop="true" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
         <div class="glass-card w-full max-w-md rounded-2xl overflow-hidden">
             <div class="p-6 border-b border-gray-100 flex justify-between items-center">
                 <h3 id="certificate-modal-title" class="text-xl font-bold text-dark-gray">Upload Certificate</h3>
@@ -668,7 +668,7 @@
     </div>
 
     <!-- Category Modal -->
-    <div id="category-modal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 overflow-y-auto">
+    <div id="category-modal" data-modal-backdrop="true" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 overflow-y-auto">
         <div class="glass-card w-full max-w-lg modal-enter my-8 max-h-[90vh] overflow-y-auto">
             <div class="p-6 border-b border-gray-100 flex justify-between items-center">
                 <h3 id="category-modal-title" class="text-xl font-bold text-dark-gray">Add Category</h3>
@@ -748,7 +748,7 @@
     </div>
 
     <!-- Product Modal -->
-    <div id="product-modal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 overflow-y-auto">
+    <div id="product-modal" data-modal-backdrop="true" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 overflow-y-auto">
         <div class="glass-card w-full max-w-lg modal-enter my-8 max-h-[90vh] overflow-y-auto">
             <div class="p-6 border-b border-gray-100 flex justify-between items-center">
                 <h3 id="product-modal-title" class="text-xl font-bold text-dark-gray">Add Product</h3>
@@ -920,10 +920,10 @@
     <div id="toast-container" class="fixed top-4 right-4 z-50 space-y-2"></div>
 
     <!-- JavaScript -->
-    <script src="scripts/admin-dashboard-2.js?v=pdf-viewer-20260803"></script>
+    <script src="scripts/admin-dashboard-2.js?v=sidebar-fix-20260806"></script>
 
     <!-- Document Viewer Modal -->
-    <div id="doc-viewer-modal" class="hidden fixed inset-0 bg-black/80 z-[100] flex items-center justify-center p-4">
+    <div id="doc-viewer-modal" data-modal-backdrop="true" class="hidden fixed inset-0 bg-black/80 z-[100] flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl overflow-hidden w-full max-w-5xl h-[85vh] flex flex-col shadow-2xl relative">
             <div class="p-4 border-b border-gray-200 flex justify-between items-center bg-gray-50">
                 <h3 id="doc-viewer-title" class="text-lg font-bold text-gray-800">Document Viewer</h3>

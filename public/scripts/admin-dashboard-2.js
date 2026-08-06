@@ -2650,11 +2650,13 @@
             await initializeDashboardWhenReady();
         });
 
-        // Close modals on outside click
+        // Close only an explicitly marked modal backdrop. Other fixed UI,
+        // including the sidebar, must never be treated as a dismissible modal.
         window.onclick = (e) => {
-            if (e.target.classList.contains('fixed')) {
-                e.target.classList.add('hidden');
-                if (e.target.id === 'doc-viewer-modal') {
+            const backdrop = e.target;
+            if (backdrop instanceof HTMLElement && backdrop.dataset.modalBackdrop === 'true') {
+                backdrop.classList.add('hidden');
+                if (backdrop.id === 'doc-viewer-modal') {
                     closeDocViewer();
                 }
             }
