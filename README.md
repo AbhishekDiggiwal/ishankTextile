@@ -33,6 +33,15 @@ npm run dev
 
 3. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
+## Deploying Firebase Hosting
+
+From the project folder:
+
+1. In a regular PowerShell window with Node.js installed, run `npm run build:site`.
+2. In the standalone Firebase CLI, run `firebase deploy --only hosting --project ishanktextile`.
+
+The standalone Windows Firebase CLI cannot run this project's npm build as a predeploy hook. Build first, then deploy Hosting only so Firestore and Storage rules are not changed.
+
 ## Project Structure
 ```
 src/

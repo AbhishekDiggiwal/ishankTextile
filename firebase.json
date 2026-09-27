@@ -6,9 +6,6 @@
     "indexes": "firestore.indexes.json"
   },
   "hosting": {
-    "predeploy": [
-      "npm run build:site"
-    ],
     "public": "public",
     "cleanUrls": true,
     "ignore": [
