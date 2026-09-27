@@ -3,7 +3,6 @@
   }
 
   function renderPremiumProductCard(product, index) {
-    const price = product.startingPrice || product.price || 0;
     const badgeText = index === 0 ? 'MOST POPULAR' : 'TECHNICAL GRADE';
     const badgeClass = index === 0 ? 'bg-primary text-on-primary' : 'bg-secondary text-on-secondary';
     const btnClass = index === 0
@@ -12,19 +11,6 @@
 
     const revealClass = index % 2 === 0 ? 'product-card-reveal-left' : 'product-card-reveal-right';
 
-    // Format price range or starting price
-    const unit = product.priceUnit === 'kg' ? 'kg' : 'm';
-    let priceHtml = '';
-    if (product.priceType === 'Range') {
-      const minimum = Number.isFinite(Number(product.priceMin)) ? Number(product.priceMin) : 0;
-      const maximum = Number.isFinite(Number(product.priceMax)) ? Number(product.priceMax) : 0;
-      priceHtml = `<span class="whitespace-nowrap">₹${minimum} - ₹${maximum}<span class="text-sm font-normal text-on-surface-variant">/${unit}</span></span>`;
-    } else {
-      const safePrice = Number.isFinite(Number(price)) ? Number(price) : 0;
-      priceHtml = `<span class="text-[10px] text-on-surface-variant font-normal uppercase tracking-wider block text-right leading-none mb-0.5">Starting Price</span>` +
-                  `<span class="whitespace-nowrap">₹${safePrice}<span class="text-sm font-normal text-on-surface-variant">/${unit}</span></span>`;
-    }
-
     return `
       <div class="bg-white border border-outline/10 rounded-xl overflow-hidden shadow-sm hover:shadow-2xl transition-all group ${revealClass}">
         <div class="h-64 overflow-hidden relative bg-surface-variant animate-pulse">
@@ -32,10 +18,7 @@
           <div class="absolute top-4 right-4 ${badgeClass} px-3 py-1 rounded text-xs font-bold">${badgeText}</div>
         </div>
         <div class="p-stack-lg">
-          <div class="flex justify-between items-start mb-4">
-            <h3 class="font-headline-md text-headline-md text-on-surface">${escapeHtml(product.name)}</h3>
-            <span class="font-headline-md text-primary text-right flex flex-col justify-end">${priceHtml}</span>
-          </div>
+          <h3 class="font-headline-md text-headline-md text-on-surface mb-4">${escapeHtml(product.name)}</h3>
           <div class="grid grid-cols-3 gap-2 mb-6">
             <div class="bg-surface-container p-3 rounded">
               <span class="text-[10px] uppercase block opacity-60">Weave</span>
