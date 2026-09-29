@@ -6,6 +6,7 @@
   }
   function closeSuccessModal() {
     const modal = document.getElementById('successModal');
+    if (modal.classList.contains('hidden')) return;
     modal.classList.add('hidden');
     modal.classList.remove('flex');
     document.body.style.overflow = 'auto';
@@ -66,8 +67,8 @@
     }
     const stored = sessionStorage.getItem('quoteProduct');
     if (stored) {
-      const product = JSON.parse(stored);
-      selectProduct(product.id);
+      const product = SecurityUtils.readStoredJson(sessionStorage, 'quoteProduct', {});
+      if (typeof product.id === 'string') selectProduct(product.id);
       sessionStorage.removeItem('quoteProduct');
     }
   }
@@ -76,8 +77,7 @@
     if (contactPageInitialized) return;
     contactPageInitialized = true;
 
-    await loadProducts();
-    checkPreselectedProduct();
+    loadProducts().then(checkPreselectedProduct).catch(error => console.warn('Product list unavailable:', error));
     document.getElementById('subject').addEventListener('change', toggleProductSelection);
     document.getElementById('successModal').addEventListener('click', (event) => {
       if (event.target.id === 'successModal') closeSuccessModal();
@@ -93,6 +93,7 @@
     });
     document.getElementById('contactForm').addEventListener('submit', async function(event) {
       event.preventDefault();
+      if (this.dataset.submitting === 'true') return;
 
       const submitBtn = this.querySelector('button[type="submit"]');
       const originalBtnHtml = submitBtn.innerHTML;
@@ -121,6 +122,7 @@
       }
 
       // Show loading state and disable button
+      this.dataset.submitting = 'true';
       submitBtn.disabled = true;
       const loadingSpinner = '<span class="animate-spin h-5 w-5 border-2 border-current border-t-transparent rounded-full ml-2 inline-block"></span>';
       submitBtn.innerHTML = 'Sending... ' + loadingSpinner;
@@ -147,14 +149,16 @@
           message: data.message.trim(),
           whatsappUpdates: data.whatsappUpdates === 'on'
         };
-        await DataManager.saveQuote(quote);
+        const inquiryId = await DataManager.saveQuote(quote);
         sessionStorage.setItem('lastInquiryAt', String(Date.now()));
         showSuccessModal();
+        DataManager.confirmQuote(inquiryId);
       } catch (err) {
         console.error('Error submitting inquiry:', err);
-        alert('An unexpected error occurred. Please try again.');
+        alert(err.code === 'inquiry/pending' ? err.message : 'Your inquiry could not be confirmed. Please retry without changing the form.');
       } finally {
         // Restore button state
+        delete this.dataset.submitting;
         submitBtn.disabled = false;
         submitBtn.innerHTML = originalBtnHtml;
       }

@@ -273,6 +273,10 @@ function loadPage(htmlFileName, options = {}) {
   const url = options.url || ('http://localhost/' + htmlFileName);
   const dom = new JSDOM(html, {
     url,
+    beforeParse(window) {
+      window.TextEncoder = global.TextEncoder;
+      Object.defineProperty(window.crypto, 'subtle', { value: require('node:crypto').webcrypto.subtle });
+    },
     runScripts: 'dangerously',
     resources: 'usable',
     virtualConsole

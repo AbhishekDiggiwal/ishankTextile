@@ -5,7 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" sizes="64x64" href="favicon.png">
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-    <title>Admin Login - Ishank Textile</title>
+    <link rel="manifest" href="admin-manifest.json">
+<meta name="theme-color" content="#aa0021">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Ishank Admin">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>Admin Login - Ishank Textile</title>
     <link rel="stylesheet" href="site.css">
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="vendor/fontawesome/css/all.min.css">
@@ -81,7 +87,7 @@
             <form id="loginForm" class="space-y-6">
                 <!-- Email -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                    <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email</label>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <i class="fas fa-envelope text-gray-400"></i>
@@ -102,7 +108,7 @@
 
                 <!-- Password -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                    <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Password</label>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <i class="fas fa-lock text-gray-400"></i>
@@ -162,5 +168,6 @@
 
     <script src="scripts/admin-login-1.js"></script>
 <script src="event-handlers.js"></script>
+<script src="scripts/ui-accessibility.js"></script>
 </body>
 </html>

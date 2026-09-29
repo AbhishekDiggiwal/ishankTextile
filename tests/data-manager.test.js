@@ -59,13 +59,11 @@ describe('Feature 1: DataManager (caching, timeouts, fallback)', () => {
     expect(new Date(dbQuotes[0].createdAt).getTime()).not.toBeNaN();
   });
 
-  test('Tier 1: getCategories handles fallback when DB collection is empty', async () => {
+  test('Tier 1: getCategories respects an authoritative empty database', async () => {
     // Clear mock firestore categories
     window.firebaseServices.db.collection('categories').store = {};
     const categories = await DataManager.getCategories();
-    // Should fallback to default hardcoded categories (5 items)
-    expect(categories.length).toBe(5);
-    expect(categories[0].name).toBe('Vat-Dyed Fabrics');
+    expect(categories).toEqual([]);
   });
 
   // TIER 2: Boundary & Corner Cases (>= 5 assertions/cases)

@@ -14,6 +14,8 @@ const fallbackProducts = [
   { id: '5', code: 'CT-001', name: 'Premium Cotton Fabric', categoryId: '5', description: 'Natural breathability and soft hand-feel for daily uniforms and casual workwear.', priceType: 'Range', startingPrice: null, priceMin: null, priceMax: null, priceUnit: 'm', clothing: 'Shirting', gsm: 180, blend: '100% Cotton', weave: 'Cotton Twill', premium: false, image: 'https://images.unsplash.com/photo-1528459801416-a9e53bbf4e17?w=1000', active: true }
 ];
 
+const inquiryWrites = new Map();
+
 const DataManager = {
   getDefaultSettings() {
     return {
@@ -33,11 +35,11 @@ const DataManager = {
           db.collection('categories').where('active', '==', true).get(),
           new Promise((_, reject) => setTimeout(() => reject(new Error('Firestore read timeout')), 3000))
         ]);
-        const categories = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-        if (categories.length) return categories;
+        const categories = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+        return categories;
       }
     } catch (error) { console.warn('Using fallback categories (Firestore failed or timed out):', error); }
-    return JSON.parse(localStorage.getItem('categories') || JSON.stringify(fallbackCategories));
+    return SecurityUtils.readStoredJson(localStorage, 'categories', fallbackCategories);
   },
 
   async getProducts() {
@@ -48,23 +50,72 @@ const DataManager = {
           db.collection('products').where('active', '==', true).get(),
           new Promise((_, reject) => setTimeout(() => reject(new Error('Firestore read timeout')), 3000))
         ]);
-        const products = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-        if (products.length) return products;
+        const products = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+        return products;
       }
     } catch (error) { console.warn('Using fallback products (Firestore failed or timed out):', error); }
-    return JSON.parse(localStorage.getItem('products') || JSON.stringify(fallbackProducts));
+    return SecurityUtils.readStoredJson(localStorage, 'products', fallbackProducts);
   },
 
   async saveQuote(quote) {
-    quote.createdAt = new Date().toISOString();
     const db = window.firebaseServices && window.firebaseServices.db;
-    if (!db) {
-      throw new Error('Inquiry service is unavailable. Please try again later.');
+    if (!db) throw new Error('Inquiry service is unavailable. Please try again later.');
+    const payload = { ...quote };
+    delete payload.createdAt;
+    const canonical = value => value && typeof value === 'object'
+      ? (Array.isArray(value) ? value.map(canonical) : Object.fromEntries(Object.keys(value).sort().map(key => [key, canonical(value[key])])))
+      : value;
+    // Retry identity follows form fields, not catalogue details that may change later.
+    const intent = { ...payload };
+    delete intent.product;
+    const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(JSON.stringify(canonical(intent))));
+    const fingerprint = Array.from(new Uint8Array(digest), byte => byte.toString(16).padStart(2, '0')).join('');
+    const key = 'pendingInquiry:v2:' + fingerprint;
+    let receipt = SecurityUtils.readStoredJson(sessionStorage, key, {});
+    if (!/^inq_[a-f0-9]{32}$/.test(receipt.id || '') || !Number.isFinite(Date.parse(receipt.createdAt)) ||
+        (receipt.deliveredAt && Date.now() - receipt.deliveredAt >= 30000)) {
+      const bytes = crypto.getRandomValues(new Uint8Array(16));
+      receipt = { id: 'inq_' + Array.from(bytes, byte => byte.toString(16).padStart(2, '0')).join(''), createdAt: new Date().toISOString(), product: payload.product || null };
+      // Persist retry identity and the public product snapshot, never customer fields.
+      // Fail before writing if browser storage cannot retain retry identity.
+      sessionStorage.setItem(key, JSON.stringify(receipt));
     }
-    await Promise.race([
-      db.collection('quotes').add(quote),
-      new Promise((_, reject) => setTimeout(() => reject(new Error('Firestore write timeout')), 5000))
-    ]);
+    if (receipt.acknowledgedAt) return receipt.id;
+    payload.createdAt = receipt.createdAt;
+    payload.product = receipt.product;
+    let write = inquiryWrites.get(receipt.id);
+    if (!write) {
+      write = db.collection('quotes').doc(receipt.id).set(payload).then(() => {
+        receipt.acknowledgedAt = Date.now();
+        try { sessionStorage.setItem(key, JSON.stringify(receipt)); } catch (_) { /* Keep the pending ID for an exact retry. */ }
+        return receipt.id;
+      });
+      inquiryWrites.set(receipt.id, write);
+      write.then(() => inquiryWrites.delete(receipt.id), () => inquiryWrites.delete(receipt.id));
+    }
+    let timeout;
+    try {
+      return await Promise.race([write, new Promise((_, reject) => {
+        timeout = setTimeout(() => {
+          const error = new Error('Confirmation is taking longer than expected. Retry the same inquiry to check its status.');
+          error.code = 'inquiry/pending';
+          reject(error);
+        }, 5000);
+      })]);
+    } finally { clearTimeout(timeout); }
+  },
+
+  confirmQuote(id) {
+    // Expire a receipt only after the form has displayed its success confirmation.
+    try {
+      for (const key of Object.keys(sessionStorage).filter(key => key.startsWith('pendingInquiry:v2:'))) {
+        const receipt = SecurityUtils.readStoredJson(sessionStorage, key, {});
+        if (receipt.id === id && receipt.acknowledgedAt) {
+          receipt.deliveredAt = Date.now();
+          sessionStorage.setItem(key, JSON.stringify(receipt));
+        }
+      }
+    } catch (_) { /* Keeping an unexpired receipt is safer than duplicating a saved inquiry. */ }
   },
 
   async getSettings() {
@@ -79,7 +130,7 @@ const DataManager = {
         if (doc.exists) return Object.assign({}, defaults, doc.data());
       }
     } catch (error) { console.warn('Using fallback settings (Firestore failed or timed out):', error); }
-    return Object.assign({}, defaults, JSON.parse(localStorage.getItem('settings') || '{}'));
+    return Object.assign({}, defaults, SecurityUtils.readStoredJson(localStorage, 'settings', {}));
   }
 };
 

@@ -272,30 +272,8 @@ describe('Security hardening', () => {
     expect(modal.classList.contains('hidden')).toBe(true);
   });
 
-  test('default recovery quotes match the bounded public quote schema', () => {
+  test('default recovery never invents customer inquiries', () => {
     dom = loadPage('admin-dashboard.html', { adminLoggedIn: true });
-    const quote = dom.window.DataManager.getDefaultQuotes()[0];
-
-    expect(Object.keys(quote).sort()).toEqual([
-      'createdAt',
-      'customerName',
-      'email',
-      'message',
-      'phone',
-      'product',
-      'productId',
-      'quantity',
-      'subject',
-      'whatsappUpdates'
-    ]);
-    expect(quote.subject).toBe('quote');
-    expect(typeof quote.quantity).toBe('string');
-    expect(typeof quote.whatsappUpdates).toBe('boolean');
-    expect(quote.product).toEqual(expect.objectContaining({
-      id: expect.any(String),
-      name: expect.any(String),
-      code: expect.any(String),
-      price: null
-    }));
+    expect(dom.window.DataManager.getDefaultQuotes()).toEqual([]);
   });
 });

@@ -360,7 +360,7 @@
     SecurityUtils.navigate('contact.html?quote=' + encodeURIComponent(productId));
   }
   function recordVisit() {
-    const visitors = JSON.parse(localStorage.getItem('visitors') || '[]');
+    const visitors = SecurityUtils.readStoredJson(localStorage, 'visitors', []);
     const today = new Date().toISOString().split('T')[0];
     const existing = visitors.find((visit) => visit.date === today);
     if (existing) {
@@ -374,7 +374,7 @@
   }
   function recordFabricVisit(productId) {
     try {
-      const visitors = JSON.parse(localStorage.getItem('visitors') || '[]');
+      const visitors = SecurityUtils.readStoredJson(localStorage, 'visitors', []);
       const today = new Date().toISOString().split('T')[0];
       const existing = visitors.find((visit) => visit.date === today);
       if (existing) {

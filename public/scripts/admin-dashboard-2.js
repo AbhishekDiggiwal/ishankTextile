@@ -3,20 +3,20 @@
         // Global Error and Promise Rejection Handlers for easy debugging
         window.addEventListener('error', function(event) {
             console.error('Global Error caught:', event.error);
-            const msg = event.message || event.error?.message || 'Unknown runtime error';
+            const msg = 'The operation could not be completed. Please try again.';
             if (typeof showToast === 'function') {
-                showToast(`Error: ${msg}`, 'error');
+                showToast(msg, 'error');
             } else {
-                alert(`Error: ${msg}`);
+                alert(msg);
             }
         });
         window.addEventListener('unhandledrejection', function(event) {
             console.error('Unhandled Promise Rejection:', event.reason);
-            const msg = event.reason?.message || event.reason || 'Unhandled promise rejection';
+            const msg = 'The operation could not be completed. Please try again.';
             if (typeof showToast === 'function') {
-                showToast(`Promise Error: ${msg}`, 'error');
+                showToast(msg, 'error');
             } else {
-                alert(`Promise Error: ${msg}`);
+                alert(msg);
             }
         });
 
@@ -84,7 +84,7 @@
                     if (!localStorage.getItem('settings')) {
                         localStorage.setItem('settings', JSON.stringify(defaultSettings));
                     } else {
-                        localStorage.setItem('settings', JSON.stringify({ ...defaultSettings, ...JSON.parse(localStorage.getItem('settings') || '{}') }));
+                        localStorage.setItem('settings', JSON.stringify({ ...defaultSettings, ...SecurityUtils.readStoredJson(localStorage, 'settings', {}) }));
                     }
                     return;
                 }
@@ -134,10 +134,10 @@
             // Categories
             async getCategories() {
                 if (!db) {
-                    return JSON.parse(localStorage.getItem('categories') || JSON.stringify(this.getDefaultCategories()));
+                    return SecurityUtils.readStoredJson(localStorage, 'categories', this.getDefaultCategories());
                 }
                 const snapshot = await db.collection('categories').get();
-                return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                return snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
             },
             async addCategory(category) {
                 const id = Date.now().toString();
@@ -180,10 +180,10 @@
             // Products
             async getProducts() {
                 if (!db) {
-                    return JSON.parse(localStorage.getItem('products') || JSON.stringify(this.getDefaultProducts()));
+                    return SecurityUtils.readStoredJson(localStorage, 'products', this.getDefaultProducts());
                 }
                 const snapshot = await db.collection('products').get();
-                return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                return snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
             },
             async addProduct(product) {
                 const id = Date.now().toString();
@@ -226,11 +226,11 @@
             // Quotes
             async getQuotes() {
                 if (!db) {
-                    const quotes = JSON.parse(localStorage.getItem('quotes') || JSON.stringify(this.getDefaultQuotes()));
+                    const quotes = SecurityUtils.readStoredJson(localStorage, 'quotes', this.getDefaultQuotes());
                     return quotes.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
                 }
                 const snapshot = await db.collection('quotes').orderBy('createdAt', 'desc').get();
-                return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                return snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
             },
             async addQuote(quote) {
                 quote.createdAt = new Date().toISOString();
@@ -247,12 +247,7 @@
 
             // Visitors (kept in localStorage for simplicity - not critical)
             getVisitors() {
-                let visitors = JSON.parse(localStorage.getItem('visitors') || '[]');
-                if (visitors.length === 0) {
-                    visitors = this.generateSampleVisitors();
-                    this.setVisitors(visitors);
-                }
-                return visitors;
+                return SecurityUtils.readStoredJson(localStorage, 'visitors', []);
             },
             setVisitors(visitors) {
                 localStorage.setItem('visitors', JSON.stringify(visitors));
@@ -288,7 +283,7 @@
             async getSettings() {
                 const defaults = this.getDefaultSettings();
                 if (!db) {
-                    return { ...defaults, ...JSON.parse(localStorage.getItem('settings') || '{}') };
+                    return { ...defaults, ...SecurityUtils.readStoredJson(localStorage, 'settings', {}) };
                 }
                 const doc = await db.collection('settings').doc('general').get();
                 return doc.exists ? { ...defaults, ...doc.data() } : defaults;
@@ -296,7 +291,7 @@
             async setSettings(settings) {
                 const defaults = this.getDefaultSettings();
                 if (!db) {
-                    const currentSettings = JSON.parse(localStorage.getItem('settings') || '{}');
+                    const currentSettings = SecurityUtils.readStoredJson(localStorage, 'settings', {});
                     const mergedSettings = { ...defaults, ...currentSettings, ...settings };
                     localStorage.setItem('settings', JSON.stringify(mergedSettings));
                     return;
@@ -326,7 +321,7 @@
                     const filename = `images/${Date.now()}_${SecurityUtils.safeFilename(file.name)}`;
                     const ref = storage.ref(filename);
 
-                    // Set a timeout of 30 seconds on the upload to allow larger files to upload
+                    // Limit uploads to 30 seconds.
                     await Promise.race([
                         ref.put(file),
                         new Promise((_, reject) => setTimeout(() => reject(new Error('Storage upload timed out')), 30000))
@@ -350,7 +345,7 @@
                     ]));
                 }
                 const snapshot = await db.collection('certificates').get();
-                return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                return snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
             },
             async uploadCertificate(file, name, icon) {
                 const certificateTypes = {
@@ -381,7 +376,7 @@
                         const filename = `certificates/${SecurityUtils.safeFilename(name)}_${Date.now()}_${SecurityUtils.safeFilename(file.name)}`;
                         const ref = storage.ref(filename);
 
-                        // Set a timeout of 30 seconds on the upload to allow larger files to upload
+                        // Limit uploads to 30 seconds.
                         await Promise.race([
                             ref.put(file, { contentType: certificateTypes[certificateExtension] }),
                             new Promise((_, reject) => setTimeout(() => reject(new Error('Storage upload timed out')), 30000))
@@ -437,38 +432,7 @@
                     localStorage.setItem('certificates', JSON.stringify(updated));
                     return;
                 }
-                try {
-                    // Fetch document first to get the Storage URL
-                    const doc = await db.collection('certificates').doc(id).get();
-                    if (doc.exists) {
-                        const data = doc.data();
-                        const url = data.url;
-                        let isFirebaseStorageUrl = typeof url === 'string' && url.startsWith('gs://');
-                        if (!isFirebaseStorageUrl && typeof url === 'string') {
-                            try {
-                                const parsedStorageUrl = new URL(url);
-                                isFirebaseStorageUrl = parsedStorageUrl.protocol === 'https:' &&
-                                    (parsedStorageUrl.hostname === 'firebasestorage.googleapis.com' ||
-                                     parsedStorageUrl.hostname.endsWith('.firebasestorage.app'));
-                            } catch (_) {
-                                isFirebaseStorageUrl = false;
-                            }
-                        }
-                        // Delete only Firebase Storage objects; embedded offline data is never sent to Storage.
-                        if (isFirebaseStorageUrl && storage) {
-                            try {
-                                const ref = storage.refFromURL(url);
-                                await ref.delete();
-                                console.log('Successfully deleted certificate file from Firebase Storage bucket');
-                            } catch (storageError) {
-                                console.warn('Could not delete file from Firebase Storage (it may have been deleted already):', storageError);
-                            }
-                        }
-                    }
-                } catch (err) {
-                    console.error('Error during certificate file deletion from storage:', err);
-                }
-                // Always delete the Firestore document database entry
+                // Keep the file for shared references and recovery backups.
                 await db.collection('certificates').doc(id).delete();
             },
 
@@ -573,71 +537,8 @@
                 ];
             },
 
-            getDefaultQuotes() {
-                const quotes = [];
-                const customers = [
-                    { name: 'Arjun Mehta', email: 'arjun.mehta@example.com', phone: '+91 98765 43210' },
-                    { name: 'Priya Sharma', email: 'priya.sharma@example.com', phone: '+91 91234 56789' },
-                    { name: 'Rohan Gupta', email: 'rohan.gupta@example.com', phone: '+91 99887 76655' },
-                    { name: 'Ananya Iyer', email: 'ananya.iyer@example.com', phone: '+91 98761 23456' },
-                    { name: 'Vikram Singh', email: 'vikram.singh@example.com', phone: '+91 94567 12345' },
-                    { name: 'Neha Patel', email: 'neha.patel@example.com', phone: '+91 93210 98765' }
-                ];
-                const products = [
-                    { id: '1', name: 'Vat-Dyed Premium Fabric', code: 'VD-001' },
-                    { id: '2', name: 'Fiber-Dyed Advanced Fabric', code: 'FD-001' }
-                ];
+            getDefaultQuotes() { return []; }
 
-                for (let i = 0; i < 15; i++) {
-                    const customer = customers[i % customers.length];
-                    const product = products[i % products.length];
-                    const date = new Date();
-                    date.setDate(date.getDate() - Math.floor(Math.random() * 20));
-                    date.setHours(Math.floor(Math.random() * 12) + 9, Math.floor(Math.random() * 60));
-
-                    quotes.push({
-                        customerName: customer.name,
-                        email: customer.email,
-                        phone: customer.phone,
-                        subject: 'quote',
-                        productId: product.id,
-                        product: { ...product, price: null },
-                        quantity: String(Math.floor(Math.random() * 500) + 100),
-                        message: `Interested in dynamic volume ordering. Code: ${product.code}`,
-                        whatsappUpdates: false,
-                        createdAt: date.toISOString()
-                    });
-                }
-                return quotes;
-            },
-
-            generateSampleVisitors() {
-                const visitors = [];
-                for (let i = 180; i >= 0; i--) {
-                    const date = new Date();
-                    date.setDate(date.getDate() - i);
-                    const productsVisits = Math.floor(Math.random() * 25) + 10;
-
-                    const v1 = Math.floor(productsVisits * (Math.random() * 0.6 + 0.2));
-                    const v2 = productsVisits - v1;
-
-                    visitors.push({
-                        date: date.toISOString().split('T')[0],
-                        count: Math.floor(Math.random() * 80) + 40,
-                        pages: {
-                            home: Math.floor(Math.random() * 30) + 15,
-                            products: productsVisits,
-                            about: Math.floor(Math.random() * 15) + 5,
-                            contact: Math.floor(Math.random() * 10) + 3
-                        },
-                        fabrics: {
-                            '1': v1,
-                            '2': v2
-                        }
-                    });
-                }
-                return visitors;
-            }
         };
         window.DataManager = DataManager;
         // Toast Notifications
@@ -1287,7 +1188,7 @@
                 const productName = quote.product?.name || quote.productName || (quote.productId ? 'Unknown Product' : 'N/A');
                 const productCode = quote.product?.code || '';
                 const dateStr = quote.createdAt ? SecurityUtils.toDate(quote.createdAt).toLocaleDateString() : 'N/A';
-                const qtyStr = quote.quantity ? `${quote.quantity}m` : 'N/A';
+                const qtyStr = SecurityUtils.formatQuantity(quote.quantity);
 
                 if (isRecent) {
                     return `
@@ -1310,7 +1211,12 @@
                     return `
                     <tr class="border-b border-gray-100 hover:bg-gray-50/50 transition-colors">
                         <td class="py-3 px-4 font-mono text-sm">${escapeHtml(quote.id ? String(quote.id).slice(-6).toUpperCase() : 'N/A')}</td>
-                        <td class="py-3 px-4 font-medium text-dark-gray">${escapeHtml(quote.customerName || 'N/A')}</td>
+                        <td class="py-3 px-4 font-medium text-dark-gray">${escapeHtml(quote.customerName || 'N/A')}
+                            <details class="text-sm font-normal mt-1 max-w-xs"><summary class="cursor-pointer">Inquiry details</summary>
+                              <p class="mt-1">${escapeHtml(quote.subject || 'Not specified')}</p>
+                              <p class="whitespace-pre-wrap break-words">${escapeHtml(quote.message || 'No message recorded')}</p>
+                            </details>
+                        </td>
                         <td class="py-3 px-4 text-gray-600">${escapeHtml(quote.email || '-')}</td>
                         <td class="py-3 px-4 text-gray-600">${escapeHtml(quote.phone || '-')}</td>
                         <td class="py-3 px-4 text-gray-600">
@@ -1420,13 +1326,6 @@
                 });
             });
 
-            // If no data exists, we can seed some local mock so the user doesn't see an empty page
-            if (Object.keys(fabricVisits).length === 0) {
-                products.forEach((p, idx) => {
-                    fabricVisits[p.id] = Math.floor(Math.random() * 50) + 10 + (3 - idx) * 15;
-                });
-            }
-
             // Sort products by visits
             const sortedFabrics = Object.entries(fabricVisits)
                 .sort((a, b) => b[1] - a[1]);
@@ -1520,7 +1419,7 @@
 
             certificates.forEach(cert => {
                 // Map icon to badge background colors
-                const allowedIcons = ['verified', 'account_balance', 'public', 'eco', 'workspace_premium'];
+                const allowedIcons = ['verified', 'account_balance', 'public', 'eco', 'workspace_premium', 'shield', 'gavel', 'policy', 'description', 'assignment_turned_in'];
                 const safeIcon = allowedIcons.includes(cert.icon) ? cert.icon : 'workspace_premium';
                 const safeDocumentUrl = SecurityUtils.safeDocumentUrl(cert.url);
                 const safeName = String(cert.name || 'Certificate');
@@ -1646,92 +1545,37 @@
             });
         }
 
+        const policyUploads = new Set();
         async function uploadPolicyFile(input, policyKey) {
             const file = input.files[0];
-            if (!file) return;
-
+            if (!file || policyUploads.has(policyKey)) return;
+            if (!['website_terms', 'privacy_policy', 'business_terms'].includes(policyKey)) return;
             const ext = file.name.split('.').pop().toLowerCase();
-            const supportedExts = ['txt', 'md', 'doc', 'docx'];
-            if (!supportedExts.includes(ext)) {
-                showToast('Only plain text (.txt, .md) or Word (.doc, .docx) files are supported.', 'error');
-                return;
-            }
+            policyUploads.add(policyKey);
+            input.disabled = true;
             try {
-                SecurityUtils.validateFile(file, {
-                    maxBytes: 5 * 1024 * 1024,
-                    allowedExtensions: supportedExts
-                });
-            } catch (validationError) {
-                showToast(validationError.message, 'error');
+                SecurityUtils.validateFile(file, { maxBytes: 5 * 1024 * 1024, allowedExtensions: ['txt', 'md', 'doc', 'docx'] });
+                if (!storage || !db) throw new Error('Document service is unavailable. The saved policy was not changed.');
+                showToast('Checking and uploading policy file...', 'info');
+                let text = '';
+                if (ext === 'docx') text = await DocumentConverter.convert(file);
+                else if (ext === 'txt' || ext === 'md') text = await file.text();
+                if (new TextEncoder().encode(text).length > 750000) throw new Error('Policy text is too large to save safely. The saved policy was not changed.');
+                text = SecurityUtils.sanitizeHtml(text);
+                const policyTypes = { txt: 'text/plain', md: 'text/markdown', doc: 'application/msword', docx: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' };
+                const filename = `policies/${SecurityUtils.safeFilename(policyKey)}_${crypto.randomUUID()}_${SecurityUtils.safeFilename(file.name)}`;
+                const ref = storage.ref(filename);
+                await ref.put(file, { contentType: policyTypes[ext] });
+                const fileUrl = await ref.getDownloadURL();
+                await savePolicyToDatabase(policyKey, file.name, fileUrl, text, ext === 'doc');
+            } catch (error) {
+                console.error('Policy upload failed:', error);
+                showToast('Policy was not updated. Check the file and connection, then retry.', 'error');
+            } finally {
+                policyUploads.delete(policyKey);
+                input.disabled = false;
                 input.value = '';
-                return;
             }
-
-            showToast('Reading and uploading policy file...', 'info');
-
-            let fileUrl = '';
-            try {
-                if (storage) {
-                    const policyTypes = {
-                        txt: 'text/plain',
-                        md: 'text/markdown',
-                        doc: 'application/msword',
-                        docx: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-                    };
-                    const filename = `policies/${SecurityUtils.safeFilename(policyKey)}_${Date.now()}_${SecurityUtils.safeFilename(file.name)}`;
-                    const ref = storage.ref(filename);
-                    await ref.put(file, { contentType: policyTypes[ext] });
-                    fileUrl = await ref.getDownloadURL();
-                }
-            } catch (storageError) {
-                console.error('Secure policy upload failed:', storageError);
-                showToast('Policy upload failed. Please try again.', 'error');
-                input.value = '';
-                return;
-            }
-
-            const reader = new FileReader();
-
-            if (ext === 'txt' || ext === 'md') {
-                reader.onload = async (e) => {
-                    const fileText = e.target.result;
-                    await savePolicyToDatabase(policyKey, file.name, fileUrl, fileText, false);
-                };
-                reader.onerror = () => showToast('Failed to read local file.', 'error');
-                reader.readAsText(file);
-            } else if (ext === 'docx') {
-                reader.onload = async (e) => {
-                    const arrayBuffer = e.target.result;
-                    try {
-                        if (typeof mammoth === 'undefined') {
-                            await loadMammothScript();
-                        }
-
-                        const result = await mammoth.convertToHtml({ arrayBuffer: arrayBuffer });
-                        const fileHtml = SecurityUtils.sanitizeHtml(result.value || '');
-
-                        await savePolicyToDatabase(policyKey, file.name, fileUrl, fileHtml, false);
-                    } catch (mammothError) {
-                        console.error('Error parsing docx file with mammoth:', mammothError);
-                        await savePolicyToDatabase(policyKey, file.name, fileUrl, '', true);
-                    }
-                };
-                reader.onerror = () => showToast('Failed to read Word file.', 'error');
-                reader.readAsArrayBuffer(file);
-            } else {
-                // For older .doc files, we just upload to storage and mark as isBinaryOnly
-                await savePolicyToDatabase(policyKey, file.name, fileUrl, '', true);
-            }
-        }
-
-        function loadMammothScript() {
-            return new Promise((resolve, reject) => {
-                const script = document.createElement('script');
-                script.src = 'vendor/mammoth/mammoth.browser.min.js';
-                script.onload = () => resolve();
-                script.onerror = () => reject(new Error('Failed to load mammoth.js from CDN'));
-                document.head.appendChild(script);
-            });
         }
 
         async function savePolicyToDatabase(policyKey, filename, fileUrl, text, isBinaryOnly) {
@@ -1752,57 +1596,42 @@
                 await renderPolicies();
             } catch (firestoreError) {
                 console.error('Error saving policy to firestore:', firestoreError);
-                showToast('Failed to save policy to database.', 'error');
+                throw firestoreError;
             }
         }
 
-        // Data Import/Export
-        function exportAllData() {
-            const data = {
-                categories: DataManager.getCategories(),
-                products: DataManager.getProducts(),
-                quotes: DataManager.getQuotes(),
-                visitors: DataManager.getVisitors(),
-                settings: DataManager.getSettings(),
-                exportedAt: new Date().toISOString()
-            };
-
-            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `ishank-textile-backup-${new Date().toISOString().split('T')[0]}.json`;
-            a.click();
-            URL.revokeObjectURL(url);
-
-            showToast('Data exported successfully');
+        let recoveryOperationRunning = false;
+        async function exportAllData() {
+            if (recoveryOperationRunning) return;
+            recoveryOperationRunning = true;
+            try {
+                AdminDataTools.download(await AdminDataTools.capture(db));
+                showToast('Backup downloaded. Existing file links are included; file bytes stay in Storage.');
+            } catch (error) {
+                console.error('Backup failed:', error);
+                showToast('Backup failed. No records were changed.', 'error');
+            } finally { recoveryOperationRunning = false; }
         }
 
-        function importData(input) {
+        async function importData(input) {
             const file = input.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                try {
-                    const data = JSON.parse(e.target.result);
-
-                    if (data.categories) DataManager.setCategories(data.categories);
-                    if (data.products) DataManager.setProducts(data.products);
-                    if (data.quotes) DataManager.setQuotes(data.quotes);
-                    if (data.visitors) DataManager.setVisitors(data.visitors);
-                    if (data.settings) DataManager.setSettings(data.settings);
-
-                    showToast('Data imported successfully');
-                    updateKPIs();
-                    renderCategories();
-                    renderProducts();
-                } catch (err) {
-                    showToast('Error importing data: Invalid file format', 'error');
-                }
-            };
-            reader.readAsText(file);
-            input.value = '';
+            if (!file || recoveryOperationRunning) return;
+            recoveryOperationRunning = true;
+            input.disabled = true;
+            try {
+                SecurityUtils.validateFile(file, { maxBytes: 50 * 1024 * 1024, allowedExtensions: ['json'] });
+                const backup = JSON.parse(await file.text());
+                const result = await AdminDataTools.restoreMissing(db, backup);
+                showToast(`Restored ${result.restored} missing records; preserved ${result.preserved} existing records. Browser visit history is unchanged.`);
+                await refreshData();
+            } catch (error) {
+                console.error('Restore failed:', error);
+                showToast('Restore failed. No existing records or files were changed. Check the backup format and connection.', 'error');
+            } finally {
+                input.value = '';
+                input.disabled = false;
+                recoveryOperationRunning = false;
+            }
         }
 
         async function searchCategories() {
@@ -1816,42 +1645,35 @@
         }
 
         async function resetAllData() {
-            if (!confirm('WARNING: This will delete ALL database records and reset to defaults. This action cannot be undone. Are you sure?')) {
-                return;
-            }
+            if (recoveryOperationRunning) return;
+            if (!confirm('Reset categories, products, inquiries and certificate records to catalogue defaults? A recovery backup will download first. Uploaded files, policies, settings and browser visit history will be kept.')) return;
             if (!auth || !auth.currentUser) {
                 alert('Please sign in again before resetting data.');
                 SecurityUtils.navigate('admin-login.html');
                 return;
             }
-
             const password = prompt('Please enter your Admin Password to authorize database reset:');
-            if (password === null) return; // User cancelled
-            if (!password) {
-                alert('Password is required.');
-                return;
-            }
-
+            if (password === null) return;
+            if (!password) { alert('Password is required.'); return; }
+            recoveryOperationRunning = true;
+            let authorized = false;
             try {
                 const credential = firebase.auth.EmailAuthProvider.credential(auth.currentUser.email, password);
                 await auth.currentUser.reauthenticateWithCredential(credential);
-
-                showToast('Resetting database...');
-                const collections = ['categories', 'products', 'quotes', 'certificates'];
-                for (const colName of collections) {
-                    const snapshot = await db.collection(colName).get();
-                    const batch = db.batch();
-                    snapshot.docs.forEach(doc => batch.delete(doc.ref));
-                    await batch.commit();
-                }
-
-                await DataManager.init();
-                showToast('All database records reset to defaults');
+                authorized = true;
+                const backup = await AdminDataTools.capture(db);
+                AdminDataTools.download(backup, 'ishank-textile-before-reset');
+                if (!confirm('Confirm that the recovery backup downloaded successfully, then continue with the reset.')) return;
+                await AdminDataTools.resetFromSnapshot(db, backup, [
+                    { name: 'categories', records: DataManager.getDefaultCategories() },
+                    { name: 'products', records: DataManager.getDefaultProducts() }
+                ]);
+                showToast('Catalogue reset; saved files, policies, settings and browser history preserved.');
                 await refreshData();
-            } catch (err) {
-                console.error("Auth verification failed for reset:", err);
-                alert('Authorization failed: Incorrect admin password.');
-            }
+            } catch (error) {
+                console.error('Reset failed:', error);
+                alert(authorized ? 'Reset could not be confirmed or records changed after backup. Keep the backup and check current records before retrying.' : 'Password verification failed. No records were changed.');
+            } finally { recoveryOperationRunning = false; }
         }
 
         // Settings State & Management
@@ -2001,6 +1823,8 @@
                 el.classList.add('bg-white', 'text-dark-gray');
             });
 
+            ['setting-user-image-file', 'setting-home-image-file'].forEach(id => { document.getElementById(id).disabled = false; });
+
             // Enable file input buttons
             ['setting-user-image-btn', 'setting-home-image-btn'].forEach(id => {
                 const imgBtn = document.getElementById(id);
@@ -2052,6 +1876,8 @@
                 el.classList.remove('bg-white', 'text-dark-gray');
             });
 
+            ['setting-user-image-file', 'setting-home-image-file'].forEach(id => { document.getElementById(id).disabled = true; });
+
             // Disable file input buttons
             ['setting-user-image-btn', 'setting-home-image-btn'].forEach(id => {
                 const imgBtn = document.getElementById(id);
@@ -2088,7 +1914,7 @@
             }
         }
 
-        // Add event listener to form inputs to enable/disable Save button when changes are made
+        // Update Save state when inputs change.
         const settingsForm = document.getElementById('general-settings-form');
         ['setting-company-name', 'setting-contact-email', 'setting-contact-phone'].forEach(id => {
             document.getElementById(id).addEventListener('input', checkSettingsChanges);
@@ -2161,12 +1987,6 @@
             }
         }
 
-        function logout() {
-            if (confirm('Are you sure you want to logout?')) {
-                SecurityUtils.navigate('index.html');
-            }
-        }
-
         function toggleNotifications() {
             showToast('No new notifications');
         }
@@ -2174,17 +1994,11 @@
         async function exportQuotes() {
             const quotes = await DataManager.getQuotes();
             const csv = [
-                ['ID', 'Customer', 'Email', 'Phone', 'Product', 'Quantity', 'Date'].join(','),
-                ...quotes.map(q => [
-                    q.id,
-                    q.customerName || '',
-                    q.email || '',
-                    q.phone || '',
-                    q.productName || '',
-                    q.quantity || '',
-                    new Date(q.createdAt).toLocaleString()
-                ].join(','))
-            ].join('\n');
+                ['ID', 'Customer', 'Email', 'Phone', 'Product', 'Quantity', 'Date', 'Subject', 'Message', 'WhatsApp updates'],
+                ...quotes.map(q => [q.id, q.customerName, q.email, q.phone, q.product?.name || q.productName,
+                    q.quantity, q.createdAt ? SecurityUtils.toDate(q.createdAt).toLocaleString() : '', q.subject, q.message,
+                    q.whatsappUpdates === true ? 'Yes' : 'No'])
+            ].map(row => row.map(SecurityUtils.csvCell).join(',')).join('\r\n');
 
             const blob = new Blob([csv], { type: 'text/csv' });
             const url = URL.createObjectURL(blob);
