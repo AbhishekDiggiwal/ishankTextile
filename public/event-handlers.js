@@ -107,14 +107,22 @@
   }
 
   function handleDelegatedEvent(event) {
-    const element = event.target.closest('[data-action]');
+    const element = event.target instanceof global.Element ? event.target.closest('[data-action]') : null;
     if (!element || !global.document.documentElement.contains(element)) return;
-    if (element.dataset.actionEvent &&
-        element.dataset.actionEvent !== event.type) return;
+    if ((element.dataset.actionEvent || 'click') !== event.type) return;
+    if (element.matches(':disabled, [aria-disabled="true"]')) return;
     if (element.dataset.stopPropagation === 'true') event.stopPropagation();
     runAction(element, event);
   }
 
+  global.document.addEventListener('keydown', event => {
+    const element = event.target instanceof global.Element ? event.target.closest('[data-action][role="button"]') : null;
+    if (!element || event.target !== element || element.matches('button, input, select, a[href]')) return;
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      if (!event.repeat) element.click();
+    }
+  });
   global.document.addEventListener('click', handleDelegatedEvent);
   global.document.addEventListener('change', handleDelegatedEvent);
   global.document.addEventListener('keyup', handleDelegatedEvent);

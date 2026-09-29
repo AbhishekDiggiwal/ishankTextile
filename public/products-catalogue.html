@@ -28,7 +28,7 @@
 <!-- TopNavBar -->
 <header class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-surface/80 backdrop-blur-xl border-b border-outline-variant/30 shadow-2xl">
 <div class="max-w-[1200px] mx-auto px-gutter flex items-center justify-between h-20">
-<a href="index.html" class="font-label-mono text-lg md:text-headline-md font-bold text-primary flex items-center gap-2 md:gap-3 hover:opacity-90 transition-opacity">
+<a href="index.html" class="text-lg md:text-headline-md font-bold text-primary flex items-center gap-2 md:gap-3 hover:opacity-90 transition-opacity">
 <img class="h-10 md:h-12 w-auto object-contain" src="logo.png" alt="Ishank Textile Logo"/>
 <span class="truncate">ISHANK TEXTILE</span>
 </a>
@@ -41,7 +41,7 @@
 <div class="flex items-center gap-stack-md">
 <div class="relative hidden lg:block">
 <span class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">search</span>
-<input class="w-40 bg-surface-container-high border-none rounded-full py-1 pl-9 pr-3 text-[13px] focus:ring-2 focus:ring-primary" id="catalog-search" placeholder="Search..." type="text"/>
+<input class="w-40 bg-surface-container-high border-none rounded-full py-1 pl-9 pr-3 text-[13px] focus:ring-2 focus:ring-primary" id="catalog-search" aria-label="Search fabrics" placeholder="Search..." type="text"/>
 </div>
 <a href="contact.html" class="hidden md:flex items-center gap-2 px-6 py-2 bg-primary text-on-primary font-label-bold text-label-bold hover:scale-[1.02] transition-transform duration-150 rounded-full">Get Quote</a>
 <button data-action="toggleMobileMenu" class="md:hidden text-on-surface p-2 focus:outline-none flex items-center justify-center" aria-label="Toggle Menu">
@@ -99,12 +99,12 @@
                 <!-- Mobile Search Box inside filters section -->
                 <div class="block lg:hidden relative">
                     <span class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">search</span>
-                    <input class="w-full bg-surface-container border border-outline-variant/30 rounded-full py-2 pl-9 pr-3 text-sm focus:ring-2 focus:ring-primary" id="mobile-catalog-search" placeholder="Search fabrics..." type="text"/>
+                    <input class="w-full bg-surface-container border border-outline-variant/30 rounded-full py-2 pl-9 pr-3 text-sm focus:ring-2 focus:ring-primary" id="mobile-catalog-search" aria-label="Search fabrics" placeholder="Search fabrics..." type="text"/>
                 </div>
                 <section>
                 <h3 class="font-label-bold text-label-bold uppercase text-primary mb-2 border-l-4 border-primary pl-3">Category</h3>
                 <div id="categoryFilters" class="space-y-stack-sm">
-                    <div class="text-body-sm opacity-60 animate-pulse pl-1">Loading categories...</div>
+                    <div class="opacity-60 animate-pulse pl-1">Loading categories...</div>
                 </div>
                 </section>
                 <div class="h-[2px] bg-gradient-to-r from-primary to-transparent w-full my-4" style="clip-path: polygon(0 0, 100% 40%, 100% 60%, 0 100%);"></div>
@@ -115,7 +115,7 @@
                 <div class="text-[10px] text-on-surface-variant mb-1 font-label-bold uppercase">Min GSM</div>
                 <!-- Min GSM Tooltip -->
                 <div id="gsmMinTooltip" class="absolute top-0 left-0 -translate-x-1/2 bg-primary/15 backdrop-blur-md border border-primary/30 text-primary text-[10px] font-bold px-1.5 py-0.5 rounded shadow pointer-events-none opacity-0 scale-90 group-hover/slider:opacity-100 group-hover/slider:scale-100 group-focus-within/slider:opacity-100 group-focus-within/slider:scale-100 transition-all duration-150">40 GSM</div>
-                <input id="gsmMinRange" class="w-full h-1 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-primary" min="40" max="500" value="40" type="range"/>
+                <input id="gsmMinRange" aria-label="Minimum GSM" class="w-full h-1 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-primary" min="40" max="500" value="40" type="range"/>
                 <div class="flex justify-between mt-1 text-[10px] text-on-surface-variant">
                 <span>40 GSM</span>
                 <span>500 GSM</span>
@@ -126,7 +126,7 @@
                 <div class="text-[10px] text-on-surface-variant mb-1 font-label-bold uppercase">Max GSM</div>
                 <!-- Max GSM Tooltip -->
                 <div id="gsmMaxTooltip" class="absolute top-0 left-0 -translate-x-1/2 bg-primary/15 backdrop-blur-md border border-primary/30 text-primary text-[10px] font-bold px-1.5 py-0.5 rounded shadow pointer-events-none opacity-0 scale-90 group-hover/slider:opacity-100 group-hover/slider:scale-100 group-focus-within/slider:opacity-100 group-focus-within/slider:scale-100 transition-all duration-150">500 GSM</div>
-                <input id="gsmMaxRange" class="w-full h-1 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-primary" min="40" max="500" value="500" type="range"/>
+                <input id="gsmMaxRange" aria-label="Maximum GSM" class="w-full h-1 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-primary" min="40" max="500" value="500" type="range"/>
                 <div class="flex justify-between mt-1 text-[10px] text-on-surface-variant">
                 <span>40 GSM</span>
                 <span>500 GSM</span>
@@ -140,8 +140,8 @@
                 <div class="px-2 relative pt-6 group/slider">
                 <!-- Price Tooltip -->
                 <div id="priceTooltip" class="absolute top-0 left-0 -translate-x-1/2 bg-primary/15 backdrop-blur-md border border-primary/30 text-primary text-[10px] font-bold px-1.5 py-0.5 rounded shadow pointer-events-none opacity-0 scale-90 group-hover/slider:opacity-100 group-hover/slider:scale-100 group-focus-within/slider:opacity-100 group-focus-within/slider:scale-100 transition-all duration-150">₹500</div>
-                <input id="priceRange" class="w-full h-1 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-primary" min="100" max="500" value="500" type="range"/>
-                <div class="flex justify-between mt-2 text-body-sm text-on-surface-variant">
+                <input id="priceRange" aria-label="Maximum price" class="w-full h-1 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-primary" min="100" max="500" value="500" type="range"/>
+                <div class="flex justify-between mt-2 text-on-surface-variant">
                 <span>₹100</span>
                 <span>₹500</span>
                 </div>
@@ -171,10 +171,10 @@
                 </div>
                 <div class="flex items-center gap-1">
                     <button id="viewGridBtn" data-action="setViewMode" data-value="grid" class="p-1.5 rounded hover:bg-surface-container transition-colors focus:outline-none text-primary" title="Grid View">
-                        <span class="material-symbols-outlined text-md flex items-center justify-center" style="font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 20">grid_view</span>
+                        <span class="material-symbols-outlined flex items-center justify-center" style="font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 20">grid_view</span>
                     </button>
                     <button id="viewListBtn" data-action="setViewMode" data-value="list" class="p-1.5 rounded hover:bg-surface-container transition-colors focus:outline-none opacity-40 hover:opacity-100" title="List View">
-                        <span class="material-symbols-outlined text-md flex items-center justify-center" style="font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 20">view_list</span>
+                        <span class="material-symbols-outlined flex items-center justify-center" style="font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 20">view_list</span>
                     </button>
                 </div>
             </div>
@@ -206,8 +206,8 @@
 <footer class="bg-surface-container-lowest dark:bg-surface-container-lowest border-t border-white/5 w-full pt-10 pb-6">
 <div class="max-w-[1200px] mx-auto px-gutter flex flex-col md:flex-row flex-wrap md:justify-between items-start gap-8">
 <div class="w-full md:w-auto md:max-w-[280px] lg:pl-12">
-<div class="font-label-mono text-headline-md text-on-surface font-bold mb-4 leading-none">ISHANK TEXTILE</div>
-<p class="text-on-surface-variant text-body-sm">
+<div class="text-headline-md text-on-surface font-bold mb-4 leading-none">ISHANK TEXTILE</div>
+<p class="text-on-surface-variant ">
                     Ishank Textile: Manufacturing precision fabrics since 2003. Leading the B2B textile revolution from Bhilwara, Rajasthan.
                 </p>
 <div class="mt-6 flex gap-4 items-center">
@@ -227,28 +227,28 @@
 <div class="w-full md:w-auto">
 <h4 class="font-label-bold text-label-bold uppercase text-on-surface mb-4 leading-none">Quick Navigation</h4>
 <nav class="flex flex-col gap-2">
-<a class="text-on-surface-variant hover:text-primary transition-colors text-body-sm" href="index.html">Home</a>
-<a class="text-on-surface-variant hover:text-primary transition-colors text-body-sm" href="products-catalogue.html">Fabrics</a>
-<a class="text-on-surface-variant hover:text-primary transition-colors text-body-sm" href="about.html">About Us</a>
-<a class="text-on-surface-variant hover:text-primary transition-colors text-body-sm" href="contact.html">Support</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors " href="index.html">Home</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors " href="products-catalogue.html">Fabrics</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors " href="about.html">About Us</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors " href="contact.html">Support</a>
 </nav>
 </div>
 <div class="w-full md:w-auto">
 <h4 class="font-label-bold text-label-bold uppercase text-on-surface mb-4 leading-none">Company</h4>
 <nav class="flex flex-col gap-2">
-<a class="text-on-surface-variant hover:text-primary transition-colors text-body-sm" href="terms-conditions.html">Website Terms & Condition</a>
-<a class="text-on-surface-variant hover:text-primary transition-colors text-body-sm" href="privacy-policy.html">Privacy Policy</a>
-<a class="text-on-surface-variant hover:text-primary transition-colors text-body-sm" href="business-terms.html">Business Terms & Condition</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors " href="terms-conditions.html">Website Terms & Condition</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors " href="privacy-policy.html">Privacy Policy</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors " href="business-terms.html">Business Terms & Condition</a>
 </nav>
 </div>
 <div class="w-full md:w-auto md:max-w-[240px]">
 <h4 class="font-label-bold text-label-bold uppercase text-on-surface mb-4 leading-none">Visit Us</h4>
-<p class="text-on-surface-variant text-body-sm mb-4">
+<p class="text-on-surface-variant mb-4">
                     42, 1st Floor, Heera Panna Market<br/>
                     Pur Road, Bhilwara, Rajasthan
                 </p>
 <a href="https://www.google.com/maps/place/25%C2%B020'41.4%22N+74%C2%B037'39.9%22E/@25.3448297,74.6251753,17z/data=!3m1!4b1!4m4!3m3!8m2!3d25.3448297!4d74.6277502?hl=en&amp;entry=ttu&amp;g_ep=EgoyMDI2MDUxMy4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer" class="block w-full h-24 bg-surface-container rounded-lg overflow-hidden grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all cursor-pointer">
-<img class="w-full h-full object-cover" data-alt="A stylized minimalist map of Bhilwara city center highlighting the textile district. The map uses a clean corporate aesthetic with gray and navy tones, and a red marker for the Ishank Textile location." data-location="Bhilwara" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAqEMlLr46bM1xQY7JbpLXGpmZ5UBiqu-9UJ7_0pqlYzBO-wySIgRYK5VLPx6qN2epfHQSYChyrSyfZW4ogf_v7qpMNcz_HWmxUxNIMCUYCGuUhOAtOVTYllk63PIPfysOiV9xJ5p7fEuDLF9oX-ZXMEwO8-dg4STs_QfvcMk9yI03wfzSWpciRYtUx6_d4ib8eoNdp-pgOu7D2hcAmA7I4cFI3rR1X8esw_g-zeDbuSXxtvh69JOhxDBN1EHAC9NgIpqcpu_3WGM0"/>
+<img class="w-full h-full object-cover" alt="A stylized minimalist map of Bhilwara city center highlighting the textile district. The map uses a clean corporate aesthetic with gray and navy tones, and a red marker for the Ishank Textile location." data-location="Bhilwara" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAqEMlLr46bM1xQY7JbpLXGpmZ5UBiqu-9UJ7_0pqlYzBO-wySIgRYK5VLPx6qN2epfHQSYChyrSyfZW4ogf_v7qpMNcz_HWmxUxNIMCUYCGuUhOAtOVTYllk63PIPfysOiV9xJ5p7fEuDLF9oX-ZXMEwO8-dg4STs_QfvcMk9yI03wfzSWpciRYtUx6_d4ib8eoNdp-pgOu7D2hcAmA7I4cFI3rR1X8esw_g-zeDbuSXxtvh69JOhxDBN1EHAC9NgIpqcpu_3WGM0"/>
 </a>
 </div>
 </div>
@@ -258,10 +258,11 @@
   © 2024 Ishank Textile. All rights reserved.
 </div>
 <!-- Mobile Standard Copyright -->
-<p class="lg:hidden text-on-surface/85 text-[11px] font-body-sm">© 2024 Ishank Textile. All rights reserved.</p>
+<p class="lg:hidden text-on-surface/85 text-[11px] ">© 2024 Ishank Textile. All rights reserved.</p>
 </div>
 </footer>
 
 <script src="scripts/products-catalogue-1.js"></script>
 <script src="event-handlers.js"></script>
+<script src="scripts/ui-accessibility.js"></script>
 </body></html>

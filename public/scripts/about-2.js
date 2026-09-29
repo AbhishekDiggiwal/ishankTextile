@@ -62,23 +62,19 @@
     ];
 
     let certificates = [];
+    let certificatesLoaded = false;
     const db = window.firebaseServices && window.firebaseServices.db;
     if (db) {
       try {
         const snapshot = await db.collection('certificates').get();
-        certificates = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+        certificates = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+        certificatesLoaded = true;
       } catch (error) {
         console.error('Error loading certificates from Firestore:', error);
       }
     }
 
-    if (!certificates.length) {
-      try {
-        certificates = JSON.parse(localStorage.getItem('certificates')) || [];
-      } catch (e) {
-        certificates = [];
-      }
-    }
+    if (!certificatesLoaded) certificates = SecurityUtils.readStoredJson(localStorage, 'certificates', []);
 
     const container = document.getElementById('certificates-container');
     if (!container) return;
@@ -94,7 +90,7 @@
     certsToRender.forEach((cert) => {
       const card = document.createElement('div');
       card.className = 'cert-card-reveal p-stack-lg bg-white border border-surface-container-highest rounded-xl text-center group flex flex-col justify-between items-center h-full transition-all duration-700 ease-out opacity-0 translate-y-6 transform';
-      const allowedIcons = ['verified', 'account_balance', 'public', 'eco', 'workspace_premium'];
+      const allowedIcons = ['verified', 'account_balance', 'public', 'eco', 'workspace_premium', 'shield', 'gavel', 'policy', 'description', 'assignment_turned_in'];
       const safeIcon = allowedIcons.includes(cert.icon) ? cert.icon : 'workspace_premium';
       const safeName = String(cert.name || 'Certificate');
       const safeUrl = SecurityUtils.safeDocumentUrl(cert.url);
@@ -118,7 +114,7 @@
         actionHtml;
 
       container.appendChild(card);
-      // Force browser layout reflow to ensure the transition from initial opacity-0 state triggers correctly
+      // Reflow before the reveal transition.
       void card.offsetHeight;
     });
 
@@ -291,7 +287,7 @@
       const totalSteps = Math.floor(duration / 40); // 30 steps
       let currentStep = 0;
 
-      // Apply Matrix Cypher Shuffle (Technical Blueprint) monospace and crimson styling during shuffling
+      // Apply shuffle text styling.
       el.classList.add('font-mono', 'text-primary', 'tracking-widest');
       el.classList.remove('font-display-lg', 'text-white');
 

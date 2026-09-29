@@ -226,7 +226,32 @@
     return Number.isNaN(date.getTime()) ? new Date(0) : date;
   }
 
+  function readStoredJson(storage, key, fallback) {
+    try {
+      const value = JSON.parse(storage.getItem(key));
+      if (Array.isArray(fallback)) {
+        return Array.isArray(value) && value.every(item => item && typeof item === 'object' && !Array.isArray(item)) ? value : fallback;
+      }
+      return value && typeof value === 'object' && !Array.isArray(value) ? value : fallback;
+    } catch (_) { return fallback; }
+  }
+
+  function csvCell(value) {
+    let text = toString(value);
+    // Spreadsheet formulas can follow leading whitespace or control characters.
+    if (/^[\s\u0000-\u001f\u007f]*[=+\-@]/.test(text) || /^[\t\r\n]/.test(text)) text = "'" + text;
+    return '"' + text.replace(/"/g, '""') + '"';
+  }
+
+  function formatQuantity(value) {
+    const text = toString(value).trim();
+    return text ? (/^\d+(?:\.\d+)?$/.test(text) ? text + 'm' : text) : 'N/A';
+  }
+
   const api = Object.freeze({
+    readStoredJson,
+    csvCell,
+    formatQuantity,
     ADMIN_EMAIL,
     escapeHtml,
     isAdminUser,

@@ -1,10 +1,7 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // The custom claim is the preferred long-term authorization mechanism.
-    // The verified exact-email fallback keeps the existing console-created admin
-    // account working while the claim is added. All values come from signed
-    // Firebase ID-token claims and cannot be supplied by the request body.
+    // Both authorization paths use signed Firebase token claims.
     function isAdmin() {
       return request.auth != null
         && (
@@ -122,6 +119,53 @@ service cloud.firestore {
         );
     }
 
+    // Validate only changed fields, retaining untouched legacy values.
+    function unchanged(field) {
+      return !request.resource.data.diff(resource.data).affectedKeys().hasAny([field]);
+    }
+
+    function validCategoriesUpdate() {
+      return (unchanged('name') || validRequiredText(request.resource.data, 'name', 120))
+        && (unchanged('id') || validOptionalText(request.resource.data, 'id', 128))
+        && (unchanged('description') || validOptionalText(request.resource.data, 'description', 2000))
+        && (unchanged('clothing') || validOptionalText(request.resource.data, 'clothing', 80))
+        && (unchanged('image') || validOptionalText(request.resource.data, 'image', 5000))
+        && (unchanged('createdAt') || validOptionalText(request.resource.data, 'createdAt', 64))
+        && (unchanged('startingPrice') || validOptionalNumber(request.resource.data, 'startingPrice'))
+        && (unchanged('active') || request.resource.data.active is bool);
+    }
+
+    function validProductsUpdate() {
+      return (unchanged('code') || validRequiredText(request.resource.data, 'code', 80))
+        && (unchanged('name') || validRequiredText(request.resource.data, 'name', 160))
+        && (unchanged('categoryId') || validRequiredText(request.resource.data, 'categoryId', 128))
+        && (unchanged('id') || validOptionalText(request.resource.data, 'id', 128))
+        && (unchanged('description') || validOptionalText(request.resource.data, 'description', 4000))
+        && (unchanged('priceType') || validOptionalText(request.resource.data, 'priceType', 20))
+        && (unchanged('priceUnit') || validOptionalText(request.resource.data, 'priceUnit', 20))
+        && (unchanged('clothing') || validOptionalText(request.resource.data, 'clothing', 80))
+        && (unchanged('blend') || validOptionalText(request.resource.data, 'blend', 200))
+        && (unchanged('weave') || validOptionalText(request.resource.data, 'weave', 200))
+        && (unchanged('image') || validOptionalText(request.resource.data, 'image', 5000))
+        && (unchanged('createdAt') || validOptionalText(request.resource.data, 'createdAt', 64))
+        && (unchanged('price') || validOptionalNumber(request.resource.data, 'price'))
+        && (unchanged('startingPrice') || validOptionalNumber(request.resource.data, 'startingPrice'))
+        && (unchanged('priceMin') || validOptionalNumber(request.resource.data, 'priceMin'))
+        && (unchanged('priceMax') || validOptionalNumber(request.resource.data, 'priceMax'))
+        && (unchanged('gsm') || validOptionalNumber(request.resource.data, 'gsm'))
+        && (unchanged('applications') || (!('applications' in request.resource.data) || request.resource.data.applications == null || (request.resource.data.applications is list && request.resource.data.applications.size() <= 20)))
+        && (unchanged('premium') || request.resource.data.premium is bool)
+        && (unchanged('active') || request.resource.data.active is bool);
+    }
+
+    function validCertificatesUpdate() {
+      return (unchanged('name') || validRequiredText(request.resource.data, 'name', 160))
+        && (unchanged('icon') || validRequiredText(request.resource.data, 'icon', 80))
+        && (unchanged('url') || validRequiredText(request.resource.data, 'url', 5000))
+        && (unchanged('filename') || validRequiredText(request.resource.data, 'filename', 200))
+        && (unchanged('uploadedAt') || validRequiredText(request.resource.data, 'uploadedAt', 64));
+    }
+
     match /categories/{document} {
       allow read: if isAdmin() || resource.data.active == true;
       allow create: if isAdmin() && validCategory(request.resource.data);
@@ -131,7 +175,8 @@ service cloud.firestore {
         && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
           'id', 'name', 'description', 'startingPrice', 'clothing', 'image',
           'active', 'createdAt'
-        ]);
+        ])
+        && validCategoriesUpdate();
       allow delete: if isAdmin();
     }
 
@@ -144,7 +189,8 @@ service cloud.firestore {
           'priceType', 'startingPrice', 'priceMin', 'priceMax', 'priceUnit',
           'clothing', 'gsm', 'blend', 'weave', 'applications', 'premium',
           'image', 'active', 'createdAt'
-        ]);
+        ])
+        && validProductsUpdate();
       allow delete: if isAdmin();
     }
 
@@ -154,7 +200,8 @@ service cloud.firestore {
       allow update: if isAdmin()
         && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
           'name', 'icon', 'url', 'filename', 'uploadedAt'
-        ]);
+        ])
+        && validCertificatesUpdate();
       allow delete: if isAdmin();
     }
 
@@ -168,7 +215,13 @@ service cloud.firestore {
     // Reading or managing customer data always requires administrator status.
     match /quotes/{document} {
       allow create: if validQuote(request.resource.data);
-      allow read, update, delete: if isAdmin();
+      allow read, delete: if isAdmin();
+      // An exact replay acknowledges a timed-out create without revealing or changing data.
+      allow update: if isAdmin() || (
+        document.matches('^inq_[a-f0-9]{32}$')
+        && validQuote(request.resource.data)
+        && request.resource.data == resource.data
+      );
     }
 
     // Explicitly deny every collection not declared above.

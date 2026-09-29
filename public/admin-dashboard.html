@@ -4,6 +4,12 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <link rel="icon" type="image/png" sizes="64x64" href="favicon.png"/>
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png"/>
+<link rel="manifest" href="admin-manifest.json">
+<meta name="theme-color" content="#aa0021">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Ishank Admin">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <title>Admin Dashboard - Ishank Textile</title>
 <link rel="stylesheet" href="site.css"/>
 <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
@@ -52,24 +58,24 @@
   table { border-collapse: collapse; }
 </style>
 </head>
-<body class="bg-background text-on-surface font-body-md textile-texture min-h-screen">
+<body data-admin-dashboard="true" class="bg-background text-on-surface font-body-md textile-texture min-h-screen">
 <aside class="fixed left-0 top-0 h-full w-20 md:w-64 bg-surface-container-lowest border-r border-outline-variant z-50 transition-all duration-300">
   <div class="h-20 flex items-center gap-3 px-4 md:px-6 border-b border-outline-variant">
     <img src="logo.png" alt="Ishank Textile Logo" class="h-10 w-10 object-contain rounded flex-shrink-0">
-    <span class="font-label-mono text-[18px] font-bold text-primary hidden md:block leading-none truncate">ISHANK TEXTILE</span>
+    <span class="text-[18px] font-bold text-primary hidden md:block leading-none truncate">ISHANK TEXTILE</span>
   </div>
   <nav class="mt-stack-lg px-4 space-y-2">
-    <a href="#dashboard" data-action="showSection" data-section="dashboard" class="sidebar-item active flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group"><span class="material-symbols-outlined">dashboard</span><span class="hidden md:block font-label-bold">Dashboard</span></a>
-    <a href="#categories" data-action="showSection" data-section="categories" class="sidebar-item flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group"><span class="material-symbols-outlined">category</span><span class="hidden md:block font-label-bold">Product Category</span></a>
-    <a href="#products" data-action="showSection" data-section="products" class="sidebar-item flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group"><span class="material-symbols-outlined">inventory_2</span><span class="hidden md:block font-label-bold">Products</span></a>
-    <a href="#visitors" data-action="showSection" data-section="visitors" class="sidebar-item flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group"><span class="material-symbols-outlined">analytics</span><span class="hidden md:block font-label-bold">Visitors</span></a>
-    <a href="#quotes" data-action="showSection" data-section="quotes" class="sidebar-item flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group"><span class="material-symbols-outlined">request_quote</span><span class="hidden md:block font-label-bold">Quotes</span></a>
-    <a href="#certificates" data-action="showSection" data-section="certificates" class="sidebar-item flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group"><span class="material-symbols-outlined">description</span><span class="hidden md:block font-label-bold">Documents</span></a>
-    <a href="#settings" data-action="showSection" data-section="settings" class="sidebar-item flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group"><span class="material-symbols-outlined">settings</span><span class="hidden md:block font-label-bold">Settings</span></a>
-    <a href="index.html" class="flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group"><span class="material-symbols-outlined">open_in_new</span><span class="hidden md:block font-label-bold">View Site</span></a>
+    <a href="#dashboard" data-action="showSection" data-section="dashboard" class="sidebar-item active flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group" aria-label="Dashboard" title="Dashboard"><span class="material-symbols-outlined">dashboard</span><span class="hidden md:block font-label-bold">Dashboard</span></a>
+    <a href="#categories" data-action="showSection" data-section="categories" class="sidebar-item flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group" aria-label="Product Category" title="Product Category"><span class="material-symbols-outlined">category</span><span class="hidden md:block font-label-bold">Product Category</span></a>
+    <a href="#products" data-action="showSection" data-section="products" class="sidebar-item flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group" aria-label="Products" title="Products"><span class="material-symbols-outlined">inventory_2</span><span class="hidden md:block font-label-bold">Products</span></a>
+    <a href="#visitors" data-action="showSection" data-section="visitors" class="sidebar-item flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group" aria-label="Visitors" title="Visitors"><span class="material-symbols-outlined">analytics</span><span class="hidden md:block font-label-bold">Visitors</span></a>
+    <a href="#quotes" data-action="showSection" data-section="quotes" class="sidebar-item flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group" aria-label="Quotes" title="Quotes"><span class="material-symbols-outlined">request_quote</span><span class="hidden md:block font-label-bold">Quotes</span></a>
+    <a href="#certificates" data-action="showSection" data-section="certificates" class="sidebar-item flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group" aria-label="Documents" title="Documents"><span class="material-symbols-outlined">description</span><span class="hidden md:block font-label-bold">Documents</span></a>
+    <a href="#settings" data-action="showSection" data-section="settings" class="sidebar-item flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group" aria-label="Settings" title="Settings"><span class="material-symbols-outlined">settings</span><span class="hidden md:block font-label-bold">Settings</span></a>
+    <a href="index.html" class="flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors group" aria-label="View Site" title="View Site"><span class="material-symbols-outlined">open_in_new</span><span class="hidden md:block font-label-bold">View Site</span></a>
   </nav>
   <div class="absolute bottom-8 left-0 w-full px-4">
-    <button data-action="logout" class="w-full flex items-center gap-4 p-3 rounded-lg bg-surface-container hover:bg-error-container text-on-surface-variant hover:text-on-error-container transition-colors">
+    <button data-action="logout" class="w-full flex items-center gap-4 p-3 rounded-lg bg-surface-container hover:bg-error-container text-on-surface-variant hover:text-on-error-container transition-colors" aria-label="Logout" title="Logout">
       <span class="material-symbols-outlined">logout</span>
       <span class="hidden md:block font-label-bold">Logout</span>
     </button>
@@ -89,7 +95,7 @@
   <header class="flex flex-col xl:flex-row xl:items-center justify-between gap-gutter mb-section-padding">
     <div>
       <h1 id="page-title" class="font-headline-lg text-headline-lg text-on-surface">Operations Overview</h1>
-      <p class="text-on-surface-variant mt-2 font-body-md">Real-time visitors, products, documents, and quotation metrics for Ishank Textile.</p>
+      <p class="text-on-surface-variant mt-2 font-body-md">Products, documents and inquiries. Visit counts are stored on this browser; historical sample counts may be included.</p>
     </div>
     <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-stack-md">
       <button data-action="refreshData" class="border border-outline-variant text-on-surface px-4 py-2 rounded-lg font-label-bold hover:border-primary hover:text-primary transition-colors"><span class="material-symbols-outlined text-sm align-middle">refresh</span></button>
@@ -104,7 +110,7 @@
         <span class="material-symbols-outlined text-primary">groups</span>
         <span class="text-xs font-mono text-green-600 bg-green-50 px-2 py-1 rounded"><span id="kpi-visitors-change">0%</span></span>
       </div>
-      <h3 class="text-on-surface-variant font-label-bold">Visitors Today</h3>
+      <h3 class="text-on-surface-variant font-label-bold">Browser Visits Today</h3>
       <p id="kpi-visitors-today" class="font-mono text-display-lg text-on-surface mt-2">0</p>
     </div>
     <div class="glass-card p-6 rounded-xl shadow-sm border-l-4 border-tertiary">
@@ -136,7 +142,7 @@
     <section class="xl:col-span-2 glass-card rounded-xl overflow-hidden shadow-2xl border border-white/10">
       <div class="p-6 border-b border-outline-variant flex justify-between items-center bg-white/50">
         <h2 class="font-headline-md text-on-surface">Visitor Analytics</h2>
-        <select id="visitor-chart-period" data-action="updateVisitorChart" data-action-event="change" class="form-input px-3 py-1 rounded-lg text-sm">
+        <select id="visitor-chart-period" aria-label="Visitor chart period" data-action="updateVisitorChart" data-action-event="change" class="form-input px-3 py-1 rounded-lg text-sm">
           <option value="7">7 Days</option>
           <option value="30">30 Days</option>
         </select>
@@ -147,7 +153,7 @@
       <div class="relative z-10">
         <h2 class="font-headline-md text-on-surface mb-2">Quote Analytics</h2>
         <p class="text-on-surface-variant font-body-md text-sm mb-stack-md">Inquiry volume and requested material mix.</p>
-        <select id="quote-chart-period" data-action="updateQuoteChart" data-action-event="change" class="form-input px-3 py-1 rounded-lg text-sm mb-stack-md w-full">
+        <select id="quote-chart-period" aria-label="Quote chart period" data-action="updateQuoteChart" data-action-event="change" class="form-input px-3 py-1 rounded-lg text-sm mb-stack-md w-full">
           <option value="7">7 Days</option>
           <option value="30">30 Days</option>
         </select>
@@ -156,7 +162,7 @@
       <div class="mt-stack-lg pt-stack-lg border-t border-outline-variant/30 relative z-10">
         <div class="flex items-center justify-between gap-3 mb-3">
           <h3 class="font-label-bold text-on-surface uppercase text-xs">Most Requested</h3>
-          <select id="requested-chart-period" data-action="updateMostRequestedChart" data-action-event="change" class="form-input px-2 py-1 rounded-lg text-xs">
+          <select id="requested-chart-period" aria-label="Requested fabrics chart period" data-action="updateMostRequestedChart" data-action-event="change" class="form-input px-2 py-1 rounded-lg text-xs">
             <option value="7">7 Days</option>
             <option value="30">30 Days</option>
           </select>
@@ -206,13 +212,13 @@
 
                     <!-- Filter Bar -->
                     <div class="glass-card p-4 flex flex-wrap gap-4 items-center">
-                        <select id="category-filter-status" data-action="filterCategories" data-action-event="change" class="form-input px-4 py-2 rounded-lg">
+                        <select id="category-filter-status" aria-label="Filter categories by status" data-action="filterCategories" data-action-event="change" class="form-input px-4 py-2 rounded-lg">
                             <option value="">All Status</option>
                             <option value="active">Active</option>
                             <option value="inactive">Inactive</option>
                         </select>
                         <div class="flex-1"></div>
-                        <input type="text" id="category-search" data-action="filterCategories" data-action-event="keyup" placeholder="Search categories..." class="form-input px-4 py-2 rounded-lg w-64">
+                        <input type="text" id="category-search" aria-label="Search categories" data-action="filterCategories" data-action-event="keyup" placeholder="Search categories..." class="form-input px-4 py-2 rounded-lg w-64">
                     </div>
 
                     <div class="glass-card p-6">
@@ -258,16 +264,16 @@
 
                     <!-- Filter Bar -->
                     <div class="glass-card p-4 flex flex-wrap gap-4 items-center">
-                        <select id="product-filter-category" data-action="filterProducts" data-action-event="change" class="form-input px-4 py-2 rounded-lg">
+                        <select id="product-filter-category" aria-label="Filter products by category" data-action="filterProducts" data-action-event="change" class="form-input px-4 py-2 rounded-lg">
                             <option value="">All Categories</option>
                         </select>
-                        <select id="product-filter-status" data-action="filterProducts" data-action-event="change" class="form-input px-4 py-2 rounded-lg">
+                        <select id="product-filter-status" aria-label="Filter products by status" data-action="filterProducts" data-action-event="change" class="form-input px-4 py-2 rounded-lg">
                             <option value="">All Status</option>
                             <option value="active">Active</option>
                             <option value="inactive">Inactive</option>
                         </select>
                         <div class="flex-1"></div>
-                        <input type="text" id="product-search" data-action="searchProducts" data-action-event="keyup" placeholder="Search products..." class="form-input px-4 py-2 rounded-lg w-64">
+                        <input type="text" id="product-search" aria-label="Search products" data-action="searchProducts" data-action-event="keyup" placeholder="Search products..." class="form-input px-4 py-2 rounded-lg w-64">
                     </div>
 
                     <div class="glass-card p-6">
@@ -347,7 +353,7 @@
                         <div class="glass-card p-6 lg:col-span-2">
                             <div class="flex justify-between items-center mb-4">
                                 <h3 class="text-lg font-bold text-dark-gray">Top Visited Fabrics</h3>
-                                <select id="fabric-visit-period" data-action="updateTopVisitedFabrics" data-action-event="change" class="form-input px-3 py-1 rounded-lg text-sm bg-white border border-gray-200">
+                                <select id="fabric-visit-period" aria-label="Fabric visits period" data-action="updateTopVisitedFabrics" data-action-event="change" class="form-input px-3 py-1 rounded-lg text-sm bg-white border border-gray-200">
                                     <option value="7">Weekly (7 Days)</option>
                                     <option value="30" selected>Monthly (30 Days)</option>
                                     <option value="90">Quarterly (90 Days)</option>
@@ -400,15 +406,15 @@
                             <h3 class="text-lg font-bold text-dark-gray mb-4">General Settings</h3>
                             <form id="general-settings-form" class="space-y-4">
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Company Name</label>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2" for="setting-company-name">Company Name</label>
                                     <input type="text" id="setting-company-name" maxlength="160" readonly class="form-input w-full px-4 py-2 rounded-lg bg-gray-50 text-gray-600 cursor-not-allowed" value="Ishank Textile">
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Contact Email</label>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2" for="setting-contact-email">Contact Email</label>
                                     <input type="email" id="setting-contact-email" maxlength="254" readonly class="form-input w-full px-4 py-2 rounded-lg bg-gray-50 text-gray-600 cursor-not-allowed" value="sunilpandiya909@gmail.com">
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Contact Phone</label>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2" for="setting-contact-phone">Contact Phone</label>
                                     <input type="tel" id="setting-contact-phone" maxlength="40" readonly class="form-input w-full px-4 py-2 rounded-lg bg-gray-50 text-gray-600 cursor-not-allowed" value="+91 94141 12197">
                                 </div>
                                 <div>
@@ -418,8 +424,8 @@
                                             <img id="setting-user-image-preview" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMIv5Ytqq3xAtaDcgx3ujsoghX_n2IrEEAsIIrlwmEcZiKWXzbmUHfbGJLd6aC9ubXXjukl12xxSHiBoESASAqXpAbw_hNlqQ9b5oFDqDU-b_TXEuwuueGvn8Kt2wmdBmnjKd0SAA811axwo08XdoPIW2ZLjHyP4e1HNF382INf-1nY8mdPlXhPQKYHQ37aLntIRLjUD7l9FWFx96kJnln-uttxSQngp4IryWWLAWG_1-UeUuvJV-y7RpIUU1TxUHoOlYRAQjyIXI" alt="Founder Image About Us" class="w-full h-full object-cover">
                                         </div>
                                         <div>
-                                            <input type="file" id="setting-user-image-file" accept="image/*" class="hidden" data-action="handleSettingsUserImageUpload" data-action-event="change" data-value="about">
-                                            <button type="button" id="setting-user-image-btn" disabled data-action="clickElement" data-target-id="setting-user-image-file" class="bg-gray-100 text-gray-400 px-4 py-2 rounded-lg font-medium cursor-not-allowed transition-all border border-gray-200 text-sm">
+                                            <input type="file" id="setting-user-image-file" disabled aria-label="Founder image for About Us" accept="image/*" class="sr-only" data-action="handleSettingsUserImageUpload" data-action-event="change" data-value="about">
+                                            <button type="button" id="setting-user-image-btn" disabled data-action="clickElement" data-target-id="setting-user-image-file" disabled aria-label="Founder image for About Us" class="bg-gray-100 text-gray-400 px-4 py-2 rounded-lg font-medium cursor-not-allowed transition-all border border-gray-200 text-sm">
                                                 Choose Image
                                             </button>
                                             <p class="text-xs text-gray-400 mt-1">Accepts PNG, JPG, JPEG. Will be saved as optimized WebP.</p>
@@ -434,8 +440,8 @@
                                             <img id="setting-home-image-preview" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBGwDXOzTC100PVaSnevRzASq7mmzUBNcDc7vVstVNQLg9Qme6gGaDn86uP5eUfHPu4rlvo-7P-e9FWpf5RrdGFEUppfBR2wf2I_WGV201u-VReNnHyajQoWnuwm-4nsGH3fDVJbKmUAj9R7HPT06pvMBK2IwtcvbLfLVY_SJO0MO81D26T1RAgHgtztZWXnu4X_ZXCupDnc3wynkeao7oyvhIeK9pbRJsTPJAWclBFpnOaSkMBN8dKjCnDbXcyaPHfYmtDiCMvVt8" alt="Founder Image Homepage" class="w-full h-full object-cover">
                                         </div>
                                         <div>
-                                            <input type="file" id="setting-home-image-file" accept="image/*" class="hidden" data-action="handleSettingsUserImageUpload" data-action-event="change" data-value="home">
-                                            <button type="button" id="setting-home-image-btn" disabled data-action="clickElement" data-target-id="setting-home-image-file" class="bg-gray-100 text-gray-400 px-4 py-2 rounded-lg font-medium cursor-not-allowed transition-all border border-gray-200 text-sm">
+                                            <input type="file" id="setting-home-image-file" disabled aria-label="Founder image for homepage" accept="image/*" class="sr-only" data-action="handleSettingsUserImageUpload" data-action-event="change" data-value="home">
+                                            <button type="button" id="setting-home-image-btn" disabled data-action="clickElement" data-target-id="setting-home-image-file" disabled aria-label="Founder image for homepage" class="bg-gray-100 text-gray-400 px-4 py-2 rounded-lg font-medium cursor-not-allowed transition-all border border-gray-200 text-sm">
                                                 Choose Image
                                             </button>
                                             <p class="text-xs text-gray-400 mt-1">Accepts PNG, JPG, JPEG. Will be saved as optimized WebP.</p>
@@ -476,13 +482,13 @@
                                     </div>
                                     <label class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">
                                         <i class="fas fa-upload mr-2"></i>Import
-                                        <input type="file" id="import-file" class="hidden" data-action="importData" data-action-event="change" accept=".json">
+                                        <input type="file" id="import-file" class="sr-only" data-action="importData" data-action-event="change" accept=".json">
                                     </label>
                                 </div>
                                 <div class="flex items-center justify-between p-4 bg-red-50 rounded-lg">
                                     <div>
-                                        <p class="font-medium text-red-700">Reset All Data</p>
-                                        <p class="text-sm text-red-500">Clear all data and reset to default</p>
+                                        <p class="font-medium text-red-700">Reset Catalogue Data</p>
+                                        <p class="text-sm text-red-500">Reset catalogue records; keep files, policies and settings</p>
                                     </div>
                                     <button data-action="resetAllData" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors">
                                         <i class="fas fa-trash-alt mr-2"></i>Reset
@@ -539,7 +545,7 @@
                                     <label class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-primary text-on-primary hover:bg-primary/95 cursor-pointer text-xs font-label-bold transition-colors shadow-md rounded-lg">
                                         <span class="material-symbols-outlined text-sm">upload_file</span>
                                         <span>Upload Document</span>
-                                        <input type="file" accept=".txt,.md,.doc,.docx" class="hidden" data-action="uploadPolicyFile" data-action-event="change" data-value="website_terms">
+                                        <input type="file" accept=".txt,.md,.doc,.docx" class="sr-only" data-action="uploadPolicyFile" data-action-event="change" data-value="website_terms">
                                     </label>
                                     <a id="policy-terms-download" target="_blank" class="w-full flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-xs font-label-bold transition-colors pointer-events-none opacity-40">
                                         <span class="material-symbols-outlined text-sm">download</span>
@@ -567,7 +573,7 @@
                                     <label class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-primary text-on-primary hover:bg-primary/95 cursor-pointer text-xs font-label-bold transition-colors shadow-md rounded-lg">
                                         <span class="material-symbols-outlined text-sm">upload_file</span>
                                         <span>Upload Document</span>
-                                        <input type="file" accept=".txt,.md,.doc,.docx" class="hidden" data-action="uploadPolicyFile" data-action-event="change" data-value="privacy_policy">
+                                        <input type="file" accept=".txt,.md,.doc,.docx" class="sr-only" data-action="uploadPolicyFile" data-action-event="change" data-value="privacy_policy">
                                     </label>
                                     <a id="policy-privacy-download" target="_blank" class="w-full flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-xs font-label-bold transition-colors pointer-events-none opacity-40">
                                         <span class="material-symbols-outlined text-sm">download</span>
@@ -595,7 +601,7 @@
                                     <label class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-primary text-on-primary hover:bg-primary/95 cursor-pointer text-xs font-label-bold transition-colors shadow-md rounded-lg">
                                         <span class="material-symbols-outlined text-sm">upload_file</span>
                                         <span>Upload Document</span>
-                                        <input type="file" accept=".txt,.md,.doc,.docx" class="hidden" data-action="uploadPolicyFile" data-action-event="change" data-value="business_terms">
+                                        <input type="file" accept=".txt,.md,.doc,.docx" class="sr-only" data-action="uploadPolicyFile" data-action-event="change" data-value="business_terms">
                                     </label>
                                     <a id="policy-business-download" target="_blank" class="w-full flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-xs font-label-bold transition-colors pointer-events-none opacity-40">
                                         <span class="material-symbols-outlined text-sm">download</span>
@@ -621,11 +627,11 @@
             <form id="certificate-form" class="p-6 space-y-4">
                 <input type="hidden" id="certificate-id">
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Certificate Name</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-2" for="certificate-name">Certificate Name</label>
                     <input type="text" id="certificate-name" maxlength="160" required class="form-input w-full px-4 py-2 rounded-lg" placeholder="e.g., GST Registration, Export License, Trade License">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Display Icon</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-2" for="certificate-icon">Display Icon</label>
                     <select id="certificate-icon" class="form-input w-full px-4 py-2 rounded-lg">
                         <option value="verified">⭐ Verified Badge (Export Compliance, standard audit)</option>
                         <option value="account_balance">🏛️ Tax / GST Compliance</option>
@@ -640,7 +646,7 @@
                     </select>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Certificate File (PDF or Image)</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-2" for="certificate-file">Certificate File (PDF or Image)</label>
                     <input type="file" id="certificate-file" accept=".pdf,image/*" required class="form-input w-full px-4 py-2 rounded-lg">
                     <p class="text-xs text-gray-500 mt-1">Max file size: 5MB. Supported: PDF, JPG, PNG</p>
 
@@ -679,19 +685,19 @@
             <form id="category-form" class="p-6 space-y-4">
                 <input type="hidden" id="category-id">
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Category Name *</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-2" for="category-name">Category Name *</label>
                     <input type="text" id="category-name" maxlength="120" required class="form-input w-full px-4 py-2 rounded-lg" placeholder="e.g., Vat-Dyed Fabrics">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-2" for="category-description">Description</label>
                     <textarea id="category-description" maxlength="2000" rows="3" class="form-input w-full px-4 py-2 rounded-lg" placeholder="Brief description of the category..."></textarea>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Starting Price (₹)</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-2" for="category-starting-price">Starting Price (₹)</label>
                     <input type="number" id="category-starting-price" min="0" max="100000000" class="form-input w-full px-4 py-2 rounded-lg" placeholder="e.g., 180">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Clothing Type *</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-2" for="category-clothing">Clothing Type *</label>
                     <select id="category-clothing" required class="form-input w-full px-4 py-2 rounded-lg">
                         <option value="Suiting">Suiting</option>
                         <option value="Shirting">Shirting</option>
@@ -709,7 +715,7 @@
                     <!-- Upload Option -->
                     <div class="flex items-center space-x-3 mb-3">
                         <label class="flex-1 cursor-pointer">
-                            <input type="file" id="category-image-file" accept="image/*" class="hidden" data-action="handleCategoryImageUpload" data-action-event="change">
+                            <input type="file" id="category-image-file" accept="image/*" class="sr-only" data-action="handleCategoryImageUpload" data-action-event="change">
                             <div class="flex items-center justify-center px-4 py-2 border-2 border-dashed border-gray-300 rounded-lg hover:border-brand-orange hover:bg-brand-orange/5 transition-colors">
                                 <i class="fas fa-cloud-upload-alt text-gray-400 mr-2"></i>
                                 <span class="text-sm text-gray-600">Upload Image</span>
@@ -723,7 +729,7 @@
 
                     <!-- URL Input (Hidden by default) -->
                     <div id="category-image-url-container" class="hidden">
-                        <input type="url" id="category-image" maxlength="5000" class="form-input w-full px-4 py-2 rounded-lg" placeholder="https://example.com/image.jpg">
+                        <input type="url" id="category-image" aria-label="Category image URL" maxlength="5000" class="form-input w-full px-4 py-2 rounded-lg" placeholder="https://example.com/image.jpg">
                     </div>
 
                     <!-- Hidden field to store final image data -->
@@ -733,7 +739,7 @@
                 </div>
                 <div class="flex items-center space-x-2">
                     <input type="checkbox" id="category-active" class="w-4 h-4 text-brand-orange rounded" checked>
-                    <label class="text-sm text-gray-700">Active</label>
+                    <label for="category-active" class="text-sm text-gray-700">Active</label>
                 </div>
                 <div class="flex justify-end space-x-3 pt-4">
                     <button type="button" data-action="closeCategoryModal" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
@@ -759,26 +765,26 @@
             <form id="product-form" class="p-6 space-y-4">
                 <input type="hidden" id="product-id">
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Design Code *</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-2" for="product-code">Design Code *</label>
                     <input type="text" id="product-code" maxlength="80" required class="form-input w-full px-4 py-2 rounded-lg" placeholder="e.g., VD-001">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Product Name *</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-2" for="product-name">Product Name *</label>
                     <input type="text" id="product-name" maxlength="160" required class="form-input w-full px-4 py-2 rounded-lg" placeholder="e.g., Premium Vat-Dyed Cotton">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Category *</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-2" for="product-category">Category *</label>
                     <select id="product-category" required class="form-input w-full px-4 py-2 rounded-lg">
                         <option value="">Select Category</option>
                     </select>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-2" for="product-description">Description</label>
                     <textarea id="product-description" maxlength="4000" rows="3" class="form-input w-full px-4 py-2 rounded-lg" placeholder="Product description..."></textarea>
                 </div>
                 <!-- Clothing Type -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Clothing Type *</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-2" for="product-clothing">Clothing Type *</label>
                     <select id="product-clothing" required class="form-input w-full px-4 py-2 rounded-lg">
                         <option value="Suiting">Suiting</option>
                         <option value="Shirting">Shirting</option>
@@ -788,16 +794,16 @@
                 <!-- Specs: GSM, Blend, Weave -->
                 <div class="grid grid-cols-3 gap-4">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">GSM</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-2" for="product-gsm">GSM</label>
                         <input type="number" id="product-gsm" min="0" max="100000" class="form-input w-full px-4 py-2 rounded-lg" placeholder="e.g., 240">
                     </div>
                     <div class="col-span-2">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Blend (Composition)</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-2" for="product-blend">Blend (Composition)</label>
                         <input type="text" id="product-blend" maxlength="200" class="form-input w-full px-4 py-2 rounded-lg" placeholder="e.g., 80% Poly, 20% Viscose">
                     </div>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Weave (Structure)</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-2" for="product-weave">Weave (Structure)</label>
                     <input type="text" id="product-weave" maxlength="200" class="form-input w-full px-4 py-2 rounded-lg" placeholder="e.g., Twill / Ripstop">
                 </div>
 
@@ -806,13 +812,13 @@
                     <label class="block text-sm font-medium text-gray-700 mb-2">Price Type *</label>
                     <div class="grid grid-cols-2 gap-4">
                         <label class="cursor-pointer">
-                            <input type="radio" name="product-price-type" value="Price" checked class="hidden" data-action="togglePriceFields" data-action-event="change">
+                            <input type="radio" name="product-price-type" value="Price" checked class="sr-only" data-action="togglePriceFields" data-action-event="change">
                             <div id="price-type-single-card" class="p-3 border-2 rounded-xl text-center font-medium border-brand-orange bg-brand-orange/5 text-brand-orange transition-colors">
                                 Single Price
                             </div>
                         </label>
                         <label class="cursor-pointer">
-                            <input type="radio" name="product-price-type" value="Range" class="hidden" data-action="togglePriceFields" data-action-event="change">
+                            <input type="radio" name="product-price-type" value="Range" class="sr-only" data-action="togglePriceFields" data-action-event="change">
                             <div id="price-type-range-card" class="p-3 border-2 rounded-xl text-center font-medium border-gray-200 text-gray-600 hover:border-gray-300 transition-colors">
                                 Price Range
                             </div>
@@ -822,7 +828,7 @@
 
                 <!-- Single Price Input -->
                 <div id="product-single-price-container">
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Starting Price (₹)</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-2" for="product-price">Starting Price (₹)</label>
                     <input type="number" id="product-price" min="0" max="100000000" class="form-input w-full px-4 py-2 rounded-lg" placeholder="e.g., 380">
                 </div>
 
@@ -830,11 +836,11 @@
                 <div id="product-range-price-container" class="hidden">
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Min Price (₹)</label>
+                            <label class="block text-sm font-medium text-gray-700 mb-2" for="product-price-min">Min Price (₹)</label>
                             <input type="number" id="product-price-min" min="0" max="100000000" class="form-input w-full px-4 py-2 rounded-lg" placeholder="e.g., 380">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Max Price (₹)</label>
+                            <label class="block text-sm font-medium text-gray-700 mb-2" for="product-price-max">Max Price (₹)</label>
                             <input type="number" id="product-price-max" min="0" max="100000000" class="form-input w-full px-4 py-2 rounded-lg" placeholder="e.g., 450">
                         </div>
                     </div>
@@ -845,13 +851,13 @@
                     <label class="block text-sm font-medium text-gray-700 mb-2">Price Unit *</label>
                     <div class="grid grid-cols-2 gap-4">
                         <label class="cursor-pointer">
-                            <input type="radio" name="product-price-unit" value="m" checked class="hidden" data-action="togglePriceUnitFields" data-action-event="change">
+                            <input type="radio" name="product-price-unit" value="m" checked class="sr-only" data-action="togglePriceUnitFields" data-action-event="change">
                             <div id="price-unit-m-card" class="p-3 border-2 rounded-xl text-center font-medium border-brand-orange bg-brand-orange/5 text-brand-orange transition-colors">
                                 Per Metre (/m)
                             </div>
                         </label>
                         <label class="cursor-pointer">
-                            <input type="radio" name="product-price-unit" value="kg" class="hidden" data-action="togglePriceUnitFields" data-action-event="change">
+                            <input type="radio" name="product-price-unit" value="kg" class="sr-only" data-action="togglePriceUnitFields" data-action-event="change">
                             <div id="price-unit-kg-card" class="p-3 border-2 rounded-xl text-center font-medium border-gray-200 text-gray-600 hover:border-gray-300 transition-colors">
                                 Per Kg (/kg)
                             </div>
@@ -871,7 +877,7 @@
                     <!-- Upload Option -->
                     <div class="flex items-center space-x-3 mb-3">
                         <label class="flex-1 cursor-pointer">
-                            <input type="file" id="product-image-file" accept="image/*" class="hidden" data-action="handleProductImageUpload" data-action-event="change">
+                            <input type="file" id="product-image-file" accept="image/*" class="sr-only" data-action="handleProductImageUpload" data-action-event="change">
                             <div class="flex items-center justify-center px-4 py-2 border-2 border-dashed border-gray-300 rounded-lg hover:border-brand-orange hover:bg-brand-orange/5 transition-colors">
                                 <i class="fas fa-cloud-upload-alt text-gray-400 mr-2"></i>
                                 <span class="text-sm text-gray-600">Upload Image</span>
@@ -885,7 +891,7 @@
 
                     <!-- URL Input (Hidden by default) -->
                     <div id="product-image-url-container" class="hidden">
-                        <input type="url" id="product-image" maxlength="5000" class="form-input w-full px-4 py-2 rounded-lg" placeholder="https://example.com/image.jpg">
+                        <input type="url" id="product-image" aria-label="Product image URL" maxlength="5000" class="form-input w-full px-4 py-2 rounded-lg" placeholder="https://example.com/image.jpg">
                     </div>
 
                     <!-- Hidden field to store final image data -->
@@ -920,6 +926,8 @@
     <div id="toast-container" class="fixed top-4 right-4 z-50 space-y-2"></div>
 
     <!-- JavaScript -->
+    <script src="scripts/admin-data-tools.js"></script>
+    <script src="scripts/document-converter.js"></script>
     <script src="scripts/admin-dashboard-2.js?v=sidebar-fix-20260806"></script>
 
     <!-- Document Viewer Modal -->
@@ -937,5 +945,6 @@
         </div>
     </div>
 <script src="event-handlers.js"></script>
+<script src="scripts/ui-accessibility.js"></script>
 </body>
 </html>

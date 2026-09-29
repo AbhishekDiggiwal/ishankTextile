@@ -1,3 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Keep long headings inside narrow screens. */
+@media (max-width: 479px) {
+  #catalogTitle { font-size: clamp(2rem, 11.5vw, 3.5rem); }
+}
+@media (max-width: 374px) {
+  .mobile-title-fit { font-size: clamp(2rem, 12vw, 2.875rem); }
+}
+
+/* Allow narrow admin panels to shrink while their tables scroll internally. */
+[data-admin-dashboard] main, [data-admin-dashboard] section, [data-admin-dashboard] .glass-card { min-width: 0; }
+[data-admin-dashboard] main input, [data-admin-dashboard] main select { max-width: 100%; }
+@media (max-width: 479px) {
+  [data-admin-dashboard] section > .flex { flex-wrap: wrap; gap: 0.75rem; }
+  [data-admin-dashboard] .grid > * { min-width: 0; }
+  [data-admin-dashboard] .glass-card .flex { flex-wrap: wrap; }
+}
+label:has(> input:focus-visible) { outline: 2px solid currentColor; outline-offset: 3px; }
+[role="button"]:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+[data-modal-backdrop] > :first-child { max-height: 90vh; overflow-y: auto; }

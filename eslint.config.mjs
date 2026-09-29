@@ -4,7 +4,7 @@ import nextCoreWebVitals from 'eslint-config-next/core-web-vitals';
 export default defineConfig([
   ...nextCoreWebVitals,
   {
-    files: ['tests/**/*.js', 'public/*.js'],
+    files: ['tests/**/*.js', 'public/*.js', 'public/scripts/**/*.js'],
     languageOptions: {
       ecmaVersion: 'latest',
       sourceType: 'commonjs',
