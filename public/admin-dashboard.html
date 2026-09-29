@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="light" lang="en"><head>
 <meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
 <link rel="icon" type="image/png" sizes="64x64" href="favicon.png"/>
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png"/>
 <link rel="manifest" href="admin-manifest.json">
@@ -57,6 +57,7 @@
   .toast { transition: opacity .3s ease, transform .3s ease; }
   table { border-collapse: collapse; }
 </style>
+<link rel="stylesheet" href="admin-mobile.css?v=20260929">
 </head>
 <body data-admin-dashboard="true" class="bg-background text-on-surface font-body-md textile-texture min-h-screen">
 <aside class="fixed left-0 top-0 h-full w-20 md:w-64 bg-surface-container-lowest border-r border-outline-variant z-50 transition-all duration-300">
@@ -140,7 +141,7 @@
   </section>
   <div class="grid grid-cols-1 xl:grid-cols-3 gap-gutter">
     <section class="xl:col-span-2 glass-card rounded-xl overflow-hidden shadow-2xl border border-white/10">
-      <div class="p-6 border-b border-outline-variant flex justify-between items-center bg-white/50">
+      <div class="admin-card-heading p-6 border-b border-outline-variant flex justify-between items-center bg-white/50">
         <h2 class="font-headline-md text-on-surface">Visitor Analytics</h2>
         <select id="visitor-chart-period" aria-label="Visitor chart period" data-action="updateVisitorChart" data-action-event="change" class="form-input px-3 py-1 rounded-lg text-sm">
           <option value="7">7 Days</option>
@@ -160,7 +161,7 @@
         <div class="h-[180px]"><canvas id="quotesChart"></canvas></div>
       </div>
       <div class="mt-stack-lg pt-stack-lg border-t border-outline-variant/30 relative z-10">
-        <div class="flex items-center justify-between gap-3 mb-3">
+        <div class="admin-card-heading flex items-center justify-between gap-3 mb-3">
           <h3 class="font-label-bold text-on-surface uppercase text-xs">Most Requested</h3>
           <select id="requested-chart-period" aria-label="Requested fabrics chart period" data-action="updateMostRequestedChart" data-action-event="change" class="form-input px-2 py-1 rounded-lg text-xs">
             <option value="7">7 Days</option>
@@ -172,7 +173,7 @@
     </section>
   </div>
   <section class="glass-card rounded-xl shadow-2xl overflow-hidden border border-white/10">
-    <div class="p-6 border-b border-outline-variant bg-white/50 flex justify-between items-center">
+    <div class="admin-card-heading p-6 border-b border-outline-variant bg-white/50 flex justify-between items-center">
       <h2 class="font-headline-md text-on-surface">Recent Quote Requests</h2>
       <button data-action="showSection" data-section="quotes" class="text-primary hover:underline font-label-bold text-sm">View All</button>
     </div>
@@ -193,7 +194,7 @@
   </section>
 </section>
     <section id="categories-section" class="hidden space-y-6">
-                    <div class="flex justify-between items-center">
+                    <div class="admin-section-toolbar flex justify-between items-center">
                         <div>
                             <h3 class="text-lg font-bold text-dark-gray">Product Categories</h3>
                             <p class="text-sm text-gray-500">Manage product categories and their details</p>
@@ -211,7 +212,7 @@
                     </div>
 
                     <!-- Filter Bar -->
-                    <div class="glass-card p-4 flex flex-wrap gap-4 items-center">
+                    <div class="admin-filter-bar glass-card p-4 flex flex-wrap gap-4 items-center">
                         <select id="category-filter-status" aria-label="Filter categories by status" data-action="filterCategories" data-action-event="change" class="form-input px-4 py-2 rounded-lg">
                             <option value="">All Status</option>
                             <option value="active">Active</option>
@@ -245,7 +246,7 @@
 
                 <!-- Products Section -->
                 <section id="products-section" class="hidden space-y-6">
-                    <div class="flex justify-between items-center">
+                    <div class="admin-section-toolbar flex justify-between items-center">
                         <div>
                             <h3 class="text-lg font-bold text-dark-gray">Products</h3>
                             <p class="text-sm text-gray-500">Manage products within categories</p>
@@ -263,7 +264,7 @@
                     </div>
 
                     <!-- Filter Bar -->
-                    <div class="glass-card p-4 flex flex-wrap gap-4 items-center">
+                    <div class="admin-filter-bar glass-card p-4 flex flex-wrap gap-4 items-center">
                         <select id="product-filter-category" aria-label="Filter products by category" data-action="filterProducts" data-action-event="change" class="form-input px-4 py-2 rounded-lg">
                             <option value="">All Categories</option>
                         </select>
@@ -322,7 +323,7 @@
                         <!-- Top Fabric KPI Card -->
                         <div class="glass-card p-6 flex flex-col justify-between">
                             <div>
-                                <div class="flex justify-between items-center mb-4">
+                                <div class="admin-card-heading flex justify-between items-center mb-4">
                                     <h3 class="text-lg font-bold text-dark-gray">Top Fabric KPI</h3>
                                     <span class="px-2.5 py-1 text-xs font-semibold bg-brand-orange/10 text-brand-orange rounded-full">Top Product</span>
                                 </div>
@@ -351,7 +352,7 @@
 
                         <!-- Top Fabrics Chart Card -->
                         <div class="glass-card p-6 lg:col-span-2">
-                            <div class="flex justify-between items-center mb-4">
+                            <div class="admin-card-heading flex justify-between items-center mb-4">
                                 <h3 class="text-lg font-bold text-dark-gray">Top Visited Fabrics</h3>
                                 <select id="fabric-visit-period" aria-label="Fabric visits period" data-action="updateTopVisitedFabrics" data-action-event="change" class="form-input px-3 py-1 rounded-lg text-sm bg-white border border-gray-200">
                                     <option value="7">Weekly (7 Days)</option>
@@ -370,7 +371,7 @@
                 <!-- Quotes Section -->
                 <section id="quotes-section" class="hidden space-y-6">
                     <div class="glass-card p-6">
-                        <div class="flex justify-between items-center mb-4">
+                        <div class="admin-card-heading flex justify-between items-center mb-4">
                             <h3 class="text-lg font-bold text-dark-gray">Quote Requests</h3>
                             <div class="flex gap-2">
                                 <button data-action="exportQuotes" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
@@ -419,7 +420,7 @@
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-2">Founder Image (About Us Page)</label>
-                                    <div class="flex items-center gap-4">
+                                    <div class="admin-image-setting flex items-center gap-4">
                                         <div class="relative w-16 h-16 rounded-full overflow-hidden border border-gray-200 bg-gray-50 flex-shrink-0">
                                             <img id="setting-user-image-preview" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMIv5Ytqq3xAtaDcgx3ujsoghX_n2IrEEAsIIrlwmEcZiKWXzbmUHfbGJLd6aC9ubXXjukl12xxSHiBoESASAqXpAbw_hNlqQ9b5oFDqDU-b_TXEuwuueGvn8Kt2wmdBmnjKd0SAA811axwo08XdoPIW2ZLjHyP4e1HNF382INf-1nY8mdPlXhPQKYHQ37aLntIRLjUD7l9FWFx96kJnln-uttxSQngp4IryWWLAWG_1-UeUuvJV-y7RpIUU1TxUHoOlYRAQjyIXI" alt="Founder Image About Us" class="w-full h-full object-cover">
                                         </div>
@@ -435,7 +436,7 @@
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-2">Founder Image (Homepage)</label>
-                                    <div class="flex items-center gap-4">
+                                    <div class="admin-image-setting flex items-center gap-4">
                                         <div class="relative w-16 h-16 rounded-full overflow-hidden border border-gray-200 bg-gray-50 flex-shrink-0">
                                             <img id="setting-home-image-preview" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBGwDXOzTC100PVaSnevRzASq7mmzUBNcDc7vVstVNQLg9Qme6gGaDn86uP5eUfHPu4rlvo-7P-e9FWpf5RrdGFEUppfBR2wf2I_WGV201u-VReNnHyajQoWnuwm-4nsGH3fDVJbKmUAj9R7HPT06pvMBK2IwtcvbLfLVY_SJO0MO81D26T1RAgHgtztZWXnu4X_ZXCupDnc3wynkeao7oyvhIeK9pbRJsTPJAWclBFpnOaSkMBN8dKjCnDbXcyaPHfYmtDiCMvVt8" alt="Founder Image Homepage" class="w-full h-full object-cover">
                                         </div>
@@ -466,7 +467,7 @@
                         <div class="glass-card p-6">
                             <h3 class="text-lg font-bold text-dark-gray mb-4">Data Management</h3>
                             <div class="space-y-4">
-                                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                                <div class="admin-data-action flex items-center justify-between p-4 bg-gray-50 rounded-lg">
                                     <div>
                                         <p class="font-medium text-gray-700">Export All Data</p>
                                         <p class="text-sm text-gray-500">Download backup of all data</p>
@@ -475,7 +476,7 @@
                                         <i class="fas fa-download mr-2"></i>Export
                                     </button>
                                 </div>
-                                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                                <div class="admin-data-action flex items-center justify-between p-4 bg-gray-50 rounded-lg">
                                     <div>
                                         <p class="font-medium text-gray-700">Import Data</p>
                                         <p class="text-sm text-gray-500">Import data from backup file</p>
@@ -485,7 +486,7 @@
                                         <input type="file" id="import-file" class="sr-only" data-action="importData" data-action-event="change" accept=".json">
                                     </label>
                                 </div>
-                                <div class="flex items-center justify-between p-4 bg-red-50 rounded-lg">
+                                <div class="admin-data-action flex items-center justify-between p-4 bg-red-50 rounded-lg">
                                     <div>
                                         <p class="font-medium text-red-700">Reset Catalogue Data</p>
                                         <p class="text-sm text-red-500">Reset catalogue records; keep files, policies and settings</p>
@@ -502,7 +503,7 @@
                 <!-- Documents & Certificates Section -->
                 <section id="certificates-section" class="hidden space-y-6">
                     <div class="glass-card p-6">
-                        <div class="flex justify-between items-center mb-6">
+                        <div class="admin-card-heading flex justify-between items-center mb-6">
                             <div>
                                 <h3 class="text-lg font-bold text-dark-gray">Business Documents</h3>
                                 <p class="text-sm text-gray-500">Manage tax, quality, trade, and compliance certificates</p>
@@ -527,7 +528,7 @@
 
                         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                             <!-- Policy 1: Website Terms & Conditions -->
-                            <div class="p-4 bg-gray-50 rounded-xl border border-gray-200 flex flex-col justify-between">
+                            <div class="admin-policy-card p-4 bg-gray-50 rounded-xl border border-gray-200 flex flex-col justify-between">
                                 <div>
                                     <div class="flex justify-between items-start mb-3">
                                         <div class="flex items-center gap-2">
@@ -555,7 +556,7 @@
                             </div>
 
                             <!-- Policy 2: Privacy Policy -->
-                            <div class="p-4 bg-gray-50 rounded-xl border border-gray-200 flex flex-col justify-between">
+                            <div class="admin-policy-card p-4 bg-gray-50 rounded-xl border border-gray-200 flex flex-col justify-between">
                                 <div>
                                     <div class="flex justify-between items-start mb-3">
                                         <div class="flex items-center gap-2">
@@ -583,7 +584,7 @@
                             </div>
 
                             <!-- Policy 3: Business Terms & Conditions -->
-                            <div class="p-4 bg-gray-50 rounded-xl border border-gray-200 flex flex-col justify-between">
+                            <div class="admin-policy-card p-4 bg-gray-50 rounded-xl border border-gray-200 flex flex-col justify-between">
                                 <div>
                                     <div class="flex justify-between items-start mb-3">
                                         <div class="flex items-center gap-2">
@@ -661,7 +662,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="flex gap-3 pt-4">
+                <div class="admin-modal-actions flex gap-3 pt-4">
                     <button type="button" data-action="closeCertificateModal" class="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
                         Cancel
                     </button>
@@ -713,7 +714,7 @@
                     </div>
 
                     <!-- Upload Option -->
-                    <div class="flex items-center space-x-3 mb-3">
+                    <div class="admin-upload-options flex items-center space-x-3 mb-3">
                         <label class="flex-1 cursor-pointer">
                             <input type="file" id="category-image-file" accept="image/*" class="sr-only" data-action="handleCategoryImageUpload" data-action-event="change">
                             <div class="flex items-center justify-center px-4 py-2 border-2 border-dashed border-gray-300 rounded-lg hover:border-brand-orange hover:bg-brand-orange/5 transition-colors">
@@ -737,11 +738,11 @@
 
                     <p class="text-xs text-gray-500 mt-1">Recommended: 800x600px, JPG or PNG</p>
                 </div>
-                <div class="flex items-center space-x-2">
+                <div class="admin-checkbox-row flex items-center space-x-2">
                     <input type="checkbox" id="category-active" class="w-4 h-4 text-brand-orange rounded" checked>
                     <label for="category-active" class="text-sm text-gray-700">Active</label>
                 </div>
-                <div class="flex justify-end space-x-3 pt-4">
+                <div class="admin-modal-actions flex justify-end space-x-3 pt-4">
                     <button type="button" data-action="closeCategoryModal" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
                         Cancel
                     </button>
@@ -875,7 +876,7 @@
                     </div>
 
                     <!-- Upload Option -->
-                    <div class="flex items-center space-x-3 mb-3">
+                    <div class="admin-upload-options flex items-center space-x-3 mb-3">
                         <label class="flex-1 cursor-pointer">
                             <input type="file" id="product-image-file" accept="image/*" class="sr-only" data-action="handleProductImageUpload" data-action-event="change">
                             <div class="flex items-center justify-center px-4 py-2 border-2 border-dashed border-gray-300 rounded-lg hover:border-brand-orange hover:bg-brand-orange/5 transition-colors">
@@ -900,7 +901,7 @@
                     <p class="text-xs text-gray-500 mt-1">Recommended: 800x600px, JPG or PNG</p>
                 </div>
 
-                <div class="flex items-center space-x-6">
+                <div class="admin-checkbox-row flex items-center space-x-6">
                     <label class="flex items-center space-x-2 cursor-pointer">
                         <input type="checkbox" id="product-premium" class="w-4 h-4 text-brand-orange rounded">
                         <span class="text-sm font-medium text-gray-700">Premium Collection</span>
@@ -910,7 +911,7 @@
                         <span class="text-sm font-medium text-gray-700">Active</span>
                     </label>
                 </div>
-                <div class="flex justify-end space-x-3 pt-4">
+                <div class="admin-modal-actions flex justify-end space-x-3 pt-4">
                     <button type="button" data-action="closeProductModal" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
                         Cancel
                     </button>
