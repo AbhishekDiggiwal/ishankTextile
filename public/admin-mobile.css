@@ -62,10 +62,10 @@
     grid-template-columns: minmax(0, 1fr) 44px;
     align-items: start;
     gap: 12px;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
   }
 
-  [data-admin-dashboard] #page-title { font-size: 28px; line-height: 1.2; }
+  [data-admin-dashboard] #page-title { font-size: 24px; font-weight: 600; line-height: 1.25; }
   [data-admin-dashboard] main > header p { font-size: 13px; line-height: 1.5; }
   [data-admin-dashboard] [data-action="refreshData"] { width: 44px; padding: 10px; }
 
@@ -76,8 +76,20 @@
   [data-admin-dashboard] .glass-card .flex { flex-wrap: nowrap; }
   [data-admin-dashboard] :is(.gap-gutter, .gap-6) { gap: 16px; }
   [data-admin-dashboard] :is(.space-y-gutter, .space-y-6) > * + * { margin-top: 16px; }
-  [data-admin-dashboard] main :is(.p-6, .p-gutter) { padding: 16px; }
-  [data-admin-dashboard] main :is(h2, h3).font-headline-md { font-size: 18px; line-height: 1.35; }
+  [data-admin-dashboard] main :is(.p-6, .p-gutter) { padding: 14px; }
+
+  /* Keep titles, labels and supporting text in proportion to phone cards. */
+  [data-admin-dashboard] #admin-sections :is(h2, h3) { font-size: 15px; font-weight: 500; line-height: 1.4; }
+  [data-admin-dashboard] #admin-sections p.text-sm,
+  [data-admin-dashboard] .admin-section-toolbar p { font-size: 13px; line-height: 1.5; }
+  [data-admin-dashboard] #admin-sections :is(button, a[download], a[id$="-download"], label:has(> input[type="file"])) { font-size: 13px; font-weight: 500; line-height: 1.35; }
+  [data-admin-dashboard] #admin-sections .material-symbols-outlined { font-size: 18px; }
+  [data-admin-dashboard] #admin-sections :is(button, a, label) .material-symbols-outlined { font-size: 16px; }
+  [data-admin-dashboard] #admin-sections .admin-card-heading { margin-bottom: 16px; }
+  [data-admin-dashboard] #dashboard-section .admin-card-heading { margin-bottom: 0; }
+  [data-admin-dashboard] #dashboard-section .admin-card-heading.mb-3 { margin-bottom: 12px; }
+  [data-admin-dashboard] #dashboard-section h2.mb-2 { margin-bottom: 6px; }
+  [data-admin-dashboard] #dashboard-section .admin-card-heading h3 { font-size: 11px; font-weight: 500; letter-spacing: .04em; }
 
   [data-admin-dashboard] :is(button, label:has(> input[type="file"]), a[download], a[id$="-download"]) { min-height: 44px; }
   [data-admin-dashboard] button { overflow-wrap: anywhere; }
@@ -95,9 +107,11 @@
     gap: 12px;
   }
   [data-admin-dashboard] #dashboard-section > section:first-child > .glass-card { padding: 12px; }
-  [data-admin-dashboard] #dashboard-section > section:first-child .flex { flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
-  [data-admin-dashboard] #dashboard-section > section:first-child h3 { min-height: 2.8em; font-size: 13px; line-height: 1.4; }
-  [data-admin-dashboard] #dashboard-section > section:first-child p { font-size: 32px; line-height: 1.2; }
+  [data-admin-dashboard] #dashboard-section > section:first-child .flex { flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+  [data-admin-dashboard] #dashboard-section > section:first-child .material-symbols-outlined { font-size: 20px; }
+  [data-admin-dashboard] #dashboard-section > section:first-child .text-xs { padding: 3px 5px; font-size: 10px; line-height: 1.4; }
+  [data-admin-dashboard] #dashboard-section > section:first-child h3 { min-height: 2.9em; font-size: 12px; font-weight: 500; line-height: 1.45; }
+  [data-admin-dashboard] #dashboard-section > section:first-child p { margin-top: 6px; font-size: 28px; line-height: 1.2; }
   [data-admin-dashboard] #dashboard-section > .grid { grid-template-columns: minmax(0, 1fr); }
   [data-admin-dashboard] #dashboard-section > .grid > * { grid-column: auto; }
   [data-admin-dashboard] #dashboard-section .h-\[320px\] { height: 260px; }
@@ -118,7 +132,11 @@
   [data-admin-dashboard] #top-pages-list .flex { gap: 8px; }
   [data-admin-dashboard] #top-pages-list .flex > :first-child { overflow-wrap: anywhere; }
   [data-admin-dashboard] #top-pages-list .flex > :last-child { flex-shrink: 0; }
-  [data-admin-dashboard] #top-fabric-kpi-name { font-size: 18px; }
+  [data-admin-dashboard] #top-pages-list { font-size: 13px; }
+  [data-admin-dashboard] #top-fabric-kpi-name { font-size: 14px; font-weight: 500; line-height: 1.5; }
+  [data-admin-dashboard] #visitors-section .text-xs { font-size: 11px; line-height: 1.45; }
+  [data-admin-dashboard] #top-fabric-kpi-code,
+  [data-admin-dashboard] #top-fabric-kpi-views { font-size: 13px; font-weight: 500; }
   [data-admin-dashboard] #visitors-section .glass-card > .flex:last-child { gap: 12px; }
 
   [data-admin-dashboard] .admin-section-toolbar { flex-direction: column; align-items: stretch; gap: 16px; }
@@ -130,8 +148,9 @@
 
   /* Tables keep every column and scroll within their own card. */
   [data-admin-dashboard] .overflow-x-auto { max-width: 100%; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch; }
-  [data-admin-dashboard] table { min-width: 640px; font-size: 14px; }
+  [data-admin-dashboard] table { min-width: 640px; font-size: 13px; }
   [data-admin-dashboard] table :is(th, td) { padding: 12px; }
+  [data-admin-dashboard] table th { font-size: 12px; font-weight: 500; }
   [data-admin-dashboard] table :is(button, summary) { min-height: 44px; min-width: 44px; }
   [data-admin-dashboard] table td .flex { gap: 8px; }
   [data-admin-dashboard] #quotes-section table { min-width: 840px; }
@@ -146,21 +165,31 @@
   [data-admin-dashboard] .admin-data-action,
   [data-admin-dashboard] .glass-card .admin-data-action { flex-direction: column; align-items: stretch; gap: 12px; }
   [data-admin-dashboard] .admin-data-action > :is(button, label) { text-align: center; }
+  [data-admin-dashboard] .admin-data-action p:first-child { font-size: 14px; font-weight: 500; line-height: 1.4; }
+  [data-admin-dashboard] #general-settings-form > div > label { margin-bottom: 6px; font-size: 12px; font-weight: 500; line-height: 1.5; }
+  [data-admin-dashboard] .admin-image-setting p { font-size: 11px; line-height: 1.5; }
   [data-admin-dashboard] #general-settings-form > .flex { flex-wrap: wrap; gap: 8px; }
   [data-admin-dashboard] #general-settings-form > .flex > button { flex: 1 1 auto; padding: 10px 12px; }
 
-  [data-admin-dashboard] #certificates-list-container > div { padding: 14px; }
+  [data-admin-dashboard] #certificates-list-container > div { padding: 12px; }
   [data-admin-dashboard] #certificates-list-container .truncate,
   [data-admin-dashboard] #certificates-section [id$="-filename"] { white-space: normal; overflow-wrap: anywhere; }
-  [data-admin-dashboard] #certificates-list-container .w-12 { width: 36px; height: 36px; }
-  [data-admin-dashboard] #certificates-list-container > div > .flex:last-child { flex-wrap: wrap; gap: 8px; }
+  [data-admin-dashboard] #certificates-list-container h4 { font-size: 14px; font-weight: 500; line-height: 1.45; }
+  [data-admin-dashboard] #certificates-list-container p { font-size: 12px; line-height: 1.5; }
+  [data-admin-dashboard] #certificates-list-container .text-xs .material-symbols-outlined { font-size: 16px; }
+  [data-admin-dashboard] #certificates-list-container .space-x-3 { align-items: flex-start; }
+  [data-admin-dashboard] #certificates-list-container .w-12 { width: 28px; height: 28px; }
+  [data-admin-dashboard] #certificates-list-container .w-12 .material-symbols-outlined { font-size: 18px; }
+  [data-admin-dashboard] #certificates-list-container > div > .flex:last-child { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.35fr) 44px; gap: 6px; }
   [data-admin-dashboard] #certificates-list-container [data-action="viewDocument"],
-  [data-admin-dashboard] #certificates-list-container a[download] { flex: 1 1 90px; padding: 8px; }
-  [data-admin-dashboard] #certificates-list-container a[download] { flex-basis: 108px; flex-shrink: 0; }
-  [data-admin-dashboard] #certificates-list-container [data-action="deleteCertificate"] { min-width: 44px; margin-left: auto; }
+  [data-admin-dashboard] #certificates-list-container a[download] { padding: 8px 3px; gap: 3px; }
+  [data-admin-dashboard] #certificates-list-container [data-action="deleteCertificate"] { width: 44px; margin: 0; }
   [data-admin-dashboard] .admin-policy-card { padding: 14px; }
   [data-admin-dashboard] .admin-policy-card .flex { gap: 8px; }
-  [data-admin-dashboard] .admin-policy-card h4 { line-height: 1.4; }
+  [data-admin-dashboard] .admin-policy-card h4 { font-size: 14px; font-weight: 500; line-height: 1.45; }
+  [data-admin-dashboard] .admin-policy-card .material-symbols-outlined { font-size: 18px; }
+  [data-admin-dashboard] .admin-policy-card .text-xs { font-size: 12px; line-height: 1.5; }
+  [data-admin-dashboard] #certificates-section > .glass-card > .border-b { padding-bottom: 12px; margin-bottom: 16px; }
 
   /* The panel is the only dialog scroller, including with a short viewport. */
   [data-admin-dashboard] [data-modal-backdrop] {
@@ -183,8 +212,10 @@
     gap: 12px;
     flex-wrap: nowrap;
   }
-  [data-admin-dashboard] [data-modal-backdrop] > :first-child > div:first-child h3 { font-size: 20px; line-height: 1.3; }
+  [data-admin-dashboard] [data-modal-backdrop] > :first-child > div:first-child h3 { font-size: 18px; font-weight: 500; line-height: 1.35; }
   [data-admin-dashboard] [data-modal-backdrop] > :first-child > div:first-child button { flex-shrink: 0; min-width: 44px; }
+  [data-admin-dashboard] [data-modal-backdrop] form label { font-size: 13px; font-weight: 500; line-height: 1.45; }
+  [data-admin-dashboard] [data-modal-backdrop] form button { font-size: 13px; font-weight: 500; }
   [data-admin-dashboard] .admin-modal-actions { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr); gap: 8px; }
   [data-admin-dashboard] .admin-modal-actions > button { margin: 0; padding: 10px 12px; }
   [data-admin-dashboard] .admin-upload-options { flex-wrap: wrap !important; gap: 8px; }
@@ -222,4 +253,7 @@
 @media (max-width: 359px) {
   [data-admin-dashboard] #dashboard-section > section:first-child { grid-template-columns: minmax(0, 1fr); }
   [data-admin-dashboard] #product-range-price-container .grid { grid-template-columns: minmax(0, 1fr); }
+  [data-admin-dashboard] #certificates-list-container > div > .flex:last-child { grid-template-columns: minmax(0, 1fr) 44px; }
+  [data-admin-dashboard] #certificates-list-container :is([data-action="viewDocument"], a[download]) { grid-column: 1; }
+  [data-admin-dashboard] #certificates-list-container [data-action="deleteCertificate"] { grid-column: 2; grid-row: 1 / 3; align-self: center; }
 }
